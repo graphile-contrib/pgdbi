@@ -38,6 +38,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       primaryKeyConstraints: [TableConstraint]!
       uniqueConstraints: [TableConstraint]!
       roleTableGrants: [RoleTableGrant]!
+      roleColumnGrants: [RoleColumnGrant]!
     }
 
     extend type ReferentialConstraint {
@@ -73,7 +74,8 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
         checkConstraints: require('./resolvers/table/checkConstraints')(build),
         primaryKeyConstraints: require('./resolvers/table/primaryKeyConstraints')(build),
         uniqueConstraints: require('./resolvers/table/uniqueConstraints')(build),
-        roleTableGrants: require('./resolvers/table/roleTableGrants')(build)
+        roleTableGrants: require('./resolvers/table/roleTableGrants')(build),
+        roleColumnGrants: require('./resolvers/table/roleColumnGrants')(build)
       },
       ReferentialConstraint: {
         referencingColumnUsage: require('./resolvers/referentialConstraint/referencingColumnUsage')(build),
