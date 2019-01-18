@@ -4,7 +4,6 @@ const {postgraphile} = require("postgraphile");
 
 const plugins = [
   require('postgraphile-plugin-connection-filter'),
-  require('./graphile-extensions/getSchemaTree'),
   require('./graphile-extensions/dbSchema')
   // require(`${__dirname}/graphile-extensions/installPde`),
   // require(`${__dirname}/graphile-extensions/devDeploy`),

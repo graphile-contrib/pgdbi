@@ -20,14 +20,24 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       schemaFunctions: [Function]!
     }
 
+    type Index {
+      id: String!
+      indexName: String!
+      tableSchema: String!
+      tableName: String!
+      columnName: String!
+    }
+
     extend type Table {
       id: String!
       tableColumns: [Column]!
+      indices: [Index]!
       tableConstraints: [ConstraintTableUsage]!
       referentialConstraints: [ReferentialConstraint]!
       checkConstraints: [CheckConstraint]!
       primaryKeyConstraints: [TableConstraint]!
       uniqueConstraints: [TableConstraint]!
+      roleTableGrants: [RoleTableGrant]!
     }
 
     extend type ReferentialConstraint {
@@ -57,11 +67,13 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       Table: {
         id: require('./resolvers/table/id')(build),
         tableColumns: require('./resolvers/table/tableColumns')(build),
+        indices: require('./resolvers/table/indices')(build),
         tableConstraints: require('./resolvers/table/tableConstraints')(build),
         referentialConstraints: require('./resolvers/table/referentialConstraints')(build),
         checkConstraints: require('./resolvers/table/checkConstraints')(build),
         primaryKeyConstraints: require('./resolvers/table/primaryKeyConstraints')(build),
-        uniqueConstraints: require('./resolvers/table/uniqueConstraints')(build)
+        uniqueConstraints: require('./resolvers/table/uniqueConstraints')(build),
+        roleTableGrants: require('./resolvers/table/roleTableGrants')(build)
       },
       ReferentialConstraint: {
         referencingColumnUsage: require('./resolvers/referentialConstraint/referencingColumnUsage')(build),
