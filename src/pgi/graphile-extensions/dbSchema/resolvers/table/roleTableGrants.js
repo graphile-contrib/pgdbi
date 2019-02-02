@@ -26,6 +26,9 @@ module.exports = (build => {
               sql.value(tableName)
             }`
           );
+          sqlBuilder.where(
+            sql.fragment`${tableAlias}.grantee != 'postgres'`
+          );
         }
       );
 
