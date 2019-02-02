@@ -22,12 +22,11 @@ const watchPg = false //process.env.WATCH_PG === 'true'
 function PostgraphileDE(builder, options) {
   const app = options.app
 
-  // app.use(express.static(path.join(`${__dirname}`, `dist`)))
+  app.use(express.static(path.join(`${__dirname}`, `dist`)))
   
-  // app.get('/', (req, res) => {
-  //   res.redirect(`/dist/index.html`)
-  //   // res.redirect(`${__dirname}/dist/index.html`)
-  // })
+  app.get('/pg-db-inspector', (req, res) => {
+    res.redirect(`${__dirname}/dist/index.html`)
+  })
   
   app.use(postgraphile(
     connection
