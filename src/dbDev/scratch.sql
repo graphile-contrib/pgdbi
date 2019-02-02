@@ -1,1 +1,1 @@
-select * from information_schema.role_table_grants
+select * from information_schema.role_table_grants;
