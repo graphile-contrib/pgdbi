@@ -5,22 +5,16 @@ const {postgraphile} = require("postgraphile");
 const plugins = [
   require('postgraphile-plugin-connection-filter'),
   require('./graphile-extensions/dbSchema')
-  // require(`${__dirname}/graphile-extensions/installPde`),
-  // require(`${__dirname}/graphile-extensions/devDeploy`),
-  // require(`${__dirname}/graphile-extensions/execSql`),
-  // require(`${__dirname}/graphile-extensions/releaseToTesting`),
-  // require(`${__dirname}/graphile-extensions/releaseToStaging`),
-  // require(`${__dirname}/graphile-extensions/releaseToCurrent`),
-  // require(`${__dirname}/graphile-extensions/readPdeDirectory`),
 ]
 
 const connection = process.env.POSTGRES_CONNECTION
+const pgdbiPort = process.env.PGDBI_PORT
 const schemas = [ 'information_schema' ] //[ 'pde' ]
 const disableDefaultMutations = false
 const watchPg = false //process.env.WATCH_PG === 'true'
 
 function PostgraphileDE(builder, options) {
-  const app = options.app
+  const app = express();
 
   app.use(express.static(path.join(`${__dirname}`, `dist`)))
   
@@ -33,6 +27,7 @@ function PostgraphileDE(builder, options) {
     ,schemas
     ,{
       dynamicJson: true
+      ,enableCors: true
       ,showErrorStack: true
       ,extendedErrors: ['severity', 'code', 'detail', 'hint', 'positon', 'internalPosition', 'internalQuery', 'where', 'schema', 'table', 'column', 'dataType', 'constraint', 'file', 'line', 'routine']
       ,disableDefaultMutations: disableDefaultMutations
@@ -41,6 +36,17 @@ function PostgraphileDE(builder, options) {
       ,graphqlRoute: '/pg-inspector-graphql'
     }
   ));
+
+  app.listen(pgdbiPort)
+
+  console.log(`pg-db-inspector listening on ${pgdbiPort}`)
 }
 
-module.exports = PostgraphileDE
+function PostgraphileDELauncher(builder, options) {
+  const enablePgDbInspector = options.enablePgDbInspector || false
+  if (enablePgDbInspector) {
+    PostgraphileDE(builder, options)
+  }
+}
+
+module.exports = PostgraphileDELauncher
