@@ -29,6 +29,10 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       triggerFunction: Function
     }
 
+    extend type EnabledRole {
+      applicableRoles: [ApplicableRole]!
+    }
+
     extend type Schema {
       id: String!
       schemaTables: [Table]!
@@ -99,6 +103,9 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       Trigger: {
         id: require('./resolvers/trigger/id')(build),
         triggerFunction: require('./resolvers/trigger/triggerFunction')(build)
+      },
+      EnabledRole: {
+        applicableRoles: require('./resolvers/enabledRole/applicableRoles')(build)
       },
       ReferentialConstraint: {
         referencingColumnUsage: require('./resolvers/referentialConstraint/referencingColumnUsage')(build),
