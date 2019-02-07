@@ -1,0 +1,141 @@
+query TableById(
+  $id: String!
+){
+  tableById(id: $id) {
+    id
+    tableName
+    tableSchema
+    isTyped
+    userDefinedTypeName
+    primaryKeyConstraints {
+      constraintName
+      tableName
+      tableSchema
+    }
+    indices {
+      tableName
+      tableSchema
+      columnName
+      indexName
+    }
+    policies {
+      tableName
+      schemaName
+      policyName
+      roles
+      cmd
+      withCheck
+      qual
+    }
+    triggers {
+      id
+      triggerCatalog
+      triggerSchema
+      triggerName
+      eventManipulation
+      eventObjectCatalog
+      eventObjectSchema
+      eventObjectTable
+      actionOrder
+      actionCondition
+      actionStatement
+      actionOrientation
+      actionTiming
+      actionReferenceOldTable
+      actionReferenceNewTable
+      actionReferenceOldRow
+      actionReferenceNewRow
+      created
+      triggerFunction {
+        id
+        functionName
+        functionSchema
+        resultDataType
+        argumentDataTypes
+        definition
+      }
+    }
+    roleTableGrants {
+      grantor
+      grantee
+      tableName
+      tableSchema
+      privilegeType
+      isGrantable
+      withHierarchy
+    }
+    roleColumnGrants {
+      grantor
+      grantee
+      tableName
+      tableSchema
+      privilegeType
+      isGrantable
+      columnName
+    }
+    checkConstraints {
+      constraintName
+      constraintSchema
+      checkClause
+      tableConstraints {
+        tableName
+        tableSchema
+        constraintType
+      }
+    }
+    uniqueConstraints {
+      constraintName
+      tableName
+      tableSchema
+      constraintName
+      constraintSchema
+      keyColumnUsage {
+        tableSchema
+        tableName
+        columnName
+      }
+    }
+    referentialConstraints {
+      constraintName
+      constraintSchema
+      uniqueConstraintName
+      uniqueConstraintSchema
+      matchOption
+      updateRule
+      deleteRule
+      referencingColumnUsage {
+        constraintName
+        tableSchema
+        tableName
+        columnName
+        ordinalPosition
+        positionInUniqueConstraint
+      }
+      referencedColumnUsage {
+        constraintName
+        tableSchema
+        tableName
+        columnName
+        ordinalPosition
+        positionInUniqueConstraint
+      }
+    }
+    tableColumns {
+      tableName
+      tableSchema
+      columnName
+      dataType
+      isIdentity
+      ordinalPosition
+      columnDefault
+      isNullable
+      characterMaximumLength
+      characterOctetLength
+      numericScale
+      numericPrecision
+      numericPrecisionRadix
+      datetimePrecision
+      intervalType
+    }
+  }
+}

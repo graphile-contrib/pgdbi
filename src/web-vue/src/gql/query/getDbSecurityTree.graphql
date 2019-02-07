@@ -1,0 +1,56 @@
+query {
+  allSchemata(filter: {
+    schemaName: {
+      notIn: [
+        "pg_toast",
+        "pg_temp_1",
+        "pg_toast_temp_1",
+        "pg_catalog",
+        "information_schema",
+        "public"
+      ]
+    }
+  }) {
+    nodes {
+      id
+      schemaName
+      schemaTables {
+        id
+        tableName
+        tableSchema
+        policies {
+          tableName
+          schemaName
+          policyName
+          roles
+          cmd
+          withCheck
+          qual
+        }
+        roleTableGrants {
+          grantor
+          grantee
+          tableName
+          tableSchema
+          privilegeType
+          isGrantable
+          withHierarchy
+        }
+        roleColumnGrants {
+          grantor
+          grantee
+          tableName
+          tableSchema
+          privilegeType
+          isGrantable
+          columnName
+        }
+      }
+      schemaFunctions {
+        id
+        name: functionName
+        functionSchema
+      }
+    }
+  }
+}

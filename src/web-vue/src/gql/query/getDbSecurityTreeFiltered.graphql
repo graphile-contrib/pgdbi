@@ -1,0 +1,51 @@
+query GetDbSecurityTreeFiltered(
+  $filter: [SqlIdentifier!]!
+){
+  allSchemata(filter: {
+    schemaName: {
+      in: $filter
+    }
+  }) {
+    nodes {
+      id
+      schemaName
+      schemaTables {
+        id
+        tableName
+        tableSchema
+        policies {
+          tableName
+          schemaName
+          policyName
+          roles
+          cmd
+          withCheck
+          qual
+        }
+        roleTableGrants {
+          grantor
+          grantee
+          tableName
+          tableSchema
+          privilegeType
+          isGrantable
+          withHierarchy
+        }
+        roleColumnGrants {
+          grantor
+          grantee
+          tableName
+          tableSchema
+          privilegeType
+          isGrantable
+          columnName
+        }
+      }
+      schemaFunctions {
+        id
+        name: functionName
+        functionSchema
+      }
+    }
+  }
+}

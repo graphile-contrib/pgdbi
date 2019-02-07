@@ -1,0 +1,10 @@
+query FunctionById($id: String!) {
+  functionById(id: $id) {
+    id
+    functionName
+    functionSchema
+    resultDataType
+    argumentDataTypes
+    definition
+  }
+}

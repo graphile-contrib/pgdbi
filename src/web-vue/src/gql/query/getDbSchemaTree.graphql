@@ -1,0 +1,29 @@
+query {
+  allSchemata(filter: {
+    schemaName: {
+      notIn: [
+        "pg_toast",
+        "pg_temp_1",
+        "pg_toast_temp_1",
+        "pg_catalog",
+        "information_schema",
+        "public"
+      ]
+    }
+  }) {
+    nodes {
+      id
+      schemaName
+      schemaTables {
+        id
+        name: tableName
+        tableSchema
+      }
+      schemaFunctions {
+        id
+        name: functionName
+        functionSchema
+      }
+    }
+  }
+}

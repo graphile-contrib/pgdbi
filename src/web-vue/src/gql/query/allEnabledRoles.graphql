@@ -1,0 +1,11 @@
+query {
+  allEnabledRoles {
+    nodes {
+      roleName
+      applicableRoles {
+        grantee
+        roleName
+      }
+    }
+  }
+}
