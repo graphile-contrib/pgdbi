@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn>
     <v-treeview
       :items="items"
@@ -7,7 +7,7 @@
       :selectable="true"
       v-model="selected"
     ></v-treeview>
-  </v-container>
+  </div>
 </template>
 
 <script>

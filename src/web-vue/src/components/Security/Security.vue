@@ -177,7 +177,6 @@
           return this.schemaFilter.length > 0 ? { filter: this.schemaFilter.map(f => f.split(':')[1]) } : {}
         },
         update (result) {
-          console.log('secTree', result)
           this.securityTree = result.allSchemata.nodes
         }
       }

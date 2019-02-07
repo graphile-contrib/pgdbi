@@ -37,7 +37,7 @@
 
 <script>
   import allEnabledRoles from '@/gql/query/allEnabledRoles.graphql';
-  const IS_ROLE = '***'
+  // const IS_ROLE = '***'
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
 

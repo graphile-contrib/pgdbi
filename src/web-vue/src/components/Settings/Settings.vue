@@ -34,14 +34,12 @@
       >
         <v-card>
           <v-layout row wrap>
-            <v-spacer></v-spacer>
             <v-flex xs4>
               <v-card key="schemata">
                 Schemata
                 <schema-filter></schema-filter>
               </v-card>
             </v-flex>
-            <v-spacer></v-spacer>
           </v-layout>
         </v-card>
       </v-tab-item>
@@ -49,7 +47,7 @@
         key="policies"
         ripple
       >
-        Policies
+        Policy Definitions
       </v-tab>
       <v-tab-item
         key="policies"
