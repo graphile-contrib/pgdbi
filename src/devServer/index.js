@@ -11,7 +11,7 @@ const port = process.env.PORT
 const connection = process.env.POSTGRES_CONNECTION
 const schemas = process.env.POSTGRAPHILE_SCHEMAS.split(',')
 const dynamicJson = process.env.DYNAMIC_JSON === 'true'
-const disableDefaultMutations = process.env.DISABLE_DEFAULT_MUTATIONS === 'false'
+const disableDefaultMutations = process.env.DISABLE_DEFAULT_MUTATIONS === 'true'
 const watchPg = process.env.WATCH_PG === 'true'
 const enablePgDbInspector = process.env.ENABLE_PGDBI === 'true'
 

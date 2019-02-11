@@ -18,6 +18,12 @@ query {
         id
         name: tableName
         tableSchema
+        tableColumns {
+          tableName
+          tableSchema
+          columnName
+          dataType
+        }
       }
       schemaFunctions {
         id

@@ -7,7 +7,7 @@
           @change="familyCheckChanged(family)" 
           :input-value="familyIsSelected(family)"
         ></v-checkbox>
-        <h2>detected grouping</h2>
+        <h2>Applicable Family</h2>
         <v-spacer></v-spacer>
         <h2>{{ family.name }}</h2>
         <v-spacer></v-spacer>
@@ -21,10 +21,12 @@
       >
         <template slot="items" slot-scope="props">
           <tr @click="props.expanded = !props.expanded">        
-            <td><v-checkbox 
+            <td>
+              <!-- <v-checkbox 
               :input-value="roleIsSelected(props.item.roleName)" 
               @change="roleCheckChanged(family.members.find(m => m.roleName === props.item.roleName))"
-            ></v-checkbox></td>
+              ></v-checkbox> -->
+            </td>
             <td class="text-sm-left">{{ props.item.roleName }}</td>
             <td class="text-sm-left" v-for="fieldName in family.allMemberNames" :key="fieldName">{{ props.item[fieldName] }}</td>
           </tr>
@@ -36,13 +38,15 @@
 </template>
 
 <script>
-  import allEnabledRoles from '@/gql/query/allEnabledRoles.graphql';
+  import allEnabledRoles from '@/gql/query/allEnabledRoles.graphql'
+  import RoleFilterFunctionsMixin from './RoleFilterFunctionsMixin.vue'
   // const IS_ROLE = '***'
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
 
   export default {
     name: 'RoleFilter',
+    mixins: [RoleFilterFunctionsMixin],
     computed: {
       roleFilter () {
         return this.$store.state.roleFilter
@@ -64,6 +68,9 @@
           return true
         }
       },
+      selectedRoleFamilies () {
+        return this.$store.state.selectedRoleFamilies
+      }
     },
     watch: {
     },
@@ -92,17 +99,6 @@
           const member = f.members.find(r => r.roleName === role.roleName)
           return member !== undefined
         })
-
-        families.map(
-          f => { 
-            if (f.selected) {
-              f.selected = false
-            } else {
-              const allMembersSelected = f.members.reduce((all, m) => { return !all ? all : m.selected }, true)
-              f.selected = allMembersSelected
-            }
-          }
-        )
       },
       familyHeaders (family) {
         const headers = family.allMemberNames.map(
@@ -120,6 +116,8 @@
       apply () {
         const roleFilter = this.roles.reduce((all, role) => { return role.selected ? all.concat([role.roleName]) : all }, [])
         this.$store.commit('roleFilter', { roleFilter: roleFilter })
+        console.log('this.roleFamilies', this.roleFamilies)
+        this.$store.commit('selectedRoleFamilies', { selectedRoleFamilies: this.roleFamilies.filter(f => f.selected) })
       },
       computeItems () {
         this.roles.map(
@@ -127,12 +125,16 @@
             role.selected = this.roleFilter.indexOf(role.roleName) > -1
           }
         )
-        console.log('this.roles', this.roles)
 
+        // determine families by analyzing applicaple roles
+        // ideally, 
         const families = this.roles
+          // sort so the most senior role is first
           .sort((a,b) => { return a.applicableRoles.length >= b.applicableRoles.length ? -1 : 1})
           .reduce((families, role)=>{
+            // find existing family
             const existingFamily = families.find(f => new Set(f.allMemberNames).has(role.roleName))
+
             if (existingFamily) {
               return families
             } else {
@@ -149,7 +151,7 @@
 
               return families.concat([{
                 name: role.roleName,
-                selected: false,
+                selected: this.selectedRoleFamilies.find(rf => rf.name === role.roleName),
                 allMemberNames: allMemberNames
               }])
             }
@@ -204,6 +206,9 @@
     apollo: {
       init: {
         query: allEnabledRoles,
+        // skip () {
+        //   return this.selectedRoleFamilies.length > 0
+        // },
         update (result) {
           this.roles = result.allEnabledRoles.nodes.map(
             role => {

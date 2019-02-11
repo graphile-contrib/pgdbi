@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Table from './components/Table/Table.vue'
 import Function from './components/Function.vue'
-import Security from './components/Security/Security.vue'
+import Security from './components/Security/SecurityPolicy.vue'
+// import Security from './components/Security/Security.vue'
 import Settings from './components/Settings/Settings.vue'
 
 Vue.use(Router)

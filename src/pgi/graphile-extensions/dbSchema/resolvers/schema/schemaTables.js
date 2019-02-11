@@ -18,6 +18,9 @@ module.exports = (build => {
               sql.value(schemaName)
             }`
           );
+          sqlBuilder.where(
+            sql.fragment`${tableAlias}.table_type = 'BASE TABLE'`
+          );
         }
       );
   

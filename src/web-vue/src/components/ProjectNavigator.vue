@@ -18,8 +18,8 @@
 </template>
 
 <script>
-  import SchemaTree from '@/components/SchemaTree/SchemaTree'
-  import RoleList from '@/components/RoleList/RoleList'
+  import SchemaTree from '@/components/Schema/SchemaTree'
+  import RoleList from '@/components/Role/RoleList'
 
   export default {
     name: 'ProjectNavigator',

@@ -53,7 +53,7 @@
         key="policies"
       >
         <v-card>
-          POLICIES
+          <policy-manager></policy-manager>
         </v-card>
       </v-tab-item>
     </v-tabs>
@@ -61,14 +61,16 @@
 </template>
 
 <script>
-  import RoleFilter from '@/components/RoleList/RoleFilter'
-  import SchemaFilter from '@/components/SchemaTree/SchemaFilter'
+  import RoleFilter from '@/components/Role/RoleFilter'
+  import SchemaFilter from '@/components/Schema/SchemaFilter'
+  import PolicyManager from '@/components/Policy/PolicyManager'
 
   export default {
     name: 'Settings',
     components: {
       RoleFilter,
-      SchemaFilter
+      SchemaFilter,
+      PolicyManager
     },
     props: {
     },

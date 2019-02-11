@@ -27,11 +27,15 @@ module.exports = (build => {
     from pg_catalog.pg_proc p
     left join pg_catalog.pg_namespace n ON n.oid = p.pronamespace
     where n.nspname = '${schemaName}'
+--    group by p.proname
+--    order by p.proname
     ;
     `;
+
     const result = await pgClient.query(sql, []);
     return result.rows[0].jsonb_build_object.schemaFunctions;
   } catch (e) {
+      console.log('err', e)
       throw e;
     }
   }

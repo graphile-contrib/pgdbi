@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import EnabledRoleListMixin from '@/components/RoleList/EnabledRoleListMixin.vue'
+  import EnabledRoleListMixin from '@/components/Role/EnabledRoleListMixin.vue'
 
   export default {
     name: 'RoleList',

@@ -1,29 +1,29 @@
+const clog = require('fbkt-clog')
+
 module.exports = (build => {
   return async (
-    _schema,
+    _enabledRole,
     args,
     context,
     resolveInfo
   ) => {
     const { pgSql: sql } = build;
     try {
-      const schemaName = _schema.schemaName
-  
+      const roleName = _enabledRole.roleName
+
       const rows =
       await resolveInfo.graphile.selectGraphQLResultFromTable(
-        sql.fragment`information_schema.tables`,
+        sql.fragment`information_schema.applicable_roles`,
         (tableAlias, sqlBuilder) => {
           sqlBuilder.where(
-            sql.fragment`${tableAlias}.table_schema = ${
-              sql.value(schemaName)
+            sql.fragment`${tableAlias}.grantee = ${
+              sql.value(roleName)
             }`
-          );
-          sqlBuilder.where(
-            sql.fragment`${tableAlias}.table_type = 'BASE TABLE'`
           );
         }
       );
-  
+
+
       return rows
     } catch (e) {
       throw e;

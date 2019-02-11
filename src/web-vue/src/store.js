@@ -8,7 +8,10 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     schemaFilter: [],
-    roleFilter: []
+    roleFilter: [],
+    selectedRoleFamilies: [],
+    familyPolicySets: [],
+    defaultRLSQual: '(auth_fn.app_user_has_access(app_tenant_id) = true)'
   },
   mutations: {
     schemaFilter (state, payload) {
@@ -17,6 +20,15 @@ export default new Vuex.Store({
     roleFilter (state, payload) {
       state.roleFilter = payload.roleFilter
     },
+    selectedRoleFamilies (state, payload) {
+      state.selectedRoleFamilies = payload.selectedRoleFamilies
+    },
+    familyPolicySets (state, payload) {
+      state.familyPolicySets = payload.familyPolicySets
+    },
+    defaultRLSQual (state, payload) {
+      state.defaultRLSQual = payload.defaultRLSQual
+    }
   },
   actions: {
 

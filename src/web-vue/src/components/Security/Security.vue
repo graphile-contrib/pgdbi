@@ -1,10 +1,14 @@
 <template>
   <v-container>
-    <security-policy
+    <v-textarea
+      :value="policy"
+      auto-grow
+    ></v-textarea>
+    <!-- <security-policy
       :appRoles="selectedAppRoles"
       :tableItem="tableItem"
-    ></security-policy>
-    SECURITY
+    ></security-policy> -->
+    <!-- SECURITY
     <v-tabs
       dark
       slider-color="yellow"
@@ -91,7 +95,7 @@
           </template>
         </v-data-table>
       </v-tab-item>
-    </v-tabs>
+    </v-tabs> -->
   </v-container>
 </template>
 
@@ -151,8 +155,57 @@
             return rows.concat(schemaTableRows)
           }, []
         )
-      }
+      },
+      // policy () {
+      //   return this.securityTree.reduce(
+      //     (policy, schema) => {
+      //        return policy.concat(this.generatePolicy(schema.schemaName, 'lf_inventory_item', 'soro_user', 'soro_super_admin', 'seller_id'))
+      //     }, ''
+      //   )
+      // }
     },
+    methods: {
+      calculatePolicy () {
+        console.log('calc', this.securityTree)
+        this.policy = this.securityTree.reduce(
+          (policy, schema) => {
+             return policy.concat(this.generatePolicy(schema.schemaName, 'lf_inventory_item', 'soro_user', 'soro_super_admin', 'seller_id'))
+          }, ''
+        )
+      },
+      generatePolicy(schemaName, tableName, userRole, superAdminRole, tenantIdField) {
+        return `
+      
+--  remove all security for ${schemaName}
+`     
+      }
+//       generatePolicy(schemaName, tableName, userRole, superAdminRole, tenantIdField) {
+//         return `
+// --  remove all security for ${schemaName}.${tableName}
+// // REVOKE ALL PRIVILEGES ON ${schemaName}.${tableName} FROM PUBLIC;
+// // ALTER TABLE ${schemaName}.${tableName} DISABLE ROW LEVEL SECURITY;
+// // DROP POLICY IF EXISTS all_${tableName}_${userRole} ON ${schemaName}.${tableName};
+// // DROP POLICY IF EXISTS all_${tableName}_${superAdminRole} ON ${schemaName}.${tableName};
+// // --||--
+// // --  define security for ${schemaName}.${tableName}
+// // GRANT select, update, delete ON TABLE ${schemaName}.${tableName} TO ${userRole};
+// // ALTER TABLE ${schemaName}.${tableName} ENABLE ROW LEVEL SECURITY;
+// // -- user are limited to tenant
+// // CREATE POLICY all_${tableName}_${userRole} ON ${schemaName}.${tableName} FOR SELECT to ${userRole}
+// // USING ((${tenantIdField} = soro.viewer_company_id()));
+// // -- super admin can see everything
+// // CREATE POLICY all_${tableName}_${superAdminRole} ON ${schemaName}.${tableName} FOR SELECT to ${superAdminRole}
+// // USING (1 = 1);
+// // -- 
+// // CREATE INDEX IF NOT EXISTS idx_${tableName}_${tenantIdField} ON ${schemaName}.${tableName}(${tenantIdField});
+// `     
+//       }
+    },
+    // watch: {
+    //   securityTree () {
+    //     this.calculatePolicy()
+    //   }
+    // },
     data: () => ({
       securityTree: [],
       policyHeaders: [
@@ -166,7 +219,8 @@
         {text: 'policy', value: 'policyCount'},
         {text: 'table grant', value: 'roleTableGrantCount'},
         {text: 'column grants', value: 'roleColumnGrantCount'}
-      ]
+      ],
+      policy: 'NOT CALCULATED'
     }),
     apollo: {
       init: {
@@ -178,6 +232,8 @@
         },
         update (result) {
           this.securityTree = result.allSchemata.nodes
+          console.log('wtf', this.securityTree)
+          this.calculatePolicy()
         }
       }
     }
