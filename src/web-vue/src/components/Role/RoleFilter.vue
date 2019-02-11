@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn>
+    <!-- <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn> -->
     <div v-for="family in roleFamilies" :key="family.name">
       <v-toolbar>
-        <v-checkbox 
+        <!-- <v-checkbox 
           @change="familyCheckChanged(family)" 
           :input-value="familyIsSelected(family)"
-        ></v-checkbox>
+        ></v-checkbox> -->
         <h2>Applicable Family</h2>
         <v-spacer></v-spacer>
         <h2>{{ family.name }}</h2>

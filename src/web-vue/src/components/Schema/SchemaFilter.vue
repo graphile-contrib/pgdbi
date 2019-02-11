@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn>
+    <!-- <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn> -->
     <v-treeview
       :items="items"
       transition
@@ -16,16 +16,16 @@
   export default {
     name: 'SchemaFilter',
     computed: {
-      applyDisabled () {
-        const existingFilters = this.$store.state.roleFilter || []
+      // applyDisabled () {
+      //   const existingFilters = this.$store.state.roleFilter || []
 
-        const allExistingFiltersPresent = existingFilters.reduce(
-          (result, schemaId) => {
-            return result ? this.selected.indexOf(schemaId) > -1 : false
-          }, true
-        )
-        return allExistingFiltersPresent && (existingFilters.length === this.selected.length)
-      }
+      //   const allExistingFiltersPresent = existingFilters.reduce(
+      //     (result, schemaId) => {
+      //       return result ? this.selected.indexOf(schemaId) > -1 : false
+      //     }, true
+      //   )
+      //   return allExistingFiltersPresent && (existingFilters.length === this.selected.length)
+      // }
     },
     data: () => ({
       items: [],
@@ -53,6 +53,11 @@
 
         this.selected = selectedSchemata
       },
+    },
+    watch: {
+      selected () {
+        this.apply()
+      }
     },
     apollo: {
       init: {

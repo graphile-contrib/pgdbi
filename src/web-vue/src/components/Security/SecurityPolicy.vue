@@ -28,8 +28,6 @@
 
 <script>
   import getDbSchemaTree from '@/gql/query/getDbSchemaTree.graphql'
-  import generatePolicyWithDefaultRLS from './generatePolicyWithDefaultRLS.js'
-  import generatePolicyWithDefaultNoRLS from './generatePolicyWithDefaultNoRLS.js'
 
   export default {
     name: 'SecurityPolicy',
@@ -40,28 +38,27 @@
     computed: {
       schemaFilter () {
         return this.$store.state.schemaFilter
+      },
+      policyTemplateNoRls () {
+        return this.$store.state.policyTemplateNoRls
+      },
+      policyTemplateRls () {
+        return this.$store.state.policyTemplateRls
+      },
+      appTenantFieldName () {
+        return this.$store.state.appTenantFieldName
       }
+      
     },
     methods: {
-      calcOnePolicy (schemaName, superAdminRole, userRole, appTenantIdField) {
-        const tables = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
-          .filter(t => t.tableColumns.find(c => c.columnName === 'seller_id') !== undefined)
-
-        const policyReducer = appTenantIdField !== null && appTenantIdField !== undefined ? this.generatePolicyWithDefaultRLS : this.generatePolicyWithDefaultNoRLS
-
+      calcOnePolicy (tables, policyTemplate) {
         return tables.reduce(
           (policy, table) => {
-            const tablePolicy = policyReducer(table.tableSchema, table.name, userRole, superAdminRole, appTenantIdField)
+            const tablePolicy = policyTemplate.split('{{schemaName}}').join(table.tableSchema).split('{{tableName}}').join(table.name)
             return policy.concat(tablePolicy)
           }, ''
         )
       },
-      calculatePolicy () {
-        this.defaultRLSPolicies = this.calcOnePolicy('soro', 'soro_super_admin', 'soro_user', 'seller_id')        
-        this.defaultNoRLSPolicies = this.calcOnePolicy('soro', 'soro_super_admin', 'soro_user')
-      },
-      generatePolicyWithDefaultRLS: generatePolicyWithDefaultRLS,
-      generatePolicyWithDefaultNoRLS: generatePolicyWithDefaultNoRLS,
       calculateAllPolicies () {
         if (!this.schemaTree) {
           this.allPolicies = []
@@ -70,26 +67,38 @@
 
           this.allPolicies = schemaNames.reduce(
             (all, schemaName) => {
-              const withRLS = {
+              const tablesInNeedOfRls = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
+                .filter(t => t.tableColumns.find(c => c.columnName === this.appTenantFieldName) !== undefined)
+
+              const withRls = {
                 name: `${schemaName} - rls`,
-                policy: this.calcOnePolicy(schemaName,'soro_super_admin', 'soro_user', 'seller_id')
-              }
-              const withoutRLS = {
-                name: `${schemaName} - no rls`,
-                policy: this.calcOnePolicy(schemaName,'soro_super_admin', 'soro_user')
+                policy: this.calcOnePolicy(tablesInNeedOfRls, this.policyTemplateRls)
               }
 
-              return all.concat([withRLS, withoutRLS])
+              const tablesNotInNeedOfRls = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
+                .filter(t => t.tableColumns.find(c => c.columnName === this.appTenantFieldName) === undefined)
+
+              const withoutRls = {
+                name: `${schemaName} - no rls`,
+                policy: this.calcOnePolicy(tablesNotInNeedOfRls, this.policyTemplateNoRls)
+              }
+
+              return all.concat([withRls, withoutRls])
             }, []
           )
         }
       }
     },
+    watch: {
+      schemaFilter () {
+        this.$apollo.queries.init.refetch()
+      }
+    },
     data: () => ({
       allPolicies: [],
       schemaPolicy: 'NOT CALCULATED',
-      defaultRLSPolicies: 'NOT CALCULATED',
-      defaultNoRLSPolicies: 'NOT CALCULATED',
+      defaultRlsPolicies: 'NOT CALCULATED',
+      defaultNoRlsPolicies: 'NOT CALCULATED',
       selectedTabName: ''
     }),
     apollo: {
@@ -97,15 +106,13 @@
         query () {
           return getDbSchemaTree
         },
+        fetchPolicy: 'network-only',
         update (result) {
           this.schemaTree = result.allSchemata.nodes
           this.calculateAllPolicies()
         }
       }
     }
-    // created () {
-    //   this.getDbSchemaTree()
-    // }
   }
 </script>
 

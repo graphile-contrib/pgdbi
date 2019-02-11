@@ -3,7 +3,7 @@
       <h1>Policy Name: {{ policy.name }}</h1>
       <h2>Family Name: {{ family.name }}</h2>
       <v-layout justify-center>
-        <v-checkbox v-model="enableRLS" label="Enable RLS"></v-checkbox>
+        <v-checkbox v-model="enableRls" label="Enable Rls"></v-checkbox>
       </v-layout>
       <v-data-table
         :headers="headers"
@@ -41,17 +41,17 @@
     },
     data () {
       return {
-        enableRLS: true,
+        enableRls: true,
       }
     },
     watch: {
-      enableRLS () {
-        console.log('this.enableRLS', this.enableRLS)
+      enableRls () {
+        console.log('this.enableRls', this.enableRls)
       }
     },
     computed: {
-      defaultRLSQual () {
-        return this.$store.state.defaultRLSQual
+      defaultRlsQual () {
+        return this.$store.state.defaultRlsQual
       },
       headers () {
         const hdrs = [
@@ -77,8 +77,8 @@
           }
         ]
 
-        return !this.enableRLS ? hdrs : hdrs.concat([{
-            text: 'RLS Qualifier',
+        return !this.enableRls ? hdrs : hdrs.concat([{
+            text: 'Rls Qualifier',
             sortable: false
           }])
       },
@@ -93,8 +93,8 @@
               delete: false,
             }
 
-            return !this.enableRLS ? cols : Object.assign(cols, {
-              qual: this.defaultRLSQual
+            return !this.enableRls ? cols : Object.assign(cols, {
+              qual: this.defaultRlsQual
             })
           }
         )

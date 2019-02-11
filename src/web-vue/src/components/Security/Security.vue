@@ -60,7 +60,7 @@
                 key="rls-policies"
                 ripple
               >
-                RLS Policies
+                Rls Policies
               </v-tab>
               <v-tab-item
                 key="rls-policies"
