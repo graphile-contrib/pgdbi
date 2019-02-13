@@ -8,7 +8,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/pg-inspector-graphql": {
-        target: "http://localhost:6900"
+        target: "http://localhost:6099"
       }
     }
   }
