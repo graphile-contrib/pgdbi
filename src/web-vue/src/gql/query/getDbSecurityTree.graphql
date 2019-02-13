@@ -1,16 +1,20 @@
 query {
-  allSchemata(filter: {
-    schemaName: {
-      notIn: [
-        "pg_toast",
-        "pg_temp_1",
-        "pg_toast_temp_1",
-        "pg_catalog",
-        "information_schema",
-        "public"
-      ]
+  allSchemata
+  (
+    filter: {
+      schemaName: {
+        notIn: [
+          "pg_toast",
+          "pg_temp_1",
+          "pg_toast_temp_1",
+          "pg_catalog",
+          "information_schema",
+          "public"
+        ]
+      }
     }
-  }) {
+  ) 
+  {
     nodes {
       id
       schemaName
@@ -35,15 +39,6 @@ query {
           privilegeType
           isGrantable
           withHierarchy
-        }
-        roleColumnGrants {
-          grantor
-          grantee
-          tableName
-          tableSchema
-          privilegeType
-          isGrantable
-          columnName
         }
       }
       schemaFunctions {

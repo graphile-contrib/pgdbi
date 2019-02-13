@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import Table from './components/Table/Table.vue'
 import Function from './components/Function.vue'
 import Security from './components/Security/SecurityPolicy.vue'
-// import Security from './components/Security/Security.vue'
+import SecurityReview from './components/Security/SecurityReview.vue'
 import Settings from './components/Settings/Settings.vue'
 
 Vue.use(Router)
@@ -47,34 +47,39 @@ export default new Router({
 
 
     {
-      path: '/pg-db-inspector/',
+      path: '/',
       name: 'home',
       component: Home
     },
     {
-      path: '/pg-db-inspector/security',
+      path: '/security',
       name: 'security',
       component: Security
     },
     {
-      path: '/pg-db-inspector/settings',
+      path: '/security-review',
+      name: 'security-review',
+      component: SecurityReview
+    },
+    {
+      path: '/settings',
       name: 'settings',
       component: Settings
     },
     {
-      path: '/pg-db-inspector/table/:id',
+      path: '/table/:id',
       name: 'table',
       component: Table,
       props: true
     },
     {
-      path: '/pg-db-inspector/function/:id',
+      path: '/function/:id',
       name: 'function',
       component: Function,
       props: true
     },
     {
-      path: '/pg-db-inspector/about',
+      path: '/about',
       name: 'about',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route

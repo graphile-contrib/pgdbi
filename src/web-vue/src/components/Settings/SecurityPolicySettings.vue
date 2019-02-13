@@ -28,6 +28,7 @@
           v-model="policyTemplateNoRls"
           auto-grow
           spellcheck="false"
+          :min-height="800"
         ></v-textarea>
       </v-tab-item>
 

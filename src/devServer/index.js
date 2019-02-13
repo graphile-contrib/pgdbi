@@ -3,7 +3,7 @@ const express = require("express");
 const {postgraphile} = require("postgraphile");
 
 const plugins = [
-  require('postgraphile-plugin-connection-filter'),
+  // require('postgraphile-plugin-connection-filter'),
   require('../pgi')
 ]
 

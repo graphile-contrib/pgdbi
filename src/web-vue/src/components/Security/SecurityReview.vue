@@ -1,14 +1,10 @@
 <template>
   <v-container>
-    <v-textarea
-      :value="policy"
-      auto-grow
-    ></v-textarea>
     <!-- <security-policy
       :appRoles="selectedAppRoles"
       :tableItem="tableItem"
     ></security-policy> -->
-    <!-- SECURITY
+    SECURITY
     <v-tabs
       dark
       slider-color="yellow"
@@ -45,9 +41,6 @@
                 <td
                   key="roleTableGrantCount"
                 >{{props.item.roleTableGrantCount}}</td>
-                <td
-                  key="roleColumnGrantCount"
-                >{{props.item.roleColumnGrantCount}}</td>
               </tr>
             </template>
 
@@ -95,7 +88,7 @@
           </template>
         </v-data-table>
       </v-tab-item>
-    </v-tabs> -->
+    </v-tabs>
   </v-container>
 </template>
 
@@ -107,7 +100,7 @@
   import SecurityPolicy from './SecurityPolicy.vue'
 
   export default {
-    name: 'Security',
+    name: 'SecurityReview',
     components: {
       TablePolicies,
       TableGrants,
@@ -146,8 +139,7 @@
                   ),
                   policies: table.policies,
                   roleTableGrants: table.roleTableGrants,
-                  roleTableGrantCount: table.roleTableGrants.length,
-                  roleColumnGrantCount: table.roleColumnGrants.length
+                  roleTableGrantCount: table.roleTableGrants.length
                 }
               }
             )
@@ -211,14 +203,13 @@
       policyHeaders: [
         {text: 'roles', value: 'roles'},
         {text: 'cmd', value: 'cmd'},
-        {text: 'qual', value: 'qual'}
+        {text: 'qualifier', value: 'qual'}
       ],
       headers: [
         {text: 'schema name', value: 'schemaName'},
         {text: 'table name', value: 'tableName'},
         {text: 'policy', value: 'policyCount'},
-        {text: 'table grant', value: 'roleTableGrantCount'},
-        {text: 'column grants', value: 'roleColumnGrantCount'}
+        {text: 'table grant', value: 'roleTableGrantCount'}
       ],
       policy: 'NOT CALCULATED'
     }),

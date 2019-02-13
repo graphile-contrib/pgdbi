@@ -1,14 +1,15 @@
 const express = require("express");
 const path = require("path")
 const {postgraphile} = require("postgraphile");
+const opn = require('opn')
 
 const plugins = [
-  require('postgraphile-plugin-connection-filter'),
-  require('./graphile-extensions/dbSchema')
+  require('./graphile-extensions/dbSchema'),
+  require('postgraphile-plugin-connection-filter')
 ]
 
 const connection = process.env.POSTGRES_CONNECTION
-const pgdbiPort = process.env.PGDBI_PORT
+const pgdbiPort = process.env.PGDBI_PORT || 6099
 const schemas = [ 'information_schema' ] //[ 'pde' ]
 const disableDefaultMutations = false
 const watchPg = false //process.env.WATCH_PG === 'true'
@@ -18,10 +19,10 @@ function PostgraphileDE(builder, options) {
 
   app.use(express.static(path.join(`${__dirname}`, `dist`)))
   
-  app.get('/pg-db-inspector', (req, res) => {
-    res.redirect(`${__dirname}/dist/index.html`)
+  app.get('/', (req, res) => {
+    res.redirect(`/dist/index.html`)
   })
-  
+
   app.use(postgraphile(
     connection
     ,schemas
@@ -33,13 +34,16 @@ function PostgraphileDE(builder, options) {
       ,disableDefaultMutations: disableDefaultMutations
       ,appendPlugins: plugins
       ,watchPg: watchPg
-      ,graphqlRoute: '/pg-inspector-graphql'
+      ,graphiql: true
+      ,enhanceGraphiql: true
     }
   ));
 
   app.listen(pgdbiPort)
 
   console.log(`pg-db-inspector listening on ${pgdbiPort}`)
+
+  opn(`http://localhost:${pgdbiPort}/`)
 }
 
 function PostgraphileDELauncher(builder, options) {
