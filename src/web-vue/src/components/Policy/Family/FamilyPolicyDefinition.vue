@@ -23,6 +23,11 @@
           </tr>
         </template>
       </v-data-table>
+      <v-textarea
+        :value="policySql"
+        auto-grow
+      >
+      </v-textarea>
     </div>
 </template>
 
@@ -46,10 +51,13 @@
     },
     watch: {
       enableRls () {
-        console.log('this.enableRls', this.enableRls)
+        // console.log('this.enableRls', this.enableRls)
       }
     },
     computed: {
+      policySql () {
+        return `calculated policy`
+      },
       defaultRlsQual () {
         return this.$store.state.defaultRlsQual
       },

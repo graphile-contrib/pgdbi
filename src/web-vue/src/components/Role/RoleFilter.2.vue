@@ -1,12 +1,7 @@
 <template>
   <v-container>
-    <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn>
     <div v-for="family in roleFamilies" :key="family.name">
       <v-toolbar>
-        <v-checkbox 
-          @change="familyCheckChanged(family)" 
-          :input-value="familyIsSelected(family)"
-        ></v-checkbox>
         <h2>Applicable Family</h2>
         <v-spacer></v-spacer>
         <h2>{{ family.name }}</h2>
@@ -22,10 +17,6 @@
         <template slot="items" slot-scope="props">
           <tr @click="props.expanded = !props.expanded">        
             <td>
-              <v-checkbox 
-              :input-value="roleIsSelected(props.item.roleName)" 
-              @change="roleCheckChanged(family.members.find(m => m.roleName === props.item.roleName))"
-              ></v-checkbox>
             </td>
             <td class="text-sm-left">{{ props.item.roleName }}</td>
             <td class="text-sm-left" v-for="fieldName in family.allMemberNames" :key="fieldName">{{ props.item[fieldName] }}</td>
@@ -81,25 +72,6 @@
       checkedRoles: {}
     }),
     methods: {
-      familyIsSelected (family) {
-        const allMembersSelected = family.members.reduce((all, m) => { return !all ? all : m.selected }, true)
-        return allMembersSelected
-      },
-      roleIsSelected (roleName) {
-        const role =  this.roles.find(r => r.roleName === roleName).selected
-        return role
-      },
-      familyCheckChanged (family) {
-        family.selected = !family.selected
-        family.members.map(m => { m.selected = family.selected })
-      },
-      roleCheckChanged (role) {
-        role.selected = !role.selected
-        // const families = this.roleFamilies.filter(f => {
-        //   const member = f.members.find(r => r.roleName === role.roleName)
-        //   return member !== undefined
-        // })
-      },
       familyHeaders (family) {
         const headers = family.allMemberNames.map(
           memberName => {
@@ -112,11 +84,6 @@
         )
         const allHeaders = [{ name: 'checkbox', sortable: false}, { text: 'grantee', name: 'grantee', sortable: false }].concat(headers)
         return allHeaders
-      },
-      apply () {
-        const roleFilter = this.roles.reduce((all, role) => { return role.selected ? all.concat([role.roleName]) : all }, [])
-        this.$store.commit('roleFilter', { roleFilter: roleFilter })
-        this.$store.commit('selectedRoleFamilies', { selectedRoleFamilies: this.roleFamilies.filter(f => f.selected) })
       },
       computeItems () {
         this.roles.map(
@@ -205,9 +172,6 @@
     apollo: {
       init: {
         query: allEnabledRoles,
-        // skip () {
-        //   return this.selectedRoleFamilies.length > 0
-        // },
         update (result) {
           this.roles = result.allEnabledRoles.nodes.map(
             role => {

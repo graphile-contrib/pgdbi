@@ -21,6 +21,7 @@ module.exports = (build => {
           sqlBuilder.where(
             sql.fragment`${tableAlias}.table_type = 'BASE TABLE'`
           );
+          sqlBuilder.orderBy(() => sql.fragment`table_name`, true)
         }
       );
   

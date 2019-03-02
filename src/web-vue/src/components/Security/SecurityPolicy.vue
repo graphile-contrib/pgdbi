@@ -15,7 +15,14 @@
         v-for="schemaPolicy in allPolicies"
         :key="schemaPolicy.name"
       >
+        <v-toolbar>
+          <v-btn @click="expand(schemaPolicy)">Expand</v-btn>
+          <button 
+            v-clipboard:copy="schemaPolicy.policy"
+          >Copy</button>
+        </v-toolbar>
         <v-textarea
+          :disabled="true"
           :value="schemaPolicy.policy"
           auto-grow
           spellcheck="false"
@@ -51,6 +58,12 @@
       
     },
     methods: {
+      handleCopyStatus(status) {
+        alert(status)
+      },
+      expand (schemaPolicy) {
+        schemaPolicy.policy = `${schemaPolicy.policy} `
+      },
       calcOnePolicy (tables, policyTemplate) {
         return tables.reduce(
           (policy, table) => {
@@ -99,7 +112,8 @@
       schemaPolicy: 'NOT CALCULATED',
       defaultRlsPolicies: 'NOT CALCULATED',
       defaultNoRlsPolicies: 'NOT CALCULATED',
-      selectedTabName: ''
+      selectedTabName: '',
+
     }),
     apollo: {
       init: {

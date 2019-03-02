@@ -25,6 +25,20 @@
       </v-tab-item>
 
       <v-tab
+        key="policy-manager"
+        ripple
+      >
+        Policy Manager
+      </v-tab>
+      <v-tab-item
+        key="policy-manager"
+      >
+        <v-card>
+          <policy-manager></policy-manager>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab
         key="settings"
         ripple
       >
@@ -57,6 +71,21 @@
           <security-policy></security-policy>
         </v-card>
       </v-tab-item>
+
+      <v-tab
+        key="securityReview"
+        ripple
+      >
+        Security Review
+      </v-tab>
+      <v-tab-item
+        key="securityReview"
+      >
+        <v-card>
+          <security-review></security-review>
+        </v-card>
+      </v-tab-item>
+
     </v-tabs>
   </v-container>
 </template>
@@ -65,13 +94,17 @@
   import RoleFilter from '@/components/Role/RoleFilter'
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SecurityPolicy from '@/components/Security/SecurityPolicy'
+  import SecurityReview from '@/components/Security/SecurityReview'
+  import PolicyManager from '@/components/Policy/PolicyManager'
 
   export default {
     name: 'Home',
     components: {
       RoleFilter,
       SecurityPolicySettings,
-      SecurityPolicy
+      SecurityPolicy,
+      SecurityReview,
+      PolicyManager
     },
     props: {
     },

@@ -29,7 +29,7 @@ app.use(postgraphile(
     ,appendPlugins: plugins
     ,watchPg: watchPg
     ,graphileBuildOptions: {
-      enablePgDbInspector: enablePgDbInspector
+      enablePgDbInspector: false //enablePgDbInspector
     }
   }
 ));

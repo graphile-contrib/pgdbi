@@ -38,9 +38,6 @@
                   {{props.item.policyCount}}
                   <v-icon small :color="props.item.policyColor">fiber_manual_record</v-icon>
                 </td>
-                <td
-                  key="roleTableGrantCount"
-                >{{props.item.roleTableGrantCount}}</td>
               </tr>
             </template>
 
@@ -97,14 +94,12 @@
   import getDbSecurityTreeFiltered from '@/gql/query/getDbSecurityTreeFiltered.graphql'
   import TablePolicies from '@/components/Table/TablePolicies'
   import TableGrants from '@/components/Table/TableGrants'
-  import SecurityPolicy from './SecurityPolicy.vue'
 
   export default {
     name: 'SecurityReview',
     components: {
       TablePolicies,
       TableGrants,
-      SecurityPolicy
     },
     props: {
     },
@@ -148,56 +143,11 @@
           }, []
         )
       },
-      // policy () {
-      //   return this.securityTree.reduce(
-      //     (policy, schema) => {
-      //        return policy.concat(this.generatePolicy(schema.schemaName, 'lf_inventory_item', 'soro_user', 'soro_super_admin', 'seller_id'))
-      //     }, ''
-      //   )
-      // }
     },
     methods: {
-      calculatePolicy () {
-        console.log('calc', this.securityTree)
-        this.policy = this.securityTree.reduce(
-          (policy, schema) => {
-             return policy.concat(this.generatePolicy(schema.schemaName, 'lf_inventory_item', 'soro_user', 'soro_super_admin', 'seller_id'))
-          }, ''
-        )
-      },
-      generatePolicy(schemaName, tableName, userRole, superAdminRole, tenantIdField) {
-        return `
-      
---  remove all security for ${schemaName}
-`     
-      }
-//       generatePolicy(schemaName, tableName, userRole, superAdminRole, tenantIdField) {
-//         return `
-// --  remove all security for ${schemaName}.${tableName}
-// // REVOKE ALL PRIVILEGES ON ${schemaName}.${tableName} FROM PUBLIC;
-// // ALTER TABLE ${schemaName}.${tableName} DISABLE ROW LEVEL SECURITY;
-// // DROP POLICY IF EXISTS all_${tableName}_${userRole} ON ${schemaName}.${tableName};
-// // DROP POLICY IF EXISTS all_${tableName}_${superAdminRole} ON ${schemaName}.${tableName};
-// // --||--
-// // --  define security for ${schemaName}.${tableName}
-// // GRANT select, update, delete ON TABLE ${schemaName}.${tableName} TO ${userRole};
-// // ALTER TABLE ${schemaName}.${tableName} ENABLE ROW LEVEL SECURITY;
-// // -- user are limited to tenant
-// // CREATE POLICY all_${tableName}_${userRole} ON ${schemaName}.${tableName} FOR SELECT to ${userRole}
-// // USING ((${tenantIdField} = soro.viewer_company_id()));
-// // -- super admin can see everything
-// // CREATE POLICY all_${tableName}_${superAdminRole} ON ${schemaName}.${tableName} FOR SELECT to ${superAdminRole}
-// // USING (1 = 1);
-// // -- 
-// // CREATE INDEX IF NOT EXISTS idx_${tableName}_${tenantIdField} ON ${schemaName}.${tableName}(${tenantIdField});
-// `     
-//       }
     },
-    // watch: {
-    //   securityTree () {
-    //     this.calculatePolicy()
-    //   }
-    // },
+    watch: {
+    },
     data: () => ({
       securityTree: [],
       policyHeaders: [
@@ -209,7 +159,6 @@
         {text: 'schema name', value: 'schemaName'},
         {text: 'table name', value: 'tableName'},
         {text: 'policy', value: 'policyCount'},
-        {text: 'table grant', value: 'roleTableGrantCount'}
       ],
       policy: 'NOT CALCULATED'
     }),
@@ -223,14 +172,9 @@
         },
         update (result) {
           this.securityTree = result.allSchemata.nodes
-          console.log('wtf', this.securityTree)
-          this.calculatePolicy()
         }
       }
     }
-    // created () {
-    //   this.getDbSchemaTree()
-    // }
   }
 </script>
 

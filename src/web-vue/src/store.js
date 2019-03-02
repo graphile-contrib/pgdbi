@@ -2,13 +2,32 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
+import policyHeaderTemplate from './templates/policyHeaderTemplate.js'
+import policyFooterTemplate from './templates/policyFooterTemplate.js'
+import roleTableGrantTemplate from './templates/roleTableGrantTemplate.js'
+
 Vue.use(Vuex)
+
+const defaultPolicy = {
+  id: (((new Date()).getTime() * 10000) + 621355968000000000),
+  name: 'Default Policy',
+  policyHeaderTemplate: policyHeaderTemplate,
+  policyFooterTemplate: policyFooterTemplate,
+  roleTableGrantTemplate: roleTableGrantTemplate,
+  roleGrants: {
+  }
+}
+
 
 const defaultState = {
   schemaFilter: [],
   roleFilter: [],
   selectedRoleFamilies: [],
+  selectedRole: [],
   familyPolicySets: [],
+  policyHeaderTemplate: policyHeaderTemplate,
+  policyFooterTemplate: policyFooterTemplate,
+  roleTableGrantTemplate: roleTableGrantTemplate,
   appTenantFieldName: 'app_tenant_id',
   defaultRLSQual: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
   policyTemplateNoRls: `
@@ -55,6 +74,7 @@ const defaultState = {
   
     --=================== {{schemaName}}.{{tableName}}  ===================
   `
+  ,policies: [defaultPolicy]
 }
 
 export default new Vuex.Store({
@@ -67,7 +87,11 @@ export default new Vuex.Store({
     appTenantFieldName: defaultState.appTenantFieldName,
     defaultRLSQual: defaultState.defaultRLSQual,
     policyTemplateNoRls: defaultState.policyTemplateNoRls,
-    policyTemplateRls: defaultState.policyTemplateRls
+    policyTemplateRls: defaultState.policyTemplateRls,
+    policyHeaderTemplate: policyHeaderTemplate,
+    policyFooterTemplate: policyFooterTemplate,
+    roleTableGrantTemplate: roleTableGrantTemplate,
+    policies: [defaultPolicy]
   },
   mutations: {
     resetDefaultState (state) {
@@ -78,7 +102,8 @@ export default new Vuex.Store({
       state.appTenantFieldName = defaultState.appTenantFieldName
       state.defaultRLSQual = defaultState.defaultRLSQual
       state.policyTemplateNoRls = defaultState.policyTemplateNoRls
-      state.policyTemplateRls = defaultState.policyTemplateRls  
+      state.policyTemplateRls = defaultState.policyTemplateRls
+      state.policies = defaultState.policies
     },
     schemaFilter (state, payload) {
       state.schemaFilter = payload.schemaFilter
@@ -103,6 +128,19 @@ export default new Vuex.Store({
     },
     appTenantFieldName (state, payload) {
       state.appTenantFieldName = payload.appTenantFieldName
+    },
+    newPolicy(state, payload) {
+      const newPolicy = {
+        ...state.defaultPolicy,
+        name: payload.name,
+        id: (((new Date()).getTime() * 10000) + 621355968000000000)
+      }
+
+      state.policies = [...state.policies, ...[newPolicy]]
+    },
+    savePolicy(state, payload) {
+      const policies = state.policies.filter(p => p.name !== payload.policy.name)
+      state.policies = [...policies, ...[payload.policy]]
     }
   },
   actions: {
