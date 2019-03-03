@@ -33,7 +33,6 @@
         <template slot="expand" slot-scope="props">
           <policy-definition
             :key="props.item.id"
-            policyName="Default Policy"
             :policyId="props.item.id"
           ></policy-definition>
         </template>
@@ -51,13 +50,18 @@
     },
     methods: {
       saveNewPolicy () {
-        this.$store.commit('newPolicy', {name: this.newPolicyName})
+        try {
+          this.$store.commit('newPolicy', {name: this.newPolicyName})
+        }
+        catch (e) {
+          console.log('ERROR', e)
+          alert(e.toString())
+        }
         this.dialog = false
       }
     },
     computed: {
       policies () {
-        console.log('policies', this.$store.state.policies)
         return this.$store.state.policies
 
       }
@@ -77,6 +81,11 @@
           },
         ]
       }
-    }
+    },
+    mounted() {
+      if (process.client && window) {
+        window.history.scrollRestoration = 'auto';
+      }
+    },
   }
 </script>

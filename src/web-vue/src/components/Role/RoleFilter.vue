@@ -115,7 +115,9 @@
       },
       apply () {
         const roleFilter = this.roles.reduce((all, role) => { return role.selected ? all.concat([role.roleName]) : all }, [])
+        const projectRoles = this.roles.reduce((all, role) => { return role.selected ? all.concat([role]) : all }, [])
         this.$store.commit('roleFilter', { roleFilter: roleFilter })
+        this.$store.commit('projectRoles', { projectRoles: projectRoles })
         this.$store.commit('selectedRoleFamilies', { selectedRoleFamilies: this.roleFamilies.filter(f => f.selected) })
       },
       computeItems () {

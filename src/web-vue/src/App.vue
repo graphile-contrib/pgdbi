@@ -75,7 +75,10 @@ export default {
       rightDrawer: false,
       title: 'pg-db-inspector'
     }
-  }
+  },
+  // created () {
+  //   this.$store.commit('initialize')
+  // }
 }
 </script>
 

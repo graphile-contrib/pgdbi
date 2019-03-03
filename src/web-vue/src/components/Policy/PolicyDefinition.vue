@@ -13,11 +13,30 @@
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.roleName }}</td>          
-          <td><v-checkbox :input-value="props.item.select" @click="toggleRoleGrant(props.item.roleName, 'select')"></v-checkbox></td>
-          <td><v-checkbox :input-value="props.item.insert" @click="toggleRoleGrant(props.item.roleName, 'insert')"></v-checkbox></td>
-          <td><v-checkbox :input-value="props.item.update" @click="toggleRoleGrant(props.item.roleName, 'update')"></v-checkbox></td>
-          <td><v-checkbox :input-value="props.item.delete" @click="toggleRoleGrant(props.item.roleName, 'delete')"></v-checkbox></td>
-          <td>{{ props.item.qual }}</td>
+          <td>
+            <v-checkbox 
+              :input-value="roleGrantSelected(props.item, 'select')" 
+              @click="toggleRoleGrant(props.item.roleName, 'select')"
+            ></v-checkbox>
+          </td>
+          <td>
+            <v-checkbox 
+              :input-value="roleGrantSelected(props.item, 'insert')"
+              @click="toggleRoleGrant(props.item.roleName, 'insert')"
+            ></v-checkbox>
+          </td>
+          <td>
+            <v-checkbox 
+              :input-value="roleGrantSelected(props.item, 'update')"
+              @click="toggleRoleGrant(props.item.roleName, 'update')">
+            ></v-checkbox>
+          </td>
+          <td>
+            <v-checkbox 
+            :input-value="roleGrantSelected(props.item, 'delete')"
+              @click="toggleRoleGrant(props.item.roleName, 'delete')"
+            ></v-checkbox>
+          </td>
         </template>
       </v-data-table>
       <v-toolbar>
@@ -39,8 +58,8 @@
   export default {
     name: 'PolicyDefinition',
     props: {
-      policyName: {
-        type: String,
+      policyId: {
+        type: Number,
         required: true
       }
     },
@@ -86,13 +105,15 @@
                   select: true,
                   insert: true,
                   update: true,
-                  delete: true,
-                  rlsQualifier: 'RLS QUALIFIER'
+                  delete: true
                 }
               }
             }
           }
         )
+      },
+      roleGrantSelected(roleGrant, action) {
+        return (roleGrant[action] === 'ALLOWED') || (roleGrant[action] === 'IMPLIED')
       },
       toggleRoleGrant(roleName, action) {
         if (this.toggleCompleted === true) {
@@ -100,7 +121,8 @@
           return
         }
 
-        console.log(roleName, action)
+        const currentValue = this.policy.roleGrants[roleName][action]
+        const newValue = currentValue === 'ALLOWED' ? 'DENIED' : 'ALLOWED'
 
         this.$store.commit('savePolicy', {
             policy: {
@@ -109,7 +131,7 @@
                 ...this.policy.roleGrants,
                 [roleName]: {
                   ...this.policy.roleGrants[roleName],
-                  [action]: !(this.policy.roleGrants[roleName][action])
+                  [action]: newValue
                 }
               }
             }
@@ -119,26 +141,27 @@
       },
     },
     computed: {
+      projectRoles () {
+        return this.$store.state.projectRoles
+      },
       policy () {
         const policies = this.$store.state.policies
-        console.log('policies', policies)
-        return this.$store.state.policies.find(p => p.name === this.policyName)
+        const pol = this.$store.state.policies.find(p => p.id === this.policyId)
+        return pol
       },
       computedPolicy () {
-        console.log('caclulating', this.policy)
+        console.log('this.projectRoles', this.projectRoles)
         const header = this.policyHeaderTemplate
         const footer = this.policyFooterTemplate
-        // const tableGrants = 'blah'
         const tableGrants = Object.keys(this.policy.roleGrants).reduce(
           (all, roleName) => {
-            // console.log(roleGrants, roleGrants.roleName, roleGrants)
             const roleGrantSet = this.policy.roleGrants[roleName]
             return all.concat(Object.keys(roleGrantSet)
               .filter(f => f !== 'roleName')
               .reduce(
                 (all, action) => {
-                  return roleGrantSet[action] ?
-                    all.concat(`${roleName}\n`) :
+                  return roleGrantSet[action] === 'ALLOWED' ?
+                    all.concat(`${roleName} -- ${action}\n`) :
                     all
                 }, ''
               ))
@@ -192,11 +215,6 @@
             sortable: false
           }
         ]
-
-        return !this.enableRls ? hdrs : hdrs.concat([{
-            text: 'Rls Qualifier',
-            sortable: false
-          }])
       },
     },
   }
