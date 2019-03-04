@@ -150,7 +150,6 @@
         return pol
       },
       computedPolicy () {
-        console.log('this.projectRoles', this.projectRoles)
         const header = this.policyHeaderTemplate
         const footer = this.policyFooterTemplate
         const tableGrants = Object.keys(this.policy.roleGrants).reduce(

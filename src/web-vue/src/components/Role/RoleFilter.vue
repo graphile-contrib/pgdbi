@@ -23,8 +23,8 @@
           <tr @click="props.expanded = !props.expanded">        
             <td>
               <v-checkbox 
-              :input-value="roleIsSelected(props.item.roleName)" 
-              @change="roleCheckChanged(family.members.find(m => m.roleName === props.item.roleName))"
+              :input-value="roleIsSelected(props.item)" 
+              @change="roleCheckChanged(props.item)"
               ></v-checkbox>
             </td>
             <td class="text-sm-left">{{ props.item.roleName }}</td>
@@ -48,22 +48,21 @@
     name: 'RoleFilter',
     mixins: [RoleFilterFunctionsMixin],
     computed: {
-      roleFilter () {
-        return this.$store.state.roleFilter
+      projectRoles () {
+        return this.$store.state.projectRoles
       },
       applyDisabled () {
         if (this.roles.length > 0) {
-          const roleFilter = this.roleFilter
-          const allFilteredRolesSelected = roleFilter.reduce(
-            (result, roleName) => { 
-              const role = this.roles.find(r => r.roleName === roleName)
+          const allFilteredRolesSelected = this.projectRoles.reduce(
+            (result, projectRole) => { 
+              const role = this.roles.find(r => r.roleName === projectRole.roleName)
               return !result ? result : role.selected
             }, true)
 
 
           const selectedRoles = this.roles.filter(r => r.selected)
 
-          return allFilteredRolesSelected && (selectedRoles.length === roleFilter.length)
+          return allFilteredRolesSelected && (selectedRoles.length === this.projectRoles.length)
         } else {
           return true
         }
@@ -73,6 +72,9 @@
       }
     },
     watch: {
+      // projectRoles () {
+      //   this.computeItems()
+      // }
     },
     data: () => ({
       roleFamilies: [],
@@ -82,23 +84,27 @@
     }),
     methods: {
       familyIsSelected (family) {
-        const allMembersSelected = family.members.reduce((all, m) => { return !all ? all : m.selected }, true)
+        const allMembersSelected = family.members.reduce((all, m) => { return !all ? all : this.roleIsSelected(m) }, true)
         return allMembersSelected
       },
-      roleIsSelected (roleName) {
-        const role =  this.roles.find(r => r.roleName === roleName).selected
-        return role
+      roleIsSelected (role) {
+        return  this.projectRoles.find(r => r.roleName === role.roleName) !== undefined
       },
       familyCheckChanged (family) {
-        family.selected = !family.selected
-        family.members.map(m => { m.selected = family.selected })
+        const currentlySelected = this.familyIsSelected(family)
+        const projectRoles = currentlySelected
+          ? this.projectRoles.filter(r => family.members.find(m => m.roleName === r.roleName) === undefined)
+          : Array.from(new Set([...family.members, ...this.projectRoles]))
+
+          this.$store.commit('projectRoles', { projectRoles: projectRoles })
       },
       roleCheckChanged (role) {
-        role.selected = !role.selected
-        // const families = this.roleFamilies.filter(f => {
-        //   const member = f.members.find(r => r.roleName === role.roleName)
-        //   return member !== undefined
-        // })
+        role.selected = !(role.selected)
+        const roleIsSelectedAlready = this.projectRoles.find(r => r.roleName === role.roleName)
+        const projectRoles = roleIsSelectedAlready
+          ? this.projectRoles.filter(r => r.roleName !== role.roleName)
+          : [...this.projectRoles, ...[role]]
+        this.$store.commit('projectRoles', { projectRoles: projectRoles })
       },
       familyHeaders (family) {
         const headers = family.allMemberNames.map(
@@ -114,16 +120,14 @@
         return allHeaders
       },
       apply () {
-        const roleFilter = this.roles.reduce((all, role) => { return role.selected ? all.concat([role.roleName]) : all }, [])
         const projectRoles = this.roles.reduce((all, role) => { return role.selected ? all.concat([role]) : all }, [])
-        this.$store.commit('roleFilter', { roleFilter: roleFilter })
         this.$store.commit('projectRoles', { projectRoles: projectRoles })
         this.$store.commit('selectedRoleFamilies', { selectedRoleFamilies: this.roleFamilies.filter(f => f.selected) })
       },
       computeItems () {
         this.roles.map(
           role => {
-            role.selected = this.roleFilter.indexOf(role.roleName) > -1
+            role.selected = this.projectRoles.find(pr => pr.name === role.name) !== undefined
           }
         )
 
@@ -207,15 +211,14 @@
     apollo: {
       init: {
         query: allEnabledRoles,
-        // skip () {
-        //   return this.selectedRoleFamilies.length > 0
-        // },
         update (result) {
           this.roles = result.allEnabledRoles.nodes.map(
             role => {
+              const selected = (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
+              console.log(role.roleName, selected)
               return {
                 ...role,
-                selected: false
+                selected: (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
               }
             }
           )

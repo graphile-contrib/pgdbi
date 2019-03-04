@@ -11,7 +11,6 @@ Vue.use(Vuex)
 
 const defaultState = {
   schemaFilter: [],
-  roleFilter: [],
   projectRoles: [],
   selectedRoleFamilies: [],
   selectedRole: [],
@@ -68,18 +67,18 @@ const defaultState = {
   ,policies: []
 }
 
-function buildNewPolicy (name, roles) {
+function buildNewPolicy (name, projectRoles) {
   return {
     id: (((new Date()).getTime() * 10000) + 621355968000000000),
     name: name,
     policyHeaderTemplate: policyHeaderTemplate,
     policyFooterTemplate: policyFooterTemplate,
     roleTableGrantTemplate: roleTableGrantTemplate,
-    roleGrants: roles.reduce(
-      (all, roleName) => {
+    roleGrants: projectRoles.reduce(
+      (all, projectRole) => {
         return {
           ...all,
-          [roleName]: {
+          [projectRole.roleName]: {
             select: 'DENIED',
             insert: 'DENIED',
             update: 'DENIED',
@@ -88,11 +87,47 @@ function buildNewPolicy (name, roles) {
         }
       }, {}
     ),
-    rlsQualifiers: roles.reduce(
-      (all, roleName) => {
+    rlsQualifiers: projectRoles.reduce(
+      (all, projectRole) => {
         return {
           ...all,
-          [roleName]: {
+          [projectRole.roleName]: {
+            select: '(app_tenant_id = auth_fn.current_app_tenant_id())',
+            insert: '(app_tenant_id = auth_fn.current_app_tenant_id())',
+            update: '(app_tenant_id = auth_fn.current_app_tenant_id())',
+            delete: '(app_tenant_id = auth_fn.current_app_tenant_id())'
+          }
+        }
+      }, {}
+    )
+  }
+}
+
+function updatePolicyRoles (policy, projectRoles) {
+  return {
+    ...policy,
+    roleGrants: projectRoles.reduce(
+      (all, projectRole) => {
+        const existing = Object.keys(policy.roleGrants).find(rn => rn === projectRole.roleName)
+
+        return {
+          ...all,
+          [projectRole.roleName]: existing || {
+            select: 'DENIED',
+            insert: 'DENIED',
+            update: 'DENIED',
+            delete: 'DENIED',
+          }
+        }
+      }, {}
+    ),
+    rlsQualifiers: projectRoles.reduce(
+      (all, projectRole) => {
+        const existing = Object.keys(policy.rlsQualifiers).find(rn => rn === projectRole.roleName)
+
+        return existing ? all : {
+          ...all,
+          [projectRole.roleName]: {
             select: '(app_tenant_id = auth_fn.current_app_tenant_id())',
             insert: '(app_tenant_id = auth_fn.current_app_tenant_id())',
             update: '(app_tenant_id = auth_fn.current_app_tenant_id())',
@@ -108,7 +143,6 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     schemaFilter: defaultState.schemaFilter,
-    roleFilter: defaultState.roleFilter,
     projectRoles: defaultState.projectRoles,
     selectedRoleFamilies: defaultState.selectedRoleFamilies,
     familyPolicySets: defaultState.familyPolicySets,
@@ -124,29 +158,31 @@ export default new Vuex.Store({
   mutations: {
     initialize (state) {
       if (state.policies.length === 0) {
-        state.policies = [buildNewPolicy('Default Policy', state.roleFilter)]
+        state.policies = [buildNewPolicy('Default Policy', state.projectRoles)]
       }
     },
     resetDefaultState (state) {
       // state.schemaFilter = defaultState.schemaFilter
-      // state.roleFilter = defaultState.roleFilter
       // state.selectedRoleFamilies = defaultState.selectedRoleFamilies
       // state.familyPolicySets = defaultState.familyPolicySets
-      state.projectRoles = defaultState.projectRoles
+      // state.projectRoles = defaultState.projectRoles
       state.appTenantFieldName = defaultState.appTenantFieldName
       state.defaultRLSQual = defaultState.defaultRLSQual
       state.policyTemplateNoRls = defaultState.policyTemplateNoRls
       state.policyTemplateRls = defaultState.policyTemplateRls
-      state.policies = [buildNewPolicy('Default Policy', state.roleFilter)]
+      state.policies = [buildNewPolicy('Default Policy', state.projectRoles)]
     },
     schemaFilter (state, payload) {
       state.schemaFilter = payload.schemaFilter
     },
-    roleFilter (state, payload) {
-      state.roleFilter = payload.roleFilter
-    },
     projectRoles (state, payload) {
       state.projectRoles = payload.projectRoles
+
+      state.policies = state.policies.map(
+        policy => {
+          return updatePolicyRoles(policy, payload.projectRoles)
+        }
+      )
     },
     selectedRoleFamilies (state, payload) {
       state.selectedRoleFamilies = payload.selectedRoleFamilies
@@ -171,7 +207,7 @@ export default new Vuex.Store({
       if (existing) {
         throw new Error('A policy with this name already exists')
       } else {
-        const newPolicy = buildNewPolicy(payload.name, state.roleFilter)
+        const newPolicy = buildNewPolicy(payload.name, state.projectRoles)
   
         state.policies = [...state.policies, ...[newPolicy]].sort(function(a,b){ return a.id < b.id})
       }
