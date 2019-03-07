@@ -24,6 +24,13 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       withCheck: String
     }
 
+    type PgEnum {
+      id: String!
+      enumSchema: String!
+      enumName: String!
+      enumValues: [String]!
+    }
+
     extend type Trigger {
       id: String!
       triggerFunction: Function
@@ -37,6 +44,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       id: String!
       schemaTables: [Table]!
       schemaFunctions: [Function]!
+      schemaEnums: [PgEnum]!
     }
 
     type Index {
@@ -85,6 +93,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
         id: require('./resolvers/schema/id')(build),
         schemaTables: require('./resolvers/schema/schemaTables')(build),
         schemaFunctions: require('./resolvers/schema/schemaFunctions')(build),
+        schemaEnums: require('./resolvers/schema/schemaEnums')(build),
       },
       Table: {
         id: require('./resolvers/table/id')(build),

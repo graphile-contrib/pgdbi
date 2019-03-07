@@ -17,28 +17,24 @@
             <v-checkbox 
               :input-value="roleGrantSelected(props.item, 'select')" 
               @click="toggleRoleGrant(props.item.roleName, 'select')"
-              :disabled="roleGrantDisabled(props.item, 'select')"
             ></v-checkbox>
           </td>
           <td>
             <v-checkbox 
               :input-value="roleGrantSelected(props.item, 'insert')"
               @click="toggleRoleGrant(props.item.roleName, 'insert')"
-              :disabled="roleGrantDisabled(props.item, 'insert')"
             ></v-checkbox>
           </td>
           <td>
             <v-checkbox 
               :input-value="roleGrantSelected(props.item, 'update')"
-              @click="toggleRoleGrant(props.item.roleName, 'update')"
-              :disabled="roleGrantDisabled(props.item, 'update')"
+              @click="toggleRoleGrant(props.item.roleName, 'update')">
             ></v-checkbox>
           </td>
           <td>
             <v-checkbox 
-             :input-value="roleGrantSelected(props.item, 'delete')"
+            :input-value="roleGrantSelected(props.item, 'delete')"
               @click="toggleRoleGrant(props.item.roleName, 'delete')"
-              :disabled="roleGrantDisabled(props.item, 'delete')"
             ></v-checkbox>
           </td>
         </template>
@@ -58,9 +54,6 @@
 </template>
 
 <script>
-  const ALLOWED = 'ALLOWED'
-  const DENIED = 'DENIED'
-  const IMPLIED = 'IMPLIED'
 
   export default {
     name: 'PolicyDefinition',
@@ -120,11 +113,7 @@
         )
       },
       roleGrantSelected(roleGrant, action) {
-        return [ALLOWED, IMPLIED].indexOf(roleGrant[action]) > -1
-      },
-      roleGrantDisabled(roleGrant, action) {
-        return false;
-        // return roleGrant[action] === IMPLIED
+        return (roleGrant[action] === 'ALLOWED') || (roleGrant[action] === 'IMPLIED')
       },
       toggleRoleGrant(roleName, action) {
         if (this.toggleCompleted === true) {
@@ -132,77 +121,19 @@
           return
         }
 
-        const toggledRole = this.projectRoles.find(pr => pr.roleName === roleName)
         const currentValue = this.policy.roleGrants[roleName][action]
-        const newValue = [ALLOWED, IMPLIED].indexOf(currentValue) > -1 ? DENIED : ALLOWED
-
-        const roleGrants = Object.keys(this.policy.roleGrants).reduce(
-          (all, newRoleName) => {
-            const projectRole = this.projectRoles.find(r => r.roleName === newRoleName)
-            return {
-              ...all,
-              [newRoleName]: Object.keys(this.policy.roleGrants[newRoleName]).reduce(
-                (all, newAction) => {
-                  const oldRoleActionValue = this.policy.roleGrants[newRoleName][newAction]
-                  const newRoleIsApplicableToToggled = projectRole.applicableRoles.find(ar => ar.roleName === roleName)
-                  const toggledRoleIsApplicableToNew = toggledRole.applicableRoles.find(ar => ar.roleName === projectRole.roleName)
-
-                  let newActionValue = oldRoleActionValue
-console.log('newAction', newAction, newRoleName, roleName)
-                  if (newAction === action) {
-console.log('doit', newAction, newValue, newRoleName, roleName)
-                    if (newValue === ALLOWED) {
-                      // all roles with toggledRole as applicable should be IMPLIED
-                      if (newRoleName === roleName) {
-console.log('same', newAction, newValue, newRoleName, roleName)
-                        newActionValue === newValue
-                      } else {
-console.log('diff', newAction, newValue, newRoleName, roleName)
-                        newActionValue = newRoleIsApplicableToToggled ? 'IMPLIED' : this.policy.roleGrants[newRoleName, newAction]
-                      }
-                    } else {
-                      // all applicable roles should be DENIED
-                      newActionValue = toggledRoleIsApplicableToNew ? 'DENIED' : this.policy.roleGrants[newRoleName, newAction]
-                    }
-                  } else {
-                    newActionValue = oldRoleActionValue
-                  }
-
-                  // const newActionValue = 
-                  //   newAction !== action
-                  //     ? newValue === ALLOWED 
-                  //       ? oldRoleActionValue
-                  //       : toggledRole.applicableRoles.find(ar => ar.roleName === newRoleName) !== undefined 
-                  //         ? DENIED 
-                  //         : oldRoleActionValue
-                  //     : newRoleName === roleName 
-                  //       ? newValue
-                  //       : newRoleIsApplicableToSelected
-                  //         ? newValue === ALLOWED ? IMPLIED : oldRoleActionValue
-                  //         : oldRoleActionValue
-                            
-                  return {
-                    ...all,
-                    [newAction]: newActionValue
-                  }
-                }, {}
-              )
-            }
-          }, {}
-        )
-
-        // const roleGrants = {
-        //   ...this.policy.roleGrants,
-        //   [roleName]: {
-        //     ...this.policy.roleGrants[roleName],
-        //     [action]: newValue
-        //   }
-        // }
+        const newValue = currentValue === 'ALLOWED' ? 'DENIED' : 'ALLOWED'
 
         this.$store.commit('savePolicy', {
             policy: {
               ...this.policy,
-              roleGrants: roleGrants
+              roleGrants: {
+                ...this.policy.roleGrants,
+                [roleName]: {
+                  ...this.policy.roleGrants[roleName],
+                  [action]: newValue
+                }
+              }
             }
           }
         )
@@ -228,7 +159,7 @@ console.log('diff', newAction, newValue, newRoleName, roleName)
               .filter(f => f !== 'roleName')
               .reduce(
                 (all, action) => {
-                  return [ALLOWED, IMPLIED].indexOf(roleGrantSet[action]) > -1 ?
+                  return roleGrantSet[action] === 'ALLOWED' ?
                     all.concat(`${roleName} -- ${action}\n`) :
                     all
                 }, ''

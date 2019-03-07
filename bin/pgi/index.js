@@ -49,6 +49,7 @@ function PostgraphileDE(builder, options) {
 function PostgraphileDELauncher(builder, options) {
   const enablePgDbInspector = options.enablePgDbInspector || false
   if (enablePgDbInspector) {
+    console.log('wtf')
     PostgraphileDE(builder, options)
   }
 }

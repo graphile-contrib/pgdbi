@@ -49,6 +49,26 @@
                     id: `functions:${schema.name}`,
                     name: 'functions',
                     children: schema.schemaFunctions
+                  },
+                  {
+                    id: `enums:${schema.name}`,
+                    name: 'enums',
+                    children: schema.schemaEnums.map(
+                      e => {
+                        return {
+                          id: e.id
+                          ,name: e.name
+                          ,children: e.enumValues.map(
+                            ev => {
+                              return {
+                                id: `ev:${e.name}:${ev}`,
+                                name: ev
+                              }
+                            }
+                          )
+                        }
+                      }
+                    )
                   }
                 ]
               }

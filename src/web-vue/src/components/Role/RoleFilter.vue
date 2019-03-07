@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn>
     <div v-for="family in roleFamilies" :key="family.name">
       <v-toolbar>
         <v-checkbox 
@@ -119,11 +118,6 @@
         const allHeaders = [{ name: 'checkbox', sortable: false}, { text: 'grantee', name: 'grantee', sortable: false }].concat(headers)
         return allHeaders
       },
-      apply () {
-        const projectRoles = this.roles.reduce((all, role) => { return role.selected ? all.concat([role]) : all }, [])
-        this.$store.commit('projectRoles', { projectRoles: projectRoles })
-        this.$store.commit('selectedRoleFamilies', { selectedRoleFamilies: this.roleFamilies.filter(f => f.selected) })
-      },
       computeItems () {
         this.roles.map(
           role => {
@@ -215,7 +209,6 @@
           this.roles = result.allEnabledRoles.nodes.map(
             role => {
               const selected = (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
-              console.log(role.roleName, selected)
               return {
                 ...role,
                 selected: (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)

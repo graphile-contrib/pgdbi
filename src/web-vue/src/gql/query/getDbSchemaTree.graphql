@@ -34,6 +34,12 @@ query {
         name: functionName
         functionSchema
       }
+      schemaEnums {
+        id
+        name: enumName
+        enumSchema
+        enumValues
+      }
     }
   }
 }
