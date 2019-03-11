@@ -126,6 +126,9 @@
         return false;
         // return roleGrant[action] === IMPLIED
       },
+      roleIsApplicable(role, applicableRole) {
+
+      },
       toggleRoleGrant(roleName, action) {
         if (this.toggleCompleted === true) {
           this.toggleCompleted = false
@@ -141,63 +144,40 @@
             const projectRole = this.projectRoles.find(r => r.roleName === newRoleName)
             return {
               ...all,
-              [newRoleName]: Object.keys(this.policy.roleGrants[newRoleName]).reduce(
+              [newRoleName]: ['select', 'insert', 'update', 'delete'].reduce(
                 (all, newAction) => {
                   const oldRoleActionValue = this.policy.roleGrants[newRoleName][newAction]
-                  const newRoleIsApplicableToToggled = projectRole.applicableRoles.find(ar => ar.roleName === roleName)
-                  const toggledRoleIsApplicableToNew = toggledRole.applicableRoles.find(ar => ar.roleName === projectRole.roleName)
+                  const newRoleIsApplicableToToggled = projectRole.applicableRoles.find(ar => ar.roleName === toggledRole.roleName) !== undefined
+                  const toggledRoleIsApplicableToNew = toggledRole.applicableRoles.find(ar => ar.roleName === projectRole.roleName) !== undefined
+                  const newRoleIsToggledRole = projectRole.roleName === toggledRole.roleName
 
-                  let newActionValue = oldRoleActionValue
-console.log('newAction', newAction, newRoleName, roleName)
+                  let newRoleActionValue = oldRoleActionValue
+
                   if (newAction === action) {
-console.log('doit', newAction, newValue, newRoleName, roleName)
                     if (newValue === ALLOWED) {
                       // all roles with toggledRole as applicable should be IMPLIED
                       if (newRoleName === roleName) {
-console.log('same', newAction, newValue, newRoleName, roleName)
-                        newActionValue === newValue
+                        newRoleActionValue = newValue
                       } else {
-console.log('diff', newAction, newValue, newRoleName, roleName)
-                        newActionValue = newRoleIsApplicableToToggled ? 'IMPLIED' : this.policy.roleGrants[newRoleName, newAction]
+                        newRoleActionValue = newRoleIsApplicableToToggled ? 'IMPLIED' : this.policy.roleGrants[newRoleName][newAction]
                       }
-                    } else {
+                    } else {  // newValue === ALLOWED
                       // all applicable roles should be DENIED
-                      newActionValue = toggledRoleIsApplicableToNew ? 'DENIED' : this.policy.roleGrants[newRoleName, newAction]
+                      newRoleActionValue = toggledRoleIsApplicableToNew || newRoleIsToggledRole ? 'DENIED' : this.policy.roleGrants[newRoleName][newAction]
                     }
-                  } else {
-                    newActionValue = oldRoleActionValue
+                  } else {  // newAction === action
+                    newRoleActionValue = oldRoleActionValue
                   }
 
-                  // const newActionValue = 
-                  //   newAction !== action
-                  //     ? newValue === ALLOWED 
-                  //       ? oldRoleActionValue
-                  //       : toggledRole.applicableRoles.find(ar => ar.roleName === newRoleName) !== undefined 
-                  //         ? DENIED 
-                  //         : oldRoleActionValue
-                  //     : newRoleName === roleName 
-                  //       ? newValue
-                  //       : newRoleIsApplicableToSelected
-                  //         ? newValue === ALLOWED ? IMPLIED : oldRoleActionValue
-                  //         : oldRoleActionValue
-                            
                   return {
                     ...all,
-                    [newAction]: newActionValue
+                    [newAction]: newRoleActionValue
                   }
                 }, {}
               )
             }
           }, {}
         )
-
-        // const roleGrants = {
-        //   ...this.policy.roleGrants,
-        //   [roleName]: {
-        //     ...this.policy.roleGrants[roleName],
-        //     [action]: newValue
-        //   }
-        // }
 
         this.$store.commit('savePolicy', {
             policy: {
@@ -208,6 +188,52 @@ console.log('diff', newAction, newValue, newRoleName, roleName)
         )
         this.toggleCompleted = true
       },
+      // toggleRoleGrant(roleName, action) {
+      //   if (this.toggleCompleted === true) {
+      //     this.toggleCompleted = false
+      //     return
+      //   }
+
+      //   const toggledRole = this.projectRoles.find(pr => pr.roleName === roleName)
+      //   const currentValue = this.policy.roleGrants[roleName][action]
+      //   const newValue = [ALLOWED, IMPLIED].indexOf(currentValue) > -1 ? DENIED : ALLOWED
+
+      //   const roleGrants = Object.keys(this.policy.roleGrants).reduce(
+      //     (all, newRoleName) => {
+      //       const currentRole = this.projectRoles.find(r => r.roleName === newRoleName)
+      //       const currentRoleInheritsToggled = currentRole.applicableRoles.find(ar => ar.roleName === toggledRole.roleName) !== undefined
+      //       const toggledRoleInheritsCurrent =
+
+      //       return {
+      //         ...all,
+      //         [newRoleName]: ['select', 'insert', 'update', 'delete'].reduce(
+      //         // [newRoleName]: Object.keys(this.policy.roleGrants[newRoleName]).reduce(
+      //           (all, newAction) => {
+      //             const o
+      //             const oldRoleActionValue = this.policy.roleGrants[newRoleName][newAction]
+      //             let newRoleActionValue = oldRoleActionValue
+
+
+
+      //             return {
+      //               ...all,
+      //               [newAction]: newRoleActionValue
+      //             }
+      //           }, {}
+      //         )
+      //       }
+      //     }, {}
+      //   )
+
+      //   this.$store.commit('savePolicy', {
+      //       policy: {
+      //         ...this.policy,
+      //         roleGrants: roleGrants
+      //       }
+      //     }
+      //   )
+      //   this.toggleCompleted = true
+      // },
     },
     computed: {
       projectRoles () {
@@ -221,22 +247,41 @@ console.log('diff', newAction, newValue, newRoleName, roleName)
       computedPolicy () {
         const header = this.policyHeaderTemplate
         const footer = this.policyFooterTemplate
-        const tableGrants = Object.keys(this.policy.roleGrants).reduce(
-          (all, roleName) => {
-            const roleGrantSet = this.policy.roleGrants[roleName]
-            return all.concat(Object.keys(roleGrantSet)
-              .filter(f => f !== 'roleName')
-              .reduce(
-                (all, action) => {
-                  return [ALLOWED, IMPLIED].indexOf(roleGrantSet[action]) > -1 ?
-                    all.concat(`${roleName} -- ${action}\n`) :
-                    all
-                }, ''
-              ))
+
+        const securityRemoval =`
+--  REMOVE ALL SECURITY
+
+revoke all privileges on table {{schemaName}}.{{tableName}} from public;
+`.concat(Object.keys(this.policy.roleGrants).reduce(
+            (all, roleName) => {
+              return all.concat(`revoke all privileges on table {{schemaName}}.{{tableName}} from ${roleName};\n`)
             }, ''
+          )
+        )
+//   alter table {{schemaName}}.{{tableName}} disable row level security;
+//   --  END REMOVE ALL SECURITY
+// `
+
+        const tableGrants = `
+--  GRANT SECURITY TO ROLES
+
+`.concat(Object.keys(this.policy.roleGrants).reduce(
+            (all, roleName) => {
+              const roleGrantSet = this.policy.roleGrants[roleName]
+              return all.concat(`---------------${roleName}\n`).concat(Object.keys(roleGrantSet)
+                .filter(f => f !== 'roleName')
+                .reduce(
+                  (all, action) => {
+                    return [ALLOWED, IMPLIED].indexOf(roleGrantSet[action]) > -1 ?
+                      all.concat(`GRANT ${action} ON TABLE {{schemaName}}.{{tableName}} TO ${roleName};\n`) :
+                      all
+                  }, ''
+                ).concat('\n'))
+              }, ''
+          )
         )
 
-        return header.concat(tableGrants).concat(footer)
+        return header.concat(securityRemoval).concat(tableGrants).concat(footer)
       },
       grantMatrix () {
         return Object.keys(this.policy.roleGrants).map(

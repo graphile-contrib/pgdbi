@@ -11,5 +11,8 @@ module.exports = {
         target: "http://localhost:6099"
       }
     }
+  },
+  configureWebpack: {
+    devtool: 'source-map'
   }
 }
