@@ -19,7 +19,8 @@ const defaultState = {
   policyFooterTemplate: policyFooterTemplate,
   roleTableGrantTemplate: roleTableGrantTemplate,
   appTenantFieldName: 'app_tenant_id',
-  defaultRLSQual: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
+  defaultRlsUsing: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
+  defaultRlsWithCheck: '',
   policyTemplateNoRls: `
   --=================== {{schemaName}}.{{tableName}}  ===================
   
@@ -79,6 +80,7 @@ function buildNewPolicy (name, projectRoles) {
         return {
           ...all,
           [projectRole.roleName]: {
+            all: 'DENIED',
             select: 'DENIED',
             insert: 'DENIED',
             update: 'DENIED',
@@ -92,10 +94,31 @@ function buildNewPolicy (name, projectRoles) {
         return {
           ...all,
           [projectRole.roleName]: {
-            select: '(app_tenant_id = auth_fn.current_app_tenant_id())',
-            insert: '(app_tenant_id = auth_fn.current_app_tenant_id())',
-            update: '(app_tenant_id = auth_fn.current_app_tenant_id())',
-            delete: '(app_tenant_id = auth_fn.current_app_tenant_id())'
+            all: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            select: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            insert: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            update: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            delete: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            }
           }
         }
       }, {}
@@ -113,6 +136,7 @@ function updatePolicyRoles (policy, projectRoles) {
         return {
           ...all,
           [projectRole.roleName]: existing || {
+            all: 'DENIED',
             select: 'DENIED',
             insert: 'DENIED',
             update: 'DENIED',
@@ -128,10 +152,31 @@ function updatePolicyRoles (policy, projectRoles) {
         return existing ? all : {
           ...all,
           [projectRole.roleName]: {
-            select: '(app_tenant_id = auth_fn.current_app_tenant_id())',
-            insert: '(app_tenant_id = auth_fn.current_app_tenant_id())',
-            update: '(app_tenant_id = auth_fn.current_app_tenant_id())',
-            delete: '(app_tenant_id = auth_fn.current_app_tenant_id())'
+            all: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            select: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            insert: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            update: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            },
+            delete: {
+              status: 'DISABLED'
+              ,using: defaultState.defaultRlsUsing
+              ,withCheck: defaultState.defaultRlsWithCheck
+            }
           }
         }
       }, {}
@@ -147,7 +192,8 @@ export default new Vuex.Store({
     selectedRoleFamilies: defaultState.selectedRoleFamilies,
     familyPolicySets: defaultState.familyPolicySets,
     appTenantFieldName: defaultState.appTenantFieldName,
-    defaultRLSQual: defaultState.defaultRLSQual,
+    defaultRlsUsing: defaultState.defaultRlsUsing,
+    defaultRlsWithCheck: defaultState.defaultRlsWithCheck,
     policyTemplateNoRls: defaultState.policyTemplateNoRls,
     policyTemplateRls: defaultState.policyTemplateRls,
     policyHeaderTemplate: policyHeaderTemplate,
@@ -167,7 +213,8 @@ export default new Vuex.Store({
       // state.familyPolicySets = defaultState.familyPolicySets
       // state.projectRoles = defaultState.projectRoles
       state.appTenantFieldName = defaultState.appTenantFieldName
-      state.defaultRLSQual = defaultState.defaultRLSQual
+      state.defaultRlsUsing = defaultState.defaultRlsUsing
+      state .defaultRlsWithCheck = defaultState.defaultRlsWithCheck
       state.policyTemplateNoRls = defaultState.policyTemplateNoRls
       state.policyTemplateRls = defaultState.policyTemplateRls
       state.policies = [buildNewPolicy('Default Policy', state.projectRoles)]
@@ -190,8 +237,11 @@ export default new Vuex.Store({
     familyPolicySets (state, payload) {
       state.familyPolicySets = payload.familyPolicySets
     },
-    defaultRLSQual (state, payload) {
-      state.defaultRLSQual = payload.defaultRLSQual
+    defaultRlsUsing (state, payload) {
+      state.defaultRlsUsing = payload.defaultRlsUsing
+    },
+    defaultRlsWithCheck (state, payload) {
+      state.defaultRlsWithCheck = payload.defaultRlsWithCheck
     },
     policyTemplateNoRls (state, payload) {
       state.policyTemplateNoRls = payload.policyTemplateNoRls

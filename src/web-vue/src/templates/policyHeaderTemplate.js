@@ -1,4 +1,4 @@
 module.exports = `
---=================== {{schemaName}}.{{tableName}}  ===================
+--=================== BEGIN: {{schemaName}}.{{tableName}}  ===================
 
 `

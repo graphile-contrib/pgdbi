@@ -4,45 +4,44 @@
       <v-layout justify-center>
         <v-checkbox v-model="enableRls" label="Enable Rls"></v-checkbox>
       </v-layout>
-      <v-data-table
-        :headers="headers"
-        :items="grantMatrix"
-        hide-actions
-        item-key="id"
-        class="text-sm-left"
+      <v-tabs
+        v-model="activeTab"
+        dark
       >
-        <template slot="items" slot-scope="props">
-          <td>{{ props.item.roleName }}</td>          
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'select')" 
-              @click="toggleRoleGrant(props.item.roleName, 'select')"
-              :disabled="roleGrantDisabled(props.item, 'select')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'insert')"
-              @click="toggleRoleGrant(props.item.roleName, 'insert')"
-              :disabled="roleGrantDisabled(props.item, 'insert')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'update')"
-              @click="toggleRoleGrant(props.item.roleName, 'update')"
-              :disabled="roleGrantDisabled(props.item, 'update')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-             :input-value="roleGrantSelected(props.item, 'delete')"
-              @click="toggleRoleGrant(props.item.roleName, 'delete')"
-              :disabled="roleGrantDisabled(props.item, 'delete')"
-            ></v-checkbox>
-          </td>
-        </template>
-      </v-data-table>
+        <v-tab
+          key="grants"
+          ripple
+        >
+          Table Grants
+        </v-tab>
+        <v-tab-item
+          key="grants"
+        >
+          <v-card flat>
+          <policy-definition-grant-grid
+            :policy="policy"
+          ></policy-definition-grant-grid>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab
+          key="rls"
+          ripple
+          :disabled="!enableRls"
+        >
+          Row Level Security
+        </v-tab>
+        <v-tab-item
+          key="rls"
+        >
+          <v-card flat>
+          <policy-rls-qualifier-grid
+            :policy="policy"
+          ></policy-rls-qualifier-grid>
+          </v-card>
+        </v-tab-item>
+
+      </v-tabs>
       <v-toolbar>
         <v-btn @click="expand">Expand</v-btn>
         <!-- <button 
@@ -62,8 +61,15 @@
   const DENIED = 'DENIED'
   const IMPLIED = 'IMPLIED'
 
+  import PolicyDefinitionGrantGrid from './PolicyDefinitionGrantGrid.vue'
+  import PolicyRlsQualifierGrid from './PolicyRlsQualifierGrid.vue'
+
   export default {
     name: 'PolicyDefinition',
+    components: {
+      PolicyDefinitionGrantGrid,
+      PolicyRlsQualifierGrid
+    },
     props: {
       policyId: {
         type: Number,
@@ -75,31 +81,32 @@
         enableRls: true,
         policyStructure: [],
         calculatedPolicy: 'NOT CALCULATED',
-        toggleCompleted: false
+        toggleCompleted: false,
+        activeTab: ''
       }
     },
     watch: {
-      enableRls () {
-        if (!this.policyStructure) {
-          return
-        }
+      // enableRls () {
+      //   if (!this.policyStructure) {
+      //     return
+      //   }
 
-        if (this.enableRls) {
-          this.policyStructure = this.policyStructure.map(
-            row => {
-              return {
-                ...this.policyStructure,
-                qual: this.defaultRlsQual
-              }
-            }
-          )
-        } else {
-          this.policyStructure = {
-            qual,
-            ...this.policyStructure
-          }
-        }
-      }
+      //   if (this.enableRls) {
+      //     this.policyStructure = this.policyStructure.map(
+      //       row => {
+      //         return {
+      //           ...this.policyStructure,
+      //           qual: this.defaultRlsQual
+      //         }
+      //       }
+      //     )
+      //   } else {
+      //     this.policyStructure = {
+      //       qual,
+      //       ...this.policyStructure
+      //     }
+      //   }
+      // }
     },
     methods: {
       expand () {
@@ -123,8 +130,8 @@
         return [ALLOWED, IMPLIED].indexOf(roleGrant[action]) > -1
       },
       roleGrantDisabled(roleGrant, action) {
-        return false;
-        // return roleGrant[action] === IMPLIED
+        // return false;
+        return roleGrant[action] === IMPLIED
       },
       roleIsApplicable(role, applicableRole) {
 
@@ -163,7 +170,7 @@
                       }
                     } else {  // newValue === ALLOWED
                       // all applicable roles should be DENIED
-                      newRoleActionValue = toggledRoleIsApplicableToNew || newRoleIsToggledRole ? 'DENIED' : this.policy.roleGrants[newRoleName][newAction]
+                      newRoleActionValue = newRoleIsApplicableToToggled || newRoleIsToggledRole ? 'DENIED' : this.policy.roleGrants[newRoleName][newAction]
                     }
                   } else {  // newAction === action
                     newRoleActionValue = oldRoleActionValue
@@ -272,9 +279,17 @@ revoke all privileges on table {{schemaName}}.{{tableName}} from public;
                 .filter(f => f !== 'roleName')
                 .reduce(
                   (all, action) => {
-                    return [ALLOWED, IMPLIED].indexOf(roleGrantSet[action]) > -1 ?
-                      all.concat(`GRANT ${action} ON TABLE {{schemaName}}.{{tableName}} TO ${roleName};\n`) :
-                      all
+                    if (roleGrantSet[action] === ALLOWED) {
+                      return all.concat(`grant ${action} on table {{schemaName}}.{{tableName}} to ${roleName};\n`)
+                    } else if (roleGrantSet[action] === IMPLIED) {
+                      return all.concat(`-- IMPLIED:  ${action} on table {{schemaName}}.{{tableName}} to ${roleName}\n`)
+                    } else if (roleGrantSet[action] === DENIED) {
+                      return all.concat(`-- DENIED:   ${action} on table {{schemaName}}.{{tableName}} to ${roleName}\n`)
+                    }
+                    // return [ALLOWED, IMPLIED].indexOf(roleGrantSet[action]) > -1 ?
+                    // return [ALLOWED].indexOf(roleGrantSet[action]) > -1 ?
+                    //   all.concat(`GRANT ${action} ON TABLE {{schemaName}}.{{tableName}} TO ${roleName};\n`) :
+                    //   all
                   }, ''
                 ).concat('\n'))
               }, ''
