@@ -27,8 +27,9 @@
     </v-toolbar>
     <v-content>
       <v-container
-        fluid
         justify-start
+         ma-0 
+         pa-0
       >
         <router-view></router-view>
       </v-container>

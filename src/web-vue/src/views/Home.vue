@@ -1,5 +1,8 @@
 <template>
-  <v-container>
+  <v-container
+    ma-0 
+    pa-0
+  >
     <v-tabs
       v-model="activeTab"
       dark

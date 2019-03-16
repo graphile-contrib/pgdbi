@@ -79,61 +79,76 @@
         // return false;
         return roleGrant[action] === IMPLIED
       },
-      toggleRoleGrant(roleName, action) {
+      toggleRoleGrant(toggledRoleName, action) {
         if (this.toggleCompleted === true) {
           this.toggleCompleted = false
           return
         }
+        const currentValue = this.policy.roleGrants[toggledRoleName][action]
 
-        const toggledRole = this.projectRoles.find(pr => pr.roleName === roleName)
-        const currentValue = this.policy.roleGrants[roleName][action]
-        const newValue = [ALLOWED, IMPLIED].indexOf(currentValue) > -1 ? DENIED : ALLOWED
+        const impliedRoleNames = this.projectRoles.filter(
+          pr => {
+            return pr.applicableRoles.find(ar => ar.roleName === toggledRoleName) !== undefined
+          }
+        ).reduce((a,r)=>{ return a.concat(r.roleName)}, [])
 
-        const roleGrants = Object.keys(this.policy.roleGrants).reduce(
-          (all, newRoleName) => {
-            const projectRole = this.projectRoles.find(r => r.roleName === newRoleName)
-            return {
-              ...all,
-              [newRoleName]: ['all', 'select', 'insert', 'update', 'delete'].reduce(
-                (all, newAction) => {
-                  const oldRoleActionValue = this.policy.roleGrants[newRoleName][newAction]
-                  const newRoleIsApplicableToToggled = projectRole.applicableRoles.find(ar => ar.roleName === toggledRole.roleName) !== undefined
-                  const toggledRoleIsApplicableToNew = toggledRole.applicableRoles.find(ar => ar.roleName === projectRole.roleName) !== undefined
-                  const newRoleIsToggledRole = projectRole.roleName === toggledRole.roleName
+        const newPolicy = {
+          ...this.policy,
+          roleGrants: Object.keys(this.policy.roleGrants).reduce(
+            (newGrants, newRoleName) => {
+              const toggledRoleIsApplicableToNew = impliedRoleNames.indexOf(newRoleName) > -1
+              const newRoleIsToggledRole = newRoleName === toggledRoleName
 
-                  let newRoleActionValue = oldRoleActionValue
-
-                  if (newAction === action) {
-                    if (newValue === ALLOWED) {
-                      // all roles with toggledRole as applicable should be IMPLIED
-                      if (newRoleName === roleName) {
-                        newRoleActionValue = newValue
+              return {
+                ...newGrants,
+                [newRoleName]: Object.keys(this.policy.roleGrants[newRoleName]).reduce(
+                  (newRow, newAction) => {
+                    const oldValue = this.policy.roleGrants[newRoleName][newAction]
+                    let newValue
+                    if (action === 'all') {
+                      if (newRoleIsToggledRole) {
+                        newValue = currentValue === ALLOWED ? DENIED : newAction === 'all' ? ALLOWED : IMPLIED
+                      } else if (toggledRoleIsApplicableToNew) {
+                        newValue = currentValue === ALLOWED ? DENIED : IMPLIED
                       } else {
-                        newRoleActionValue = newRoleIsApplicableToToggled ? 'IMPLIED' : this.policy.roleGrants[newRoleName][newAction]
+                        newValue = this.policy.roleGrants[newRoleName][newAction]
                       }
-                    } else {  // newValue === ALLOWED
-                      // all applicable roles should be DENIED
-                      newRoleActionValue = newRoleIsApplicableToToggled || newRoleIsToggledRole ? 'DENIED' : this.policy.roleGrants[newRoleName][newAction]
-                    }
-                  } else {  // newAction === action
-                    newRoleActionValue = oldRoleActionValue
-                  }
+                    } else {
+                      if (newAction === action) {
+                        if (newRoleIsToggledRole) {
+                          newValue = currentValue === ALLOWED ? DENIED : ALLOWED
+                        } else if (toggledRoleIsApplicableToNew) {
+                          newValue = currentValue === ALLOWED ? DENIED : IMPLIED
+                        } else {
+                          newValue = this.policy.roleGrants[newRoleName][newAction]
+                        }
+                      } else {
+                        if (newAction == 'all') {
+                          if ((toggledRoleIsApplicableToNew || newRoleIsToggledRole) && currentValue === ALLOWED) {
+                            newValue = DENIED
+                          } else {
+                            newValue = this.policy.roleGrants[newRoleName][newAction]
+                          }
+                        } else {
+                          newValue = this.policy.roleGrants[newRoleName][newAction]
+                        }
+                      }
 
-                  return {
-                    ...all,
-                    [newAction]: newRoleActionValue
-                  }
-                }, {}
-              )
-            }
-          }, {}
-        )
+                    }
+
+                    return {
+                      ...newRow,
+                      [newAction]: newValue
+                    }
+                  }, {}
+                )
+              }
+            }, {}
+          )
+        }
 
         this.$store.commit('savePolicy', {
-            policy: {
-              ...this.policy,
-              roleGrants: roleGrants
-            }
+            policy: newPolicy
           }
         )
         this.toggleCompleted = true

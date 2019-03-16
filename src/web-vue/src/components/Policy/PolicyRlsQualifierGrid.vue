@@ -10,42 +10,18 @@
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.roleName }}</td>          
-          <td>
-            <v-toolbar>
-              <v-checkbox 
-                :input-value="rlsQualifierSelected(props.item, 'all')" 
-                @click="toggleRoleGrant(props.item.roleName, 'all')"
-                :disabled="rlsQualifierDisabled(props.item, 'all')"
-              ></v-checkbox>
-              <v-text-field
-                class="caption"
-                :value="rlsQualifierDisplayValue(props.item, 'all')" 
-              ></v-text-field>
-            </v-toolbar>
-          </td>
-          <td>
-            <v-text-field
-              class="caption"
-              :value="rlsQualifierDisplayValue(props.item, 'select')" 
-            ></v-text-field>
-          </td>
-          <td>
-            <v-text-field
-              class="caption"
-              :value="rlsQualifierDisplayValue(props.item, 'insert')" 
-            ></v-text-field>
-          </td>
-          <td>
-            <v-text-field
-              class="caption"
-              :value="rlsQualifierDisplayValue(props.item, 'update')" 
-            ></v-text-field>
-          </td>
-          <td>
-            <v-text-field
-              class="caption"
-              :value="rlsQualifierDisplayValue(props.item, 'delete')" 
-            ></v-text-field>
+          <td v-for="action in ['all', 'select', 'insert', 'update', 'delete']" :key="action">
+            <v-btn
+              @click="toggleRlsPolicy(props.item.roleName, action)"
+              :hidden="props.item[action].status === 'ENABLED'"
+            >{{rlsQualifierCheckLabel(props.item, action)}}</v-btn>
+            <rls-policy-dialog
+              :action="action"
+              :roleName="props.item.roleName"
+              :rlsPolicy="props.item[action]"
+              :disableRlsPolicy="disableRlsPolicy"
+              :updateRlsPolicy="updateRlsPolicy"
+            ></rls-policy-dialog>
           </td>
         </template>
       </v-data-table>
@@ -56,9 +32,13 @@
   const ENABLED = 'ENABLED'
   const DISABLED = 'DISABLED'
   const IMPLIED = 'IMPLIED'
+  import RlsPolicyDialog from './RlsPolicyDialog.vue'
 
   export default {
     name: 'PolicyRlsQualifierGrid',
+    components: {
+      RlsPolicyDialog
+    },
     props: {
       policy: {
         type: Object,
@@ -67,97 +47,136 @@
     },
     data () {
       return {
-        toggleCompleted: false
+        toggleCompleted: false,
+        dialog: false,
+        currentUsing: 'n/a',
+        currentWithCheck: 'n/a'
       }
     },
     watch: {
     },
     methods: {
-      rlsQualifierDisplayValue(rlsQualifier, action) {
-        // console.log(action, rlsQualifier)
-        switch (rlsQualifier[action].status) {
-          case ENABLED:
-            return rlsQualifier[action].using
-            break;
-          case IMPLIED:
-            return IMPLIED
-            break;
-          case DISABLED:
-            return DISABLED          
-            break;
-        }
+      disableRlsPolicy (roleName, action) {
+        console.log('disableRlsPolicy', action, roleName)
+        this.toggleRlsPolicy(roleName, action)
       },
-      rlsQualifierSelected(rlsQualifier, action) {
-        return [ENABLED, IMPLIED].indexOf(rlsQualifier[action].status) > -1
-      },
-      rlsQualifierDisabled(rlsQualifier, action) {
-        // return false;
-        return rlsQualifier[action] === IMPLIED
-      },
-      toggleRoleGrant(roleName, action) {
-        if (this.toggleCompleted === true) {
-          this.toggleCompleted = false
-          return
-        }
-        console.log(roleName, action)
-
-        const toggledRole = this.projectRoles.find(pr => pr.roleName === roleName)
-        const currentValue = this.policy.rlsQualifiers[roleName][action].status
-        const newValue = [ENABLED, IMPLIED].indexOf(currentValue) > -1 ? DISABLED : ENABLED
-
-        const rlsQualifiers = Object.keys(this.policy.rlsQualifiers).reduce(
-          (all, newRoleName) => {
-            const projectRole = this.projectRoles.find(r => r.roleName === newRoleName)
-            return {
-              ...all,
-              [newRoleName]: ['all', 'select', 'insert', 'update', 'delete'].reduce(
-                (all, newAction) => {
-                  const oldRoleAction = this.policy.rlsQualifiers[newRoleName][newAction]
-                  const oldRoleActionValue = oldRoleAction.status
-                  const newRoleIsApplicableToToggled = projectRole.applicableRoles.find(ar => ar.roleName === toggledRole.roleName) !== undefined
-                  const toggledRoleIsApplicableToNew = toggledRole.applicableRoles.find(ar => ar.roleName === projectRole.roleName) !== undefined
-                  const newRoleIsToggledRole = projectRole.roleName === toggledRole.roleName
-
-                  let newRoleActionValue = oldRoleActionValue
-// console.log('newActionValue', newRoleActionValue)
-                  if (newAction === action) {
-                    if (newValue === ENABLED) {
-                      // all roles with toggledRole as applicable should be IMPLIED
-                      if (newRoleName === roleName) {
-                        newRoleActionValue = newValue
-                      } else {
-                        newRoleActionValue = newRoleIsApplicableToToggled ? IMPLIED : this.policy.rlsQualifiers[newRoleName][newAction].status
-                      }
-                    } else {  // newValue === ENABLED
-                      // all applicable roles should be DISABLED
-                      newRoleActionValue = newRoleIsApplicableToToggled || newRoleIsToggledRole ? DISABLED : this.policy.rlsQualifiers[newRoleName][newAction].status
-                    }
-                  } else {  // newAction === action
-                    newRoleActionValue = oldRoleActionValue
-                  }
-// console.log(newAction, newRoleName, newRoleActionValue, oldRoleAction)
-                  return {
-                    ...all,
-                    [newAction]: {
-                      ...oldRoleAction,
-                      status: newRoleActionValue
-                    }
-                  }
-                }, {}
-              )
-            }
-          }, {}
-        )
-console.log('rlsQualifiers', rlsQualifiers)
-
-        this.$store.commit('savePolicy', {
-            policy: {
-              ...this.policy,
-              rlsQualifiers: rlsQualifiers
+      updateRlsPolicy (roleName, action, currentUsing, currentWithCheck) {
+        console.log('updateRlsPolicy', roleName, action, currentUsing, currentWithCheck)
+        const newPolicy = {
+          ...this.policy,
+          rlsQualifiers: {
+            ...this.policy.rlsQualifiers,
+            [roleName]: {
+              ...this.policy.rlsQualifiers[roleName],
+              [action]: {
+                status: this.policy.rlsQualifiers[roleName][action].status,
+                using: currentUsing,
+                withCheck: currentWithCheck
+              }
             }
           }
+        }
+        // console.log(JSON.stringify(this.policy,0,2))
+        // console.log(JSON.stringify(newPolicy,0,2))
+        this.$store.commit('savePolicy', {
+            policy: newPolicy
+          }
         )
-        this.toggleCompleted = true
+
+      },
+      editRlsPolicy(rlsPolicy, action) {
+        console.log('edit', rlsPolicy, action)
+        this.currentEditRlsPolicy = rlsPolicy
+        this.currentEditAction
+        this.currentUsing = rlsPolicy[action].using
+        this.currentWithCheck = rlsPolicy[action].withCheck
+      },
+      rlsQualifierCheckLabel(rlsPolicy, action) {
+        switch(rlsPolicy[action].status) {
+          case ENABLED:
+            return 'Disable'
+            break;
+          case DISABLED:
+            return 'Enable'
+            break;
+          case IMPLIED:
+            return 'Override'
+            break;
+        }
+      },
+      toggleRlsPolicy(toggledRoleName, action) {
+        const currentValue = this.policy.rlsQualifiers[toggledRoleName][action].status
+
+        const impliedRoleNames = this.projectRoles.filter(
+          pr => {
+            return pr.applicableRoles.find(ar => ar.roleName === toggledRoleName) !== undefined
+          }
+        ).reduce((a,r)=>{ return a.concat(r.roleName)}, [])
+
+        const newPolicy = {
+          ...this.policy,
+          rlsQualifiers: Object.keys(this.policy.rlsQualifiers).reduce(
+            (newRlsQualifiers, newRoleName) => {
+              const toggledRoleIsApplicableToNew = impliedRoleNames.indexOf(newRoleName) > -1
+              const newRoleIsToggledRole = newRoleName === toggledRoleName
+
+              return {
+                ...newRlsQualifiers,
+                [newRoleName]: Object.keys(this.policy.rlsQualifiers[newRoleName]).reduce(
+                  (newRow, newAction) => {
+                    const oldValue = this.policy.rlsQualifiers[newRoleName][newAction].status
+                    const oldRoleAction = this.policy.rlsQualifiers[newRoleName][newAction]
+                    
+                    let newValue
+                    if (action === 'all') {
+                      if (newRoleIsToggledRole) {
+                        newValue = currentValue === ENABLED ? DISABLED : newAction === 'all' ? ENABLED : IMPLIED
+                      } else if (toggledRoleIsApplicableToNew) {
+                        newValue = currentValue === ENABLED ? DISABLED : IMPLIED
+                      } else {
+                        newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
+                      }
+                    } else {
+                      if (newAction === action) {
+                        if (newRoleIsToggledRole) {
+                          newValue = currentValue === ENABLED ? DISABLED : ENABLED
+                        } else if (toggledRoleIsApplicableToNew) {
+                          newValue = currentValue === ENABLED ? DISABLED : IMPLIED
+                        } else {
+                          newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
+                        }
+                      } else {
+                        if (newAction == 'all') {
+                          if ((toggledRoleIsApplicableToNew || newRoleIsToggledRole) && currentValue === ENABLED) {
+                            newValue = DISABLED
+                          } else {
+                            newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
+                          }
+                        } else {
+                          newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
+                        }
+                      }
+
+                    }
+
+                    return {
+                      ...newRow,
+                      [newAction]: {
+                        ...oldRoleAction,
+                        status: newValue
+                      }
+                    }
+                  }, {}
+                )
+              }
+            }, {}
+          )
+        }
+
+        this.$store.commit('savePolicy', {
+            policy: newPolicy
+          }
+        )
       },
     },
     computed: {
@@ -168,7 +187,6 @@ console.log('rlsQualifiers', rlsQualifiers)
         return this.$store.state.defaultRLSQual
       },
       rlsQualifierMatrix () {
-        console.log('pol', this.policy)
         return Object.keys(this.policy.rlsQualifiers).map(
           roleName => {
             return {
@@ -209,3 +227,9 @@ console.log('rlsQualifiers', rlsQualifiers)
     },
   }
 </script>
+
+<style>
+.norm-text {
+  text-transform: none !important;
+}
+</style>
