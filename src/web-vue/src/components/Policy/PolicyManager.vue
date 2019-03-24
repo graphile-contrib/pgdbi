@@ -54,7 +54,6 @@
           this.$store.commit('newPolicy', {name: this.newPolicyName})
         }
         catch (e) {
-          console.log('ERROR', e)
           alert(e.toString())
         }
         this.dialog = false
@@ -63,7 +62,6 @@
     computed: {
       policies () {
         return this.$store.state.policies
-
       }
     },
     data () {

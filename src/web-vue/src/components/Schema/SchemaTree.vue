@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1 v-if="computing">COMPUTING SCHEMA TREE....</h1>
     <v-treeview
       :items="items"
       activatable
@@ -11,24 +12,29 @@
 </template>
 
 <script>
-  import getDbSchemaTree from '@/gql/query/getDbSchemaTree.graphql';
+  // import getDbSchemaTree from '@/gql/query/getDbSchemaTree.graphql';
 
   export default {
     name: 'SchemaTree',
     computed: {
       selectedSchemata () {
         return this.$store.state.schemaFilter
+      },
+      rawSchemata () {
+        return this.$store.state.rawSchemata
       }
     },
     data: () => ({
       active: [],
       items: [],
       schemata: [],
-      selected: []
+      selected: [],
+      computing: false
     }),
     methods: {
       computeItems () {
-        const schemataToDisplay = this.selectedSchemata.length === 0 || this.filterMode ? this.schemata : this.schemata.filter(
+        this.computing = true
+        const schemataToDisplay = this.selectedSchemata.length === 0 || this.filterMode ? this.rawSchemata : this.rawSchemata.filter(
             s => {
               return this.selectedSchemata.indexOf(s.id) > -1
             }
@@ -74,6 +80,7 @@
               }
             }
           )
+        this.computing = false
       },
     },
     watch: {
@@ -99,15 +106,26 @@
         }
       }
     },
-    apollo: {
-      init: {
-        query: getDbSchemaTree,
-        update (result) {
-          this.schemata = result.allSchemata.nodes
-          this.computeItems()
-        }
-      }
+    mounted () {
+      this.computeItems()
     }
+    // apollo: {
+    //   init: {
+    //     query: getDbSchemaTree,
+    //     skip () {
+    //       if (this.rawSchemata.length > 0) {
+    //         this.computeItems()
+    //         return true
+    //       } else {
+    //         return false
+    //       }
+    //     },
+    //     update (result) {
+    //       this.$store.commit('rawSchemata', {rawSchemata: result.allSchemata.nodes})
+    //       this.computeItems()
+    //     }
+    //   }
+    // }
   }
 </script>
 

@@ -10,6 +10,7 @@ Vue.use(Vuex)
 
 
 const defaultState = {
+  rawSchemata: [],
   schemaFilter: [],
   projectRoles: [],
   selectedRoleFamilies: [],
@@ -18,7 +19,6 @@ const defaultState = {
   policyHeaderTemplate: policyHeaderTemplate,
   policyFooterTemplate: policyFooterTemplate,
   roleTableGrantTemplate: roleTableGrantTemplate,
-  appTenantFieldName: 'app_tenant_id',
   defaultRlsUsing: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
   defaultRlsWithCheck: '',
   policyTemplateNoRls: `
@@ -68,6 +68,64 @@ const defaultState = {
   ,policies: []
 }
 
+const defaultRoleGrants = {
+  all: 'DENIED',
+  select: 'DENIED',
+  insert: 'DENIED',
+  update: 'DENIED',
+  delete: 'DENIED',
+}
+
+// const defaultRlsQualifiers = {
+//   all: {
+//     status: 'DISABLED'
+//     ,policies: []
+//   },
+//   select: {
+//     status: 'DISABLED'
+//     ,policies: []
+//   },
+//   insert: {
+//     status: 'DISABLED'
+//     ,policies: []
+//   },
+//   update: {
+//     status: 'DISABLED'
+//     ,policies: []
+//   },
+//   delete: {
+//     status: 'DISABLED'
+//     ,policies: []
+//   }
+// }
+const defaultRlsQualifiers = {
+  all: {
+    policies: []
+  },
+  select: {
+    policies: []
+  },
+  insert: {
+    policies: []
+  },
+  update: {
+    policies: []
+  },
+  delete: {
+    policies: []
+  }
+}
+
+
+function buildNewRlsPolicy (using, withCheck, passStrategy) {
+  return {
+    id: (((new Date()).getTime() * 10000) + 621355968000000000)
+    ,using: using
+    ,withCheck: withCheck
+    ,passStrategy: passStrategy
+  }
+}
+
 function buildNewPolicy (name, projectRoles) {
   return {
     id: (((new Date()).getTime() * 10000) + 621355968000000000),
@@ -75,17 +133,12 @@ function buildNewPolicy (name, projectRoles) {
     policyHeaderTemplate: policyHeaderTemplate,
     policyFooterTemplate: policyFooterTemplate,
     roleTableGrantTemplate: roleTableGrantTemplate,
+    enableRls: true,
     roleGrants: projectRoles.reduce(
       (all, projectRole) => {
         return {
           ...all,
-          [projectRole.roleName]: {
-            all: 'DENIED',
-            select: 'DENIED',
-            insert: 'DENIED',
-            update: 'DENIED',
-            delete: 'DENIED',
-          }
+          [projectRole.roleName]: defaultRoleGrants
         }
       }, {}
     ),
@@ -93,33 +146,7 @@ function buildNewPolicy (name, projectRoles) {
       (all, projectRole) => {
         return {
           ...all,
-          [projectRole.roleName]: {
-            all: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            select: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            insert: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            update: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            delete: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            }
-          }
+          [projectRole.roleName]: defaultRlsQualifiers
         }
       }, {}
     )
@@ -135,13 +162,7 @@ function updatePolicyRoles (policy, projectRoles) {
 
         return {
           ...all,
-          [projectRole.roleName]: existing || {
-            all: 'DENIED',
-            select: 'DENIED',
-            insert: 'DENIED',
-            update: 'DENIED',
-            delete: 'DENIED',
-          }
+          [projectRole.roleName]: existing || defaultRoleGrants
         }
       }, {}
     ),
@@ -151,33 +172,7 @@ function updatePolicyRoles (policy, projectRoles) {
 
         return existing ? all : {
           ...all,
-          [projectRole.roleName]: {
-            all: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            select: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            insert: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            update: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            },
-            delete: {
-              status: 'DISABLED'
-              ,using: defaultState.defaultRlsUsing
-              ,withCheck: defaultState.defaultRlsWithCheck
-            }
-          }
+          [projectRole.roleName]: existing || defaultRlsQualifiers
         }
       }, {}
     )
@@ -187,11 +182,10 @@ function updatePolicyRoles (policy, projectRoles) {
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
+    rawSchemata: defaultState.rawSchemata,
     schemaFilter: defaultState.schemaFilter,
     projectRoles: defaultState.projectRoles,
     selectedRoleFamilies: defaultState.selectedRoleFamilies,
-    familyPolicySets: defaultState.familyPolicySets,
-    appTenantFieldName: defaultState.appTenantFieldName,
     defaultRlsUsing: defaultState.defaultRlsUsing,
     defaultRlsWithCheck: defaultState.defaultRlsWithCheck,
     policyTemplateNoRls: defaultState.policyTemplateNoRls,
@@ -199,7 +193,8 @@ export default new Vuex.Store({
     policyHeaderTemplate: policyHeaderTemplate,
     policyFooterTemplate: policyFooterTemplate,
     roleTableGrantTemplate: roleTableGrantTemplate,
-    policies: []
+    policies: [],
+    managedSchemata: [],
   },
   mutations: {
     initialize (state) {
@@ -212,15 +207,61 @@ export default new Vuex.Store({
       // state.selectedRoleFamilies = defaultState.selectedRoleFamilies
       // state.familyPolicySets = defaultState.familyPolicySets
       // state.projectRoles = defaultState.projectRoles
-      state.appTenantFieldName = defaultState.appTenantFieldName
       state.defaultRlsUsing = defaultState.defaultRlsUsing
       state .defaultRlsWithCheck = defaultState.defaultRlsWithCheck
       state.policyTemplateNoRls = defaultState.policyTemplateNoRls
       state.policyTemplateRls = defaultState.policyTemplateRls
       state.policies = [buildNewPolicy('Default Policy', state.projectRoles)]
+      state.managedSchemata = []
+
+    },
+    rawSchemata (state, payload) {
+      state.rawSchemata = payload.rawSchemata
+    },
+    managedSchemata (state, payload) {
+      state.managedSchemata = payload.managedSchemata
     },
     schemaFilter (state, payload) {
       state.schemaFilter = payload.schemaFilter
+
+      const defaultPolicy = state.policies.find(p => p.name === 'Default Policy')
+
+      const schemataToPark = state.managedSchemata.reduce(
+        (all, schema) => {
+          return state.schemaFilter.indexOf(schema.id) > -1 ? all : all.concat([schema])
+        }, []
+      )
+
+      const managedSchemata = state.schemaFilter.reduce(
+        (all, schemaId) => {
+          const alreadyManaged = state.managedSchemata.find(s => s.id === schemaId)
+          const schemaToManage = alreadyManaged || state.rawSchemata.find(s => s.id === schemaId)
+          const managed = {
+            ...schemaToManage,
+            schemaTables: schemaToManage.schemaTables.map(
+              table => {
+                return {
+                  ...table,
+                  policyDefinitionId: table.policyDefinitionId || defaultPolicy.id
+                }
+              }
+            )
+          }
+
+          return all.concat([managed])
+        }, []
+      )
+      .concat(schemataToPark)
+      .map(
+        schema => {
+          const parked = state.schemaFilter.indexOf(schema.id) === -1
+          return {
+            ...schema,
+            parked: parked
+          }
+        }
+      )
+      state.managedSchemata = managedSchemata
     },
     projectRoles (state, payload) {
       state.projectRoles = payload.projectRoles
@@ -249,9 +290,6 @@ export default new Vuex.Store({
     policyTemplateRls (state, payload) {
       state.policyTemplateRls = payload.policyTemplateRls
     },
-    appTenantFieldName (state, payload) {
-      state.appTenantFieldName = payload.appTenantFieldName
-    },
     newPolicy(state, payload) {
       const existing = state.policies.find(p => p.name === payload.name)
       if (existing) {
@@ -265,6 +303,60 @@ export default new Vuex.Store({
     savePolicy(state, payload) {
       const policies = state.policies.filter(p => p.name !== payload.policy.name)
       state.policies = [...policies, ...[payload.policy]].sort((a,b) => { return a.id - b.id })
+    },
+    createRlsPolicy(state, payload) {
+      const policy = state.policies.find(p => p.id === payload.policyId)
+      const otherPolicies = state.policies.filter(p => p.id !== payload.policyId)
+      const roleName = payload.roleName
+      const action = payload.action
+
+      const newRlsPolicy = buildNewRlsPolicy(
+        payload.using || defaultState.defaultRlsUsing
+        ,payload.withCheck || defaultState.defaultRlsWithCheck
+        ,payload.passStrategy || 'permissive'
+      )
+
+      const updatedPolicy = {
+        ...policy,
+        rlsQualifiers: {
+          ...policy.rlsQualifiers,
+          [roleName]: {
+            ...policy.rlsQualifiers[roleName],
+            [action]: {
+              ...policy.rlsQualifiers[roleName][action],
+              policies: [
+                ...policy.rlsQualifiers[roleName][action].policies,
+                ...[newRlsPolicy]
+              ]
+            }
+          }
+        }
+      }
+
+      state.policies = [...otherPolicies, ...[updatedPolicy]]
+    },
+    deleteRlsPolicy(state, payload) {
+      const policy = state.policies.find(p => p.id === payload.policyId)
+      const otherPolicies = state.policies.filter(p => p.id !== payload.policyId)
+      const roleName = payload.roleName
+      const action = payload.action
+      const rlsPolicyId = payload.rlsPolicyId
+
+      const updatedPolicy = {
+        ...policy,
+        rlsQualifiers: {
+          ...policy.rlsQualifiers,
+          [roleName]: {
+            ...policy.rlsQualifiers[roleName],
+            [action]: {
+              ...policy.rlsQualifiers[roleName][action],
+              policies: policy.rlsQualifiers[roleName][action].policies.filter(rp => rp.id !== rlsPolicyId)
+            }
+          }
+        }
+      }
+
+      state.policies = [...otherPolicies, ...[updatedPolicy]]
     }
   },
   actions: {

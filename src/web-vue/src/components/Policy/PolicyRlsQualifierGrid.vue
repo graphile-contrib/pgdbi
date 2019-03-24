@@ -1,31 +1,48 @@
 
 <template>
-    <div>
-      <v-data-table
-        :headers="headers"
-        :items="rlsQualifierMatrix"
-        hide-actions
-        item-key="id"
-        class="text-sm-left"
-      >
-        <template slot="items" slot-scope="props">
-          <td>{{ props.item.roleName }}</td>          
-          <td v-for="action in ['all', 'select', 'insert', 'update', 'delete']" :key="action">
-            <v-btn
-              @click="toggleRlsPolicy(props.item.roleName, action)"
-              :hidden="props.item[action].status === 'ENABLED'"
-            >{{rlsQualifierCheckLabel(props.item, action)}}</v-btn>
-            <rls-policy-dialog
-              :action="action"
-              :roleName="props.item.roleName"
-              :rlsPolicy="props.item[action]"
-              :disableRlsPolicy="disableRlsPolicy"
-              :updateRlsPolicy="updateRlsPolicy"
-            ></rls-policy-dialog>
-          </td>
-        </template>
-      </v-data-table>
-    </div>
+  <v-data-table
+    :headers="headers"
+    :items="rlsQualifierMatrix"
+    hide-actions
+    item-key="id"
+    class="text-sm-left"
+  >
+    <template slot="items" slot-scope="props">
+      <td>{{ props.item.roleName }}</td>          
+      <td v-for="action in ['all', 'select', 'insert', 'update', 'delete']" :key="action">
+        <!-- <v-btn
+          @click="toggleRlsPolicy(props.item.roleName, action)"
+        >{{rlsQualifierCheckLabel(props.item, action)}}</v-btn> -->
+        <!-- <v-label>{{props.item[action].status}}</v-label> -->
+        <v-btn
+          @click="addRlsPolicy(props.item.roleName, action)"
+          :hidden="disabled"
+        >Add Policy</v-btn>
+        <rls-policy-dialog
+          v-for="(policy, index) in props.item[action].policies"
+          :key="`${policy.roleName}-${index}`"
+          :action="action"
+          :roleName="props.item.roleName"
+          :rlsPolicy="policy"
+          :status="'ENABLED'"
+          :disableRlsPolicy="disableRlsPolicy"
+          :updateRlsPolicy="updateRlsPolicy"
+          :disabled="disabled"
+        ></rls-policy-dialog>
+        <rls-policy-dialog
+          v-for="(policy, index) in impliedPolicies(props.item.roleName, action)"
+          :key="`${policy.roleName}-${index}`"
+          :action="action"
+          :roleName="props.item.roleName"
+          :rlsPolicy="policy"
+          :status="'IMPLIED'"
+          :disableRlsPolicy="disableRlsPolicy"
+          :updateRlsPolicy="updateRlsPolicy"
+          :disabled="disabled"
+        ></rls-policy-dialog>
+      </td>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -43,6 +60,10 @@
       policy: {
         type: Object,
         required: true
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -56,12 +77,60 @@
     watch: {
     },
     methods: {
-      disableRlsPolicy (roleName, action) {
-        console.log('disableRlsPolicy', action, roleName)
-        this.toggleRlsPolicy(roleName, action)
+      impliedPolicies(roleName, action) {
+        const impliedRoleNames = this.projectRoles
+          .find(pr => pr.roleName === roleName)
+          .applicableRoles
+          .reduce((a,r)=>{ return a.concat(r.roleName)}, [])
+          .concat([roleName])
+
+        const impliedRlsPolicies = impliedRoleNames
+          .reduce(
+            (ip, impliedRoleName) => {
+              if (impliedRoleName !== roleName) {
+                // if (roleName === 'soro_admin' &&  impliedRoleName === 'soro_user' && action === 'all') {
+                //   console.log('wtf flying', roleName, action, impliedRoleName, this.policy.rlsQualifiers[impliedRoleName][action].policies)
+                // }
+                // return ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
+                return action === 'all'
+                  ? ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies)
+                  : ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
+              } else {
+                return action === 'all'
+                  ? ip
+                  : ip
+                    // .concat(this.policy.rlsQualifiers[impliedRoleName][action].policies)
+                    .concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
+              }
+            }, []
+          )
+
+        // if (action === 'all') console.log('implied', roleName, impliedRlsPolicies, impliedRoleNames)
+        return impliedRlsPolicies
       },
-      updateRlsPolicy (roleName, action, currentUsing, currentWithCheck) {
-        console.log('updateRlsPolicy', roleName, action, currentUsing, currentWithCheck)
+      addRlsPolicy(roleName, action){
+        this.$store.commit('createRlsPolicy', {
+          policyId: this.policy.id,
+          roleName: roleName,
+          action: action
+        })
+      },
+      disableRlsPolicy (roleName, action, rlsPolicyId) {
+        this.$store.commit('deleteRlsPolicy', {
+          policyId: this.policy.id,
+          roleName: roleName,
+          action: action,
+          rlsPolicyId: rlsPolicyId
+        })
+      },
+      updateRlsPolicy (roleName, action, policyId, using, withCheck, passStrategy) {
+        const policies = this.policy.rlsQualifiers[roleName][action].policies.filter(p => p.id !== policyId).concat([{
+          id: policyId
+          ,using: using
+          ,withCheck: withCheck
+          ,passStrategy: passStrategy
+        }])
+
         const newPolicy = {
           ...this.policy,
           rlsQualifiers: {
@@ -70,8 +139,10 @@
               ...this.policy.rlsQualifiers[roleName],
               [action]: {
                 status: this.policy.rlsQualifiers[roleName][action].status,
-                using: currentUsing,
-                withCheck: currentWithCheck
+                policies: policies,
+                using: using,
+                withCheck: withCheck,
+                passStrategy: passStrategy
               }
             }
           }
@@ -84,99 +155,18 @@
         )
 
       },
-      editRlsPolicy(rlsPolicy, action) {
-        console.log('edit', rlsPolicy, action)
-        this.currentEditRlsPolicy = rlsPolicy
-        this.currentEditAction
-        this.currentUsing = rlsPolicy[action].using
-        this.currentWithCheck = rlsPolicy[action].withCheck
-      },
       rlsQualifierCheckLabel(rlsPolicy, action) {
         switch(rlsPolicy[action].status) {
           case ENABLED:
-            return 'Disable'
+            return 'Add Policy'
             break;
           case DISABLED:
             return 'Enable'
             break;
           case IMPLIED:
-            return 'Override'
+            return 'Add Policy'
             break;
         }
-      },
-      toggleRlsPolicy(toggledRoleName, action) {
-        const currentValue = this.policy.rlsQualifiers[toggledRoleName][action].status
-
-        const impliedRoleNames = this.projectRoles.filter(
-          pr => {
-            return pr.applicableRoles.find(ar => ar.roleName === toggledRoleName) !== undefined
-          }
-        ).reduce((a,r)=>{ return a.concat(r.roleName)}, [])
-
-        const newPolicy = {
-          ...this.policy,
-          rlsQualifiers: Object.keys(this.policy.rlsQualifiers).reduce(
-            (newRlsQualifiers, newRoleName) => {
-              const toggledRoleIsApplicableToNew = impliedRoleNames.indexOf(newRoleName) > -1
-              const newRoleIsToggledRole = newRoleName === toggledRoleName
-
-              return {
-                ...newRlsQualifiers,
-                [newRoleName]: Object.keys(this.policy.rlsQualifiers[newRoleName]).reduce(
-                  (newRow, newAction) => {
-                    const oldValue = this.policy.rlsQualifiers[newRoleName][newAction].status
-                    const oldRoleAction = this.policy.rlsQualifiers[newRoleName][newAction]
-                    
-                    let newValue
-                    if (action === 'all') {
-                      if (newRoleIsToggledRole) {
-                        newValue = currentValue === ENABLED ? DISABLED : newAction === 'all' ? ENABLED : IMPLIED
-                      } else if (toggledRoleIsApplicableToNew) {
-                        newValue = currentValue === ENABLED ? DISABLED : IMPLIED
-                      } else {
-                        newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
-                      }
-                    } else {
-                      if (newAction === action) {
-                        if (newRoleIsToggledRole) {
-                          newValue = currentValue === ENABLED ? DISABLED : ENABLED
-                        } else if (toggledRoleIsApplicableToNew) {
-                          newValue = currentValue === ENABLED ? DISABLED : IMPLIED
-                        } else {
-                          newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
-                        }
-                      } else {
-                        if (newAction == 'all') {
-                          if ((toggledRoleIsApplicableToNew || newRoleIsToggledRole) && currentValue === ENABLED) {
-                            newValue = DISABLED
-                          } else {
-                            newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
-                          }
-                        } else {
-                          newValue = this.policy.rlsQualifiers[newRoleName][newAction].status
-                        }
-                      }
-
-                    }
-
-                    return {
-                      ...newRow,
-                      [newAction]: {
-                        ...oldRoleAction,
-                        status: newValue
-                      }
-                    }
-                  }, {}
-                )
-              }
-            }, {}
-          )
-        }
-
-        this.$store.commit('savePolicy', {
-            policy: newPolicy
-          }
-        )
       },
     },
     computed: {

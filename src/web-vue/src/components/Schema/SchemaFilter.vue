@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn> -->
+    <h1 v-if="computing">COMPUTING SCHEMA TREE....</h1>
     <v-treeview
       :items="items"
       transition
@@ -16,28 +17,20 @@
   export default {
     name: 'SchemaFilter',
     computed: {
-      // applyDisabled () {
-      //   const existingFilters = this.$store.state.roleFilter || []
-
-      //   const allExistingFiltersPresent = existingFilters.reduce(
-      //     (result, schemaId) => {
-      //       return result ? this.selected.indexOf(schemaId) > -1 : false
-      //     }, true
-      //   )
-      //   return allExistingFiltersPresent && (existingFilters.length === this.selected.length)
-      // }
     },
     data: () => ({
       items: [],
       schemata: [],
       selected: [],
-      selectedSchemata: []
+      selectedSchemata: [],
+      computing: false
     }),
     methods: {
       apply () {
         this.$store.commit('schemaFilter', { schemaFilter: this.selected })
       },
       computeItems () {
+        this.computing = true
         const selectedSchemata = this.$store.state.schemaFilter || []
         const schemataToDisplay = this.schemata
 
@@ -52,6 +45,7 @@
         )
 
         this.selected = selectedSchemata
+        this.computing = false
       },
     },
     watch: {

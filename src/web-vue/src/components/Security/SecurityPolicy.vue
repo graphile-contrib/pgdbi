@@ -16,7 +16,13 @@
         :key="schemaPolicy.name"
       >
         <v-toolbar>
-          <v-btn @click="expand(schemaPolicy)">Expand</v-btn>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon></v-btn>
+            </template>
+            <span>Expand</span>
+          </v-tooltip>
+          <!-- <v-btn @click="expand(schemaPolicy)">Expand</v-btn> -->
           <button 
             v-clipboard:copy="schemaPolicy.policy"
           >Copy</button>
@@ -26,6 +32,7 @@
           :value="schemaPolicy.policy"
           auto-grow
           spellcheck="false"
+          background-color="black"
         ></v-textarea>
       </v-tab-item>
     </v-tabs>
@@ -34,15 +41,21 @@
 </template>
 
 <script>
+  import PolicyComputerMixin from '../Policy/PolicyComputerMixin'
   import getDbSchemaTree from '@/gql/query/getDbSchemaTree.graphql'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'SecurityPolicy',
+    mixins: [
+      PolicyComputerMixin
+    ],
     components: {
     },
     props: {
     },
     computed: {
+      ...mapState(['policies']),
       schemaFilter () {
         return this.$store.state.schemaFilter
       },
@@ -55,7 +68,6 @@
       appTenantFieldName () {
         return this.$store.state.appTenantFieldName
       }
-      
     },
     methods: {
       handleCopyStatus(status) {
@@ -64,11 +76,15 @@
       expand (schemaPolicy) {
         schemaPolicy.policy = `${schemaPolicy.policy} `
       },
-      calcOnePolicy (tables, policyTemplate) {
+      findTablePolicyTemplate (tableName) {
+        return this.policies.find(p => p.name === 'Default Policy')
+      },
+      calcOnePolicy (tables) {
         return tables.reduce(
           (policy, table) => {
-            const tablePolicy = policyTemplate.split('{{schemaName}}').join(table.tableSchema).split('{{tableName}}').join(table.name)
-            return policy.concat(tablePolicy)
+            const policyTemplate = this.findTablePolicyTemplate(table.name)
+            const tablePolicy = this.computePolicy(policyTemplate, 'terse')
+            return policy.concat(tablePolicy).split('{{schemaName}}').join(table.tableSchema).split('{{tableName}}').join(table.name)
           }, ''
         )
       },
@@ -80,23 +96,13 @@
 
           this.allPolicies = schemaNames.reduce(
             (all, schemaName) => {
-              const tablesInNeedOfRls = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
-                .filter(t => t.tableColumns.find(c => c.columnName === this.appTenantFieldName) !== undefined)
+              const tables = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
 
-              const withRls = {
-                name: `${schemaName} - rls`,
-                policy: this.calcOnePolicy(tablesInNeedOfRls, this.policyTemplateRls)
+              const schemaPolicy = {
+                name: `${schemaName}`,
+                policy: this.calcOnePolicy(tables)
               }
-
-              const tablesNotInNeedOfRls = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
-                .filter(t => t.tableColumns.find(c => c.columnName === this.appTenantFieldName) === undefined)
-
-              const withoutRls = {
-                name: `${schemaName} - no rls`,
-                policy: this.calcOnePolicy(tablesNotInNeedOfRls, this.policyTemplateNoRls)
-              }
-
-              return all.concat([withRls, withoutRls])
+              return all.concat([schemaPolicy])
             }, []
           )
         }
@@ -112,8 +118,7 @@
       schemaPolicy: 'NOT CALCULATED',
       defaultRlsPolicies: 'NOT CALCULATED',
       defaultNoRlsPolicies: 'NOT CALCULATED',
-      selectedTabName: '',
-
+      selectedTabName: ''
     }),
     apollo: {
       init: {

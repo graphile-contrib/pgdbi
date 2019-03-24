@@ -3,9 +3,11 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Table from './components/Table/Table.vue'
 import Function from './components/Function.vue'
-import Security from './components/Security/SecurityPolicy.vue'
+import Security from './views/SecurityView.vue'
 import SecurityReview from './components/Security/SecurityReview.vue'
-import Settings from './components/Settings/Settings.vue'
+import Settings from './components/Settings/SecurityPolicySettings.vue'
+import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
+import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
 
 Vue.use(Router)
 
@@ -24,9 +26,19 @@ export default new Router({
       component: Home
     },
     {
-      path: '/security',
-      name: 'security',
+      path: '/security-manager',
+      name: 'security-manager',
       component: Security
+    },
+    {
+      path: '/fk-index-manager',
+      name: 'fk-index-manager',
+      component: ForeignKeyIndexManager
+    },
+    {
+      path: '/smart-comment-manager',
+      name: 'smart-comment-manager',
+      component: SmartCommentManager
     },
     {
       path: '/security-review',

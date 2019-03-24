@@ -25,7 +25,7 @@
           item-key="id"
         >
             <template slot="items" slot-scope="props">
-              <tr @click="props.expanded = !props.expanded">
+              <tr @click="props.expanded = !props.expanded">        
                 <td
                   key="schemaName"
                 >{{props.item.schemaName}}</td>
@@ -38,9 +38,6 @@
                   {{props.item.policyCount}}
                   <v-icon small :color="props.item.policyColor">fiber_manual_record</v-icon>
                 </td>
-                <td
-                  key="policyTemplateName"
-                >{{props.item.policyTemplateName}}</td>
               </tr>
             </template>
 
@@ -137,8 +134,7 @@
                   ),
                   policies: table.policies,
                   roleTableGrants: table.roleTableGrants,
-                  roleTableGrantCount: table.roleTableGrants.length,
-                  policyTemplateName: 'n/a'
+                  roleTableGrantCount: table.roleTableGrants.length
                 }
               }
             )
@@ -163,7 +159,6 @@
         {text: 'schema name', value: 'schemaName'},
         {text: 'table name', value: 'tableName'},
         {text: 'policy', value: 'policyCount'},
-        {text: 'policyTemplateName', value: 'policyTemplateName'},
       ],
       policy: 'NOT CALCULATED'
     }),

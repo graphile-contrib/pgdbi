@@ -1,12 +1,12 @@
 
 <template>
     <div>
-      <v-dialog v-model="dialog" persistent>
+      <v-dialog v-model="dialog" persistent width="1400">
         <template v-slot:activator="{ on }">
           <v-btn 
             dark v-on="on"
-            :disabled="rlsQualifierDisplayValueDisabled"
-            :hidden="rlsQualifierDisplayValueDisabled"
+            :disabled="btnDisabled"
+            :hidden="hidden"
             class="text-none"
             @click="activate"
           >
@@ -15,13 +15,25 @@
         </template>
         <v-card>
           <v-card-title class="headline">Rls Policy</v-card-title>
-          <v-text-field label="Using" v-model="currentUsing"></v-text-field>
-          <v-text-field label="With Check" v-model="currentWithCheck"></v-text-field>
+          <v-radio-group v-model="currentPassStrategy" :column="false" :disabled="disabled">
+            <v-radio
+              label="Permissive"
+              value="permissive"
+            ></v-radio>
+            <v-radio
+              label="Restrictive"
+              value="restrictive"
+            ></v-radio>
+          </v-radio-group>
+          <v-text-field label="Using" v-model="currentUsing" :disabled="disabled"></v-text-field>
+          <v-text-field label="With Check" v-model="currentWithCheck" :disabled="disabled"></v-text-field>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click="updateRlsPolicy(roleName, action, currentUsing, currentWithCheck); dialog=false">Update</v-btn>
-            <v-btn color="green darken-1" flat @click="disableRlsPolicy(roleName, action); dialog=false">Disable</v-btn>
-            <v-btn color="green darken-1" flat @click="dialog=false">Cancel</v-btn>
+            <v-btn :hidden="disabled" @click="updateRlsPolicy(roleName, action, rlsPolicy.id, currentUsing, currentWithCheck, currentPassStrategy); dialog=false">Update</v-btn>
+            <v-btn :hidden="disabled" @click="disableRlsPolicy(roleName, action, rlsPolicy.id); dialog=false">Disable</v-btn>
+            <v-btn :hidden="disabled" @click="dialog=false">Cancel</v-btn>
+            <v-btn :hidden="!disabled" @click="dialog=false">OK</v-btn>
+            <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -36,6 +48,14 @@
   export default {
     name: 'RlsPolicyDialog',
     props: {
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      status: {
+        type: String,
+        required: true
+      },
       rlsPolicy: {
         type: Object,
         required: true
@@ -63,33 +83,48 @@
         dialog: false,
         currentUsing: 'n/a',
         currentWithCheck: 'n/a',
+        currentPassStrategy: false
       }
     },
     computed: {
       displayValue () {
-        switch (this.rlsPolicy.status) {
-          case ENABLED:
-            return this.rlsPolicy.using.slice(0,20).concat('...')
-            break;
-          case IMPLIED:
-            return IMPLIED
-            break;
-          case DISABLED:
-            return DISABLED          
-            break;
-        }
+        return this.rlsPolicy.using.slice(0,20).concat('...')
+        // console.log('lbaifj', this.rlsPolicy)
+        // switch (this.rlsPolicy.status) {
+        //   case ENABLED:
+        //     return this.rlsPolicy.using.slice(0,20).concat('...')
+        //     break;
+        //   case IMPLIED:
+        //     return IMPLIED
+        //     break;
+        //   case DISABLED:
+        //     return DISABLED          
+        //     break;
+        // }
       },
       rlsQualifierDisplayValueDisabled () {
-        return [DISABLED, IMPLIED].indexOf(this.rlsPolicy.status) > -1
+        return false
+        // return [DISABLED, IMPLIED].indexOf(this.status) > -1
+        // return [DISABLED, IMPLIED].indexOf(this.rlsPolicy.status) > -1
+      },
+      hidden () {
+        return false
+        // return [DISABLED].indexOf(this.status) > -1
+        // return [DISABLED, IMPLIED].indexOf(this.rlsPolicy.status) > -1
+      },
+      btnDisabled () {
+        // return false
+        return ([DISABLED, IMPLIED].indexOf(this.status) > -1) // || this.disabled
+        // return [DISABLED, IMPLIED].indexOf(this.rlsPolicy.status) > -1
       }
     },
     watch: {
     },
     methods: {
       activate () {
-        console.log('activate')
         this.currentUsing = this.rlsPolicy.using
         this.currentWithCheck = this.rlsPolicy.withCheck
+        this.currentPassStrategy = this.rlsPolicy.passStrategy
       }
     }
   }

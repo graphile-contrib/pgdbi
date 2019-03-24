@@ -1,52 +1,50 @@
 <template>
-    <div>
-      <v-data-table
-        :headers="headers"
-        :items="grantMatrix"
-        hide-actions
-        item-key="id"
-        class="text-sm-left"
-      >
-        <template slot="items" slot-scope="props">
-          <td>{{ props.item.roleName }}</td>          
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'all')" 
-              @click="toggleRoleGrant(props.item.roleName, 'all')"
-              :disabled="roleGrantDisabled(props.item, 'all')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'select')" 
-              @click="toggleRoleGrant(props.item.roleName, 'select')"
-              :disabled="roleGrantDisabled(props.item, 'select')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'insert')"
-              @click="toggleRoleGrant(props.item.roleName, 'insert')"
-              :disabled="roleGrantDisabled(props.item, 'insert')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-              :input-value="roleGrantSelected(props.item, 'update')"
-              @click="toggleRoleGrant(props.item.roleName, 'update')"
-              :disabled="roleGrantDisabled(props.item, 'update')"
-            ></v-checkbox>
-          </td>
-          <td>
-            <v-checkbox 
-             :input-value="roleGrantSelected(props.item, 'delete')"
-              @click="toggleRoleGrant(props.item.roleName, 'delete')"
-              :disabled="roleGrantDisabled(props.item, 'delete')"
-            ></v-checkbox>
-          </td>
-        </template>
-      </v-data-table>
-    </div>
+  <v-data-table
+    :headers="headers"
+    :items="grantMatrix"
+    hide-actions
+    item-key="id"
+    class="text-sm-left"
+  >
+    <template slot="items" slot-scope="props">
+      <td>{{ props.item.roleName }}</td>          
+      <td>
+        <v-checkbox 
+          :input-value="roleGrantSelected(props.item, 'all')" 
+          @click="toggleRoleGrant(props.item.roleName, 'all')"
+          :disabled="roleGrantDisabled(props.item, 'all')"
+        ></v-checkbox>
+      </td>
+      <td>
+        <v-checkbox 
+          :input-value="roleGrantSelected(props.item, 'select')" 
+          @click="toggleRoleGrant(props.item.roleName, 'select')"
+          :disabled="roleGrantDisabled(props.item, 'select')"
+        ></v-checkbox>
+      </td>
+      <td>
+        <v-checkbox 
+          :input-value="roleGrantSelected(props.item, 'insert')"
+          @click="toggleRoleGrant(props.item.roleName, 'insert')"
+          :disabled="roleGrantDisabled(props.item, 'insert')"
+        ></v-checkbox>
+      </td>
+      <td>
+        <v-checkbox 
+          :input-value="roleGrantSelected(props.item, 'update')"
+          @click="toggleRoleGrant(props.item.roleName, 'update')"
+          :disabled="roleGrantDisabled(props.item, 'update')"
+        ></v-checkbox>
+      </td>
+      <td>
+        <v-checkbox 
+        :input-value="roleGrantSelected(props.item, 'delete')"
+          @click="toggleRoleGrant(props.item.roleName, 'delete')"
+          :disabled="roleGrantDisabled(props.item, 'delete')"
+        ></v-checkbox>
+      </td>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -60,6 +58,10 @@
       policy: {
         type: Object,
         required: true
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -77,7 +79,7 @@
       },
       roleGrantDisabled(roleGrant, action) {
         // return false;
-        return roleGrant[action] === IMPLIED
+        return (roleGrant[action] === IMPLIED) || this.disabled
       },
       toggleRoleGrant(toggledRoleName, action) {
         if (this.toggleCompleted === true) {

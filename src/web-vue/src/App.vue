@@ -21,9 +21,15 @@
         <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
       </div>
       <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
+      <v-btn icon @click.stop="settings">
+        <v-icon>settings</v-icon>
       </v-btn>
+      <v-btn icon @click.stop="home">
+        <v-icon>home</v-icon>
+      </v-btn>
+      <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+        <v-icon>menu</v-icon>
+      </v-btn> -->
     </v-toolbar>
     <v-content>
       <v-container
@@ -31,10 +37,15 @@
          ma-0 
          pa-0
       >
+      <v-toolbar>
+        <v-btn @click="$router.push({name:'security-manager'})">Security</v-btn>
+        <v-btn @click="$router.push({name:'fk-index-manager'})">Indexes</v-btn>
+        <v-btn @click="$router.push({name:'smart-comment-manager'})">Smart Comments</v-btn>
+      </v-toolbar>
         <router-view></router-view>
       </v-container>
     </v-content>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       persistent
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -44,8 +55,7 @@
       width="400"
       app
     >
-      <!-- <artifact-navigator></artifact-navigator> -->
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-footer :fixed="fixed" app>
       <span>&copy; 2017</span>
     </v-footer>
@@ -63,6 +73,9 @@ export default {
   methods: {
     home () {
       this.$router.push({ name: 'home' })
+    },
+    settings () {
+      this.$router.push({ name: 'settings' })
     }
  },
   data () {

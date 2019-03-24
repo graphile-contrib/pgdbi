@@ -1,4 +1,4 @@
-module.exports = `
+export default `
 
-    --=================== END: {{schemaName}}.{{tableName}}  ===================
-  `
+--=================== END: {{schemaName}}.{{tableName}}  ===================
+`
