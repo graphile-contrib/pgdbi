@@ -15,6 +15,7 @@
         </template>
         <v-card>
           <v-card-title class="headline">Rls Policy</v-card-title>
+          <v-text-field label="Name" v-model="currentName" :disabled="disabled"></v-text-field>
           <v-radio-group v-model="currentPassStrategy" :column="false" :disabled="disabled">
             <v-radio
               label="Permissive"
@@ -29,7 +30,7 @@
           <v-text-field label="With Check" v-model="currentWithCheck" :disabled="disabled"></v-text-field>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn :hidden="disabled" @click="updateRlsPolicy(roleName, action, rlsPolicy.id, currentUsing, currentWithCheck, currentPassStrategy); dialog=false">Update</v-btn>
+            <v-btn :hidden="disabled" @click="updateRlsPolicy(roleName, action, rlsPolicy.id, currentUsing, currentWithCheck, currentPassStrategy, currentName); dialog=false">Update</v-btn>
             <v-btn :hidden="disabled" @click="disableRlsPolicy(roleName, action, rlsPolicy.id); dialog=false">Disable</v-btn>
             <v-btn :hidden="disabled" @click="dialog=false">Cancel</v-btn>
             <v-btn :hidden="!disabled" @click="dialog=false">OK</v-btn>
@@ -81,6 +82,7 @@
       return {
         toggleCompleted: false,
         dialog: false,
+        currentName: 'n/a',
         currentUsing: 'n/a',
         currentWithCheck: 'n/a',
         currentPassStrategy: false
@@ -88,29 +90,14 @@
     },
     computed: {
       displayValue () {
-        return this.rlsPolicy.using.slice(0,20).concat('...')
-        // console.log('lbaifj', this.rlsPolicy)
-        // switch (this.rlsPolicy.status) {
-        //   case ENABLED:
-        //     return this.rlsPolicy.using.slice(0,20).concat('...')
-        //     break;
-        //   case IMPLIED:
-        //     return IMPLIED
-        //     break;
-        //   case DISABLED:
-        //     return DISABLED          
-        //     break;
-        // }
+        return this.rlsPolicy.name //.slice(0,20).concat('...')
+        // return this.rlsPolicy.using.slice(0,20).concat('...')
       },
       rlsQualifierDisplayValueDisabled () {
         return false
-        // return [DISABLED, IMPLIED].indexOf(this.status) > -1
-        // return [DISABLED, IMPLIED].indexOf(this.rlsPolicy.status) > -1
       },
       hidden () {
         return false
-        // return [DISABLED].indexOf(this.status) > -1
-        // return [DISABLED, IMPLIED].indexOf(this.rlsPolicy.status) > -1
       },
       btnDisabled () {
         // return false
@@ -122,6 +109,7 @@
     },
     methods: {
       activate () {
+        this.currentName = this.rlsPolicy.name
         this.currentUsing = this.rlsPolicy.using
         this.currentWithCheck = this.rlsPolicy.withCheck
         this.currentPassStrategy = this.rlsPolicy.passStrategy

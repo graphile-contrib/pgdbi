@@ -19,8 +19,8 @@
           :hidden="disabled"
         >Add Policy</v-btn>
         <rls-policy-dialog
-          v-for="(policy, index) in props.item[action].policies"
-          :key="`${policy.roleName}-${index}`"
+          v-for="(policy) in props.item[action].policies"
+          :key="`${policy.roleName}-${policy.id}`"
           :action="action"
           :roleName="props.item.roleName"
           :rlsPolicy="policy"
@@ -30,8 +30,8 @@
           :disabled="disabled"
         ></rls-policy-dialog>
         <rls-policy-dialog
-          v-for="(policy, index) in impliedPolicies(props.item.roleName, action)"
-          :key="`${policy.roleName}-${index}`"
+          v-for="(policy) in impliedPolicies(props.item.roleName, action)"
+          :key="`${policy.roleName}-${policy.id}`"
           :action="action"
           :roleName="props.item.roleName"
           :rlsPolicy="policy"
@@ -123,12 +123,13 @@
           rlsPolicyId: rlsPolicyId
         })
       },
-      updateRlsPolicy (roleName, action, policyId, using, withCheck, passStrategy) {
+      updateRlsPolicy (roleName, action, policyId, using, withCheck, passStrategy, name) {
         const policies = this.policy.rlsQualifiers[roleName][action].policies.filter(p => p.id !== policyId).concat([{
           id: policyId
           ,using: using
           ,withCheck: withCheck
           ,passStrategy: passStrategy
+          ,name: name
         }])
 
         const newPolicy = {

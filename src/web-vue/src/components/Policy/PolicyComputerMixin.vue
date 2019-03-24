@@ -82,7 +82,7 @@ alter table {{schemaName}}.{{tableName}} enable row level security;
                       policyDefinition.rlsQualifiers[roleName][action].policies.reduce(
                         (allActionPolicies, actionPolicy) => {
                           return allActionPolicies.concat(`
-create policy {{policyName}} on {{schemaName}}.{{tableName}}
+create policy ${actionPolicy.name} on {{schemaName}}.{{tableName}}
   as ${actionPolicy.passStrategy}
   for ${action}
   to ${roleName}
@@ -101,7 +101,6 @@ create policy {{policyName}} on {{schemaName}}.{{tableName}}
       computePolicy (policyDefinition, policyReadability, variables) {
         const header = policyDefinition.policyHeaderTemplate
         const footer = policyDefinition.policyFooterTemplate
-
         // remove all existing table grants
         const securityRemoval = this.securityRemoval(policyDefinition, policyReadability)
 

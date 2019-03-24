@@ -117,9 +117,11 @@ const defaultRlsQualifiers = {
 }
 
 
-function buildNewRlsPolicy (using, withCheck, passStrategy) {
+function buildNewRlsPolicy (using, withCheck, passStrategy, name) {
+  const id = (((new Date()).getTime() * 10000) + 621355968000000000)
   return {
-    id: (((new Date()).getTime() * 10000) + 621355968000000000)
+    id: id
+    ,name: name || id
     ,using: using
     ,withCheck: withCheck
     ,passStrategy: passStrategy
@@ -263,6 +265,50 @@ export default new Vuex.Store({
       )
       state.managedSchemata = managedSchemata
     },
+    assignTablePolicy (state, payload) {
+      const stuff = state.managedSchemata.reduce(
+        (stuff, schema) => {
+          if (stuff.currentSchema) {
+            return stuff
+          } else {
+            const table = schema.schemaTables.find(t => t.id === payload.tableId)
+            if (table) {
+              return {
+                ...stuff,
+                currentSchema: schema,
+                currentTable: table
+              }
+            } else {
+              return stuff
+            }
+          }
+        }, {
+          currentSchema: null,
+          currentTable: null
+        }
+      )
+
+      const schema = stuff.currentSchema
+      const table = stuff.currentTable
+
+      const otherSchemata = state.managedSchemata.filter (s => s.id !== schema.id)
+      const otherTables = schema.schemaTables.filter(t => t.id !== table.id)
+
+
+      state.managedSchemata = [
+        ...otherSchemata,
+        {
+          ...schema,
+          schemaTables: [
+            ...otherTables,
+            {
+              ...table,
+              policyDefinitionId: payload.policyDefinitionId
+            }
+          ]
+        }
+      ]
+    },
     projectRoles (state, payload) {
       state.projectRoles = payload.projectRoles
 
@@ -314,6 +360,7 @@ export default new Vuex.Store({
         payload.using || defaultState.defaultRlsUsing
         ,payload.withCheck || defaultState.defaultRlsWithCheck
         ,payload.passStrategy || 'permissive'
+        ,payload.name
       )
 
       const updatedPolicy = {

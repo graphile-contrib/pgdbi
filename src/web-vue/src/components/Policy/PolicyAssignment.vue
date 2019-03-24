@@ -28,7 +28,8 @@
                   </v-btn>
                 </td>
                 <td>{{ props.item.name }}</td>
-                <td>{{ props.item.policyDefinition.name }}</td>
+                <!-- <td>{{ props.item.policyDefinition.name }}</td> -->
+                <td><policy-assignment-dialog :currentPolicyDefinition="props.item.policyDefinition" :table="props.item"></policy-assignment-dialog></td>
               </tr>
             </template>
 
@@ -46,11 +47,13 @@
 
 <script>
   import PolicyDefinition from '@/components/Policy/PolicyDefinition'
+  import PolicyAssignmentDialog from '@/components/Policy/PolicyAssignmentDialog'
 
   export default {
     name: 'PolicyAssignment',
     components: {
-      PolicyDefinition
+      PolicyDefinition,
+      PolicyAssignmentDialog
     },
     methods: {
     },
@@ -64,7 +67,7 @@
         return this.$store.state.schemaFilter
       },
       managedSchemata () {
-        const retval = this.$store.state.managedSchemata
+        return this.$store.state.managedSchemata
           .filter(s => s.parked === false)
           .map(
             schema => {
@@ -78,11 +81,11 @@
                       policyDefinition: policyDefinition
                     }
                   }
-                )
+                ).sort((a,b)=>{ return a.name < b.name ? -1 : 1})
               }
             }
-          )
-        return retval
+          ).sort((a,b)=>{ return a.name < b.name ? -1 : 1})
+        
       },
     },
     data: () => ({

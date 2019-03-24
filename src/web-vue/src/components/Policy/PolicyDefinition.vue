@@ -157,6 +157,7 @@
       }
     },
     mounted () {
+      this.enableRls = this.policy.enableRls
       this.doComputePolicy()
     },
     watch: {
@@ -164,6 +165,8 @@
         this.doComputePolicy()
       },
       policy () {
+        console.log('blah', this.table)
+        this.enableRls = this.policy.enableRls
         this.doComputePolicy()
       },
       enableRls () {
@@ -249,9 +252,6 @@
           }
         ]
       },
-    },
-    mounted () {
-      this.enableRls = this.policy.enableRls
     }
   }
 </script>
