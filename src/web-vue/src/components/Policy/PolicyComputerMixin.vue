@@ -60,7 +60,7 @@ revoke all privileges on table {{schemaName}}.{{tableName}} from public;
         )
       },
       rlsSection (policyDefinition, policyReadability) {
-        return !this.enableRls ? `
+        return !policyDefinition.enableRls ? `
 -------------- DISABLE ROW LEVEL SECURITY ----------------------
 
 alter table {{schemaName}}.{{tableName}} disable row level security;
@@ -100,6 +100,7 @@ create policy ${actionPolicy.name} on {{schemaName}}.{{tableName}}
       },
       computePolicy (policyDefinition, policyReadability, variables) {
         const header = policyDefinition.policyHeaderTemplate
+        const policyDefinitionName = `---------------------------------------------------------------------------POLICY DEFINITION:  ${policyDefinition.name}\n`
         const footer = policyDefinition.policyFooterTemplate
         // remove all existing table grants
         const securityRemoval = this.securityRemoval(policyDefinition, policyReadability)
@@ -110,7 +111,7 @@ create policy ${actionPolicy.name} on {{schemaName}}.{{tableName}}
         // rls
         const rlsSection = this.rlsSection(policyDefinition, policyReadability)
 
-        const template = header.concat(securityRemoval).concat(tableGrants).concat(rlsSection).concat(footer)
+        const template = header.concat(policyDefinitionName).concat(securityRemoval).concat(tableGrants).concat(rlsSection).concat(footer)
 
         if (variables) {
           return Object.keys(variables).reduce(

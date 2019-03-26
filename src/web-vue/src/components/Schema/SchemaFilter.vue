@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- <v-btn @click="apply" :disabled="applyDisabled">Apply</v-btn> -->
-    <h1 v-if="computing">COMPUTING SCHEMA TREE....</h1>
+    <v-btn @click="apply">Apply</v-btn>
+    <h1 v-if="computing">Refreshing Schemata....</h1>
     <v-treeview
       :items="items"
       transition
@@ -12,7 +12,8 @@
 </template>
 
 <script>
-  import getDbSchemaTree from '@/gql/query/getDbSchemaTree.graphql';
+  import getDbSchemaList from '@/gql/query/getDbSchemaList.graphql';
+  import getDbSchemaTreeBySchemaName from '@/gql/query/getDbSchemaTreeBySchemaName.graphql'
 
   export default {
     name: 'SchemaFilter',
@@ -25,40 +26,64 @@
       selectedSchemata: [],
       computing: false
     }),
+    props: {
+      afterApply: {
+        type: Function,
+        required: true
+      }
+    },
     methods: {
       apply () {
-        this.$store.commit('schemaFilter', { schemaFilter: this.selected })
+        this.computing = true
+        this.$apollo.query({
+          query: getDbSchemaTreeBySchemaName,
+          variables: {
+            schemaNames: this.selected
+          }
+        })
+        .then(result => {
+          this.$store.commit('setManagedSchemata', result.data.allSchemata.nodes)
+          this.computing = false
+          this.afterApply()
+        })
+        .catch(error => {
+          console.error(error)
+          this.computing = false
+          this.afterApply()
+        })
       },
       computeItems () {
         this.computing = true
-        const selectedSchemata = this.$store.state.schemaFilter || []
+        const selectedSchemata = this.$store.state.managedSchemata || []
         const schemataToDisplay = this.schemata
 
         this.items = schemataToDisplay.map(
           schema => {
             return {
-                id: `schema:${schema.schemaName}`,
+                // id: `schema:${schema.schemaName}`,
+                id: schema.schemaName,
                 name: schema.schemaName,
               children: []
             }
           }
         )
-
-        this.selected = selectedSchemata
+console.log('wha', selectedSchemata)
+        this.selected = selectedSchemata.reduce(
+          (all, s) => {
+            return all.concat([s.schemaName])
+          }, []
+        )
         this.computing = false
       },
     },
     watch: {
-      selected () {
-        this.apply()
-      }
     },
     apollo: {
       init: {
-        query: getDbSchemaTree,
+        query: getDbSchemaList,
         update (result) {
           this.schemata = result.allSchemata.nodes
-          this.computeItems()
+          this.computeItems()          
         }
       }
     }

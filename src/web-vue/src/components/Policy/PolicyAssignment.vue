@@ -63,12 +63,8 @@
       policies () {
         return this.$store.state.policies
       },
-      schemaFilter () {
-        return this.$store.state.schemaFilter
-      },
       managedSchemata () {
         return this.$store.state.managedSchemata
-          .filter(s => s.parked === false)
           .map(
             schema => {
               return {
@@ -76,6 +72,10 @@
                 schemaTables: schema.schemaTables.map(
                   table => {
                     const policyDefinition = this.policies.find(p => p.id === table.policyDefinitionId)
+                    if (!policyDefinition) {
+                      console.log(table.name, table.policyDefinitionId, this.policies)
+                      console.log('pd', policyDefinition.id)
+                    }
                     return {
                       ...table,
                       policyDefinition: policyDefinition
@@ -84,7 +84,7 @@
                 ).sort((a,b)=>{ return a.name < b.name ? -1 : 1})
               }
             }
-          ).sort((a,b)=>{ return a.name < b.name ? -1 : 1})
+          ).sort((a,b)=>{ return a.schemaName < b.schemaName ? -1 : 1})
         
       },
     },

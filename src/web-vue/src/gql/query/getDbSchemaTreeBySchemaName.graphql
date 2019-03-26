@@ -1,0 +1,38 @@
+query GetDbSchemaTreeBySchemaName($schemaNames: [SqlIdentifier!]){
+  allSchemata
+  (
+    filter: {
+      schemaName: {
+        in: $schemaNames
+      }
+    }
+  ) 
+  {
+    nodes {
+      id
+      schemaName
+      schemaTables {
+        id
+        name: tableName
+        tableSchema
+        tableColumns {
+          tableName
+          tableSchema
+          columnName
+          dataType
+        }
+      }
+      schemaFunctions {
+        id
+        name: functionName
+        functionSchema
+      }
+      schemaEnums {
+        id
+        name: enumName
+        enumSchema
+        enumValues
+      }
+    }
+  }
+}

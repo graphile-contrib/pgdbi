@@ -1,0 +1,11 @@
+query GetDbSchemaList{
+  allSchemata(
+    orderBy: SCHEMA_NAME_ASC
+  )
+  {
+    nodes {
+      id
+      schemaName
+    }
+  }
+}

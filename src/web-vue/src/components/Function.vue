@@ -12,7 +12,6 @@
 </template>
 
 <script>
-  // import getDbSchemaTree from '../gql/mutation/getDbSchemaTree.gql'
   import functionById from '../gql/query/functionById.graphql'
 
   export default {
@@ -44,9 +43,6 @@
         }
       }
     }
-    // created () {
-    //   this.getDbSchemaTree()
-    // }
   }
 </script>
 

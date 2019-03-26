@@ -83,7 +83,7 @@
           .applicableRoles
           .reduce((a,r)=>{ return a.concat(r.roleName)}, [])
           .concat([roleName])
-
+console.log('imp', impliedRoleNames)
         const impliedRlsPolicies = impliedRoleNames
           .reduce(
             (ip, impliedRoleName) => {
@@ -92,6 +92,7 @@
                 //   console.log('wtf flying', roleName, action, impliedRoleName, this.policy.rlsQualifiers[impliedRoleName][action].policies)
                 // }
                 // return ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
+                console.log('all', this.policy.rlsQualifiers, impliedRoleName, action)
                 return action === 'all'
                   ? ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies)
                   : ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
@@ -124,13 +125,15 @@
         })
       },
       updateRlsPolicy (roleName, action, policyId, using, withCheck, passStrategy, name) {
-        const policies = this.policy.rlsQualifiers[roleName][action].policies.filter(p => p.id !== policyId).concat([{
-          id: policyId
-          ,using: using
-          ,withCheck: withCheck
-          ,passStrategy: passStrategy
-          ,name: name
-        }])
+        const policies = this.policy.rlsQualifiers[roleName][action].policies
+          .filter(p => p.id !== policyId)
+          .concat([{
+            id: policyId
+            ,using: using
+            ,withCheck: withCheck
+            ,passStrategy: passStrategy
+            ,name: name
+          }])
 
         const newPolicy = {
           ...this.policy,

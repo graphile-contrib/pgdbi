@@ -4,7 +4,6 @@ import Home from './views/Home.vue'
 import Table from './components/Table/Table.vue'
 import Function from './components/Function.vue'
 import Security from './views/SecurityView.vue'
-import SecurityReview from './components/Security/SecurityReview.vue'
 import Settings from './components/Settings/SecurityPolicySettings.vue'
 import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
@@ -39,11 +38,6 @@ export default new Router({
       path: '/smart-comment-manager',
       name: 'smart-comment-manager',
       component: SmartCommentManager
-    },
-    {
-      path: '/security-review',
-      name: 'security-review',
-      component: SecurityReview
     },
     {
       path: '/settings',

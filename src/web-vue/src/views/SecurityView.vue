@@ -75,7 +75,7 @@
         </v-card>
       </v-tab-item>
 
-      <v-tab
+      <!-- <v-tab
         key="securityReview"
         ripple
       >
@@ -88,7 +88,7 @@
           <security-review></security-review>
         </v-card>
       </v-tab-item>
-
+ -->
     </v-tabs>
   </v-container>
 </template>
@@ -98,7 +98,7 @@
   import PolicyAssignment from '@/components/Policy/PolicyAssignment'
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SecurityPolicy from '@/components/Security/SecurityPolicy'
-  import SecurityReview from '@/components/Security/SecurityReview'
+  // import SecurityReview from '@/components/Security/SecurityReview'
   import PolicyManager from '@/components/Policy/PolicyManager'
 
   export default {
@@ -107,7 +107,7 @@
       RoleFilter,
       SecurityPolicySettings,
       SecurityPolicy,
-      SecurityReview,
+      // SecurityReview,
       PolicyManager,
       PolicyAssignment
     },

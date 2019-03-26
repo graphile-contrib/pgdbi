@@ -26,6 +26,7 @@
           <button 
             v-clipboard:copy="schemaPolicy.policy"
           >Copy</button>
+          <v-btn @click="calculateAllPolicies">Refresh</v-btn>
         </v-toolbar>
         <v-textarea
           :disabled="true"
@@ -42,7 +43,6 @@
 
 <script>
   import PolicyComputerMixin from '../Policy/PolicyComputerMixin'
-  import getDbSchemaTree from '@/gql/query/getDbSchemaTree.graphql'
   import { mapState } from 'vuex'
 
   export default {
@@ -55,18 +55,11 @@
     props: {
     },
     computed: {
-      ...mapState(['policies']),
-      schemaFilter () {
-        return this.$store.state.schemaFilter
-      },
-      policyTemplateNoRls () {
-        return this.$store.state.policyTemplateNoRls
-      },
-      policyTemplateRls () {
-        return this.$store.state.policyTemplateRls
-      },
-      appTenantFieldName () {
-        return this.$store.state.appTenantFieldName
+      ...mapState(['policies', 'managedSchemata']),
+    },
+    watch: {
+      policies () {
+        this.calculateAllPolicies()
       }
     },
     methods: {
@@ -80,38 +73,29 @@
         return this.policies.find(p => p.name === 'Default Policy')
       },
       calcOnePolicy (tables) {
-        return tables.reduce(
+        return tables.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(
           (policy, table) => {
-            const policyTemplate = this.findTablePolicyTemplate(table.name)
+            const policyTemplate = this.policies.find(p => p.id === table.policyDefinitionId)
+            console.log('tt', policyTemplate.id, table.name, policyTemplate.name, policyTemplate, this.policies)
             const tablePolicy = this.computePolicy(policyTemplate, 'terse')
             return policy.concat(tablePolicy).split('{{schemaName}}').join(table.tableSchema).split('{{tableName}}').join(table.name)
           }, ''
         )
       },
       calculateAllPolicies () {
-        if (!this.schemaTree) {
-          this.allPolicies = []
-        } else {
-          const schemaNames = this.schemaFilter.map(s => s.split(':')[1])
-
-          this.allPolicies = schemaNames.reduce(
-            (all, schemaName) => {
-              const tables = this.schemaTree.find(s => s.schemaName === schemaName).schemaTables
-
-              const schemaPolicy = {
-                name: `${schemaName}`,
-                policy: this.calcOnePolicy(tables)
-              }
-              return all.concat([schemaPolicy])
-            }, []
-          )
-        }
-      }
-    },
-    watch: {
-      schemaFilter () {
-        this.$apollo.queries.init.refetch()
-      }
+          this.allPolicies = this.managedSchemata
+            .filter(s => !s.parked)
+            .reduce(
+              (all, schema) => {
+                const tables = schema.schemaTables
+                const schemaPolicy = {
+                  name: `${schema.schemaName}`,
+                  policy: this.calcOnePolicy(tables)
+                }
+                return all.concat([schemaPolicy])
+              }, []
+            )
+          }
     },
     data: () => ({
       allPolicies: [],
@@ -120,17 +104,8 @@
       defaultNoRlsPolicies: 'NOT CALCULATED',
       selectedTabName: ''
     }),
-    apollo: {
-      init: {
-        query () {
-          return getDbSchemaTree
-        },
-        fetchPolicy: 'network-only',
-        update (result) {
-          this.schemaTree = result.allSchemata.nodes
-          this.calculateAllPolicies()
-        }
-      }
+    mounted () {
+      this.calculateAllPolicies()
     }
   }
 </script>

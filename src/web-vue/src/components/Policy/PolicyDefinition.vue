@@ -1,11 +1,10 @@
 <template>
-    <v-card color="black" :key="policy.id">
+    <v-card color="black" :key="policyDefinition.id">
       <v-container>
         <v-toolbar>
-          <h1>Policy Name: {{ policy.name }}</h1>
+          <h1>Policy Name: {{ policyDefinition.name }}</h1>
           <v-spacer></v-spacer>
           <v-layout justify-center>
-            <!-- <v-checkbox :input-value="enableRls" label="Enable Rls" :disabled="disabled" @click="toggleEnableRls" ref="enableRlsCheckbox"></v-checkbox> -->
             <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>
           </v-layout>
           <v-btn>Modify</v-btn>
@@ -25,7 +24,7 @@
           >
             <v-card flat>
             <policy-definition-grant-grid
-              :policy="policy"
+              :policy="policyDefinition"
               :disabled="disabled"
             ></policy-definition-grant-grid>
             </v-card>
@@ -43,7 +42,7 @@
           >
             <v-card flat>
             <policy-rls-qualifier-grid
-              :policy="policy"
+              :policy="policyDefinition"
               :disabled="disabled"
             ></policy-rls-qualifier-grid>
             </v-card>
@@ -59,56 +58,10 @@
             key="policy-template"
           >
             <v-card flat>
-              <v-container>
-                <v-toolbar>
-                  <v-layout
-                    align-center
-                    align-content-center
-                    justify-center
-                    justify-content-center
-                  >
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on }">
-                        <v-btn @click="expand" v-on="on"><v-icon>note_add</v-icon></v-btn>
-                      </template>
-                      <span>Expand</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on }">
-                        <v-btn v-on="on"><v-icon>file_copy</v-icon></v-btn>
-                      </template>
-                      <span>Copy</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on }">
-                        <v-btn v-on="on" :hidden="!table"><v-icon>arrow_forward</v-icon></v-btn>
-                      </template>
-                      <span>Execute</span>
-                    </v-tooltip>
-                    <v-spacer></v-spacer>
-                    <v-radio-group v-model="policyReadability" row>
-                      <v-radio
-                        key="terse"
-                        label="Terse"
-                        value="terse"
-                      ></v-radio>
-                      <v-radio
-                        key="verbose"
-                        label="Verbose"
-                        value="verbose"
-                      ></v-radio>
-                    </v-radio-group>
-                  </v-layout>
-                </v-toolbar>
-                <v-textarea
-                  :value="computedPolicy"
-                  auto-grow
-                  hide-details
-                  background-color="black"
-                  disabled
-                >
-                </v-textarea>
-              </v-container>
+              <policy-realization
+                :policyDefinition="policyDefinition"
+                :table="table"
+              ></policy-realization>
             </v-card>
           </v-tab-item>
 
@@ -124,16 +77,14 @@
 
   import PolicyDefinitionGrantGrid from './PolicyDefinitionGrantGrid.vue'
   import PolicyRlsQualifierGrid from './PolicyRlsQualifierGrid.vue'
-  import PolicyComputerMixin from './PolicyComputerMixin'
+  import PolicyRealization from './PolicyRealization.vue'
 
   export default {
     name: 'PolicyDefinition',
-    mixins: [
-      PolicyComputerMixin
-    ],
     components: {
       PolicyDefinitionGrantGrid,
-      PolicyRlsQualifierGrid
+      PolicyRlsQualifierGrid,
+      PolicyRealization
     },
     props: {
       policyId: {
@@ -157,7 +108,7 @@
       }
     },
     mounted () {
-      this.enableRls = this.policy.enableRls
+      this.enableRls = this.policyDefinition.enableRls
       this.doComputePolicy()
     },
     watch: {
@@ -165,15 +116,13 @@
         this.doComputePolicy()
       },
       policy () {
-        console.log('blah', this.table)
-        this.enableRls = this.policy.enableRls
+        this.enableRls = this.policyDefinition.enableRls
         this.doComputePolicy()
       },
       enableRls () {
-        console.log('enableRls', this.enableRls)
         this.$store.commit('savePolicy', {
           policy: {
-            ...this.policy,
+            ...this.policyDefinition,
             enableRls: this.enableRls
           }
         })
@@ -183,75 +132,22 @@
       expand () {
         this.computedPolicy = `${this.computedPolicy}=`
       },
-      roleGrantSelected(roleGrant, action) {
-        return [ALLOWED, IMPLIED].indexOf(roleGrant[action]) > -1
-      },
-      roleGrantDisabled(roleGrant, action) {
-        return roleGrant[action] === IMPLIED
-      },
-      doComputePolicy () {
-        const variables = this.table ? {
-          schemaName: this.table.tableSchema,
-          tableName: this.table.name
-        } : null
-        this.computedPolicy = this.computePolicy(this.policy, this.policyReadability, variables)
-      },
-      toggleEnableRls () {
-        if (this.toggleCompleted) {
-          this.toggleCompleted = false
-          return
-        } else {
-          console.log('enableRlsCheckbox', this.$refs.enableRlsCheckbox)
-          // this.$store.commit('savePolicy', {
-          //   policy: {
-          //     ...this.policy,
-          //     enableRls: this.enableRls
-          //   }
-          // })
-          this.toggleCompleted = true
-        }
-        // console.log('toggle', value)
-      }
+      // roleGrantSelected(roleGrant, action) {
+      //   return [ALLOWED, IMPLIED].indexOf(roleGrant[action]) > -1
+      // },
+      // roleGrantDisabled(roleGrant, action) {
+      //   return roleGrant[action] === IMPLIED
+      // },
     },
     computed: {
-      // enableRls () {
-      //   return this.policy.enableRls
-      // },
       disabled () {
         return this.table !== null && this.table !== undefined
       },
-      policy () {
+      policyDefinition () {
         const policies = this.$store.state.policies
         const pol = this.$store.state.policies.find(p => p.id === this.policyId)
         return pol
-      },
-      defaultRlsQual () {
-        return this.$store.state.defaultRlsQual
-      },
-      headers () {
-        const hdrs = [
-          {
-            text: 'Role Name',
-            sortable: false
-          },
-          {
-            text: 'SELECT',
-            sortable: false
-          },
-          {
-            text: 'INSERT',
-            sortable: false
-          },
-          {
-            text: 'UPDATE',
-            sortable: false
-          },
-          {
-            text: 'DELETE',
-            sortable: false
-          }
-        ]
-      },
+      }
     }
   }
 </script>

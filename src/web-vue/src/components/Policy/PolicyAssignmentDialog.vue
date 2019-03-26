@@ -55,7 +55,7 @@
     },
     computed: {
       displayValue () {
-        return this.currentPolicyDefinition.name
+        return this.currentPolicyDefinition ? this.currentPolicyDefinition.name : 'n/a'
       },
       allPolicyDefinitions () {
         return this.$store.state.policies
