@@ -61,6 +61,7 @@
               <policy-realization
                 :policyDefinition="policyDefinition"
                 :table="table"
+                :enableRls="enableRls"
               ></policy-realization>
             </v-card>
           </v-tab-item>
@@ -102,22 +103,15 @@
         policyStructure: [],
         calculatedPolicy: 'NOT CALCULATED',
         toggleCompleted: false,
-        activeTab: '',
-        policyReadability: 'terse',
-        computedPolicy: 'N/A'
+        activeTab: ''
       }
     },
     mounted () {
       this.enableRls = this.policyDefinition.enableRls
-      this.doComputePolicy()
     },
     watch: {
-      policyReadability () {
-        this.doComputePolicy()
-      },
-      policy () {
+      policyDefinition () {
         this.enableRls = this.policyDefinition.enableRls
-        this.doComputePolicy()
       },
       enableRls () {
         this.$store.commit('savePolicy', {
@@ -129,15 +123,6 @@
       }
     },
     methods: {
-      expand () {
-        this.computedPolicy = `${this.computedPolicy}=`
-      },
-      // roleGrantSelected(roleGrant, action) {
-      //   return [ALLOWED, IMPLIED].indexOf(roleGrant[action]) > -1
-      // },
-      // roleGrantDisabled(roleGrant, action) {
-      //   return roleGrant[action] === IMPLIED
-      // },
     },
     computed: {
       disabled () {

@@ -73,26 +73,30 @@
       table: {
         type: Object,
         required: false
+      },
+      enableRls: {
+        type: Boolean,
+        required: true
       }
     },
     data () {
       return {
         policyStructure: [],
         calculatedPolicy: 'NOT CALCULATED',
-        toggleCompleted: false,
-        activeTab: '',
         policyReadability: 'terse',
         computedPolicy: 'N/A'
       }
     },
     mounted () {
-      this.enableRls = this.policyDefinition.enableRls
       this.doComputePolicy()
     },
     watch: {
       policyReadability () {
         this.doComputePolicy()
       },
+      enableRls () {
+        this.doComputePolicy()
+      }
     },
     methods: {
       expand () {

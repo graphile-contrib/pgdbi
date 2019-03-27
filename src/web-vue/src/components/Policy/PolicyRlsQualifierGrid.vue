@@ -78,12 +78,12 @@
     },
     methods: {
       impliedPolicies(roleName, action) {
+        // todo:  detect implied roles that are not in the same family - this should probably be a special family as it likely indicates a mistake
         const impliedRoleNames = this.projectRoles
           .find(pr => pr.roleName === roleName)
           .applicableRoles
           .reduce((a,r)=>{ return a.concat(r.roleName)}, [])
           .concat([roleName])
-console.log('imp', impliedRoleNames)
         const impliedRlsPolicies = impliedRoleNames
           .reduce(
             (ip, impliedRoleName) => {
@@ -92,7 +92,7 @@ console.log('imp', impliedRoleNames)
                 //   console.log('wtf flying', roleName, action, impliedRoleName, this.policy.rlsQualifiers[impliedRoleName][action].policies)
                 // }
                 // return ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
-                console.log('all', this.policy.rlsQualifiers, impliedRoleName, action)
+                // console.log('all', this.policy.rlsQualifiers, impliedRoleName, action)
                 return action === 'all'
                   ? ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies)
                   : ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)

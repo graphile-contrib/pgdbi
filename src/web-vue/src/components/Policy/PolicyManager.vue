@@ -61,7 +61,6 @@
     },
     computed: {
       policies () {
-        console.log('wtf', this.$store.state.policies.length)
         return this.$store.state.policies
       }
     },
