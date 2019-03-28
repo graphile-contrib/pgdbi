@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import Initialize from './views/Initialize.vue'
 import Table from './components/Table/Table.vue'
 import Function from './components/Function.vue'
-import Security from './views/SecurityView.vue'
+import TableSecurityView from './views/TableSecurityView.vue'
 import Settings from './components/Settings/SecurityPolicySettings.vue'
 import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
@@ -34,9 +34,9 @@ const router = new Router({
       component: Initialize
     },
     {
-      path: '/security-manager',
-      name: 'security-manager',
-      component: Security
+      path: '/table-security-manager',
+      name: 'table-security-manager',
+      component: TableSecurityView
     },
     {
       path: '/fk-index-manager',

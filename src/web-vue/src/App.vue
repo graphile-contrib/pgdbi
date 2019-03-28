@@ -21,7 +21,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn @click="$router.push({name:'home'})">Home</v-btn>
-      <v-btn @click="$router.push({name:'security-manager'})">Table Security</v-btn>
+      <v-btn @click="$router.push({name:'table-security-manager'})">Table Security</v-btn>
       <v-btn @click="$router.push({name:'function-security-manager'})">Function Security</v-btn>
       <v-btn @click="$router.push({name:'fk-index-manager'})">Indexes</v-btn>
       <v-btn @click="$router.push({name:'smart-comment-manager'})">Smart Comments</v-btn>

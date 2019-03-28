@@ -31,7 +31,7 @@
         key="policy-manager"
         ripple
       >
-        Policy Set Templates
+        Policy Templates
       </v-tab>
       <v-tab-item
         key="policy-manager"
@@ -102,7 +102,7 @@
   import PolicyManager from '@/components/Policy/PolicyManager'
 
   export default {
-    name: 'SecurityView',
+    name: 'TableSecurityView',
     components: {
       RoleFilter,
       SecurityPolicySettings,
