@@ -82,7 +82,7 @@ alter table {{schemaName}}.{{tableName}} enable row level security;
                       policyDefinition.rlsQualifiers[roleName][action].policies.reduce(
                         (allActionPolicies, actionPolicy) => {
                           return allActionPolicies.concat(`
-create policy ${actionPolicy.name} on {{schemaName}}.{{tableName}}
+create policy ${actionPolicy.name}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableName}}
   as ${actionPolicy.passStrategy}
   for ${action}
   to ${roleName}

@@ -41,7 +41,7 @@ function buildNewRlsPolicy (using, withCheck, passStrategy, name) {
   const id = (((new Date()).getTime() * 10000) + 621355968000000000)
   return {
     id: id
-    ,name: name || id
+    ,name: name || `rls_${id}`
     ,using: using
     ,withCheck: withCheck
     ,passStrategy: passStrategy
@@ -49,7 +49,6 @@ function buildNewRlsPolicy (using, withCheck, passStrategy, name) {
 }
 
 function buildNewPolicy (name, projectRoles) {
-  console.log('wtf, indeed', name)
   return {
     id: (((new Date()).getTime() * 10000) + 621355968000000000),
     name: name,
