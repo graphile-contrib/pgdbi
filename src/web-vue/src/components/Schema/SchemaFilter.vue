@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-btn @click="apply">Apply</v-btn>
     <h1 v-if="computing">Refreshing Schemata....</h1>
     <v-treeview
       :items="items"
@@ -27,10 +26,6 @@
       computing: false
     }),
     props: {
-      afterApply: {
-        type: Function,
-        required: true
-      }
     },
     methods: {
       apply () {
@@ -44,12 +39,12 @@
         .then(result => {
           this.$store.commit('setManagedSchemata', result.data.allSchemata.nodes)
           this.computing = false
-          this.afterApply()
+          // this.afterApply()
         })
         .catch(error => {
           console.error(error)
           this.computing = false
-          this.afterApply()
+          // this.afterApply()
         })
       },
       computeItems () {

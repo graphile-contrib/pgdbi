@@ -73,7 +73,7 @@
       },
     },
     watch: {
-      selectedSchemata () {
+      managedSchemata () {
         this.computeItems()
       },
       active () {

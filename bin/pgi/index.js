@@ -9,7 +9,7 @@ const plugins = [
 ]
 
 const connection = process.env.POSTGRES_CONNECTION
-const pgdbiPort = process.env.PGDBI_PORT || 6099
+const pgdbiPort = process.env.PGDBI_PORT || 5678
 const schemas = [ 'information_schema' ] //[ 'pde' ]
 const disableDefaultMutations = false
 const watchPg = false //process.env.WATCH_PG === 'true'

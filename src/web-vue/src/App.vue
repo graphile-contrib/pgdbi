@@ -16,20 +16,18 @@
       :clipped-left="clipped"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-spacer></v-spacer>
-      <div selectable>
+      <div>
         <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
       </div>
       <v-spacer></v-spacer>
+      <v-btn @click="$router.push({name:'home'})">Home</v-btn>
+      <v-btn @click="$router.push({name:'security-manager'})">Table Security</v-btn>
+      <v-btn @click="$router.push({name:'function-security-manager'})">Function Security</v-btn>
+      <v-btn @click="$router.push({name:'fk-index-manager'})">Indexes</v-btn>
+      <v-btn @click="$router.push({name:'smart-comment-manager'})">Smart Comments</v-btn>
       <v-btn icon @click.stop="settings">
         <v-icon>settings</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="home">
-        <v-icon>home</v-icon>
-      </v-btn>
-      <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
-      </v-btn> -->
     </v-toolbar>
     <v-content>
       <v-container
@@ -37,11 +35,6 @@
          ma-0 
          pa-0
       >
-      <v-toolbar>
-        <v-btn @click="$router.push({name:'security-manager'})">Security</v-btn>
-        <v-btn @click="$router.push({name:'fk-index-manager'})">Indexes</v-btn>
-        <v-btn @click="$router.push({name:'smart-comment-manager'})">Smart Comments</v-btn>
-      </v-toolbar>
         <router-view></router-view>
       </v-container>
     </v-content>

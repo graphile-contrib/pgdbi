@@ -7,7 +7,7 @@
           <v-layout justify-center>
             <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>
           </v-layout>
-          <v-btn>Modify</v-btn>
+          <v-btn @click="customize" :hidden="!table">customize</v-btn>
         </v-toolbar>
         <v-tabs
           v-model="activeTab"
@@ -123,6 +123,9 @@
       }
     },
     methods: {
+      customize () {
+        alert('not implemented: will allow for in-place editing to create new custom policy')
+      }
     },
     computed: {
       disabled () {

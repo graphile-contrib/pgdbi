@@ -22,11 +22,24 @@
             </template>
             <span>Expand</span>
           </v-tooltip>
-          <!-- <v-btn @click="expand(schemaPolicy)">Expand</v-btn> -->
-          <button 
-            v-clipboard:copy="schemaPolicy.policy"
-          >Copy</button>
-          <v-btn @click="calculateAllPolicies">Refresh</v-btn>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn 
+                v-on="on" 
+                v-clipboard:copy="policyText(schemaPolicy)"
+                v-clipboard:success="onCopy"
+                v-clipboard:error="onError"
+              ><v-icon>file_copy</v-icon>
+            </v-btn>
+            </template>
+            <span>Copy</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" @click="executeSql"><v-icon>arrow_forward</v-icon></v-btn>
+            </template>
+            <span>Execute</span>
+          </v-tooltip>
         </v-toolbar>
         <v-textarea
           :disabled="true"
@@ -83,19 +96,31 @@
         )
       },
       calculateAllPolicies () {
-          this.allPolicies = this.managedSchemata
-            .filter(s => !s.parked)
-            .reduce(
-              (all, schema) => {
-                const tables = schema.schemaTables
-                const schemaPolicy = {
-                  name: `${schema.schemaName}`,
-                  policy: this.calcOnePolicy(tables)
-                }
-                return all.concat([schemaPolicy])
-              }, []
-            )
-          }
+        this.allPolicies = this.managedSchemata
+          .filter(s => !s.parked)
+          .reduce(
+            (all, schema) => {
+              const tables = schema.schemaTables
+              const schemaPolicy = {
+                name: `${schema.schemaName}`,
+                policy: this.calcOnePolicy(tables)
+              }
+              return all.concat([schemaPolicy])
+            }, []
+          )
+      },
+      policyText (schemaPolicy) {
+        return schemaPolicy.policy
+      },
+      onCopy: function (e) {
+        alert('Copied!')
+      },
+      onError: function (e) {
+        alert('Failed to copy texts')
+      },
+      executeSql () {
+        alert ('not implemented:  server config value will expose graphile extension to execute generated script')
+      }
     },
     data: () => ({
       allPolicies: [],

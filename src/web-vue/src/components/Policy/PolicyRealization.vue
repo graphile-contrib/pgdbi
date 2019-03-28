@@ -15,13 +15,20 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on"><v-icon>file_copy</v-icon></v-btn>
+            <v-btn 
+              v-on="on" 
+              :hidden="!table"
+              v-clipboard:copy="computedPolicy"
+              v-clipboard:success="onCopy"
+              v-clipboard:error="onError"
+            ><v-icon>file_copy</v-icon>
+          </v-btn>
           </template>
           <span>Copy</span>
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" :hidden="!table"><v-icon>arrow_forward</v-icon></v-btn>
+            <v-btn v-on="on" :hidden="!table" @click="executeSql"><v-icon>arrow_forward</v-icon></v-btn>
           </template>
           <span>Execute</span>
         </v-tooltip>
@@ -52,16 +59,14 @@
 </template>
 
 <script>
-  const ALLOWED = 'ALLOWED'
-  const DENIED = 'DENIED'
-  const IMPLIED = 'IMPLIED'
-
   import PolicyComputerMixin from './PolicyComputerMixin'
+  import VueClipboard from 'vue-clipboard2'
 
   export default {
     name: 'PolicyDefinition',
     mixins: [
-      PolicyComputerMixin
+      PolicyComputerMixin,
+      VueClipboard
     ],
     components: {
     },
@@ -82,7 +87,6 @@
     data () {
       return {
         policyStructure: [],
-        calculatedPolicy: 'NOT CALCULATED',
         policyReadability: 'terse',
         computedPolicy: 'N/A'
       }
@@ -109,6 +113,15 @@
         } : null
         this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables)
       },
+      onCopy: function (e) {
+        alert('Copied!')
+      },
+      onError: function (e) {
+        alert('Failed to copy texts')
+      },
+      executeSql () {
+        alert ('not implemented:  server config value will expose graphile extension to execute generated script')
+      }
     },
     computed: {
     }
