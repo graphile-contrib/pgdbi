@@ -1,13 +1,13 @@
 # postgraphile-db-inspector-extension
 
 ```
-yarn add postraphile-db-inspector-extension
+yarn add postgraphile-db-inspector-extension
 ```
 
 or 
 
 ```
-npm install -S postraphile-db-inspector-extension
+npm install -S postgraphile-db-inspector-extension
 ```
 
 ```
