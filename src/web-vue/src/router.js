@@ -10,7 +10,7 @@ import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignK
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
 import FunctionSecurityManager from './components/FunctionSecurityManager/FunctionSecurityManager'
 
-import store from './store'
+import store from './store/store'
 
 Vue.use(Router)
 

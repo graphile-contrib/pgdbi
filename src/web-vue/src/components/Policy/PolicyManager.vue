@@ -55,6 +55,7 @@
         }
         catch (e) {
           alert(e.toString())
+          console.error(e)
         }
         this.dialog = false
       }
