@@ -1,8 +1,12 @@
 {
   "name": "postgraphile-db-inspector-extension",
-  "version": "1.0.9-alpha.14",
+  "version": "1.0.9-alpha.15",
   "main": "index.js",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stlbucket/postgraphile-db-inspector-extension"
+  },
+"license": "MIT",
   "scripts": {
     "dev-server": "node src/devServer",
     "prod-build": "cd ./src/web-vue & yarn build"
