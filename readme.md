@@ -19,7 +19,7 @@ enable pgdbi in graphileBuildOptions
 graphileBuildOptions: {
   pgdbiOptions: {
     enable: true,            // true to enable pgdbi
-    connection: connection,  // will throw an error if missing
+    connection: connection,  // same as postgraphile connection
     port: 5678               // optional - will default to 5678
   }
 }
