@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import PolicyDefinition from './PolicyDefinition.vue'
+  import PolicyDefinition from './TablePolicyDefinition.vue'
 
   export default {
     name: 'PolicyManager',

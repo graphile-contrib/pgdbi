@@ -63,7 +63,7 @@
 <script>
   import RoleFilter from '@/components/Role/RoleFilter'
   import SchemaFilter from '@/components/Schema/SchemaFilter'
-  import PolicyManager from '@/components/Policy/PolicyManager'
+  import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
 
   export default {
     name: 'Settings',

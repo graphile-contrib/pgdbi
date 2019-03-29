@@ -71,43 +71,27 @@
         key="policies"
       >
         <v-card>
-          <security-policy></security-policy>
+          <schema-security-scripts></schema-security-scripts>
         </v-card>
       </v-tab-item>
 
-      <!-- <v-tab
-        key="securityReview"
-        ripple
-      >
-        Security Review
-      </v-tab>
-      <v-tab-item
-        key="securityReview"
-      >
-        <v-card>
-          <security-review></security-review>
-        </v-card>
-      </v-tab-item>
- -->
     </v-tabs>
   </v-container>
 </template>
 
 <script>
   import RoleFilter from '@/components/Role/RoleFilter'
-  import PolicyAssignment from '@/components/Policy/PolicyAssignment'
+  import PolicyAssignment from '@/components/TableSecurity/TablePolicyAssignment'
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
-  import SecurityPolicy from '@/components/Security/SecurityPolicy'
-  // import SecurityReview from '@/components/Security/SecurityReview'
-  import PolicyManager from '@/components/Policy/PolicyManager'
+  import SchemaSecurityScripts from '@/components/TableSecurity/SchemaSecurityScripts'
+  import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
 
   export default {
     name: 'TableSecurityView',
     components: {
       RoleFilter,
       SecurityPolicySettings,
-      SecurityPolicy,
-      // SecurityReview,
+      SchemaSecurityScripts,
       PolicyManager,
       PolicyAssignment
     },

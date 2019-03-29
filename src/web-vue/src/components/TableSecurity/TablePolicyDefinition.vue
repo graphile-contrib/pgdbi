@@ -76,9 +76,9 @@
   const DENIED = 'DENIED'
   const IMPLIED = 'IMPLIED'
 
-  import PolicyDefinitionGrantGrid from './PolicyDefinitionGrantGrid.vue'
-  import PolicyRlsQualifierGrid from './PolicyRlsQualifierGrid.vue'
-  import PolicyRealization from './PolicyRealization.vue'
+  import PolicyDefinitionGrantGrid from './TablePolicyDefinitionGrantGrid.vue'
+  import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
+  import PolicyRealization from './TablePolicyRealization.vue'
 
   export default {
     name: 'PolicyDefinition',

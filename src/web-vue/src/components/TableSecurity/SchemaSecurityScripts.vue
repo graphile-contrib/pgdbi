@@ -55,11 +55,11 @@
 </template>
 
 <script>
-  import PolicyComputerMixin from '../Policy/PolicyComputerMixin'
+  import PolicyComputerMixin from './TablePolicyComputerMixin'
   import { mapState } from 'vuex'
 
   export default {
-    name: 'SecurityPolicy',
+    name: 'SchemaSecurityScripts',
     mixins: [
       PolicyComputerMixin
     ],
@@ -81,9 +81,6 @@
       },
       expand (schemaPolicy) {
         schemaPolicy.policy = `${schemaPolicy.policy} `
-      },
-      findTablePolicyTemplate (tableName) {
-        return this.policies.find(p => p.name === 'Default Policy')
       },
       calcOnePolicy (tables) {
         return tables.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(
@@ -112,11 +109,12 @@
       policyText (schemaPolicy) {
         return schemaPolicy.policy
       },
-      onCopy: function (e) {
+      onCopy: function () {
         alert('Copied!')
       },
       onError: function (e) {
-        alert('Failed to copy texts')
+        alert('Failed to copy scripts to clipboard')
+        console.error(e)
       },
       executeSql () {
         alert ('not implemented:  server config value will expose graphile extension to execute generated script')

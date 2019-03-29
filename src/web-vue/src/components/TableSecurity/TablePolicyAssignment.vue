@@ -46,8 +46,8 @@
 </template>
 
 <script>
-  import PolicyDefinition from '@/components/Policy/PolicyDefinition'
-  import PolicyAssignmentDialog from '@/components/Policy/PolicyAssignmentDialog'
+  import PolicyDefinition from '@/components/TableSecurity/TablePolicyDefinition'
+  import PolicyAssignmentDialog from '@/components/TableSecurity/TablePolicyAssignmentDialog'
 
   export default {
     name: 'PolicyAssignment',

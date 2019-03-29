@@ -59,7 +59,7 @@
 </template>
 
 <script>
-  import PolicyComputerMixin from './PolicyComputerMixin'
+  import PolicyComputerMixin from './TablePolicyComputerMixin'
   import VueClipboard from 'vue-clipboard2'
 
   export default {
