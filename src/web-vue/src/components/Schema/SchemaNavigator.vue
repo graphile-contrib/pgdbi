@@ -4,8 +4,8 @@
       <v-tab key="schemata">Schemata</v-tab>
       <v-tab-item key="schemata">
         <v-toolbar>
-          <v-btn @click="toggleFilter" :hidden="!filterOn" :disabled="applyDisabled">Apply</v-btn>
-          <v-btn @click="toggleFilter" :hidden="filterOn">Filter</v-btn>
+          <v-btn @click="toggleFilter" :hidden="!filterActive" :disabled="applyDisabled">Apply</v-btn>
+          <v-btn @click="toggleFilter" :hidden="filterActive">Filter</v-btn>
         </v-toolbar>    
         <schema-tree v-if="!filterOn"></schema-tree>
         <schema-filter v-if="filterOn" @click="toggleFilter" ref="schemaFilter" :selectionChanged="selectionChanged"></schema-filter>
@@ -36,7 +36,7 @@
       initializing () {
         const retval = this.$store.state.initializing
         if (retval === true) { this.filterActive = true }
-        return this.$store.state.initializing
+        return retval
       },
     },
     watch: {
