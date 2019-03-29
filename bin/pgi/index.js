@@ -8,13 +8,37 @@ const plugins = [
   require('postgraphile-plugin-connection-filter')
 ]
 
-const connection = process.env.POSTGRES_CONNECTION
-const pgdbiPort = process.env.PGDBI_PORT || 5678
+// const connection = process.env.POSTGRES_CONNECTION
+// const pgdbiPort = process.env.PGDBI_PORT || 5678
 const schemas = [ 'information_schema' ] //[ 'pde' ]
 const disableDefaultMutations = false
 const watchPg = false //process.env.WATCH_PG === 'true'
 
+function displayOptions(context) {
+  console.log(`
+-----------------------------------------------------------------------------------------------
+------------------ pgdbi ${context} without specifying graphileBuildOptions.pgdbiOptions.connection
+  
+  pgdbiOptions
+  
+      enable: boolean - set to true to enable pgdbi.  false or no value will result in pgdbi not launching
+  
+      connection:  postgres connection to be passed to underlying postgraphile server.  if this is missing and enablePgdbi is true, an error is thrown
+  
+      port:   integer - default 5678 - pgdbi will expose ui on this port
+
+-----------------------------------------------------------------------------------------------
+ `
+  )
+}
+
 function PostgraphileDE(builder, options) {
+  const connection = options.pgdbiOptions.connection
+  if (!connection) { 
+    displayOptions('enabled')
+    throw new Error('PGDBI requires graphileBuildOptions.pgdbiOptions.connection')
+  }
+  const pgdbiPort = options.pgdbiOptions.port || 5678
   const app = express();
 
   app.use(express.static(path.join(`${__dirname}`, `dist`)))
@@ -47,9 +71,16 @@ function PostgraphileDE(builder, options) {
 }
 
 function PostgraphileDELauncher(builder, options) {
-  const enablePgDbInspector = options.enablePgDbInspector || false
-  if (enablePgDbInspector) {
-    console.log('wtf')
+  const pgdbiOptions = options.pgdbiOptions
+
+  if (!pgdbiOptions) { 
+    displayOptions('installed')
+    console.log('pgdbi not launching')
+  }
+
+  const enablePgdbi = pgdbiOptions ? pgdbiOptions.enable || false : false
+
+  if (enablePgdbi) {
     PostgraphileDE(builder, options)
   }
 }
