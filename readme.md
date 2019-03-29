@@ -16,9 +16,13 @@ require('postgraphile-db-inspector-extension')
 
 enable pgdbi in graphileBuildOptions
 ```
-    graphileBuildOptions: {
-      enablePgDbInspector: true
-    }
+graphileBuildOptions: {
+  pgdbiOptions: {
+    enable: true,            // true to enable pgdbi
+    connection: connection,  // will throw an error if missing
+    port: 5678               // optional - will default to 5678
+  }
+}
 ```
 
 this will expose pgdbi on port 5678
