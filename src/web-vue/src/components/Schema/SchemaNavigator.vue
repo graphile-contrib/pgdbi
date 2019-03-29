@@ -25,7 +25,9 @@
       SchemaFilter
     },
     data: () => ({
-      filterActive: false,
+      filterActive: () => {
+        return this.initializing
+      },
       toggleComplete: false,
       applyDisabled: false
     }),
@@ -35,7 +37,6 @@
       },
       initializing () {
         const retval = this.$store.state.initializing
-        if (retval === true) { this.filterActive = true }
         return retval
       },
     },
@@ -49,12 +50,14 @@
         if (this.toggleComplete === true) {
           this.toggleComplete = false
         } else {
-          if (this.filterOn) {
+          if (this.filterActive) {
+            this.filterActive = false
             this.$refs.schemaFilter.apply()
+          } else {
+            this.filterActive = true
           }
           this.toggleComplete = true
         }
-        this.filterActive = !this.filterActive
       }
     }
   }
