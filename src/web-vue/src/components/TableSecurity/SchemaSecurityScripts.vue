@@ -40,6 +40,19 @@
             </template>
             <span>Execute</span>
           </v-tooltip>
+          <v-spacer></v-spacer>
+          <v-radio-group v-model="policyReadability" row>
+            <v-radio
+              key="terse"
+              label="Terse"
+              value="terse"
+            ></v-radio>
+            <v-radio
+              key="verbose"
+              label="Verbose"
+              value="verbose"
+            ></v-radio>
+          </v-radio-group>
         </v-toolbar>
         <v-textarea
           :disabled="true"
@@ -73,7 +86,10 @@
     watch: {
       policies () {
         this.calculateAllPolicies()
-      }
+      },
+      policyReadability () {
+        this.calculateAllPolicies()
+      },
     },
     methods: {
       handleCopyStatus(status) {
@@ -86,8 +102,12 @@
         return tables.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(
           (policy, table) => {
             const policyTemplate = this.policies.find(p => p.id === table.policyDefinitionId)
-            const tablePolicy = this.computePolicy(policyTemplate, 'terse')
-            return policy.concat(tablePolicy).split('{{schemaName}}').join(table.tableSchema).split('{{tableName}}').join(table.name)
+            const variables = {
+              schemaName: table.tableSchema,
+              tableName: table.name
+            }
+            const tablePolicy = this.computePolicy(policyTemplate, this.policyReadability, variables)
+            return policy.concat(tablePolicy)
           }, ''
         )
       },
@@ -124,7 +144,9 @@
       schemaPolicy: 'NOT CALCULATED',
       defaultRlsPolicies: 'NOT CALCULATED',
       defaultNoRlsPolicies: 'NOT CALCULATED',
-      selectedTabName: ''
+      selectedTabName: '',
+      policyReadability: 'terse'
+
     }),
     mounted () {
       this.calculateAllPolicies()
