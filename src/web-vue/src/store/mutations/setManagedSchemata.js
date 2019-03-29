@@ -79,6 +79,7 @@ function setManagedSchemata (state, payload) {
   state.managedSchemata = schemataToUnPark.concat(newlyManagedSchemata).concat(schemataToRemainManaged)
   state.parkedSchemata = schemataToPark.concat(schemataToRemainParked)
   state.initializing = false
+  state.schemaFilterOn = false
 }
 
 export default setManagedSchemata

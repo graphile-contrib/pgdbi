@@ -1,5 +1,6 @@
 export default {
   initializing: true,
+  schemaFilterOn: true,
   policies: [],
   defaultPolicy: null,
   managedSchemata: [],

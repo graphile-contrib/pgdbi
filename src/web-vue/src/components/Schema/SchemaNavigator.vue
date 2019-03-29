@@ -4,11 +4,11 @@
       <v-tab key="schemata">Schemata</v-tab>
       <v-tab-item key="schemata">
         <v-toolbar>
-          <v-btn @click="toggleFilter" :hidden="!filterActive" :disabled="applyDisabled">Apply</v-btn>
-          <v-btn @click="toggleFilter" :hidden="filterActive">Filter</v-btn>
+          <v-btn @click="applyFilter" :hidden="!schemaFilterOn" :disabled="applyDisabled">Apply</v-btn>
+          <v-btn @click="filterSchemata" :hidden="schemaFilterOn">Filter</v-btn>
         </v-toolbar>    
-        <schema-tree v-if="!filterOn"></schema-tree>
-        <schema-filter v-if="filterOn" @click="toggleFilter" ref="schemaFilter" :selectionChanged="selectionChanged"></schema-filter>
+        <schema-tree v-if="!schemaFilterOn"></schema-tree>
+        <schema-filter v-if="schemaFilterOn" ref="schemaFilter" :selectionChanged="selectionChanged"></schema-filter>
       </v-tab-item>
     </v-tabs>    
   </v-container>
@@ -32,13 +32,12 @@
       applyDisabled: false
     }),
     computed: {
-      filterOn () {
-        return this.filterActive || this.initializing
-      },
       initializing () {
-        const retval = this.$store.state.initializing
-        return retval
+        return this.$store.state.initializing
       },
+      schemaFilterOn () {
+        return this.$store.state.schemaFilterOn
+      }
     },
     watch: {
     },
@@ -46,18 +45,11 @@
       selectionChanged (selected) {
         this.applyDisabled = selected.length === 0
       },
-      toggleFilter () {
-        if (this.toggleComplete === true) {
-          this.toggleComplete = false
-        } else {
-          if (this.filterActive) {
-            this.filterActive = false
-            this.$refs.schemaFilter.apply()
-          } else {
-            this.filterActive = true
-          }
-          this.toggleComplete = true
-        }
+      applyFilter () {
+        this.$refs.schemaFilter.apply()
+      },
+      filterSchemata () {
+        this.$store.commit('filterSchemata')
       }
     }
   }

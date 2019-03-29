@@ -43,6 +43,7 @@
     methods: {
       resetStore () {
         this.$store.commit('resetDefaultState')
+        this.$router.push('initialize')
       },
       saveProject() {
         alert('NOT IMPLEMENTED')

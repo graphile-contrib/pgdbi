@@ -1,32 +1,6 @@
-const defaultRoleGrants = {
-  all: 'DENIED',
-  select: 'DENIED',
-  insert: 'DENIED',
-  update: 'DENIED',
-  delete: 'DENIED',
-}
-
-const defaultRlsQualifiers = {
-  all: {
-    policies: []
-  },
-  select: {
-    policies: []
-  },
-  insert: {
-    policies: []
-  },
-  update: {
-    policies: []
-  },
-  delete: {
-    policies: []
-  }
-}
-
 import initialize from './initialize'
 import resetDefaultState from './resetDefaultState'
-import rawSchemata from './rawSchemata'
+import filterSchemata from './filterSchemata'
 import setManagedSchemata from './setManagedSchemata'
 import assignTablePolicy from './assignTablePolicy'
 import projectRoles from './projectRoles'
@@ -41,7 +15,7 @@ import deleteRlsPolicy from './deleteRlsPolicy'
 export default {
   initialize,
   resetDefaultState,
-  rawSchemata,
+  filterSchemata,
   setManagedSchemata,
   assignTablePolicy,
   projectRoles,
