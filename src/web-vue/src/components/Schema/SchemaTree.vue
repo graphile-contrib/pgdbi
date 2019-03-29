@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <h1 v-if="computing">COMPUTING SCHEMA TREE....</h1>
+    <v-toolbar>
+      <v-btn @click="filterSchemata">Filter</v-btn>
+    </v-toolbar>    
     <v-treeview
       :items="items"
       activatable
@@ -27,6 +29,9 @@
       computing: false
     }),
     methods: {
+      filterSchemata () {
+        this.$store.commit('filterSchemata')
+      },
       computeItems () {
         this.computing = true
         this.items = this.managedSchemata.map(

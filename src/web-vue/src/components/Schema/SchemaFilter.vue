@@ -1,6 +1,9 @@
 <template>
   <div>
     <h1 v-if="computing">Refreshing Schemata....</h1>
+    <v-toolbar>
+      <v-btn @click="applyFilter" :disabled="applyDisabled">Apply</v-btn>
+    </v-toolbar>    
     <v-treeview
       :items="items"
       transition
@@ -17,6 +20,9 @@
   export default {
     name: 'SchemaFilter',
     computed: {
+      applyDisabled () {
+        return this.selected.length === 0
+      }
     },
     data: () => ({
       items: [],
@@ -31,7 +37,7 @@
       }
     },
     methods: {
-      apply () {
+      applyFilter () {
         this.computing = true
         this.$apollo.query({
           query: getDbSchemaTreeBySchemaName,
