@@ -1,6 +1,6 @@
 {
   "name": "postgraphile-db-inspector-extension",
-  "version": "1.0.9-alpha.15",
+  "version": "1.0.9-alpha.16",
   "main": "index.js",
   "repository": {
     "type": "git",
