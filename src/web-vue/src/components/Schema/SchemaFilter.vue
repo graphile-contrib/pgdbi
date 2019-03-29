@@ -1,16 +1,19 @@
 <template>
-  <div>
-    <h1 v-if="computing">Refreshing Schemata....</h1>
+  <v-container
+    ma-0 
+    pa-0
+  >
     <v-toolbar>
-      <v-btn @click="applyFilter" :disabled="applyDisabled">Apply</v-btn>
+      <v-btn @click="applyFilter" :disabled="applyDisabled" >Use Selected Schemata</v-btn>
     </v-toolbar>    
+    <h1 v-if="computing">Refreshing Schemata....</h1>
     <v-treeview
       :items="items"
       transition
       :selectable="true"
       v-model="selected"
     ></v-treeview>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -32,9 +35,6 @@
       computing: false
     }),
     props: {
-      selectionChanged: {
-        type: Function
-      }
     },
     methods: {
       applyFilter () {
@@ -79,9 +79,6 @@
       },
     },
     watch: {
-      selected () {
-        this.selectionChanged(this.selected)
-      }
     },
     apollo: {
       init: {

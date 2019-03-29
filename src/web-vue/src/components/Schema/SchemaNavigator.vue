@@ -1,5 +1,8 @@
 <template>
-  <v-container>
+  <v-container
+    ma-0 
+    pa-0
+  >
     <schema-tree v-if="!schemaFilterOn"></schema-tree>
     <schema-filter v-if="schemaFilterOn"></schema-filter>
   </v-container>

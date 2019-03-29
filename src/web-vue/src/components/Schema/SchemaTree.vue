@@ -1,7 +1,10 @@
 <template>
-  <v-container>
+  <v-container
+    ma-0 
+    pa-0
+  >
     <v-toolbar>
-      <v-btn @click="filterSchemata">Filter</v-btn>
+      <v-btn @click="filterSchemata">Select Schemata</v-btn>
     </v-toolbar>    
     <v-treeview
       :items="items"
