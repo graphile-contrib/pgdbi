@@ -13,7 +13,7 @@ const schemas = process.env.POSTGRAPHILE_SCHEMAS.split(',')
 const dynamicJson = process.env.DYNAMIC_JSON === 'true'
 const disableDefaultMutations = process.env.DISABLE_DEFAULT_MUTATIONS === 'true'
 const watchPg = process.env.WATCH_PG === 'true'
-const enablePgDbInspector = process.env.ENABLE_PGDBI === 'true'
+const enablePgdbi = process.env.ENABLE_PGDBI === 'true'
 
 
 const app = express();
@@ -29,7 +29,11 @@ app.use(postgraphile(
     ,appendPlugins: plugins
     ,watchPg: watchPg
     ,graphileBuildOptions: {
-      enablePgDbInspector: enablePgDbInspector
+      pgdbiOptions: {
+        enable: enablePgdbi,
+        connection: connection,
+        // port: 5679
+      }
     }
   }
 ));
