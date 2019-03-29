@@ -86,7 +86,6 @@
         return tables.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(
           (policy, table) => {
             const policyTemplate = this.policies.find(p => p.id === table.policyDefinitionId)
-            // console.log('tt', policyTemplate.id, table.name, policyTemplate.name, policyTemplate, this.policies)
             const tablePolicy = this.computePolicy(policyTemplate, 'terse')
             return policy.concat(tablePolicy).split('{{schemaName}}').join(table.tableSchema).split('{{tableName}}').join(table.name)
           }, ''

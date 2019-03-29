@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Initialize from './views/Initialize.vue'
 import Table from './components/Table/Table.vue'
-import Function from './components/Function.vue'
+import Function from './components/Function/Function.vue'
+import RoleManagerView from './views/RoleManagerView.vue'
 import TableSecurityView from './views/TableSecurityView.vue'
 import Settings from './components/Settings/SecurityPolicySettings.vue'
 import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
@@ -32,6 +33,11 @@ const router = new Router({
       path: '/initialize',
       name: 'initialize',
       component: Initialize
+    },
+    {
+      path: '/role-manager',
+      name: 'role-manager',
+      component: RoleManagerView
     },
     {
       path: '/table-security-manager',
@@ -82,7 +88,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (store.state.managedSchemata.length === 0 && to.name !== 'initialize') {
+  if (store.state.initializing && to.name !== 'initialize') {
     router.push('initialize')
   }
   next()

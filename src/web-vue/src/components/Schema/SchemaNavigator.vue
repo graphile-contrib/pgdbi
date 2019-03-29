@@ -4,10 +4,11 @@
       <v-tab key="schemata">Schemata</v-tab>
       <v-tab-item key="schemata">
         <v-toolbar>
-          <v-btn @click="toggleFilter">{{filterButtonText}}</v-btn>
+          <v-btn @click="toggleFilter" :hidden="!filterOn" :disabled="applyDisabled">Apply</v-btn>
+          <v-btn @click="toggleFilter" :hidden="filterOn">Filter</v-btn>
         </v-toolbar>    
         <schema-tree v-if="!filterOn"></schema-tree>
-        <schema-filter v-if="filterOn" @click="toggleFilter" ref="schemaFilter"></schema-filter>
+        <schema-filter v-if="filterOn" @click="toggleFilter" ref="schemaFilter" :selectionChanged="selectionChanged"></schema-filter>
       </v-tab-item>
     </v-tabs>    
   </v-container>
@@ -24,27 +25,36 @@
       SchemaFilter
     },
     data: () => ({
-      filterSelection: false,
-      forceRefetch: false
+      filterActive: false,
+      toggleComplete: false,
+      applyDisabled: false
     }),
     computed: {
-      forceFilterOn () {
-        return this.$store.state.managedSchemata.length === 0
-      },
-      filterButtonText () {
-        return this.filterOn ? 'Apply' : 'Filter'
-      },
       filterOn () {
-        return this.filterSelection || this.forceFilterOn
-      }
+        return this.filterActive || this.initializing
+      },
+      initializing () {
+        const retval = this.$store.state.initializing
+        if (retval === true) { this.filterActive = true }
+        return this.$store.state.initializing
+      },
+    },
+    watch: {
     },
     methods: {
+      selectionChanged (selected) {
+        this.applyDisabled = selected.length === 0
+      },
       toggleFilter () {
-        if (this.filterSelection) {
-          this.$refs.schemaFilter.apply()
+        if (this.toggleComplete === true) {
+          this.toggleComplete = false
+        } else {
+          if (this.filterOn) {
+            this.$refs.schemaFilter.apply()
+          }
+          this.toggleComplete = true
         }
-
-        this.filterSelection = !this.filterSelection
+        this.filterActive = !this.filterActive
       }
     }
   }

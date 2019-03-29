@@ -15,11 +15,26 @@
     props: {
     },
     computed: {
+      initializing () {
+        return this.$store.state.initializing
+      }
     },
     data: () => ({
       activeTab: null
     }),
-    apollo: {
+    watch: {
+      initializing () {
+        if (this.initializing !== true) {
+          this.$router.push({name:'role-manager'})
+        }
+      }
+    },
+    beforeRouteLeave (to, from, next) {
+      if (this.initializing) {
+        next(false)
+      } else {
+        next()
+      }
     }
   }
 </script>

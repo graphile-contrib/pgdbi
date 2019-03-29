@@ -10,7 +10,7 @@
     <hr>
     <h2>for now, click here if you want to reset the tool</h2>
     <v-btn @click="resetStore">Reset PGDBI</v-btn>
-    <h2>for now, click here if you want to reset the tool</h2>
+    <h2>for now, click here if you want to save the project</h2>
     <v-btn @click="saveProject">Save Project</v-btn>
     <hr>
     <h1>stuff that mostly works</h1>
@@ -42,10 +42,10 @@
     }),
     methods: {
       resetStore () {
-
+        this.$store.commit('resetDefaultState')
       },
       saveProject() {
-
+        alert('NOT IMPLEMENTED')
       }
     }
   }

@@ -3,16 +3,17 @@
     FUNCTION DETAIL - {{ id }}
     <v-textarea
       readonly
-      outline
       :value="definition"
       auto-grow
+      background-color="black"
+      disabled
     >
     </v-textarea>
   </v-container>
 </template>
 
 <script>
-  import functionById from '../gql/query/functionById.graphql'
+  import functionById from '@/gql/query/functionById.graphql'
 
   export default {
     name: 'Function',

@@ -1,4 +1,5 @@
 export default {
+  initializing: true,
   policies: [],
   defaultPolicy: null,
   managedSchemata: [],

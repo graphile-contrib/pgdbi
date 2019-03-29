@@ -8,26 +8,6 @@
       dark
     >
       <v-tab
-        key="roles"
-        ripple
-      >
-        Roles
-      </v-tab>
-      <v-tab-item
-        key="roles"
-      >
-        <v-card>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card key="roles">
-                <role-filter></role-filter>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-tab-item>
-
-      <v-tab
         key="policy-manager"
         ripple
       >
@@ -80,7 +60,6 @@
 </template>
 
 <script>
-  import RoleFilter from '@/components/Role/RoleFilter'
   import PolicyAssignment from '@/components/TableSecurity/TablePolicyAssignment'
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SchemaSecurityScripts from '@/components/TableSecurity/SchemaSecurityScripts'
@@ -89,7 +68,6 @@
   export default {
     name: 'TableSecurityView',
     components: {
-      RoleFilter,
       SecurityPolicySettings,
       SchemaSecurityScripts,
       PolicyManager,

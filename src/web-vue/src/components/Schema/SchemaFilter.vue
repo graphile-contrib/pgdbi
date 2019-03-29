@@ -26,6 +26,9 @@
       computing: false
     }),
     props: {
+      selectionChanged: {
+        type: Function
+      }
     },
     methods: {
       apply () {
@@ -39,12 +42,10 @@
         .then(result => {
           this.$store.commit('setManagedSchemata', result.data.allSchemata.nodes)
           this.computing = false
-          // this.afterApply()
         })
         .catch(error => {
           console.error(error)
           this.computing = false
-          // this.afterApply()
         })
       },
       computeItems () {
@@ -62,7 +63,7 @@
             }
           }
         )
-console.log('wha', selectedSchemata)
+
         this.selected = selectedSchemata.reduce(
           (all, s) => {
             return all.concat([s.schemaName])
@@ -72,6 +73,9 @@ console.log('wha', selectedSchemata)
       },
     },
     watch: {
+      selected () {
+        this.selectionChanged(this.selected)
+      }
     },
     apollo: {
       init: {

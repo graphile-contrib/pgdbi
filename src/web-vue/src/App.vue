@@ -21,6 +21,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn @click="$router.push({name:'home'})">Home</v-btn>
+      <v-btn @click="$router.push({name:'role-manager'})">Roles</v-btn>
       <v-btn @click="$router.push({name:'table-security-manager'})">Table Security</v-btn>
       <v-btn @click="$router.push({name:'function-security-manager'})">Function Security</v-btn>
       <v-btn @click="$router.push({name:'fk-index-manager'})">Indexes</v-btn>
@@ -38,17 +39,6 @@
         <router-view></router-view>
       </v-container>
     </v-content>
-    <!-- <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="rightDrawer"
-      :right="right"
-      enable-resize-watcher
-      width="400"
-      app
-    >
-    </v-navigation-drawer> -->
     <v-footer :fixed="fixed" app>
       <span>&copy; 2017</span>
     </v-footer>
@@ -56,7 +46,7 @@
 </template>
 
 <script>
-import ProjectNavigator from './components/ProjectNavigator'
+import ProjectNavigator from '@/components/Project/ProjectNavigator'
 
 export default {
   name: 'App',
