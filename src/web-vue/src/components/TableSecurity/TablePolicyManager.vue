@@ -3,7 +3,7 @@
       <v-toolbar>
         <v-dialog v-model="dialog" persistent max-width="290">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">New Policy</v-btn>
+            <v-btn color="primary" dark v-on="on">New Policy Template</v-btn>
           </template>
           <v-card>
             <v-card-title class="headline">New Policy</v-card-title>
@@ -24,8 +24,8 @@
         class="text-sm-left"
       >
         <template slot="items" slot-scope="props">
-          <tr @click="props.expanded = !props.expanded">        
-            <td key="id">{{ props.item.id }}</td>          
+          <tr @click="props.expanded = !props.expanded">
+            <td key="id">{{ props.item.id }}</td>
             <td key="name">{{ props.item.name }}</td>
           </tr>
         </template>
@@ -62,7 +62,7 @@
     },
     computed: {
       policies () {
-        return this.$store.state.policies
+        return this.$store.state.policies.sort(function(a,b) {return a.id < b.id ? -1 : 1})
       }
     },
     data () {

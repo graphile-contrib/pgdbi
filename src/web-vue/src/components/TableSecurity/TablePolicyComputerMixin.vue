@@ -8,7 +8,9 @@
   const TERSE = 'terse'
   const ALL = 'all'
 
-  // templates for policy calculation
+  // templates for policy calculation -- this could be pushed into the defaultState and made configurable
+  // not sure if it would be best to go that route, or to just refine this to an ideal form
+
   // security removal
   const securityRemovalHeaderTemplate = `
 -------------- REMOVE EXISTING TABLE GRANTS ----------------------
@@ -66,6 +68,7 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
       }, template
     )
   }
+  // end of template stuff
 
   export default {
     name: 'PolicyComputerMixin',

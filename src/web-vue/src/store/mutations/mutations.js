@@ -11,6 +11,7 @@ import newPolicy from './newPolicy'
 import savePolicy from './savePolicy'
 import createRlsPolicy from './createRlsPolicy'
 import deleteRlsPolicy from './deleteRlsPolicy'
+import importProject from './importProject'
 
 export default {
   initialize,
@@ -25,5 +26,6 @@ export default {
   newPolicy,
   savePolicy,
   createRlsPolicy,
-  deleteRlsPolicy
+  deleteRlsPolicy,
+  importProject
 }

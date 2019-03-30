@@ -10,6 +10,8 @@ import Settings from './components/Settings/SecurityPolicySettings.vue'
 import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
 import FunctionSecurityManager from './components/FunctionSecurityManager/FunctionSecurityManager'
+import ProjectExport from './components/Project/ProjectExport.vue'
+import ProjectImport from './components/Project/ProjectImport.vue'
 
 import store from './store/store'
 
@@ -63,6 +65,16 @@ const router = new Router({
       path: '/settings',
       name: 'settings',
       component: Settings
+    },
+    {
+      path: '/project-export',
+      name: 'project-export',
+      component: ProjectExport
+    },
+    {
+      path: '/project-import',
+      name: 'project-import',
+      component: ProjectImport
     },
     {
       path: '/table/:id',

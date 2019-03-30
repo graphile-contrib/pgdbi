@@ -47,6 +47,9 @@
     name: 'RoleFilter',
     mixins: [RoleFilterFunctionsMixin],
     computed: {
+      initializing () {
+        return this.$store.state.initializing
+      },
       projectRoles () {
         return this.$store.state.projectRoles
       },
@@ -71,9 +74,9 @@
       }
     },
     watch: {
-      // projectRoles () {
-      //   this.computeItems()
-      // }
+      initializing () {
+        this.computeItems()
+      }
     },
     data: () => ({
       roleFamilies: [],

@@ -2,7 +2,7 @@
     <v-card color="black" :key="policyDefinition.id">
       <v-container>
         <v-toolbar>
-          <h1>Policy Name: {{ policyDefinition.name }}</h1>
+          <h1>Name: {{ policyDefinition.name }}</h1>
           <v-spacer></v-spacer>
           <v-layout justify-center>
             <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>

@@ -8,10 +8,11 @@
     <hr>
     <h2>A collection of tools to ensure your postgres database is properly configured to support <a href="https://www.graphile.org/postgraphile/" target="_blank">postgraphile</a></h2>
     <hr>
-    <h2>for now, click here if you want to reset the tool</h2>
+    <h2>click here if you want to reset the tool</h2>
     <v-btn @click="resetStore">Reset PGDBI</v-btn>
-    <h2>for now, click here if you want to save the project</h2>
-    <v-btn @click="saveProject">Save Project</v-btn>
+    <h2>import/export</h2>
+    <v-btn @click="$router.push('project-export')">Export Project</v-btn>
+    <v-btn @click="$router.push('project-import')">Import Project</v-btn>
     <hr>
     <h1>stuff that mostly works</h1>
     <router-link :to="{ path: 'role-manager' }"><h1>role manager</h1></router-link>
@@ -46,9 +47,6 @@
       resetStore () {
         this.$store.commit('resetDefaultState')
         this.$router.push('initialize')
-      },
-      saveProject() {
-        alert('NOT IMPLEMENTED')
       }
     }
   }
