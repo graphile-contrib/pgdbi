@@ -46,37 +46,40 @@
                 {
                   id: `tables:${schema.schemaName}`,
                   name: 'tables',
-                  children: schema.schemaTables
+                  children: schema.schemaTables.sort((a,b)=>{return a.name < b.name ? -1 : 1})
                 },
                 {
                   id: `functions:${schema.name}`,
                   name: 'functions',
-                  children: schema.schemaFunctions
+                  children: schema.schemaFunctions.sort((a,b)=>{return a.name < b.name ? -1 : 1})
                 },
                 {
                   id: `enums:${schema.name}`,
                   name: 'enums',
-                  children: schema.schemaEnums.map(
-                    e => {
-                      return {
-                        id: e.id
-                        ,name: e.name
-                        ,children: e.enumValues.map(
-                          ev => {
-                            return {
-                              id: `ev:${e.name}:${ev}`,
-                              name: ev
+                  children: schema.schemaEnums
+                    .sort((a,b)=>{return a.name < b.name ? -1 : 1})
+                    .map(
+                      e => {
+                        return {
+                          id: e.id
+                          ,name: e.name
+                          ,children: e.enumValues.map(
+                            ev => {
+                              return {
+                                id: `ev:${e.name}:${ev}`,
+                                name: ev
+                              }
                             }
-                          }
-                        )
+                          )
+                        }
                       }
-                    }
-                  )
+                    )
                 }
               ]
             }
           }
         )
+        .sort((a,b)=>{return a.name < b.name ? -1 : 1})
         this.computing = false
       },
     },

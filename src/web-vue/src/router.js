@@ -6,10 +6,11 @@ import Table from './components/Table/Table.vue'
 import Function from './components/Function/Function.vue'
 import RoleManagerView from './views/RoleManagerView.vue'
 import TableSecurityView from './views/TableSecurityView.vue'
+import FunctionSecurityView from './views/FunctionSecurityView.vue'
+import SearchView from './views/SearchView.vue'
 import Settings from './components/Settings/SecurityPolicySettings.vue'
 import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
-import FunctionSecurityManager from './components/FunctionSecurityManager/FunctionSecurityManager'
 import ProjectExport from './components/Project/ProjectExport.vue'
 import ProjectImport from './components/Project/ProjectImport.vue'
 
@@ -47,6 +48,16 @@ const router = new Router({
       component: TableSecurityView
     },
     {
+      path: '/function-security-manager',
+      name: 'function-security-manager',
+      component: FunctionSecurityView
+    },
+    {
+      path: '/search-view',
+      name: 'search-view',
+      component: SearchView
+    },
+    {
       path: '/fk-index-manager',
       name: 'fk-index-manager',
       component: ForeignKeyIndexManager
@@ -55,11 +66,6 @@ const router = new Router({
       path: '/smart-comment-manager',
       name: 'smart-comment-manager',
       component: SmartCommentManager
-    },
-    {
-      path: '/function-security-manager',
-      name: 'function-security-manager',
-      component: FunctionSecurityManager
     },
     {
       path: '/settings',

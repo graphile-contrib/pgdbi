@@ -9,6 +9,9 @@ import defaultRlsUsing from './defaultRlsUsing'
 import defaultRlsWithCheck from './defaultRlsWithCheck'
 import newPolicy from './newPolicy'
 import savePolicy from './savePolicy'
+import newFunctionPolicy from './newFunctionPolicy'
+import saveFunctionPolicy from './saveFunctionPolicy'
+import assignFunctionPolicy from './assignFunctionPolicy'
 import createRlsPolicy from './createRlsPolicy'
 import deleteRlsPolicy from './deleteRlsPolicy'
 import importProject from './importProject'
@@ -27,5 +30,8 @@ export default {
   savePolicy,
   createRlsPolicy,
   deleteRlsPolicy,
-  importProject
+  importProject,
+  newFunctionPolicy,
+  saveFunctionPolicy,
+  assignFunctionPolicy
 }

@@ -1,32 +1,52 @@
 function setManagedSchemata (state, payload) {
-  const defaultPolicy = {
-    id: (((new Date()).getTime() * 10000) + 621355968000000000),
-    name: 'Default Policy',
-    policyHeaderTemplate: state.policyHeaderTemplate,
-    policyFooterTemplate: state.policyFooterTemplate,
-    roleTableGrantTemplate: state.roleTableGrantTemplate,
-    enableRls: true,
-    roleGrants: state.projectRoles.reduce(
-      (all, projectRole) => {
-        return {
-          ...all,
-          [projectRole.roleName]: state.defaultRoleGrants
-        }
-      }, {}
-    ),
-    rlsQualifiers: state.projectRoles.reduce(
-      (all, projectRole) => {
-        return {
-          ...all,
-          [projectRole.roleName]: state.defaultRlsQualifiers
-        }
-      }, {}
-    )
-  }
-
   if (!state.defaultPolicy) {
+    const defaultPolicy = {
+      id: (((new Date()).getTime() * 10000) + 621355968000000000),
+      name: 'Default Table Policy',
+      policyHeaderTemplate: state.policyHeaderTemplate,
+      policyFooterTemplate: state.policyFooterTemplate,
+      roleTableGrantTemplate: state.roleTableGrantTemplate,
+      enableRls: true,
+      roleGrants: state.projectRoles.reduce(
+        (all, projectRole) => {
+          return {
+            ...all,
+            [projectRole.roleName]: state.defaultRoleGrants
+          }
+        }, {}
+      ),
+      rlsQualifiers: state.projectRoles.reduce(
+        (all, projectRole) => {
+          return {
+            ...all,
+            [projectRole.roleName]: state.defaultRlsQualifiers
+          }
+        }, {}
+      )
+    }
+
     state.defaultPolicy = defaultPolicy
     state.policies = state.policies.concat([defaultPolicy])
+  }
+
+  if (!state.defaultFunctionPolicy) {
+    const defaultFunctionPolicy = {
+      id: (((new Date()).getTime() * 10000) + 621355968000000000),
+      name: "Default Function Policy",
+      functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
+      functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
+      roleFunctionGrants: state.projectRoles.reduce(
+        (all, projectRole) => {
+          return {
+            ...all,
+            [projectRole.roleName]: state.defaultFunctionRoleGrants
+          }
+        }, {}
+      )
+    }
+
+    state.defaultFunctionPolicy = defaultFunctionPolicy
+    state.functionPolicies = state.functionPolicies.concat([defaultFunctionPolicy])
   }
 
   const schemataToRemainManaged = state.managedSchemata
@@ -70,6 +90,14 @@ function setManagedSchemata (state, payload) {
             return {
               ...table,
               policyDefinitionId: table.policyDefinitionId || state.defaultPolicy.id
+            }
+          }
+        ),
+        schemaFunctions: schema.schemaFunctions.map(
+          theFunction => {
+            return {
+              ...theFunction,
+              functionPolicyDefinitionId: theFunction.functionPolicyDefinitionId || state.defaultFunctionPolicy.id
             }
           }
         )
