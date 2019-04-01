@@ -17,7 +17,7 @@ function newFunctionPolicy (state, payload) {
         (all, projectRole) => {
           return {
             ...all,
-            [projectRole.roleName]: state.defaultRoleGrants
+            [projectRole.roleName]: state.defaultFunctionRoleGrants
           }
         }, {}
       )

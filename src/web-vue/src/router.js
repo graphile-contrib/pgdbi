@@ -9,7 +9,7 @@ import TableSecurityView from './views/TableSecurityView.vue'
 import FunctionSecurityView from './views/FunctionSecurityView.vue'
 import SearchView from './views/SearchView.vue'
 import Settings from './components/Settings/SecurityPolicySettings.vue'
-import ForeignKeyIndexManager from './components/ForeignKeyIndexManager/ForeignKeyIndexManager'
+import ForeignKeyIndexView from './views/ForeignKeyIndexView'
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
 import ProjectExport from './components/Project/ProjectExport.vue'
 import ProjectImport from './components/Project/ProjectImport.vue'
@@ -60,7 +60,7 @@ const router = new Router({
     {
       path: '/fk-index-manager',
       name: 'fk-index-manager',
-      component: ForeignKeyIndexManager
+      component: ForeignKeyIndexView
     },
     {
       path: '/smart-comment-manager',

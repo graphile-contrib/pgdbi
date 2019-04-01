@@ -21,6 +21,37 @@ query GetDbSchemaTreeBySchemaName($schemaNames: [SqlIdentifier!]){
           columnName
           dataType
         }
+        indices {
+          tableName
+          tableSchema
+          columnName
+          indexName
+        }
+        referentialConstraints {
+          constraintName
+          constraintSchema
+          uniqueConstraintName
+          uniqueConstraintSchema
+          matchOption
+          updateRule
+          deleteRule
+          referencingColumnUsage {
+            constraintName
+            tableSchema
+            tableName
+            columnName
+            ordinalPosition
+            positionInUniqueConstraint
+          }
+          referencedColumnUsage {
+            constraintName
+            tableSchema
+            tableName
+            columnName
+            ordinalPosition
+            positionInUniqueConstraint
+          }
+        }
       }
       schemaFunctions {
         id

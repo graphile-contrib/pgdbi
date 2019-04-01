@@ -58,8 +58,8 @@
           this.toggleCompleted = false
           return
         }
-        const currentValue = this.policy.roleFunctionGrants[toggledRoleName][action]
 
+        const currentValue = this.policy.roleFunctionGrants[toggledRoleName][action]
         const impliedRoleNames = this.projectRoles.filter(
           pr => {
             return pr.applicableRoles.find(ar => ar.roleName === toggledRoleName) !== undefined
