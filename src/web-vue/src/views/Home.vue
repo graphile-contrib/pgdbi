@@ -19,14 +19,18 @@
     <h2>Select roles to use with other tools</h2>
     <router-link :to="{ path: 'table-security-manager' }"><h1>table security manager</h1></router-link>
     <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">table grants and rls policies</a> are properly configured to support postgraphile</h2>
-    <hr>
-    <h1>stuff that doesn't work yet but will follow similar patterns to the stuff above</h1>
     <router-link :to="{ path: 'function-security-manager' }"><h1>function security manager</h1></router-link>
     <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">function grants</a> are properly configured to support postgraphile</h2>
+    <hr>
+    <h1>currently working on this one</h1>
     <router-link :to="{ path: 'fk-index-manager' }"><h1>foreign key index manager</h1></router-link>
     <h2>A tool to ensure that all <a href="https://www.graphile.org/postgraphile/postgresql-indexes/" target="_blank">foreign keys</a> are properly indexed to support postgraphile</h2>
+    <hr>
+    <h1>stuff that doesn't work yet but will follow similar patterns to the stuff above</h1>
     <router-link :to="{ path: 'smart-comment-manager' }"><h1>smart comment manager</h1></router-link>
     <h2>A tool to ensure that all <a href="https://www.graphile.org/postgraphile/smart-comments/" target="_blank">smart comments</a> are properly configured to support postgraphile</h2  >
+    <router-link :to="{ path: 'search' }"><h1>search tool</h1></router-link>
+    <h2>A tool to search all tables, enums, functions, etc. that reference a particular string - mostly useful for functions</h2  >
   </v-container>
 </template>
 

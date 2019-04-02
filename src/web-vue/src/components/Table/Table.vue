@@ -191,7 +191,7 @@
           }
         },
         update (result) {
-          // console.log('result', result)
+          console.log('table', result)
           this.tableInfo = result.tableById
         }
       }

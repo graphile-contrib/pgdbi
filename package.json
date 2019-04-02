@@ -1,6 +1,6 @@
 {
   "name": "postgraphile-db-inspector-extension",
-  "version": "1.0.9-alpha.27",
+  "version": "1.0.9-alpha.28",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -9,6 +9,7 @@
 "license": "MIT",
   "scripts": {
     "dev-server": "node src/devServer",
+    "dev-web-vue": "cd ./src/web-vue & yarn serve",
     "prod-build": "cd ./src/web-vue & yarn build"
   },
   "dependencies": {

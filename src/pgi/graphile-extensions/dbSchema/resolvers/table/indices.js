@@ -12,21 +12,11 @@ module.exports = (build => {
   
     const sql = `
       select 
-        jsonb_build_object(
-          'tableIndices', (
-          coalesce(
-            array_agg(
-              jsonb_build_object(
-                'id', 'index:' || ns.nspname || '.' || t.relname
-                ,'tableName', t.relname
-                ,'tableSchema', ns.nspname
-                ,'columnName', a.attname
-                ,'indexName', i.relname
-                )
-              )
-            , '{}')
-        )
-      )
+        ns.nspname || '.' || t.relname id
+        ,t.relname "tableName"
+        ,ns.nspname "tableSchema"
+        ,a.attname "columnName"
+        ,i.relname "indexName"
       from 
         pg_index ix
         join pg_class t on t.oid = ix.indrelid
@@ -51,7 +41,7 @@ module.exports = (build => {
     `;
 
     const result = await pgClient.query(sql, []);
-    return result.rows[0].jsonb_build_object.tableIndices;
+    return result.rows;
   } catch (e) {
       throw e;
     }
@@ -59,3 +49,19 @@ module.exports = (build => {
 })
 
 
+// select 
+// jsonb_build_object(
+//   'tableIndices', (
+//   coalesce(
+//     array_agg(
+//       jsonb_build_object(
+//         'id', 'index:' || ns.nspname || '.' || t.relname
+//         ,'tableName', t.relname
+//         ,'tableSchema', ns.nspname
+//         ,'columnName', a.attname
+//         ,'indexName', i.relname
+//         )
+//       )
+//     , '{}')
+// )
+// )

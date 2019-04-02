@@ -5,12 +5,38 @@
         :headers="headers"
         :items="referentialConstraints"
         :hide-actions="true"
+        stripe
       >
         <template slot="items" slot-scope="props">
           <tr>
-            <td>{{ props.item.fieldName }}</td>
+            <td>{{ props.item.columnName }}</td>
             <td>{{ props.item.constraintName }}</td>
-            <td>{{ props.item.indexValue }}</td>
+            <td>{{ props.item.columnIndexStatus }}</td>
+            <td><v-icon :color="props.item.columnIndexStatusColor">fiber_manual_record</v-icon></td>
+            <td>
+              <v-checkbox 
+              :input-value="createIndexSelected(props.item)" 
+              @change="createIndexChanged(props.item)"
+              ></v-checkbox>
+            </td>
+            <td>
+              <v-checkbox 
+              :input-value="renameIndexSelected(props.item)" 
+              @change="renameIndexChanged(props.item)"
+              ></v-checkbox>
+            </td>
+            <td>
+              <v-checkbox 
+              :input-value="dropIndexSelected(props.item)" 
+              @change="dropIndexChanged(props.item)"
+              ></v-checkbox>
+            </td>
+            <td>
+              <v-checkbox 
+              :input-value="ackIndexSelected(props.item)" 
+              @change="ackIndexChanged(props.item)"
+              ></v-checkbox>
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -32,39 +58,36 @@
       // PolicyAssignmentDialog
     },
     methods: {
+      createIndexSelected () {
+        return true
+      },
+      createIndexChanged (item) {
+        console.log('cic', item)
+      },
+      renameIndexSelected () {
+        return true
+      },
+      renameIndexChanged (item) {
+        console.log('cic', item)
+      },
+      dropIndexSelected () {
+        return true
+      },
+      dropIndexChanged (item) {
+        console.log('cic', item)
+      },
+      ackIndexSelected () {
+        return true
+      },
+      ackIndexChanged (item) {
+        console.log('cic', item)
+      },
     },
     watch: {
     },
     computed: {
       referentialConstraints () {
-        console.log('blah', this.table)
-        const retval = this.table.referentialConstraints.map(
-          rc => {
-            const columnName = rc.referencingColumnUsage[0].columnName
-            const indices = this.table.indices.filter(i => i.columnName === columnName)
-            let indexValue
-            switch (indices.length) {
-              case 0:
-                indexValue = 'No index for this foreign key'
-                break
-              case 0:
-                indexValue = indices[0].indexName
-                break
-              default:
-                indexValue = 'Multiple indices for this foreign key'
-                break
-            }
-            
-
-            return {
-              fieldName: columnName,
-              constraintName: rc.constraintName,
-              indexValue: indexValue
-            }
-          }
-        )
-        console.log('retval', retval)
-        return retval
+        return this.table.referentialConstraints
       }
     },
     data: () => ({
@@ -79,6 +102,26 @@
         },
         {
           text: 'Index',
+          sortable: false
+        },
+        {
+          text: 'Status',
+          sortable: false
+        },
+        {
+          text: 'Create',
+          sortable: false
+        },
+        {
+          text: 'Rename',
+          sortable: false
+        },
+        {
+          text: 'Drop',
+          sortable: false
+        },
+        {
+          text: 'Ack',
           sortable: false
         }
       ]

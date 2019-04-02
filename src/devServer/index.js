@@ -28,6 +28,7 @@ app.use(postgraphile(
     ,disableDefaultMutations: disableDefaultMutations
     ,appendPlugins: plugins
     ,watchPg: watchPg
+    ,graphiql: true
     ,graphileBuildOptions: {
       pgdbiOptions: {
         enable: enablePgdbi,
