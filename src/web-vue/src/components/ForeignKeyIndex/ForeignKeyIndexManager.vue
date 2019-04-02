@@ -105,7 +105,7 @@
               return {
                 ...schema,
                 schemaTables: schema.schemaTables
-                  .filter(t => t.name === 'order_info' || t.name === 'order_line_item')
+                  // .filter(t => t.name === 'order_info' || t.name === 'order_line_item')
                   .map(
                     table => {
                       return {
