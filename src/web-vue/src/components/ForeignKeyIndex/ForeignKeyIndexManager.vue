@@ -29,6 +29,10 @@
                   </v-btn>
                 </td>
                 <td>{{ props.item.name }}</td>
+                <td v-for="status in statusMap" :key="status.name">
+                  <v-icon :color="props.item.sortedReferentialConstraints[status.name].columnIndexStatusColor">fiber_manual_record</v-icon>
+                  <span>{{ props.item.sortedReferentialConstraints[status.name].referentialConstraintCount }}</span>
+                </td>
                 <!-- <td>{{ props.item.policyDefinition.name }}</td> -->
                 <!-- <td><policy-assignment-dialog :currentPolicyDefinition="props.item.policyDefinition" :table="props.item"></policy-assignment-dialog></td> -->
               </tr>
@@ -105,7 +109,7 @@
               return {
                 ...schema,
                 schemaTables: schema.schemaTables
-                  // .filter(t => t.name === 'order_info' || t.name === 'order_line_item')
+                  // .filter(t => t.name === 'order_info')// || t.name === 'order_line_item')
                   .map(
                     table => {
                       return {
@@ -118,21 +122,22 @@
 
                             switch (indices.length) {
                               case 0:
+                                const statusMapEntry = this.statusMap.find(e => e.name === NO_INDEX)
                                 return allRows.concat([{
                                   ...rc,
                                   columnName: columnName,
                                   columnIndexStatus: NO_INDEX,
                                   columnIndexStatusColor: NO_INDEX_COLOR,
                                   indexName: 'NO INDEX',
-                                  actions: {
-                                    ack: false,
-                                    create: false,
-                                  }
+                                  expectedIndexName: expectedIndexName,
+                                  actions: statusMapEntry.defaultActions
                                 }])
                                 break
                               case 1:
                                 const i = indices[0]
                                 const nameIsUnexpected = i.indexName !== expectedIndexName
+                                const statusMapEntryUnexpectedName = this.statusMap.find(e => e.name === UNEXPECTED_NAME)
+                                const statusMapEntryAsExpected = this.statusMap.find(e => e.name === AS_EXPECTED)
 
                                 return allRows.concat([{
                                   ...rc,
@@ -141,17 +146,15 @@
                                   columnIndexStatusColor: nameIsUnexpected ? UNEXPECTED_NAME_COLOR : AS_EXPECTED_COLOR,
                                   indexName: indices[0].indexName,
                                   expectedIndexName: expectedIndexName,
-                                  actions: nameIsUnexpected ? {
-                                    ack: false,
-                                    rename: true,
-                                  } : {}
+                                  actions: nameIsUnexpected ? statusMapEntryUnexpectedName.defaultActions : statusMapEntryAsExpected.defaultActions
                                 }])
                                 break
                               default:
                                 return indices.reduce(
                                   (allRows, i) => {
-                                    console.log('rc', rc)
                                     const nameIsExpected = i.indexName !== expectedIndexName
+                                    const statusMapEntryExtraIndex = this.statusMap.find(e => e.name === EXTRA_INDEX)
+                                    const statusMapEntryAsExpected = this.statusMap.find(e => e.name === AS_EXPECTED)
 
                                     return allRows.concat([{
                                       ...rc,
@@ -160,10 +163,7 @@
                                       columnIndexStatusColor: nameIsExpected ? AS_EXPECTED_COLOR :  EXTRA_INDEX_COLOR,
                                       indexName: i.indexName,
                                       expectedIndexName: expectedIndexName,
-                                      actions: nameIsExpected ? {} : {
-                                        ack: false,
-                                        drop: false,
-                                      }
+                                      actions: nameIsExpected ? statusMapEntryAsExpected.defaultActions : statusMapEntryExtraIndex.defaultActions
                                     }])
                                   }, []
                                 )
@@ -174,28 +174,88 @@
                       }
                     }
                   )
+                  .map(
+                    table => {
+                      return {
+                        ...table,
+                        sortedReferentialConstraints: this.statusMap.reduce(
+                          (all, status) => {
+                            const statusConstraints = table.referentialConstraints.filter(rc => rc.columnIndexStatus === status.name)
+
+                            return {
+                              ...all,
+                              [status.name]: {
+                                ...status, 
+                                actions: Object.keys(status.defaultActions), 
+                                referentialConstraints: statusConstraints,
+                                referentialConstraintCount: statusConstraints.length,
+                                columnIndexStatusColor: statusConstraints.length > 0 ? status.columnIndexStatusColor : 'grey'
+                              }
+                            }
+                          }, {}
+                        )
+                      }
+                    }
+                  )
                   .sort((a,b)=>{ return a.name < b.name ? -1 : 1})
               }
             }
           )
           .sort((a,b)=>{ return a.schemaName < b.schemaName ? -1 : 1})
       },
+      headers () {
+        return [
+          {
+            text: '',
+            sortable: false,
+          },
+          {
+            text: 'Table Name',
+            sortable: false,
+          },
+          ...this.statusMap.map(
+            statusValue => {
+              return {
+                text: statusValue.name,
+                sortable: false
+              }
+            }
+          ),
+        ]
+      } 
     },
     data: () => ({
       mappedSchemata: [],
-      headers: [
+      statusMap: [
         {
-          text: '',
-          sortable: false,
+          name: AS_EXPECTED,
+          columnIndexStatusColor: AS_EXPECTED_COLOR,
+          defaultActions: {}
         },
         {
-          text: 'Table Name',
-          sortable: false,
+          name: NO_INDEX,
+          columnIndexStatusColor: NO_INDEX_COLOR,
+          defaultActions: {
+            ack: false,
+            create: false,
+          }
         },
         {
-          text: 'WHAT COL',
-          sortable: false,
+          name: UNEXPECTED_NAME,
+          columnIndexStatusColor: UNEXPECTED_NAME_COLOR,
+          defaultActions: {
+            ack: false,
+            rename: true,
+          }
         },
+        {
+          name: EXTRA_INDEX,
+          columnIndexStatusColor: EXTRA_INDEX_COLOR,
+          defaultActions: {
+            ack: false,
+            drop: false,
+          }
+        }
       ]
     })
   }

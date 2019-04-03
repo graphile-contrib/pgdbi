@@ -63,23 +63,14 @@
         return this.table.referentialConstraints
       },
       sortedReferentialConstraints () {
-        return this.referentialConstraints
-          .reduce(
-            (all, rc) => {
-              const existing = all[rc.columnIndexStatus] || {referentialConstraints: []}
-              return {
-                ...all,
-                [rc.columnIndexStatus]: { 
-                  columnIndexStatusColor: rc.columnIndexStatusColor,
-                  actions: Object.keys(rc.actions), 
-                  referentialConstraints: [...existing.referentialConstraints, ...[rc]]
-                }
-              }
-            }, {}
-          )
+        return this.table.sortedReferentialConstraints
       },
       referentialConstraintStatuses () {
-        return Object.keys(this.sortedReferentialConstraints).sort((a,b)=>{return a<b?-1:1})
+        return Object.keys(this.sortedReferentialConstraints)
+          .filter(status => {
+            return this.sortedReferentialConstraints[status].referentialConstraintCount > 0
+          })
+          .sort((a,b)=>{return a<b?-1:1})
       }
     },
     data: () => ({

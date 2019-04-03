@@ -29,9 +29,9 @@
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Indexes</v-btn>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
       <v-btn @click="navigate('smart-comment-manager')" :color="btnColor('smart-comment-manager')">Smart Comments</v-btn>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
       <v-btn @click="navigate('search-view')" :color="btnColor('search-view')">Search</v-btn>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
