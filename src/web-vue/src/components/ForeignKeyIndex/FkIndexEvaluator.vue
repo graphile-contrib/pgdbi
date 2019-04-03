@@ -1,50 +1,45 @@
 <template>
   <v-card color="black">
     <v-container background-color="black">
-      <v-data-table
-        :headers="headers"
-        :items="referentialConstraints"
-        :hide-actions="true"
-        stripe
+      <v-card 
+        v-for="status in referentialConstraintStatuses" 
+        :key="status"
       >
-        <template slot="items" slot-scope="props">
-          <tr>
-            <td>{{ props.item.columnName }}</td>
-            <td>{{ props.item.constraintName }}</td>
-            <td>{{ props.item.columnIndexStatus }}</td>
-            <td><v-icon :color="props.item.columnIndexStatusColor">fiber_manual_record</v-icon></td>
-            <td>
-              <v-checkbox 
-              :input-value="createIndexSelected(props.item)" 
-              @change="createIndexChanged(props.item)"
-              ></v-checkbox>
-            </td>
-            <td>
-              <v-checkbox 
-              :input-value="renameIndexSelected(props.item)" 
-              @change="renameIndexChanged(props.item)"
-              ></v-checkbox>
-            </td>
-            <td>
-              <v-checkbox 
-              :input-value="dropIndexSelected(props.item)" 
-              @change="dropIndexChanged(props.item)"
-              ></v-checkbox>
-            </td>
-            <td>
-              <v-checkbox 
-              :input-value="ackIndexSelected(props.item)" 
-              @change="ackIndexChanged(props.item)"
-              ></v-checkbox>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
+        <v-toolbar>
+          <v-layout row>
+            <v-flex xs12>
+              <v-layout row>
+                <v-flex xs2>
+                  <v-chip>{{status}}</v-chip>
+                  <v-icon :color="sortedReferentialConstraints[status].columnIndexStatusColor">fiber_manual_record</v-icon>
+                </v-flex>
+                <v-flex xs2
+                  v-for="action in sortedReferentialConstraints[status].actions"
+                  :key="action"
+                >
+                  <v-checkbox 
+                    :input-value="false"
+                    :label="`${action} all`"
+                    @change="actionChanged(action, status)"
+                  ></v-checkbox>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-toolbar>
+        <fk-index-evaluator-segment
+          :key="status"
+          :actions="sortedReferentialConstraints[status].actions"
+          :referentialConstraints="sortedReferentialConstraints[status].referentialConstraints"
+        ></fk-index-evaluator-segment>
+      </v-card>
     </v-container>
   </v-card>
 </template>
 
 <script>
+  import FkIndexEvaluatorSegment from '@/components/ForeignKeyIndex/FkIndexEvaluatorSegment.vue'
+
   export default {
     name: 'FkIndexEvaluator',
     props: {
@@ -54,77 +49,40 @@
       }
     },
     components: {
-      // PolicyDefinition,
-      // PolicyAssignmentDialog
+      FkIndexEvaluatorSegment
     },
     methods: {
-      createIndexSelected () {
-        return true
-      },
-      createIndexChanged (item) {
-        console.log('cic', item)
-      },
-      renameIndexSelected () {
-        return true
-      },
-      renameIndexChanged (item) {
-        console.log('cic', item)
-      },
-      dropIndexSelected () {
-        return true
-      },
-      dropIndexChanged (item) {
-        console.log('cic', item)
-      },
-      ackIndexSelected () {
-        return true
-      },
-      ackIndexChanged (item) {
-        console.log('cic', item)
-      },
+      actionChanged (action, status) {
+        console.log('actionChanged', action, status)
+      }
     },
     watch: {
     },
     computed: {
       referentialConstraints () {
         return this.table.referentialConstraints
+      },
+      sortedReferentialConstraints () {
+        return this.referentialConstraints
+          .reduce(
+            (all, rc) => {
+              const existing = all[rc.columnIndexStatus] || {referentialConstraints: []}
+              return {
+                ...all,
+                [rc.columnIndexStatus]: { 
+                  columnIndexStatusColor: rc.columnIndexStatusColor,
+                  actions: Object.keys(rc.actions), 
+                  referentialConstraints: [...existing.referentialConstraints, ...[rc]]
+                }
+              }
+            }, {}
+          )
+      },
+      referentialConstraintStatuses () {
+        return Object.keys(this.sortedReferentialConstraints).sort((a,b)=>{return a<b?-1:1})
       }
     },
     data: () => ({
-      headers: [
-        {
-          text: 'Column  Name',
-          sortable: false
-        },
-        {
-          text: 'FK Name',
-          sortable: false
-        },
-        {
-          text: 'Index',
-          sortable: false
-        },
-        {
-          text: 'Status',
-          sortable: false
-        },
-        {
-          text: 'Create',
-          sortable: false
-        },
-        {
-          text: 'Rename',
-          sortable: false
-        },
-        {
-          text: 'Drop',
-          sortable: false
-        },
-        {
-          text: 'Ack',
-          sortable: false
-        }
-      ]
     })
   }
 </script>

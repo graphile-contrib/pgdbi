@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-container background-color="black">
+    <v-container bkeepground-color="blkeep">
       <v-tabs
         dark
         slider-color="yellow"
@@ -56,13 +56,13 @@
   import FkIndexTableManager from '@/components/ForeignKeyIndex/FkIndexTableManager.vue'
 
   // columnIndexStatus values
-  const AS_CALCULATED = 'AS_CALCULATED'
+  const AS_EXPECTED = 'AS_EXPECTED'
   const NO_INDEX = 'NO_INDEX'
   const UNEXPECTED_NAME = 'UNEXPECTED_NAME'
   const EXTRA_INDEX = 'EXTRA_INDEX'
 
 // columnIndexStatusColor values
-  const AS_CALCULATED_COLOR = 'green'
+  const AS_EXPECTED_COLOR = 'green'
   const NO_INDEX_COLOR = 'yellow'
   const UNEXPECTED_NAME_COLOR = 'blue'
   const EXTRA_INDEX_COLOR = 'red'
@@ -77,8 +77,8 @@
     methods: {
       columnIndexStatusColor (columnIndexStatus) {
         switch (columnIndexStatus) {
-          case AS_CALCULATED:
-            return AS_CALCULATED_COLOR
+          case AS_EXPECTED:
+            return AS_EXPECTED_COLOR
             break
           case NO_INDEX:
             return NO_INDEX_COLOR
@@ -114,32 +114,56 @@
                           (allRows, rc) => {
                             const columnName = rc.referencingColumnUsage[0].columnName
                             const indices = table.indices.filter(i => i.columnName === columnName)
+                            const expectedIndexName = `idx_${rc.referencingColumnUsage[0].tableSchema}_${rc.referencingColumnUsage[0].tableName}_${rc.referencedColumnUsage[0].tableSchema}_${rc.referencedColumnUsage[0].tableName}`
+
                             switch (indices.length) {
                               case 0:
                                 return allRows.concat([{
                                   ...rc,
                                   columnName: columnName,
                                   columnIndexStatus: NO_INDEX,
-                                  columnIndexStatusColor: NO_INDEX_COLOR
+                                  columnIndexStatusColor: NO_INDEX_COLOR,
+                                  indexName: 'NO INDEX',
+                                  actions: {
+                                    ack: false,
+                                    create: false,
+                                  }
                                 }])
                                 break
                               case 1:
                                 const i = indices[0]
+                                const nameIsUnexpected = i.indexName !== expectedIndexName
+
                                 return allRows.concat([{
                                   ...rc,
                                   columnName: columnName,
-                                  columnIndexStatus: AS_CALCULATED,
-                                  columnIndexStatusColor: AS_CALCULATED_COLOR
+                                  columnIndexStatus: nameIsUnexpected ? UNEXPECTED_NAME: AS_EXPECTED,
+                                  columnIndexStatusColor: nameIsUnexpected ? UNEXPECTED_NAME_COLOR : AS_EXPECTED_COLOR,
+                                  indexName: indices[0].indexName,
+                                  expectedIndexName: expectedIndexName,
+                                  actions: nameIsUnexpected ? {
+                                    ack: false,
+                                    rename: true,
+                                  } : {}
                                 }])
                                 break
                               default:
                                 return indices.reduce(
                                   (allRows, i) => {
+                                    console.log('rc', rc)
+                                    const nameIsExpected = i.indexName !== expectedIndexName
+
                                     return allRows.concat([{
                                       ...rc,
                                       columnName: columnName,
-                                      columnIndexStatus: EXTRA_INDEX,
-                                      columnIndexStatusColor: EXTRA_INDEX_COLOR
+                                      columnIndexStatus: nameIsExpected ? AS_EXPECTED : EXTRA_INDEX,
+                                      columnIndexStatusColor: nameIsExpected ? AS_EXPECTED_COLOR :  EXTRA_INDEX_COLOR,
+                                      indexName: i.indexName,
+                                      expectedIndexName: expectedIndexName,
+                                      actions: nameIsExpected ? {} : {
+                                        ack: false,
+                                        drop: false,
+                                      }
                                     }])
                                   }, []
                                 )
