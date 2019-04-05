@@ -36,7 +36,7 @@ the current 'modules' of pgdbi are:
     - todo: implement in-place customization mode to create a table policy inline
     - todo: a bulk editing tool?
   - *schema security scripts*
-    - tabbed by schema fully realized scripts to apply policies
+    - tabbed by schema, fully realized scripts to apply policies
     - todo: one script to rule them all mode?
   - *todo: schema security review*
     - use table grants from graphql to evaluate current db state and flag mis-matches between current and desired policies
@@ -61,11 +61,12 @@ the current 'modules' of pgdbi are:
 other modules that will be built:
 
 - **smart comments manager**
-  - **special note** - instead of 'smart comment', i'm going to call these things schemutators (schema mutators) 
+  - build plugin to consume a more rich json structure produced by this tool to replace smart comments if so desired
+  - **special note** - instead of 'smart comment', could we call these things schemutators (schema mutators)?
+    - they could still be *expressed* as smart comments, but if we build the above plugin, then that kinda goes away
   - build policy templates to help apply common schemutators to all or many tables with an assignment strategy similar to security
     - for instance, you might want all 'created_at' fields to be omitted from create/insert/update mutations on all tables
   - really this is mostly TBD and will involve some more understanding of everything the current smart comments can do
-  - also, benjie already confirmed that a plugin could be written to consume a more rich json structure produced by this tool to replace smart comments if so desired
 - **search tool**
   - using an input term, search all artifacts (tables, functions, columns, indexes, etc)
 
