@@ -101,7 +101,10 @@ other ideas:
   - what if we had a repository where anyone could publish their own open-source schema for any purpose?
   - then we could build a pgdbi plugin to browse that repo
   - if we also had the script generator, this could be a great way to bootstrap a new project and to deliver tutorials
+  - easy install of things like subscriptions, job queue?
 
 my inspiration for this tool came from repeatedly seeing questions popup in the discord around many of these concepts and others.  also, nobody really likes any of the tools out there.  i had been using pgadmin3 to examine tables/functions/etc, but it is clunky, it hangs the dev process if you have to rebuild the db later, it doesn't work with later postgres versions...  other tools have their own strengths and weaknesses.
 
 but none of them tell you how to build a postgraphile server.  i envision a set of tools that can provide a health check and the scripts to fix issues without all the tedium of writing repeated code for a lot of tables across an application.
+
+the tool should not dictate anything about the dev process around it.  the script generator tool, for example, would need to for sure be extensible to support any other method (migrations).  the fallback method being to copy scripts to clipboard then manually incorporate in a codebase.
