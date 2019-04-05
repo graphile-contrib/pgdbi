@@ -22,7 +22,7 @@ the current 'modules' of pgdbi are:
   - user selects roles to use in other tools while building scripts
 - **table security**
   - manage desired policies and generate scripts to be included in deployments to true up table security
-  - todo: am thinking that the default policy may always be locked to allow no grants.  maybe call in 'null policy'
+  - todo: am thinking that the default policy may always be locked to allow no grants.  maybe call it 'null policy'
     - this would ensure that the user would address every table in the project and would not accidentally over-grant privileges
   - *policy templates*
     - define table grants for role families with a check-grid that understands applicable roles
@@ -71,19 +71,17 @@ other modules that will be built:
 
 other ideas:
 
+- **plugin support**
+  - i am strongly considering refactoring the existing tools such that they are themselves plugins to this tool.  it would be cool to make it easy for the community to extend this in this future.
+  - base plugin types that support operations across all tables/functions could simplify the dev process
 - **sql executor**
   - there is a placeholder for script execution on some of the tools.  this could also support an ad-hoc sql tool
   - https://github.com/stlbucket/postgraphile-de-extension/blob/master/src/pde/graphile-extensions/execSql.js
     - this is a graphile extension from a previous project exploring a more ambitious IDE concept than for this tool
-- **sqitch visualizer**
-  - sqitch provides a rich set of db tables that could easily be exposed in a ui so the state of any installation could be quickly ascertained
 - **production mode**
   - would obviously have to be bulletproof, but a read-only access via proper authorization would be nice to have
 - **graphql vizualizer**
   - incorporate one of the open source tools, or build our own.
-- **plugin support**
-  - i am strongly considering refactoring the existing tools such that they are themselves plugins to this tool.  it would be cool to make it easy for the community to extend this in this future.
-  - base plugin types that support operations across all tables/functions could simplify the dev process
 - **script generator**
   - https://github.com/stlbucket/postgraphile-de-extension/tree/master/src/pde/graphile-extensions
   - these extensions were the beginnings of something of this nature.  these are just for idea purposes tho
@@ -93,7 +91,14 @@ other ideas:
   - basically would just generate NEW sqitch packages by wrapping calls to sqitch command line
   - a feature to select a function and automatically set up the rollback properly would be nice
   - maybe other stuff...
-
+- **sqitch visualizer**
+  - sqitch provides a rich set of db tables that could easily be exposed in a ui so the state of any installation could be quickly ascertained
+- **community schema library**
+  - https://github.com/stlbucket/phile-starter/tree/master/db/release
+  - these are some schemas that i intend to use to support a number of projects - only using as an exhibit here
+  - what if we had a repository where anyone could publish their own open-source schema for any purpose?
+  - then we could build a pgdbi plugin to browse that repo
+  - if we also had the script generator, this could be a great way to bootstrap a new project and to deliver tutorials
 
 my inspiration for this tool came from repeatedly seeing questions popup in the discord around many of these concepts and others.  also, nobody really likes any of the tools out there.  i had been using pgadmin3 to examine tables/functions/etc, but it is clunky, it hangs the dev process if you have to rebuild the db later, it doesn't work with later postgres versions...  other tools have their own strengths and weaknesses.
 
