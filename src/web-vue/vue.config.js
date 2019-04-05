@@ -7,11 +7,11 @@ module.exports = {
     }
   },
   devServer: {
-    proxy: {
-      "/pg-inspector-graphql": {
-        target: "http://localhost:6099"
-      }
-    }
+    // proxy: {
+    //   "/pg-inspector-graphql": {
+    //     target: "http://localhost:6099"
+    //   }
+    // }
   },
   configureWebpack: {
     devtool: 'source-map'
