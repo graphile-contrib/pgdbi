@@ -8,8 +8,6 @@ const plugins = [
   require('postgraphile-plugin-connection-filter')
 ]
 
-// const connection = process.env.POSTGRES_CONNECTION
-// const pgdbiPort = process.env.PGDBI_PORT || 5678
 const schemas = [ 'information_schema' ] //[ 'pde' ]
 const disableDefaultMutations = false
 const watchPg = false //process.env.WATCH_PG === 'true'
@@ -17,18 +15,34 @@ const watchPg = false //process.env.WATCH_PG === 'true'
 function PostgraphileDE(options, pgPool) {
   const app = express();
 
-  app.use('/pgdbi', express.static(path.join(`${__dirname}`, `dist`)))
+  app.use((req, res, next) => {
+    console.log("D", req.url);
+    next();
+  });
 
-  app.get('/pgdbi/?', (req, res) => {
-    res.redirect(`/pgdbi/index.html`)
-  })
+  app.use('/pgdbi', express.static(path.join(`${__dirname}`, `dist`), {
+    dotfile: 'ignore',
+    fallthrough: true,
+    index: 'index.html',
+    redirect: false,
+  }))
 
+  app.use((req, res, next) => {
+    console.log("C", req.url);
+    next();
+  });
+
+  app.use((req, res, next) => {
+    console.log("B", req.url);
+    next();
+  });
   app.use(postgraphile(
     options.ownerConnectionString || pgPool
     ,schemas
     ,{
-      dynamicJson: true
-      ,enableCors: true
+      graphqlRoute: '/pgdbi/graphql'
+      ,graphiqlRoute: '/pgdbi/graphiql'
+      ,dynamicJson: true
       ,showErrorStack: true
       ,extendedErrors: ['severity', 'code', 'detail', 'hint', 'positon', 'internalPosition', 'internalQuery', 'where', 'schema', 'table', 'column', 'dataType', 'constraint', 'file', 'line', 'routine']
       ,disableDefaultMutations: disableDefaultMutations
@@ -38,6 +52,10 @@ function PostgraphileDE(options, pgPool) {
       ,enhanceGraphiql: true
     }
   ));
+  app.use((req, res, next) => {
+    console.log("A", req.url);
+    next();
+  });
   return app;
 }
 
