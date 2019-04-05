@@ -62,7 +62,8 @@ other modules that will be built:
 
 - **smart comments manager**
   - build plugin to consume a more rich json structure produced by this tool to replace smart comments if so desired
-  - **special note** - instead of 'smart comment', could we call these things schemutators (schema mutators)?
+  - ***big question*** is it possible this tool should operate on the introspection results of the actual server instead of at table level?
+  - ***special note*** - instead of 'smart comment', could we call these things schemutators (schema mutators)?
     - they could still be *expressed* as smart comments, but if we build the above plugin, then that kinda goes away
   - build policy templates to help apply common schemutators to all or many tables with an assignment strategy similar to security
     - for instance, you might want all 'created_at' fields to be omitted from create/insert/update mutations on all tables
