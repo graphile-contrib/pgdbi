@@ -88,7 +88,7 @@ other ideas:
   - https://github.com/stlbucket/postgraphile-de-extension/tree/master/src/pde/graphile-extensions
   - these extensions were the beginnings of something of this nature.  these are just for idea purposes tho
   - could be implemented as a hook with a default implementation
-  - default implementation would manage scripts using sqitch <a href="https://sqitch.org/">sqitch</a>
+  - default implementation would manage scripts using <a href="https://sqitch.org/">sqitch</a>
     - note: sqitch is just now releasing version 1.0 after like 5 years of community use.  it is a very good tool
   - basically would just generate NEW sqitch packages by wrapping calls to sqitch command line
   - a feature to select a function and automatically set up the rollback properly would be nice
