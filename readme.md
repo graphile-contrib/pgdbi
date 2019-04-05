@@ -10,19 +10,29 @@ or
 npm install -S postgraphile-db-inspector-extension
 ```
 
+Use as a server plugin; e.g.
+
 ```
-require('postgraphile-db-inspector-extension')
+postgraphile --plugins postgraphile-db-inspector-extensions -c my_db
 ```
 
-enable pgdbi in graphileBuildOptions
+or
+
 ```
-graphileBuildOptions: {
-  pgdbiOptions: {
-    enable: true,            // true to enable pgdbi
-    connection: connection,  // same as postgraphile connection
-    port: 5678               // optional - will default to 5678
-  }
-}
+const PGI = require('postgraphile-db-inspector-extension')
+const {postgraphile, makePluginHook} = require("postgraphile");
+const pluginHook = makePluginHook([PGI]);
+
+app.use(postgraphile(connectionString, schemas, {
+  pluginHook,
+  enablePgdbi: true
+}))
 ```
 
-this will expose pgdbi on port 5678
+In library mode you must enable pgdbi in PostGraphile options:
+```
+enablePgdbi: true,
+```
+
+You can access pgdbi at the `/pgdbi` sub path, e.g. [http://localhost:5000/pgdbi](http://localhost:5000/pgdbi).
+

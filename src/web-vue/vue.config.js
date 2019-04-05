@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/pgdbi',
   pluginOptions: {
     apollo: {
       enableMocks: false,

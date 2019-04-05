@@ -8,51 +8,27 @@ const plugins = [
   require('postgraphile-plugin-connection-filter')
 ]
 
-// const connection = process.env.POSTGRES_CONNECTION
-// const pgdbiPort = process.env.PGDBI_PORT || 5678
 const schemas = [ 'information_schema' ] //[ 'pde' ]
 const disableDefaultMutations = false
 const watchPg = false //process.env.WATCH_PG === 'true'
 
-function displayOptions(context) {
-  console.log(`
------------------------------------------------------------------------------------------------
------------------- pgdbi ${context} without specifying graphileBuildOptions.pgdbiOptions.connection
-  
-  pgdbiOptions
-  
-      enable: boolean - set to true to enable pgdbi.  false or no value will result in pgdbi not launching
-  
-      connection:  postgres connection to be passed to underlying postgraphile server.  if this is missing and enablePgdbi is true, an error is thrown
-  
-      port:   integer - default 5678 - pgdbi will expose ui on this port
-
------------------------------------------------------------------------------------------------
- `
-  )
-}
-
-function PostgraphileDE(builder, options) {
-  const connection = options.pgdbiOptions.connection
-  if (!connection) { 
-    displayOptions('enabled')
-    throw new Error('PGDBI requires graphileBuildOptions.pgdbiOptions.connection')
-  }
-  const pgdbiPort = options.pgdbiOptions.port || 5678
+function PostgraphileDE(options, pgPool) {
   const app = express();
 
-  app.use(express.static(path.join(`${__dirname}`, `dist`)))
-  
-  app.get('/', (req, res) => {
-    res.redirect(`/dist/index.html`)
-  })
+  app.use('/pgdbi', express.static(path.join(`${__dirname}`, `dist`), {
+    dotfile: 'ignore',
+    fallthrough: true,
+    index: 'index.html',
+    redirect: false,
+  }))
 
   app.use(postgraphile(
-    connection
+    options.ownerConnectionString || pgPool
     ,schemas
     ,{
-      dynamicJson: true
-      ,enableCors: true
+      graphqlRoute: '/pgdbi/graphql'
+      ,graphiqlRoute: '/pgdbi/graphiql'
+      ,dynamicJson: true
       ,showErrorStack: true
       ,extendedErrors: ['severity', 'code', 'detail', 'hint', 'positon', 'internalPosition', 'internalQuery', 'where', 'schema', 'table', 'column', 'dataType', 'constraint', 'file', 'line', 'routine']
       ,disableDefaultMutations: disableDefaultMutations
@@ -62,27 +38,31 @@ function PostgraphileDE(builder, options) {
       ,enhanceGraphiql: true
     }
   ));
-
-  app.listen(pgdbiPort)
-
-  console.log(`pg-db-inspector listening on ${pgdbiPort}`)
-
-  opn(`http://localhost:${pgdbiPort}/`)
+  return app;
 }
 
-function PostgraphileDELauncher(builder, options) {
-  const pgdbiOptions = options.pgdbiOptions
+let pgdbiApp;
 
-  if (!pgdbiOptions) { 
-    displayOptions('installed')
-    console.log('pgdbi not launching')
+module.exports = {
+  'postgraphile:options'(options, {pgPool}) {
+    if (options.enablePgdbi) {
+      // Create our app
+      pgdbiApp = PostgraphileDE(options, pgPool)
+    }
+
+    // Must always return from a hook function
+    return options;
+  },
+  'postgraphile:http:handler'(incomingReq, {options, res, next}) {
+    if (pgdbiApp && (incomingReq.url === '/pgdbi' || incomingReq.url.startsWith('/pgdbi/'))) {
+      // This is for us! Forward to our express app
+      pgdbiApp(incomingReq, res);
+
+      // And abort the normal PostGraphile request processing
+      return null;
+    } else {
+      // Continue as normal
+      return incomingReq;
+    }
   }
-
-  const enablePgdbi = pgdbiOptions ? pgdbiOptions.enable || false : false
-
-  if (enablePgdbi) {
-    PostgraphileDE(builder, options)
-  }
-}
-
-module.exports = PostgraphileDELauncher
+};
