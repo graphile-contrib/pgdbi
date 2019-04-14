@@ -12,7 +12,7 @@ function newPolicy (state, payload) {
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
       roleTableGrantTemplate: state.roleTableGrantTemplate,
-      enableRls: true,
+      enableRls: false,
       roleGrants: projectRoles.reduce(
         (all, projectRole) => {
           return {

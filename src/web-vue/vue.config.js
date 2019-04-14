@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/pgdbi',
+  publicPath: '/pgdbi/',
   pluginOptions: {
     apollo: {
       enableMocks: false,
@@ -7,11 +7,11 @@ module.exports = {
     }
   },
   devServer: {
-    // proxy: {
-    //   "/pg-inspector-graphql": {
-    //     target: "http://localhost:6099"
-    //   }
-    // }
+    proxy: {
+      "/pgdbi/": {
+        target: "http://localhost:5099"
+      }
+    }
   },
   configureWebpack: {
     devtool: 'source-map'

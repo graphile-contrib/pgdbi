@@ -107,7 +107,7 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
                               action: action,
                               roleName: roleName
                             }
-                          )
+                          ).concat('\n')
                         ) 
                         : policyReadability === TERSE
                           ? all
@@ -117,7 +117,7 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
                                   action: action,
                                   roleName: roleName
                                 }
-                              )
+                              ).concat('\n')
                             )
                     } else {
                       return all.concat(
@@ -126,7 +126,7 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
                             action: action,
                             roleName: roleName
                           }
-                        )
+                        ).concat('\n')
                       )
                     }
                   } else if (roleGrantSet[action] === IMPLIED) {
@@ -136,7 +136,7 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
                           action: action,
                           roleName: roleName
                         }
-                      )
+                      ).concat('\n')
                     )
                   } else if (roleGrantSet[action] === DENIED) {
                     return policyReadability === TERSE ? all : all.concat(
@@ -146,10 +146,10 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
                           roleName: roleName
                         }
                       )
-                    )
+                    ).concat('\n')
                   }
                 }, ''
-              ).concat('\n'))
+              ))
             }, ''
           )
         )

@@ -12,7 +12,6 @@ function newFunctionPolicy (state, payload) {
       name: name,
       functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
       functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
-      enableRls: true,
       roleFunctionGrants: projectRoles.reduce(
         (all, projectRole) => {
           return {

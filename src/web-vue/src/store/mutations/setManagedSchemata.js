@@ -2,11 +2,11 @@ function setManagedSchemata (state, payload) {
   if (!state.defaultPolicy) {
     const defaultPolicy = {
       id: (((new Date()).getTime() * 10000) + 621355968000000000),
-      name: 'Default Table Policy',
+      name: 'Default Table Policy - NO ACCESS',
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
       roleTableGrantTemplate: state.roleTableGrantTemplate,
-      enableRls: true,
+      enableRls: false,
       roleGrants: state.projectRoles.reduce(
         (all, projectRole) => {
           return {

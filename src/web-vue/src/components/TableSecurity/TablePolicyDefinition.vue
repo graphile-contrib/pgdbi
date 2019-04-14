@@ -129,7 +129,7 @@
     },
     computed: {
       disabled () {
-        return this.table !== null && this.table !== undefined
+        return (this.policyDefinition.id === this.$store.state.defaultPolicy.id) || (this.table !== null && this.table !== undefined)
       },
       policyDefinition () {
         const policies = this.$store.state.policies

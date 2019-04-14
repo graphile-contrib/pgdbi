@@ -6,6 +6,7 @@
           <v-btn 
             dark v-on="on"
             class="text-none"
+            :disabled="disabled"
           >
             {{ displayValue }}
           </v-btn>
@@ -39,9 +40,17 @@
         type: Object,
         required: true
       },
-      table: {
-        type: Object,
+      tables: {
+        type: Array,
         required: true
+      },
+      bulkAssign: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     mounted () {
@@ -55,24 +64,36 @@
     },
     computed: {
       displayValue () {
-        return this.currentPolicyDefinition ? this.currentPolicyDefinition.name : 'n/a'
+        if (this.bulkAssign) {
+          return 'Bulk Assign'
+        } else {
+          return this.currentPolicyDefinition ? this.currentPolicyDefinition.name : 'n/a'
+        }
       },
       allPolicyDefinitions () {
         return this.$store.state.policies
       },
       updateDisabled () {
-        return this.currentPolicyDefinition && this.currentSelection ? this.currentPolicyDefinition.id === this.currentSelection.id : true
+        if (this.bulkAssign) {
+          return false
+        } else {
+          return this.currentPolicyDefinition && this.currentSelection ? this.currentPolicyDefinition.id === this.currentSelection.id : true
+        }
       }
     },
     watch: {
     },
     methods: {
       updateTablePolicyDefinition() {
-        // console.log('save', JSON.stringify(this.table,0,2), JSON.stringify(this.currentSelection,0,2))
-        console.log('save', this.table.id, this.currentSelection.name)
         this.dialog = false
+        const tableIds = this.tables.reduce(
+          (tableIds, table) => {
+            return tableIds.concat([table.id])
+          }, []
+        )
+
         this.$store.commit('assignTablePolicy', {
-          tableId: this.table.id,
+          tableIds: tableIds,
           policyDefinitionId: this.currentSelection.id
         })
       }
