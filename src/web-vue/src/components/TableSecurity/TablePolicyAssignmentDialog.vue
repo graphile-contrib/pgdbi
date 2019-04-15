@@ -71,7 +71,7 @@
         }
       },
       allPolicyDefinitions () {
-        return this.$store.state.policies
+        return this.$store.state.policies.filter(p => !p.customIdentifier)
       },
       updateDisabled () {
         if (this.bulkAssign) {

@@ -7,7 +7,20 @@
           <v-layout justify-center>
             <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>
           </v-layout>
-          <v-btn @click="customize" :hidden="!table">customize</v-btn>
+          <!-- <v-btn @click="customize" :hidden="!table">customize</v-btn> -->
+          <table-policy-customize-dialog
+            v-if="showCustomizeButton"
+            :currentPolicyDefinition="table.policyDefinition"
+            :tables="[table]"
+          ></table-policy-customize-dialog>
+          <table-policy-make-global-dialog
+            v-if="showMakeGlobalButton"
+            :policyDefinition="policyDefinition"
+          ></table-policy-make-global-dialog>
+          <table-policy-delete-dialog
+            v-if="showDeleteButton"
+            :policyDefinition="policyDefinition"
+          ></table-policy-delete-dialog>
         </v-toolbar>
         <v-tabs
           v-model="activeTab"
@@ -79,13 +92,19 @@
   import PolicyDefinitionGrantGrid from './TablePolicyDefinitionGrantGrid.vue'
   import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
   import PolicyRealization from './TablePolicyRealization.vue'
+  import TablePolicyCustomizeDialog from './TablePolicyCustomizeDialog.vue'
+  import TablePolicyMakeGlobalDialog from './TablePolicyMakeGlobalDialog.vue'
+  import TablePolicyDeleteDialog from './TablePolicyDeleteDialog.vue'
 
   export default {
     name: 'PolicyDefinition',
     components: {
       PolicyDefinitionGrantGrid,
       PolicyRlsQualifierGrid,
-      PolicyRealization
+      PolicyRealization,
+      TablePolicyCustomizeDialog,
+      TablePolicyMakeGlobalDialog,
+      TablePolicyDeleteDialog
     },
     props: {
       policyId: {
@@ -124,12 +143,30 @@
     },
     methods: {
       customize () {
-        alert('not implemented: will allow for in-place editing to create new custom policy')
+        const newPolicyName = `${this.table.name} Custom Policy`
       }
     },
     computed: {
+      showDeleteButton () {
+        return this.policyDefinition.id !== this.$store.state.defaultPolicy.id
+      },
+      showMakeGlobalButton () {
+        return this.policyDefinition.customIdentifier !== undefined && this.policyDefinition.customIdentifier !== null
+      },
+      showCustomizeButton () {
+        if (this.table) {
+          if (this.policyDefinition.customIdentifier) {
+            return false
+          } else {
+            return true
+          }
+        } else {
+          return false
+        }
+      },
       disabled () {
-        return (this.policyDefinition.id === this.$store.state.defaultPolicy.id) || (this.table !== null && this.table !== undefined)
+        return (this.policyDefinition.id === this.$store.state.defaultPolicy.id) || 
+        (this.table !== null && this.table !== undefined && this.policyDefinition.customIdentifier && this.policyDefinition.customIdentifier !== this.table.id)
       },
       policyDefinition () {
         const policies = this.$store.state.policies

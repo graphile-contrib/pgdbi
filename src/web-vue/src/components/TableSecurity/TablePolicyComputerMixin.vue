@@ -94,62 +94,64 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
             return all
               // .concat(policyReadability === TERSE ? `` : `---------------------------------------------------------------------------------------------------------------------------------------${roleName}\n`)
               .concat(Object.keys(roleGrantSet)
-              .filter(f => f !== 'roleName')
-              .reduce(
-                (all, action) => {
-                  const allInEffect = [ALLOWED, IMPLIED].indexOf(policyDefinition.roleGrants[roleName].all) > -1
-                  if (roleGrantSet[action] === ALLOWED) {
-                    if (allInEffect) {
-                      return action === ALL 
-                        ? all.concat(
+                .filter(f => f !== 'roleName')
+                .reduce(
+                  (all, action) => {
+                    const allInEffect = [ALLOWED, IMPLIED].indexOf(policyDefinition.roleGrants[roleName].all) > -1
+                    if (roleGrantSet[action] === ALLOWED) {
+                      if (allInEffect) {
+                        return action === ALL 
+                          ? all.concat(
+                            applyTemplate(
+                                grantActionOnTableToRoleTemplate, {
+                                action: action,
+                                roleName: roleName
+                              }
+                            )
+                          ) 
+                          : policyReadability === TERSE
+                            ? all
+                            : all.concat(
+                                applyTemplate(
+                                    implyGrantActionOnTableToRoleTemplate, {
+                                    action: action,
+                                    roleName: roleName
+                                  }
+                                )
+                              )
+                      } else {
+                        return all.concat(
                           applyTemplate(
                               grantActionOnTableToRoleTemplate, {
                               action: action,
                               roleName: roleName
                             }
-                          ).concat('\n')
-                        ) 
-                        : policyReadability === TERSE
-                          ? all
-                          : all.concat(
-                              applyTemplate(
-                                  implyGrantActionOnTableToRoleTemplate, {
-                                  action: action,
-                                  roleName: roleName
-                                }
-                              ).concat('\n')
-                            )
-                    } else {
-                      return all.concat(
+                          )
+                        )
+                      }
+                    } else if (roleGrantSet[action] === IMPLIED) {
+                      return policyReadability === TERSE ? all : all.concat(
                         applyTemplate(
-                            grantActionOnTableToRoleTemplate, {
+                            implyGrantActionOnTableToRoleTemplate, {
                             action: action,
                             roleName: roleName
                           }
-                        ).concat('\n')
+                        )
+                      )
+                    } else if (roleGrantSet[action] === DENIED) {
+                      return policyReadability === TERSE ? all : all.concat(
+                        applyTemplate(
+                            denyGrantActionOnTableToRoleTemplate, {
+                            action: action,
+                            roleName: roleName
+                          }
+                        )
                       )
                     }
-                  } else if (roleGrantSet[action] === IMPLIED) {
-                    return policyReadability === TERSE ? all : all.concat(
-                      applyTemplate(
-                          implyGrantActionOnTableToRoleTemplate, {
-                          action: action,
-                          roleName: roleName
-                        }
-                      ).concat('\n')
-                    )
-                  } else if (roleGrantSet[action] === DENIED) {
-                    return policyReadability === TERSE ? all : all.concat(
-                      applyTemplate(
-                          denyGrantActionOnTableToRoleTemplate, {
-                          action: action,
-                          roleName: roleName
-                        }
-                      )
-                    ).concat('\n')
-                  }
-                }, ''
-              ))
+                  }, ''
+                )
+                .concat('\n')
+              )
             }, ''
           )
         )
@@ -181,6 +183,8 @@ create policy {{name}}_{{schemaName}}_{{tableName}} on {{schemaName}}.{{tableNam
           ))
       },
       computePolicy (policyDefinition, policyReadability, variables) {
+        // todo: refactor this to use a templating system
+        
         const header = policyDefinition.policyHeaderTemplate
         const policyDefinitionName = `---------------------------------------------------------------------------POLICY DEFINITION:  ${policyDefinition.name}\n`
         const footer = policyDefinition.policyFooterTemplate

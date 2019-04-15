@@ -15,6 +15,9 @@ import assignFunctionPolicy from './assignFunctionPolicy'
 import createRlsPolicy from './createRlsPolicy'
 import deleteRlsPolicy from './deleteRlsPolicy'
 import importProject from './importProject'
+import customizeTablePolicy from './customizeTablePolicy'
+import makeGlobalTablePolicy from './makeGlobalTablePolicy'
+import deleteTablePolicy from './deleteTablePolicy'
 
 export default {
   initialize,
@@ -33,5 +36,8 @@ export default {
   importProject,
   newFunctionPolicy,
   saveFunctionPolicy,
-  assignFunctionPolicy
+  assignFunctionPolicy,
+  customizeTablePolicy,
+  makeGlobalTablePolicy,
+  deleteTablePolicy
 }
