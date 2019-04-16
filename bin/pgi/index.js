@@ -15,11 +15,6 @@ const watchPg = false //process.env.WATCH_PG === 'true'
 function PostgraphileDE(options, pgPool) {
   const app = express();
 
-  app.use((req, res, next) => {
-    console.log("D", req.url);
-    next();
-  });
-
   app.use('/pgdbi', express.static(path.join(`${__dirname}`, `dist`), {
     dotfile: 'ignore',
     fallthrough: true,
@@ -27,15 +22,6 @@ function PostgraphileDE(options, pgPool) {
     redirect: false,
   }))
 
-  app.use((req, res, next) => {
-    console.log("C", req.url);
-    next();
-  });
-
-  app.use((req, res, next) => {
-    console.log("B", req.url);
-    next();
-  });
   app.use(postgraphile(
     options.ownerConnectionString || pgPool
     ,schemas
@@ -52,10 +38,6 @@ function PostgraphileDE(options, pgPool) {
       ,enhanceGraphiql: true
     }
   ));
-  app.use((req, res, next) => {
-    console.log("A", req.url);
-    next();
-  });
   return app;
 }
 
