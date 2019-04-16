@@ -13,7 +13,7 @@ function deleteTablePolicy(state, payload) {
           table => {
             return {
               ...table,
-              policyDefinitionId: state.defaultPolicy.id
+              policyDefinitionId: table.policyDefinitionId === policyDefinitionId ? state.defaultPolicy.id : table.policyDefinitionId
             }
           }
         )

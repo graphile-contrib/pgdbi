@@ -16,6 +16,7 @@
     "express": "^4.16.4",
     "fbkt-clog": "^1.0.5",
     "graphile-utils": "^4.2.1",
+    "handlebars": "^4.1.2",
     "opn": "^5.4.0",
     "postgraphile": "^4.3.3",
     "postgraphile-plugin-connection-filter": "@1.0.0-beta.27"
