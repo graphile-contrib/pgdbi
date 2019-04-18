@@ -3,6 +3,9 @@
     ma-0 
     pa-0
   >
+    <h1>Table Security Manager</h1>
+    <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">table grants and rls policies</a> are properly configured to support postgraphile</h2>
+    <hr>
     <v-tabs
       v-model="activeTab"
       dark

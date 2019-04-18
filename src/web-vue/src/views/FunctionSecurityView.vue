@@ -3,6 +3,10 @@
     ma-0 
     pa-0
   >
+    <h1>Function Security Manager</h1>
+    <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">function grants</a> are properly configured to support postgraphile</h2>
+    <h1 style="color: red;">Under Construction</h1>
+    <hr>
     <v-tabs
       v-model="activeTab"
       dark

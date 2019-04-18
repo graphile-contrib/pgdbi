@@ -3,17 +3,18 @@
   <v-data-table 
     :items="items" 
     :hide-actions="true"
-    :hide-headers="true"
+    :hide-headers="false"
+    :headers="headers"
   >
     <template slot="items" slot-scope="props">
-      <td><v-icon color="green">fiber_manual_record</v-icon></td>
-      <td>{{ props.item.expectedCount }}</td>
-      <td><v-icon color="blue">fiber_manual_record</v-icon></td>
-      <td>{{ props.item.extraCount }}</td>
-      <td><v-icon color="yellow">fiber_manual_record</v-icon></td>
-      <td>{{ props.item.missingCount }}</td>
-      <td><v-icon color="red">fiber_manual_record</v-icon></td>
-      <td>{{ props.item.unexpectedCount }}</td>
+      <td align="right"><v-icon color="green">fiber_manual_record</v-icon></td>
+      <td align="left">{{ props.item.expectedCount }}</td>
+      <td align="right"><v-icon color="blue">fiber_manual_record</v-icon></td>
+      <td align="left">{{ props.item.extraCount }}</td>
+      <td align="right"><v-icon color="yellow">fiber_manual_record</v-icon></td>
+      <td align="left">{{ props.item.missingCount }}</td>
+      <td align="right"><v-icon color="red">fiber_manual_record</v-icon></td>
+      <td align="left">{{ props.item.unexpectedCount }}</td>
     </template>
   </v-data-table>
 </template>
@@ -39,6 +40,44 @@
     },
     data () {
       return {
+        headers: [
+          {
+            text: '',
+            sortable: false
+          },
+          {
+            text: 'expected',
+            align: 'left',
+            sortable: false
+          },
+          {
+            text: '',
+            sortable: false
+          },
+          {
+            text: 'extra',
+            align: 'left',
+            sortable: false
+          },
+          {
+            text: '',
+            sortable: false
+          },
+          {
+            text: 'missing',
+            align: 'left',
+            sortable: false
+          },
+          {
+            text: '',
+            sortable: false
+          },
+          {
+            text: 'unexpected',
+            align: 'left',
+            sortable: false
+          },
+        ]
       }
     },
     computed: {

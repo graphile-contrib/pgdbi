@@ -18,6 +18,22 @@
         :items="schema.schemaTables"
         :hide-actions="true"
       >
+        <template slot="headers" slot-scope="props">
+          <tr>
+            <th>
+            </th>
+            <th>
+              Table Name
+            </th>
+            <th>
+              Assigned Policy
+            </th>
+            <th>
+              Current grant status compared to assigned policy - <span style="color: red;"><b>UNDER CONSTRUCTION</b></span>
+            </th>
+          </tr>
+        </template>
+        
         <template slot="items" slot-scope="props">
           <tr>
             <td>
@@ -26,20 +42,18 @@
               @change="tableCheckChanged(props.item)"
               ></v-checkbox>
             </td>
-            <td @click="props.expanded = !props.expanded">      
+            <td @click="props.expanded = !props.expanded">
               <v-btn icon @click.stop="props.expanded = !props.expanded">
                 <v-icon>{{ props.expanded ? 'expand_less' : 'expand_more' }}</v-icon>
               </v-btn>
+              {{ props.item.name }}
             </td>
-            <td @click="props.expanded = !props.expanded">      {{ props.item.name }}</td>
             <!-- <td>{{ props.item.policyDefinition.name }}</td> -->
-            <td @click="props.expanded = !props.expanded">      
+            <td @mousedown="props.expanded = !props.expanded">      
               <policy-assignment-dialog 
                 :currentPolicyDefinition="props.item.policyDefinition" 
                 :tables="[props.item]"
               ></policy-assignment-dialog>
-            </td>
-            <td @mousedown="props.expanded = !props.expanded">      
               <table-policy-customize-dialog
                 v-if="showCustomizeButton(props.item)"
                 :currentPolicyDefinition="props.item.policyDefinition"
@@ -132,33 +146,36 @@
     },
     data: () => ({
       selected: [],
-      headers: [
-        {
-          text: 'Select',
-          sortable: false,
-        },
-        {
-          text: '',
-          sortable: false,
-        },
-        {
-          text: 'Table Name',
-          sortable: false,
-        },
-        {
-          text: 'Policy',
-          sortable: false,
-        },
-        {
-          text: '',
-          sortable: false,
-        },
-        {
-          text: 'Current State',
-          sortable: false,
-          colspan: 4
-        }
-      ]
+      // headers: [
+      //   {
+      //     text: '',
+      //     align: 'left',
+      //     sortable: false,
+      //   },
+      //   {
+      //     text: 'Table Name',
+      //     align: 'left',
+      //     sortable: false,
+      //   },
+      //   {
+      //     text: 'Assigned Policy',
+      //     align: 'left',
+      //     sortable: false,
+      //   },
+      //   {
+      //     text: 'Current grant status compared to assigned policy - UNDER CONSTRUCTION',
+      //     align: 'center',
+      //     class: 'blah',
+      //     sortable: false,
+      //     colspan: 4
+      //   }
+      // ]
     })
   }
 </script>
+
+<style>
+.blah {
+  color: red
+}
+</style>

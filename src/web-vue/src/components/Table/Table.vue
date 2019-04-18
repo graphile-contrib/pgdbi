@@ -3,6 +3,7 @@
     <h1>{{ tableSchema }}.{{ tableName }}</h1>
     <h3>{{ id }}</h3>
     <hr/>
+    <h1 style="color: red;">Under Construction</h1>
     <v-tabs
       v-model="activeTab"
       dark

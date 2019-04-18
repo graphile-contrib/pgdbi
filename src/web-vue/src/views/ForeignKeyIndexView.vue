@@ -3,6 +3,10 @@
     ma-0 
     pa-0
   >
+    <h1>Foreign Key Index Manager</h1>
+    <h2>A tool to ensure that all <a href="https://www.graphile.org/postgraphile/postgresql-indexes/" target="_blank">foreign keys</a> are properly indexed to support postgraphile</h2>
+    <h1 style="color: red;">Under Construction</h1>
+    <hr>
     <v-tabs
       v-model="activeTab"
       dark
