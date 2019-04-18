@@ -16,9 +16,15 @@
         :key="schemaPolicy.name"
       >
         <v-toolbar>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn @click="refresh(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
+          </template>
+          <span>Refresh</span>
+        </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon></v-btn>
+              <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
             </template>
             <span>Expand</span>
           </v-tooltip>
@@ -29,14 +35,14 @@
                 v-clipboard:copy="policyText(schemaPolicy)"
                 v-clipboard:success="onCopy"
                 v-clipboard:error="onError"
-              ><v-icon>file_copy</v-icon>
+              ><v-icon>file_copy</v-icon>Copy
             </v-btn>
             </template>
             <span>Copy</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn v-on="on" @click="executeSql"><v-icon>arrow_forward</v-icon></v-btn>
+              <v-btn v-on="on" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
             </template>
             <span>Execute</span>
           </v-tooltip>
@@ -94,6 +100,9 @@
     methods: {
       handleCopyStatus(status) {
         alert(status)
+      },
+      refresh(schemaPolicy) {
+        this.calculateAllPolicies()
       },
       expand (schemaPolicy) {
         schemaPolicy.policy = `${schemaPolicy.policy} `

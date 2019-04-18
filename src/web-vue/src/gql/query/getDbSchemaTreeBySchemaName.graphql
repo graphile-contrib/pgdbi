@@ -52,6 +52,15 @@ query GetDbSchemaTreeBySchemaName($schemaNames: [SqlIdentifier!]){
             positionInUniqueConstraint
           }
         }
+        roleTableGrants {
+          grantor
+          grantee
+          tableName
+          tableSchema
+          privilegeType
+          isGrantable
+          withHierarchy
+        }
       }
       schemaFunctions {
         id

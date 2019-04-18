@@ -6,12 +6,11 @@
           :input-value="selectAllValue"
         ></v-checkbox>
         <v-spacer></v-spacer>
-        <!-- <v-btn :disabled="selected.length === 0" @click="bulkAssign">Bulk Assign</v-btn> -->
         <policy-assignment-dialog 
           :currentPolicyDefinition="defaultPolicy" 
           :tables="selected"
           :bulkAssign="true"
-          :disabled="selected.length < 2"
+          :disabled="selected.length < 1"
         ></policy-assignment-dialog>
       </v-toolbar>
       <v-data-table
@@ -20,7 +19,6 @@
         :hide-actions="true"
       >
         <template slot="items" slot-scope="props">
-          <!-- <tr @click="props.expanded = !props.expanded"> -->
           <tr>
             <td>
               <v-checkbox 
@@ -28,18 +26,32 @@
               @change="tableCheckChanged(props.item)"
               ></v-checkbox>
             </td>
-            <td>      
+            <td @click="props.expanded = !props.expanded">      
               <v-btn icon @click.stop="props.expanded = !props.expanded">
                 <v-icon>{{ props.expanded ? 'expand_less' : 'expand_more' }}</v-icon>
               </v-btn>
             </td>
-            <td>{{ props.item.name }}</td>
+            <td @click="props.expanded = !props.expanded">      {{ props.item.name }}</td>
             <!-- <td>{{ props.item.policyDefinition.name }}</td> -->
-            <td>
+            <td @click="props.expanded = !props.expanded">      
               <policy-assignment-dialog 
                 :currentPolicyDefinition="props.item.policyDefinition" 
                 :tables="[props.item]"
               ></policy-assignment-dialog>
+            </td>
+            <td @mousedown="props.expanded = !props.expanded">      
+              <table-policy-customize-dialog
+                v-if="showCustomizeButton(props.item)"
+                :currentPolicyDefinition="props.item.policyDefinition"
+                :tables="[props.item]"
+              ></table-policy-customize-dialog>
+            </td>
+            <td colspan="4" @click="props.expanded = !props.expanded">      
+              <table-policy-evaluator-summary
+                :policyDefinition="props.item.policyDefinition" 
+                :table="props.item"              
+              >
+              </table-policy-evaluator-summary>
             </td>
           </tr>
         </template>
@@ -55,14 +67,18 @@
 </template>
 
 <script>
-  import PolicyDefinition from '@/components/TableSecurity/TablePolicyDefinition'
-  import PolicyAssignmentDialog from '@/components/TableSecurity/TablePolicyAssignmentDialog'
+  import PolicyDefinition from '@/components/TableSecurity/Definition/TablePolicyDefinition'
+  import PolicyAssignmentDialog from '@/components/TableSecurity/Assignment/TablePolicyAssignmentDialog'
+  import TablePolicyEvaluatorSummary from '@/components/TableSecurity/Assignment/TablePolicyEvaluatorSummary'
+  import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
 
   export default {
     name: 'PolicyAssignment',
     components: {
       PolicyDefinition,
-      PolicyAssignmentDialog
+      PolicyAssignmentDialog,
+      TablePolicyEvaluatorSummary,
+      TablePolicyCustomizeDialog
     },
     props: {
       schema: {
@@ -71,6 +87,17 @@
       }
     },
     methods: {
+      showCustomizeButton (table) {
+        if (table) {
+          if (table.policyDefinition.customIdentifier) {
+            return false
+          } else {
+            return true
+          }
+        } else {
+          return false
+        }
+      },
       tableCheckValue (item) {
         return (this.selected.find(i => i.id === item.id)) !== undefined
       },
@@ -107,6 +134,10 @@
       selected: [],
       headers: [
         {
+          text: 'Select',
+          sortable: false,
+        },
+        {
           text: '',
           sortable: false,
         },
@@ -115,13 +146,18 @@
           sortable: false,
         },
         {
-          text: 'Policy Name',
+          text: 'Policy',
           sortable: false,
         },
         {
           text: '',
           sortable: false,
         },
+        {
+          text: 'Current State',
+          sortable: false,
+          colspan: 4
+        }
       ]
     })
   }

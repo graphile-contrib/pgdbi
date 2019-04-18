@@ -90,7 +90,7 @@
 
         const impliedRoleNames = this.projectRoles.filter(
           pr => {
-            return pr.applicableRoles.find(ar => ar.roleName === toggledRoleName) !== undefined
+            return (pr.applicableRoles || []).find(ar => ar.roleName === toggledRoleName) !== undefined
           }
         ).reduce((a,r)=>{ return a.concat(r.roleName)}, [])
 

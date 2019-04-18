@@ -98,6 +98,7 @@
 
         const regularVariables = {
           ...variables,
+          policyName: policyDefinition.name,
           enableRls: policyDefinition.enableRls,
           revokeRoles: allRoles,
           allowedRoleGrants: allowedRoleGrants,

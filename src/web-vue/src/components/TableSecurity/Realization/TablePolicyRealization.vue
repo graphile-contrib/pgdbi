@@ -9,7 +9,13 @@
       >
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn @click="expand" v-on="on"><v-icon>note_add</v-icon></v-btn>
+            <v-btn @click="refresh" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
+          </template>
+          <span>Refresh</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn @click="expand" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
           </template>
           <span>Expand</span>
         </v-tooltip>
@@ -21,14 +27,14 @@
               v-clipboard:copy="computedPolicy"
               v-clipboard:success="onCopy"
               v-clipboard:error="onError"
-            ><v-icon>file_copy</v-icon>
+            ><v-icon>file_copy</v-icon>Copy
           </v-btn>
           </template>
           <span>Copy</span>
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" :hidden="!table" @click="executeSql"><v-icon>arrow_forward</v-icon></v-btn>
+            <v-btn v-on="on" :hidden="!table" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
           </template>
           <span>Execute</span>
         </v-tooltip>
@@ -100,9 +106,15 @@
       },
       enableRls () {
         this.doComputePolicy()
+      },
+      policyDefinition () {
+        this.doComputePolicy()
       }
     },
     methods: {
+      refresh () {
+        this.doComputePolicy()
+      },
       expand () {
         this.computedPolicy = `${this.computedPolicy}=`
       },

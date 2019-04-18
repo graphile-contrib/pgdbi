@@ -1,4 +1,3 @@
-import initialize from './initialize'
 import resetDefaultState from './resetDefaultState'
 import filterSchemata from './filterSchemata'
 import setManagedSchemata from './setManagedSchemata'
@@ -20,7 +19,6 @@ import makeGlobalTablePolicy from './makeGlobalTablePolicy'
 import deleteTablePolicy from './deleteTablePolicy'
 
 export default {
-  initialize,
   resetDefaultState,
   filterSchemata,
   setManagedSchemata,

@@ -60,9 +60,9 @@
 </template>
 
 <script>
-  import PolicyAssignment from '@/components/TableSecurity/TablePolicyAssignment'
+  import PolicyAssignment from '@/components/TableSecurity/Assignment/TablePolicyAssignment'
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
-  import SchemaSecurityScripts from '@/components/TableSecurity/SchemaSecurityScripts'
+  import SchemaSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
   import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
 
   export default {

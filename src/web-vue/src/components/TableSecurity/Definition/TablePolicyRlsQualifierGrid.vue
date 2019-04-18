@@ -49,7 +49,7 @@
   const ENABLED = 'ENABLED'
   const DISABLED = 'DISABLED'
   const IMPLIED = 'IMPLIED'
-  import RlsPolicyDialog from './RlsPolicyDialog.vue'
+  import RlsPolicyDialog from '@/components/TableSecurity/Dialogs/RlsPolicyDialog.vue'
 
   export default {
     name: 'PolicyRlsQualifierGrid',

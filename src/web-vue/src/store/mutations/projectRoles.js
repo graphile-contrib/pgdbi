@@ -1,5 +1,12 @@
 function projectRoles (state, payload) {
-  const projectRoles = state.projectRoles = payload.projectRoles
+  const projectRoles = state.projectRoles = payload.projectRoles.map(
+    role => {
+      return {
+        ...role,
+        applicableRoles: role.applicableRoles || []
+      }
+    }
+  )
 
   state.policies = state.policies.map(
     policy => {
@@ -7,21 +14,21 @@ function projectRoles (state, payload) {
         ...policy,
         roleGrants: projectRoles.reduce(
           (all, projectRole) => {
-            const existing = Object.keys(policy.roleGrants).find(rn => rn === projectRole.roleName)
+            // const existing = policy.roleGrants[projectRole.name]
     
             return {
               ...all,
-              [projectRole.roleName]: existing || state.defaultRoleGrants
+              [projectRole.roleName]: policy.roleGrants[projectRole.name] || state.defaultRoleGrants
             }
           }, {}
         ),
         rlsQualifiers: projectRoles.reduce(
           (all, projectRole) => {
-            const existing = Object.keys(policy.rlsQualifiers).find(rn => rn === projectRole.roleName)
+            // const existing = Object.keys(policy.rlsQualifiers).find(rn => rn === projectRole.roleName)
     
-            return existing ? all : {
+            return {
               ...all,
-              [projectRole.roleName]: existing || state.defaultRlsQualifiers
+              [projectRole.roleName]: policy.rlsQualifiers[projectRole.name] || state.defaultRlsQualifiers
             }
           }, {}
         )
@@ -35,11 +42,11 @@ function projectRoles (state, payload) {
         ...policy,
         roleFunctionGrants: projectRoles.reduce(
           (all, projectRole) => {
-            const existing = Object.keys(policy.roleFunctionGrants).find(rn => rn === projectRole.roleName)
+            // const existing = Object.keys(policy.roleFunctionGrants).find(rn => rn === projectRole.roleName)
     
             return {
               ...all,
-              [projectRole.roleName]: existing || state.defaultFunctionRoleGrants
+              [projectRole.roleName]: policy.roleFunctionGrants[projectRole.name] || state.defaultFunctionRoleGrants
             }
           }, {}
         )

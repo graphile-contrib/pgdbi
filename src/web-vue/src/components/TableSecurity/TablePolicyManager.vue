@@ -24,7 +24,13 @@
         class="text-sm-left"
       >
         <template slot="items" slot-scope="props">
-          <tr @click="props.expanded = !props.expanded">
+          <!-- <tr @click="props.expanded = !props.expanded"> -->
+          <tr>
+            <td>      
+              <v-btn icon @click.stop="props.expanded = !props.expanded">
+                <v-icon>{{ props.expanded ? 'expand_less' : 'expand_more' }}</v-icon>
+              </v-btn>
+            </td>
             <td key="id">{{ props.item.id }}</td>
             <td key="name">{{ props.item.name }}</td>
           </tr>
@@ -41,7 +47,7 @@
 </template>
 
 <script>
-  import PolicyDefinition from './TablePolicyDefinition.vue'
+  import PolicyDefinition from '@/components/TableSecurity/Definition/TablePolicyDefinition.vue'
 
   export default {
     name: 'PolicyManager',
@@ -70,6 +76,10 @@
         dialog: false,
         newPolicyName: 'New Policy',
         headers: [
+          {
+            text: '',
+            sortable: false
+          },
           {
             text: 'ID',
             sortable: false

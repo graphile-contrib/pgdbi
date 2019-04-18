@@ -98,6 +98,7 @@
           ? this.projectRoles.filter(r => family.members.find(m => m.roleName === r.roleName) === undefined)
           : Array.from(new Set([...family.members, ...this.projectRoles]))
 
+          console.log('committing', projectRoles)
           this.$store.commit('projectRoles', { projectRoles: projectRoles })
       },
       roleCheckChanged (role) {
@@ -106,6 +107,7 @@
         const projectRoles = roleIsSelectedAlready
           ? this.projectRoles.filter(r => r.roleName !== role.roleName)
           : [...this.projectRoles, ...[role]]
+        console.log('committing', projectRoles)
         this.$store.commit('projectRoles', { projectRoles: projectRoles })
       },
       familyHeaders (family) {
@@ -136,8 +138,10 @@
           .reduce((families, role)=>{
             // find existing family
             const existingFamily = families.find(f => new Set(f.allMemberNames).has(role.roleName))
+              console.log(role.roleName, JSON.stringify(role.applicableRoles,0,2))
 
             if (existingFamily) {
+              // todo: add applicable roles from current role to allMemberNames
               return families
             } else {
               const allMemberNames = role.applicableRoles

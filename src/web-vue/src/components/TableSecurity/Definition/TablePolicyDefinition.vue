@@ -91,10 +91,10 @@
 
   import PolicyDefinitionGrantGrid from './TablePolicyDefinitionGrantGrid.vue'
   import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
-  import PolicyRealization from './TablePolicyRealization.vue'
-  import TablePolicyCustomizeDialog from './TablePolicyCustomizeDialog.vue'
-  import TablePolicyMakeGlobalDialog from './TablePolicyMakeGlobalDialog.vue'
-  import TablePolicyDeleteDialog from './TablePolicyDeleteDialog.vue'
+  import PolicyRealization from '@/components/TableSecurity/Realization/TablePolicyRealization.vue'
+  import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
+  import TablePolicyMakeGlobalDialog from '@/components/TableSecurity/Dialogs/TablePolicyMakeGlobalDialog.vue'
+  import TablePolicyDeleteDialog from '@/components/TableSecurity/Dialogs/TablePolicyDeleteDialog.vue'
 
   export default {
     name: 'PolicyDefinition',
