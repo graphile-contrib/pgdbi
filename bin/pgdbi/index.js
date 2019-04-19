@@ -1,16 +1,15 @@
 const express = require("express");
 const path = require("path")
-const {postgraphile} = require("postgraphile");
-const opn = require('opn')
+const {postgraphile, makePluginHook} = require("postgraphile");
 
 const plugins = [
   require('./graphile-extensions/dbSchema'),
   require('postgraphile-plugin-connection-filter')
 ]
 
-const schemas = [ 'information_schema' ] //[ 'pde' ]
+const schemas = [ 'information_schema' ]
 const disableDefaultMutations = false
-const watchPg = false //process.env.WATCH_PG === 'true'
+const watchPg = false
 
 function PostgraphileDE(options, pgPool) {
   const app = express();
@@ -43,7 +42,7 @@ function PostgraphileDE(options, pgPool) {
 
 let pgdbiApp;
 
-module.exports = {
+module.exports = makePluginHook([{
   'postgraphile:options'(options, {pgPool}) {
     if (options.enablePgdbi) {
       // Create our app
@@ -65,4 +64,4 @@ module.exports = {
       return incomingReq;
     }
   }
-};
+}])

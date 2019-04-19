@@ -6,7 +6,7 @@ try {
 const express = require("express");
 const {postgraphile, makePluginHook} = require("postgraphile");
 
-const PGI = require('../pgi')
+const pluginHook = require('../pgdbi')
 const plugins = [
   // require('postgraphile-plugin-connection-filter'),
 ]
@@ -35,8 +35,6 @@ const dynamicJson = DYNAMIC_JSON === 'true';
 const disableDefaultMutations = DISABLE_DEFAULT_MUTATIONS === 'true';
 const watchPg = WATCH_PG === 'true';
 const enablePgdbi = ENABLE_PGDBI === 'true';
-
-const pluginHook = makePluginHook([PGI]);
 
 const app = express();
 

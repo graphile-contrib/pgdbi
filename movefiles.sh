@@ -1,7 +1,7 @@
 #!/bin/bash
 
-rm -rf ./src/pgi/dist
-rm -rf ./bin/pgi
+rm -rf ./src/pgdbi/dist
+rm -rf ./bin/pgdbi
 
-cp -R ./src/web-vue/dist ./src/pgi/dist/
-cp -R ./src/pgi ./bin/pgi/
+cp -R ./src/web-vue/dist ./src/pgdbi/dist/
+cp -R ./src/pgdbi ./bin/pgdbi/
