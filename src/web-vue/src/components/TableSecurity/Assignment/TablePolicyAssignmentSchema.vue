@@ -15,10 +15,10 @@
       </v-toolbar>
       <v-data-table
         :headers="headers"
-        :items="schema.schemaTables"
+        :items="tablesToShow"
         :hide-actions="true"
       >
-        <template slot="headers" slot-scope="props">
+        <!-- <template slot="headers" slot-scope="props">
           <tr>
             <th>
             </th>
@@ -32,7 +32,7 @@
               Current grant status compared to assigned policy - <span style="color: red;"><b>UNDER CONSTRUCTION</b></span>
             </th>
           </tr>
-        </template>
+        </template> -->
         
         <template slot="items" slot-scope="props">
           <tr>
@@ -77,10 +77,14 @@
           ></policy-definition>
         </template>
       </v-data-table>
+      <!-- <mugen-scroll :handler="fetchData" :should-handle="!loa    ding">
+        loading...
+      </mugen-scroll> -->
     </div>
 </template>
 
 <script>
+  import MugenScroll from 'vue-mugen-scroll'
   import PolicyDefinition from '@/components/TableSecurity/Definition/TablePolicyDefinition'
   import PolicyAssignmentDialog from '@/components/TableSecurity/Assignment/TablePolicyAssignmentDialog'
   import TablePolicyEvaluatorSummary from '@/components/TableSecurity/Assignment/TablePolicyEvaluatorSummary'
@@ -92,7 +96,8 @@
       PolicyDefinition,
       PolicyAssignmentDialog,
       TablePolicyEvaluatorSummary,
-      TablePolicyCustomizeDialog
+      TablePolicyCustomizeDialog,
+      MugenScroll
     },
     props: {
       schema: {
@@ -100,10 +105,17 @@
         required: true
       }
     },
+    // mounted () {
+    //   this.fetchData()
+    // },
     methods: {
+      // fetchData () {
+      //   this.tablesToShow.push(this.schema.schemaTables.slice(this.tablesToShow.length, 5))
+      //   console.log('table', this.tablesToShow)
+      // },
       showCustomizeButton (table) {
         if (table) {
-          if (table.policyDefinition.customIdentifier) {
+          if (table.policyDefinition && table.policyDefinition.customIdentifier) {
             return false
           } else {
             return true
@@ -134,6 +146,9 @@
     watch: {
     },
     computed: {
+      tablesToShow () {
+        return this.schema.schemaTables//.slice(0, 10)
+      },
       selectAllValue () {
         return this.schema.schemaTables.length === this.selected.length
       },
@@ -145,31 +160,33 @@
       },
     },
     data: () => ({
+      loading: false,
+      // tablesToShow: [],
       selected: [],
-      // headers: [
-      //   {
-      //     text: '',
-      //     align: 'left',
-      //     sortable: false,
-      //   },
-      //   {
-      //     text: 'Table Name',
-      //     align: 'left',
-      //     sortable: false,
-      //   },
-      //   {
-      //     text: 'Assigned Policy',
-      //     align: 'left',
-      //     sortable: false,
-      //   },
-      //   {
-      //     text: 'Current grant status compared to assigned policy - UNDER CONSTRUCTION',
-      //     align: 'center',
-      //     class: 'blah',
-      //     sortable: false,
-      //     colspan: 4
-      //   }
-      // ]
+      headers: [
+        {
+          text: '',
+          align: 'left',
+          sortable: false,
+        },
+        {
+          text: 'Table Name',
+          align: 'left',
+          sortable: false,
+        },
+        {
+          text: 'Assigned Policy',
+          align: 'left',
+          sortable: false,
+        },
+        {
+          text: 'Current grant status compared to assigned policy - UNDER CONSTRUCTION',
+          align: 'center',
+          class: 'blah',
+          sortable: false,
+          colspan: 4
+        }
+      ]
     })
   }
 </script>

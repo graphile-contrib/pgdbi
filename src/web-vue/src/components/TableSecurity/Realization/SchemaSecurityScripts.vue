@@ -90,12 +90,12 @@
       ...mapState(['policies', 'managedSchemata']),
     },
     watch: {
-      policies () {
-        this.calculateAllPolicies()
-      },
-      policyReadability () {
-        this.calculateAllPolicies()
-      },
+      // policies () {
+      //   this.calculateAllPolicies()
+      // },
+      // policyReadability () {
+      //   this.calculateAllPolicies()
+      // },
     },
     methods: {
       handleCopyStatus(status) {

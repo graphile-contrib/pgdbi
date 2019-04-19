@@ -19,7 +19,7 @@ function PostgraphileDE(options, pgPool) {
     dotfile: 'ignore',
     fallthrough: true,
     index: 'index.html',
-    redirect: false,
+    redirect: true
   }))
 
   app.use(postgraphile(

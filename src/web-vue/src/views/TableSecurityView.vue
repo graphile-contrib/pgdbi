@@ -13,6 +13,7 @@
       <v-tab
         key="policy-manager"
         ripple
+        lazy
       >
         Policy Templates
       </v-tab>
@@ -27,6 +28,7 @@
       <v-tab
         key="policyAssignment"
         ripple
+        lazy
       >
         Policy Assignment
       </v-tab>
@@ -47,7 +49,8 @@
       <v-tab
         key="policies"
         ripple
-      >
+        lazy
+ß      >
         Schema Security Scripts
       </v-tab>
       <v-tab-item
