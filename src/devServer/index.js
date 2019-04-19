@@ -6,7 +6,9 @@ try {
 const express = require("express");
 const {postgraphile, makePluginHook} = require("postgraphile");
 
-const pluginHook = require('../pgdbi')
+const pluginHook = makePluginHook([
+  require('../pgdbi')
+])
 const plugins = [
   // require('postgraphile-plugin-connection-filter'),
 ]

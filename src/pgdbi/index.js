@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path")
-const {postgraphile, makePluginHook} = require("postgraphile");
+const {postgraphile} = require("postgraphile");
 
 const plugins = [
   require('./graphile-extensions/dbSchema'),
@@ -42,7 +42,7 @@ function PostgraphileDE(options, pgPool) {
 
 let pgdbiApp;
 
-module.exports = makePluginHook([{
+module.exports = {
   'postgraphile:options'(options, {pgPool}) {
     if (options.enablePgdbi) {
       // Create our app
@@ -64,4 +64,4 @@ module.exports = makePluginHook([{
       return incomingReq;
     }
   }
-}])
+}
