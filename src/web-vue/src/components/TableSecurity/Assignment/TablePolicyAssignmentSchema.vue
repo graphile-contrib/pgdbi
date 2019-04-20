@@ -87,7 +87,7 @@
   import MugenScroll from 'vue-mugen-scroll'
   import PolicyDefinition from '@/components/TableSecurity/Definition/TablePolicyDefinition'
   import PolicyAssignmentDialog from '@/components/TableSecurity/Assignment/TablePolicyAssignmentDialog'
-  import TablePolicyEvaluatorSummary from '@/components/TableSecurity/Assignment/TablePolicyEvaluatorSummary'
+  import TablePolicyEvaluatorSummary from '@/components/TableSecurity/Evaluation/TablePolicyEvaluatorSummary'
   import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
 
   export default {

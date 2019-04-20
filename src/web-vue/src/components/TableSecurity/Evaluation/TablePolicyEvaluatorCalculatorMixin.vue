@@ -1,22 +1,4 @@
-
 <template>
-  <v-data-table 
-    :items="items" 
-    :hide-actions="true"
-    :hide-headers="false"
-    :headers="headers"
-  >
-    <template slot="items" slot-scope="props">
-      <td align="right"><v-icon color="green">fiber_manual_record</v-icon></td>
-      <td align="left">{{ props.item.expectedCount }}</td>
-      <td align="right"><v-icon color="blue">fiber_manual_record</v-icon></td>
-      <td align="left">{{ props.item.extraCount }}</td>
-      <td align="right"><v-icon color="yellow">fiber_manual_record</v-icon></td>
-      <td align="left">{{ props.item.missingCount }}</td>
-      <td align="right"><v-icon color="red">fiber_manual_record</v-icon></td>
-      <td align="left">{{ props.item.unexpectedCount }}</td>
-    </template>
-  </v-data-table>
 </template>
 
 <script>
@@ -25,7 +7,7 @@
   const IMPLIED = 'IMPLIED'
 
   export default {
-    name: 'TablePolicyEvaluator',
+    name: 'TablePolicyEvaluatorCalculator',
     props: {
       policyDefinition: {
         type: Object,
@@ -40,64 +22,22 @@
     },
     data () {
       return {
-        headers: [
-          {
-            text: '',
-            sortable: false
-          },
-          {
-            text: 'expected',
-            align: 'left',
-            sortable: false
-          },
-          {
-            text: '',
-            sortable: false
-          },
-          {
-            text: 'extra',
-            align: 'left',
-            sortable: false
-          },
-          {
-            text: '',
-            sortable: false
-          },
-          {
-            text: 'missing',
-            align: 'left',
-            sortable: false
-          },
-          {
-            text: '',
-            sortable: false
-          },
-          {
-            text: 'unexpected',
-            align: 'left',
-            sortable: false
-          },
-        ]
+        // grantStatusColors: {
+        //   expected: 'green',
+        //   missing: 'yellow',
+        //   unexpected: 'red',
+        //   extra: 'blue'
+        // }
       }
     },
     computed: {
-      expectedCount () {
-        return (this.tablePolicyEvaluation.expected || []).length
-      },
-      items () {
-        const tablePolicyEvaluation = this.tablePolicyEvaluation || {
-          expected: [],
-          missing: [],
-          unexpected: [],
-          extra: []
+      grantStatusColors () {
+        return {
+          expected: 'green',
+          missing: 'yellow',
+          unexpected: 'red',
+          extra: 'blue'
         }
-        return [{
-          expectedCount: tablePolicyEvaluation.expected.length,
-          missingCount: tablePolicyEvaluation.missing.length,
-          unexpectedCount: tablePolicyEvaluation.unexpected.length,
-          extraCount: tablePolicyEvaluation.extra.length,
-        }]
-
       },
       tablePolicyEvaluation () {
         // console.log('table', JSON.stringify(this.table.roleTableGrants,0,2))
@@ -115,19 +55,30 @@
                     if (existingGrant) {
                       return {
                         ...grantEval,
-                        expected: [...grantEval.expected, existingGrant]
+                        expected: [...grantEval.expected, {
+                          ...existingGrant,
+                          statusColor: this.grantStatusColors.expected
+                        }]
                       }
                     } else {
                       return {
                         ...grantEval,
-                        missing: [...grantEval.missing, expectedRoleAction]
+                        missing: [...grantEval.missing, {
+                          roleName,
+                          expectedRoleAction,
+                          action,
+                          statusColor: this.grantStatusColors.missing
+                        }]
                       }
                     }
                   case DENIED:
                     if (existingGrant) {
                       return {
                         ...grantEval,
-                        unexpected: [...grantEval.unexpected, ...[existingGrant]]
+                        unexpected: [...grantEval.unexpected, {
+                          ...existingGrant,
+                          statusColor: this.grantStatusColors.unexpected
+                        }]
                       } 
                     } else {
                       return grantEval
@@ -136,7 +87,10 @@
                     if (existingGrant) {
                       return {
                         ...grantEval,
-                        extra: [...grantEval.extra, existingGrant]
+                        extra: [...grantEval.extra, {
+                          ...existingGrant,
+                          statusColor: this.grantStatusColors.extra
+                        }]
                       }
                     } else {
                       return grantEval

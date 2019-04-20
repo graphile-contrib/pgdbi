@@ -98,18 +98,18 @@
       }
     },
     mounted () {
-      // this.doComputePolicy()
+      this.doComputePolicy()
     },
     watch: {
-      // policyReadability () {
-      //   this.doComputePolicy()
-      // },
-      // enableRls () {
-      //   this.doComputePolicy()
-      // },
-      // policyDefinition () {
-      //   this.doComputePolicy()
-      // }
+      policyReadability () {
+        this.doComputePolicy()
+      },
+      enableRls () {
+        this.doComputePolicy()
+      },
+      policyDefinition () {
+        this.doComputePolicy()
+      }
     },
     methods: {
       refresh () {

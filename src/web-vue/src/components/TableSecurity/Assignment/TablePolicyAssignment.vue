@@ -14,6 +14,7 @@
         <v-tab-item
           v-for="schema in managedSchemata"
           :key="schema.schemaName"
+          lazy
         >
           <policy-assignment-schema :schema="schema"></policy-assignment-schema>
         </v-tab-item>
@@ -38,6 +39,7 @@
         return this.$store.state.policies
       },
       managedSchemata () {
+        //todo: refactor this into a store mutation
         return this.$store.state.managedSchemata
           .map(
             schema => {
@@ -47,8 +49,8 @@
                   table => {
                     const policyDefinition = this.policies.find(p => p.id === table.policyDefinitionId)
                     if (!policyDefinition) {
-                      console.log(table.name, table.policyDefinitionId, this.policies)
-                      console.log('pd', policyDefinition.id)
+                      // console.log(table.name, table.policyDefinitionId, this.policies)
+                      // console.log('pd', policyDefinition.id)
                     }
                     return {
                       ...table,

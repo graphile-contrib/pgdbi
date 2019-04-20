@@ -34,6 +34,7 @@
           </v-tab>
           <v-tab-item
             key="grants"
+            lazy
           >
             <v-card flat>
             <policy-definition-grant-grid
@@ -52,6 +53,7 @@
           </v-tab>
           <v-tab-item
             key="rls"
+            lazy
           >
             <v-card flat>
             <policy-rls-qualifier-grid
@@ -69,6 +71,7 @@
           </v-tab>
           <v-tab-item
             key="policy-template"
+            lazy
           >
             <v-card flat>
               <policy-realization
@@ -76,6 +79,26 @@
                 :table="table"
                 :enableRls="enableRls"
               ></policy-realization>
+            </v-card>
+          </v-tab-item>
+
+          <v-tab
+            v-if="table"
+            key="policy-evaluation"
+            ripple
+          >
+            Evaluation
+          </v-tab>
+          <v-tab-item
+            v-if="table"
+            key="policy-evaluation"
+            lazy
+          >
+            <v-card flat>
+              <table-policy-evaluator-detail
+                :policyDefinition="policyDefinition"
+                :table="table"
+              ></table-policy-evaluator-detail>
             </v-card>
           </v-tab-item>
 
@@ -95,6 +118,7 @@
   import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
   import TablePolicyMakeGlobalDialog from '@/components/TableSecurity/Dialogs/TablePolicyMakeGlobalDialog.vue'
   import TablePolicyDeleteDialog from '@/components/TableSecurity/Dialogs/TablePolicyDeleteDialog.vue'
+  import TablePolicyEvaluatorDetail from '@/components/TableSecurity/Evaluation/TablePolicyEvaluatorDetail.vue'
 
   export default {
     name: 'PolicyDefinition',
@@ -104,7 +128,8 @@
       PolicyRealization,
       TablePolicyCustomizeDialog,
       TablePolicyMakeGlobalDialog,
-      TablePolicyDeleteDialog
+      TablePolicyDeleteDialog,
+      TablePolicyEvaluatorDetail
     },
     props: {
       policyId: {

@@ -14,6 +14,7 @@
       <v-tab-item
         v-for="schemaPolicy in allPolicies"
         :key="schemaPolicy.name"
+        lazy
       >
         <v-toolbar>
         <v-tooltip bottom>

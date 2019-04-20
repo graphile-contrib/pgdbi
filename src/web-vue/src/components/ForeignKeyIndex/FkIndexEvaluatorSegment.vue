@@ -49,7 +49,7 @@
         return Object.keys(row.actions)
       },
       actionChanged (action, row) {
-        console.log('blah', action, row)
+        console.log('actionChanged', action, row)
       },
     },
     watch: {
