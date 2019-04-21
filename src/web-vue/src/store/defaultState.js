@@ -15,9 +15,6 @@ export default {
   // defaultRlsUsing: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
   defaultRlsWithCheck: '',
   defaultRlsQualifiers: {
-    all: {
-      policies: []
-    },
     select: {
       policies: []
     },
@@ -32,7 +29,6 @@ export default {
     }
   },
   defaultRoleGrants: {
-    all: 'DENIED',
     select: 'DENIED',
     insert: 'DENIED',
     update: 'DENIED',

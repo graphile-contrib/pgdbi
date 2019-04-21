@@ -10,13 +10,6 @@
       <td>{{ props.item.roleName }}</td>          
       <td>
         <v-checkbox 
-          :input-value="roleGrantSelected(props.item, 'all')" 
-          @click="toggleRoleGrant(props.item.roleName, 'all')"
-          :disabled="roleGrantDisabled(props.item, 'all')"
-        ></v-checkbox>
-      </td>
-      <td>
-        <v-checkbox 
           :input-value="roleGrantSelected(props.item, 'select')" 
           @click="toggleRoleGrant(props.item.roleName, 'select')"
           :disabled="roleGrantDisabled(props.item, 'select')"
@@ -107,35 +100,24 @@
                   (newRow, newAction) => {
                     const oldValue = this.policy.roleGrants[newRoleName][newAction]
                     let newValue
-                    if (action === 'all') {
+                    if (newAction === action) {
                       if (newRoleIsToggledRole) {
-                        newValue = currentValue === ALLOWED ? DENIED : newAction === 'all' ? ALLOWED : IMPLIED
+                        newValue = currentValue === ALLOWED ? DENIED : ALLOWED
                       } else if (toggledRoleIsApplicableToNew) {
                         newValue = currentValue === ALLOWED ? DENIED : IMPLIED
                       } else {
                         newValue = this.policy.roleGrants[newRoleName][newAction]
                       }
                     } else {
-                      if (newAction === action) {
-                        if (newRoleIsToggledRole) {
-                          newValue = currentValue === ALLOWED ? DENIED : ALLOWED
-                        } else if (toggledRoleIsApplicableToNew) {
-                          newValue = currentValue === ALLOWED ? DENIED : IMPLIED
+                      if (newAction == 'all') {
+                        if ((toggledRoleIsApplicableToNew || newRoleIsToggledRole) && currentValue === ALLOWED) {
+                          newValue = DENIED
                         } else {
                           newValue = this.policy.roleGrants[newRoleName][newAction]
                         }
                       } else {
-                        if (newAction == 'all') {
-                          if ((toggledRoleIsApplicableToNew || newRoleIsToggledRole) && currentValue === ALLOWED) {
-                            newValue = DENIED
-                          } else {
-                            newValue = this.policy.roleGrants[newRoleName][newAction]
-                          }
-                        } else {
-                          newValue = this.policy.roleGrants[newRoleName][newAction]
-                        }
+                        newValue = this.policy.roleGrants[newRoleName][newAction]
                       }
-
                     }
 
                     return {
@@ -174,10 +156,6 @@
         return [
           {
             text: 'Role Name',
-            sortable: false
-          },
-          {
-            text: 'ALL',
             sortable: false
           },
           {

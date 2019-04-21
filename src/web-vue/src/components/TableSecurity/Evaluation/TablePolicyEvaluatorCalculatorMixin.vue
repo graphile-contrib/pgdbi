@@ -22,12 +22,6 @@
     },
     data () {
       return {
-        // grantStatusColors: {
-        //   expected: 'green',
-        //   missing: 'yellow',
-        //   unexpected: 'red',
-        //   extra: 'blue'
-        // }
       }
     },
     computed: {

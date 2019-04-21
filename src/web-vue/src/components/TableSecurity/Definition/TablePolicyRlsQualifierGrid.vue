@@ -10,10 +10,6 @@
     <template slot="items" slot-scope="props">
       <td>{{ props.item.roleName }}</td>          
       <td v-for="action in ['all', 'select', 'insert', 'update', 'delete']" :key="action">
-        <!-- <v-btn
-          @click="toggleRlsPolicy(props.item.roleName, action)"
-        >{{rlsQualifierCheckLabel(props.item, action)}}</v-btn> -->
-        <!-- <v-label>{{props.item[action].status}}</v-label> -->
         <v-btn
           @click="addRlsPolicy(props.item.roleName, action)"
           :hidden="disabled"
@@ -88,11 +84,6 @@
           .reduce(
             (ip, impliedRoleName) => {
               if (impliedRoleName !== roleName) {
-                // if (roleName === 'soro_admin' &&  impliedRoleName === 'soro_user' && action === 'all') {
-                //   console.log('wtf flying', roleName, action, impliedRoleName, this.policy.rlsQualifiers[impliedRoleName][action].policies)
-                // }
-                // return ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
-                // console.log('all', this.policy.rlsQualifiers, impliedRoleName, action)
                 return action === 'all'
                   ? ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies)
                   : ip.concat(this.policy.rlsQualifiers[impliedRoleName][action].policies).concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
@@ -100,13 +91,11 @@
                 return action === 'all'
                   ? ip
                   : ip
-                    // .concat(this.policy.rlsQualifiers[impliedRoleName][action].policies)
                     .concat(this.policy.rlsQualifiers[impliedRoleName].all.policies)
               }
             }, []
           )
 
-        // if (action === 'all') console.log('implied', roleName, impliedRlsPolicies, impliedRoleNames)
         return impliedRlsPolicies
       },
       addRlsPolicy(roleName, action){
@@ -151,8 +140,7 @@
             }
           }
         }
-        // console.log(JSON.stringify(this.policy,0,2))
-        // console.log(JSON.stringify(newPolicy,0,2))
+
         this.$store.commit('savePolicy', {
             policy: newPolicy
           }

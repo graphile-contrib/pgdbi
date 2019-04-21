@@ -64,6 +64,26 @@
           </v-tab-item>
 
           <v-tab
+            key="policy-column-exclusions"
+            ripple
+            :disabled="disabled"
+        >
+            Column Exclusions
+          </v-tab>
+          <v-tab-item
+            key="policy-column-exclusions"
+            lazy
+          >
+            <v-card flat>
+              <table-policy-definition-column-exclusions
+                :policyDefinition="policyDefinition"
+                :table="table"
+                :disabled="disabled"
+              ></table-policy-definition-column-exclusions>
+            </v-card>
+          </v-tab-item>
+
+          <v-tab
             key="policy-template"
             ripple
           >
@@ -114,6 +134,7 @@
 
   import PolicyDefinitionGrantGrid from './TablePolicyDefinitionGrantGrid.vue'
   import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
+  import TablePolicyDefinitionColumnExclusions from '@/components/TableSecurity/Definition/TablePolicyDefinitionColumnExclusions.vue'
   import PolicyRealization from '@/components/TableSecurity/Realization/TablePolicyRealization.vue'
   import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
   import TablePolicyMakeGlobalDialog from '@/components/TableSecurity/Dialogs/TablePolicyMakeGlobalDialog.vue'
@@ -129,7 +150,8 @@
       TablePolicyCustomizeDialog,
       TablePolicyMakeGlobalDialog,
       TablePolicyDeleteDialog,
-      TablePolicyEvaluatorDetail
+      TablePolicyEvaluatorDetail,
+      TablePolicyDefinitionColumnExclusions
     },
     props: {
       policyId: {
