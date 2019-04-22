@@ -58,7 +58,17 @@
     methods: {
       addColumnExclusion() {
         this.dialog = false
-        const columnExclusions = this.policyDefinition.columnExclusions.filter(ce => ce !== this.columnName).concat([this.columnName])
+        const columnExclusions = this.policyDefinition.columnExclusions
+          .filter(ce => ce.columnName !== this.columnName)
+          .concat(
+            [
+              {
+                columnName: this.columnName
+                ,excludeForInsert: true
+                ,excludeForUpdate: true
+              }
+            ]
+          )
 
         try {
           this.$store.commit('savePolicy', {

@@ -8,11 +8,11 @@
             <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>
           </v-layout>
           <!-- <v-btn @click="customize" :hidden="!table">customize</v-btn> -->
-          <table-policy-customize-dialog
+          <!-- <table-policy-customize-dialog
             v-if="showCustomizeButton"
             :currentPolicyDefinition="table.policyDefinition"
             :tables="[table]"
-          ></table-policy-customize-dialog>
+          ></table-policy-customize-dialog> -->
           <table-policy-make-global-dialog
             v-if="showMakeGlobalButton"
             :policyDefinition="policyDefinition"
@@ -38,7 +38,7 @@
           >
             <v-card flat>
             <policy-definition-grant-grid
-              :policy="policyDefinition"
+              :policyDefinition="policyDefinition"
               :disabled="disabled"
             ></policy-definition-grant-grid>
             </v-card>
@@ -212,8 +212,17 @@
         }
       },
       disabled () {
-        return (this.policyDefinition.id === this.$store.state.defaultPolicy.id) || 
-        (this.table !== null && this.table !== undefined && this.policyDefinition.customIdentifier && this.policyDefinition.customIdentifier !== this.table.id)
+        const isDefaultPolicy = (this.policyDefinition.id === this.$store.state.defaultPolicy.id)
+        const hasTable = this.table !== null && this.table !== undefined
+        const isCustomPolicy = this.policyDefinition.customIdentifier ? true : false
+
+        if (isDefaultPolicy) {
+          return false
+        } else if (hasTable) {
+          return !isCustomPolicy
+        } else {
+          return false
+        }
       },
       policyDefinition () {
         const policies = this.$store.state.policies

@@ -48,7 +48,7 @@
   export default {
     name: 'PolicyDefinitionGrantGrid',
     props: {
-      policy: {
+      policyDefinition: {
         type: Object,
         required: true
       },
@@ -79,7 +79,7 @@
           this.toggleCompleted = false
           return
         }
-        const currentValue = this.policy.roleGrants[toggledRoleName][action]
+        const currentValue = this.policyDefinition.roleGrants[toggledRoleName][action]
 
         const impliedRoleNames = this.projectRoles.filter(
           pr => {
@@ -89,16 +89,16 @@
 
         const newPolicy = {
           ...this.policy,
-          roleGrants: Object.keys(this.policy.roleGrants).reduce(
+          roleGrants: Object.keys(this.policyDefinition.roleGrants).reduce(
             (newGrants, newRoleName) => {
               const toggledRoleIsApplicableToNew = impliedRoleNames.indexOf(newRoleName) > -1
               const newRoleIsToggledRole = newRoleName === toggledRoleName
 
               return {
                 ...newGrants,
-                [newRoleName]: Object.keys(this.policy.roleGrants[newRoleName]).reduce(
+                [newRoleName]: Object.keys(this.policyDefinition.roleGrants[newRoleName]).reduce(
                   (newRow, newAction) => {
-                    const oldValue = this.policy.roleGrants[newRoleName][newAction]
+                    const oldValue = this.policyDefinition.roleGrants[newRoleName][newAction]
                     let newValue
                     if (newAction === action) {
                       if (newRoleIsToggledRole) {
@@ -106,17 +106,17 @@
                       } else if (toggledRoleIsApplicableToNew) {
                         newValue = currentValue === ALLOWED ? DENIED : IMPLIED
                       } else {
-                        newValue = this.policy.roleGrants[newRoleName][newAction]
+                        newValue = this.policyDefinition.roleGrants[newRoleName][newAction]
                       }
                     } else {
                       if (newAction == 'all') {
                         if ((toggledRoleIsApplicableToNew || newRoleIsToggledRole) && currentValue === ALLOWED) {
                           newValue = DENIED
                         } else {
-                          newValue = this.policy.roleGrants[newRoleName][newAction]
+                          newValue = this.policyDefinition.roleGrants[newRoleName][newAction]
                         }
                       } else {
-                        newValue = this.policy.roleGrants[newRoleName][newAction]
+                        newValue = this.policyDefinition.roleGrants[newRoleName][newAction]
                       }
                     }
 
@@ -143,10 +143,10 @@
         return this.$store.state.projectRoles
       },
       grantMatrix () {
-        return Object.keys(this.policy.roleGrants).map(
+        return Object.keys(this.policyDefinition.roleGrants).map(
           roleName => {
             return {
-              ...this.policy.roleGrants[roleName]
+              ...this.policyDefinition.roleGrants[roleName]
               ,roleName: roleName
             }
           }

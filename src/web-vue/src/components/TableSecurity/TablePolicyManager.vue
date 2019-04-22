@@ -74,7 +74,7 @@
     data () {
       return {
         dialog: false,
-        newPolicyName: 'New Policy',
+        newPolicyName: 'New Table Policy',
         headers: [
           {
             text: '',

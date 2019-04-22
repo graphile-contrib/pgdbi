@@ -80,6 +80,7 @@
           .applicableRoles
           .reduce((a,r)=>{ return a.concat(r.roleName)}, [])
           .concat([roleName])
+          
         const impliedRlsPolicies = impliedRoleNames
           .reduce(
             (ip, impliedRoleName) => {
