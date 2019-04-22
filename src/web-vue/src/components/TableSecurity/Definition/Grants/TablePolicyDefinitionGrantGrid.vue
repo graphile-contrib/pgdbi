@@ -88,7 +88,7 @@
         ).reduce((a,r)=>{ return a.concat(r.roleName)}, [])
 
         const newPolicy = {
-          ...this.policy,
+          ...this.policyDefinition,
           roleGrants: Object.keys(this.policyDefinition.roleGrants).reduce(
             (newGrants, newRoleName) => {
               const toggledRoleIsApplicableToNew = impliedRoleNames.indexOf(newRoleName) > -1

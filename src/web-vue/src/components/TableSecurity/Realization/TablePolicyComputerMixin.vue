@@ -13,7 +13,7 @@
   export default {
     name: 'PolicyComputerMixin',
     methods: {
-      computePolicy (policyDefinition, policyReadability, variables) {
+      computePolicy (policyDefinition, policyReadability, variables, table) {
         const tablePolicyTemplate = this.$store.state.tablePolicyTemplate
 
         const allRoles = Object.keys(policyDefinition.roleGrants).map(
@@ -28,9 +28,38 @@
           (allGrants, roleName) => {
             const grantsForRole = Object.keys(policyDefinition.roleGrants[roleName]).map(
               action => {
-                return {
-                  action: action,
-                  value: policyDefinition.roleGrants[roleName][action]
+                switch (action) {
+                  case 'insert':
+                    let columnExclusions = []
+                    let grantColumns = null
+
+                    if (table) {
+                      columnExclusions = policyDefinition.columnExclusions.insert[roleName] || []
+
+                      grantColumns = `( ${table.tableColumns
+                        .map(tc => tc.columnName)
+                        .filter(tc => columnExclusions.indexOf(tc) === -1)
+                        .join(', ')} )`
+                    }
+
+                    const value = columnExclusions.length > 0 ? ALLOWED : policyDefinition.roleGrants[roleName][action]
+
+                    return {
+                      action: action,
+                      value: value,
+                      grantColumns: grantColumns
+                    }
+                  case 'update':
+                    return {
+                      action: action,
+                      value: policyDefinition.roleGrants[roleName][action],
+                      // grantColumns: variables.updateColumns
+                    }
+                  default :
+                    return {
+                      action: action,
+                      value: policyDefinition.roleGrants[roleName][action]
+                    }
                 }
               }
             )

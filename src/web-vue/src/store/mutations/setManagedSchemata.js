@@ -7,6 +7,10 @@ function setManagedSchemata (state, payload) {
       policyFooterTemplate: state.policyFooterTemplate,
       roleTableGrantTemplate: state.roleTableGrantTemplate,
       enableRls: false,
+      columnExclusions: {
+        insert: {},
+        update: {}
+      },
       roleGrants: state.projectRoles.reduce(
         (all, projectRole) => {
           return {

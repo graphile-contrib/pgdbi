@@ -37,10 +37,14 @@
         type: Object,
         required: false
       },
-      disabled: {
-        type: Boolean,
-        default: false
-      }      
+      action: {
+        type: String,
+        required: true
+      },
+      roleName: {
+        type: String,
+        required: true
+      }
     },
     data () {
       return {
@@ -50,7 +54,10 @@
     },
     computed: {
       displayValue () {
-          return 'New Column Exclusion(s)'
+          return `New ${this.action} exclusion`
+      },
+      disabled () {
+        return this.policyDefinition.roleGrants[this.roleName][this.action] === 'DENIED'
       }
     },
     watch: {
@@ -58,15 +65,11 @@
     methods: {
       addColumnExclusion() {
         this.dialog = false
-        const columnExclusions = this.policyDefinition.columnExclusions
-          .filter(ce => ce.columnName !== this.columnName)
+        const actionRoleColumnExclusions = (this.policyDefinition.columnExclusions[this.action][this.roleName] || [])
+          .filter(ce => ce !== this.columnName)
           .concat(
             [
-              {
-                columnName: this.columnName
-                ,excludeForInsert: true
-                ,excludeForUpdate: true
-              }
+              this.columnName
             ]
           )
 
@@ -74,7 +77,13 @@
           this.$store.commit('savePolicy', {
             policy: {
               ...this.policyDefinition,
-              columnExclusions: columnExclusions
+              columnExclusions: {
+                ...this.policyDefinition.columnExclusions,
+                [this.action]: {
+                  ...this.policyDefinition.columnExclusions[this.action],
+                  [this.roleName]: actionRoleColumnExclusions
+                }
+              }
             }
           })
         }

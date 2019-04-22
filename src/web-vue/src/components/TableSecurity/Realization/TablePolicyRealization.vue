@@ -116,14 +116,28 @@
         this.doComputePolicy()
       },
       expand () {
-        this.computedPolicy = `${this.computedPolicy}=`
+        this.computedPolicy = `${this.computedPolicy} `
       },
       doComputePolicy () {
-        const variables = this.table ? {
-          schemaName: this.table.tableSchema,
-          tableName: this.table.name
-        } : null
-        this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables)
+        let variables = null
+        if (this.table) {
+          // console.log('lbah', this.table.tableColumns[1])
+          // const tableColumns = this.table.tableColumns
+          //     .reduce(
+          //       (tableColumns, col) => {
+          //         return tableColumns.concat(`${col.columnName}, `)
+          //       }, '('
+          //     ).slice(0,-2).concat(')')
+
+          variables = {
+            schemaName: this.table.tableSchema,
+            tableName: this.table.name,
+            // insertColumns: tableColumns,
+            // updateColumns: tableColumns.split(',').slice(0, 3).join(',')
+          }
+        }
+
+        this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables, this.table)
       },
       onCopy: function (e) {
         alert('Copied!')

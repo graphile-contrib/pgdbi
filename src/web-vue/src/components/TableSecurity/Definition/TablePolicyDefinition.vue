@@ -37,10 +37,10 @@
             lazy
           >
             <v-card flat>
-            <policy-definition-grant-grid
+            <table-policy-definition-grants
               :policyDefinition="policyDefinition"
               :disabled="disabled"
-            ></policy-definition-grant-grid>
+            ></table-policy-definition-grants>
             </v-card>
           </v-tab-item>
 
@@ -60,26 +60,6 @@
               :policy="policyDefinition"
               :disabled="disabled"
             ></policy-rls-qualifier-grid>
-            </v-card>
-          </v-tab-item>
-
-          <v-tab
-            key="policy-column-exclusions"
-            ripple
-            :disabled="disabled"
-        >
-            Column Exclusions
-          </v-tab>
-          <v-tab-item
-            key="policy-column-exclusions"
-            lazy
-          >
-            <v-card flat>
-              <table-policy-definition-column-exclusions
-                :policyDefinition="policyDefinition"
-                :table="table"
-                :disabled="disabled"
-              ></table-policy-definition-column-exclusions>
             </v-card>
           </v-tab-item>
 
@@ -128,13 +108,9 @@
 </template>
 
 <script>
-  const ALLOWED = 'ALLOWED'
-  const DENIED = 'DENIED'
-  const IMPLIED = 'IMPLIED'
+  import TablePolicyDefinitionGrants from '@/components/TableSecurity/Definition/Grants/TablePolicyDefinitionGrants.vue'
 
-  import PolicyDefinitionGrantGrid from './TablePolicyDefinitionGrantGrid.vue'
   import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
-  import TablePolicyDefinitionColumnExclusions from '@/components/TableSecurity/Definition/TablePolicyDefinitionColumnExclusions.vue'
   import PolicyRealization from '@/components/TableSecurity/Realization/TablePolicyRealization.vue'
   import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
   import TablePolicyMakeGlobalDialog from '@/components/TableSecurity/Dialogs/TablePolicyMakeGlobalDialog.vue'
@@ -144,14 +120,13 @@
   export default {
     name: 'PolicyDefinition',
     components: {
-      PolicyDefinitionGrantGrid,
       PolicyRlsQualifierGrid,
       PolicyRealization,
       TablePolicyCustomizeDialog,
       TablePolicyMakeGlobalDialog,
       TablePolicyDeleteDialog,
       TablePolicyEvaluatorDetail,
-      TablePolicyDefinitionColumnExclusions
+      TablePolicyDefinitionGrants
     },
     props: {
       policyId: {
