@@ -12,6 +12,11 @@
 
   export default {
     name: 'PolicyComputerMixin',
+    computed: {
+      projectRoles () {
+        return this.$store.state.projectRoles
+      }
+    },
     methods: {
       computePolicy (policyDefinition, policyReadability, variables, table) {
         const tablePolicyTemplate = this.$store.state.tablePolicyTemplate
@@ -28,32 +33,30 @@
           (allGrants, roleName) => {
             const grantsForRole = Object.keys(policyDefinition.roleGrants[roleName]).map(
               action => {
+
                 switch (action) {
                   case 'insert':
+                  case 'update':
                     let columnExclusions = []
                     let grantColumns = null
+                    let columnExclusionsText = null
 
                     if (table) {
-                      columnExclusions = policyDefinition.columnExclusions.insert[roleName] || []
+                      columnExclusions = policyDefinition.columnExclusions[action][roleName] || []
+                      columnExclusionsText = columnExclusions.length > 0 ? `-- excluded columns: ${columnExclusions.join(', ')}` : '-- no excluded columns'
 
                       grantColumns = `( ${table.tableColumns
                         .map(tc => tc.columnName)
                         .filter(tc => columnExclusions.indexOf(tc) === -1)
                         .join(', ')} )`
                     }
-
                     const value = columnExclusions.length > 0 ? ALLOWED : policyDefinition.roleGrants[roleName][action]
 
                     return {
                       action: action,
                       value: value,
-                      grantColumns: grantColumns
-                    }
-                  case 'update':
-                    return {
-                      action: action,
-                      value: policyDefinition.roleGrants[roleName][action],
-                      // grantColumns: variables.updateColumns
+                      grantColumns: grantColumns,
+                      columnExclusionsText: columnExclusionsText
                     }
                   default :
                     return {

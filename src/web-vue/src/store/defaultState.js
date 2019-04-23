@@ -55,9 +55,12 @@ export default {
 
   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  {{roleName}}
     {{#grants}}
-    grant {{action}} {{grantColumns}}
+    grant {{action}} {{grantColumns}}{{^grantColumns}}{{=<% %>=}}{{grantColumns}}<%={{ }}=%>{{/grantColumns}}
     on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
     to {{roleName}};
+    {{#columnExclusionsText}}
+      {{columnExclusionsText}}
+    {{/columnExclusionsText}}
 
     {{/grants}}
   {{/allowedRoleGrants}}
