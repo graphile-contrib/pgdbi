@@ -32,36 +32,36 @@
         const allRoleGrants =  Object.keys(policyDefinition.roleGrants).reduce(
           (allGrants, roleName) => {
             const grantsForRole = Object.keys(policyDefinition.roleGrants[roleName]).map(
-              action => {
+              (action, index, array) => {
 
                 switch (action) {
                   case 'insert':
                   case 'update':
-                    let columnExclusions = []
-                    let grantColumns = null
-                    let columnExclusionsText = null
-
-                    if (table) {
-                      columnExclusions = policyDefinition.columnExclusions[action][roleName] || []
-                      columnExclusionsText = columnExclusions.length > 0 ? `-- excluded columns: ${columnExclusions.join(', ')}` : '-- no excluded columns'
-
-                      grantColumns = `( ${table.tableColumns
+                    let columnExclusions = policyDefinition.columnExclusions[action][roleName] || []
+                    let columnExclusionsText = columnExclusions.length > 0 ? `-- excluded columns: ${columnExclusions.join(', ')}` : '-- no excluded columns'
+                    let grantColumns = table ? 
+                      `( ${table.tableColumns
                         .map(tc => tc.columnName)
                         .filter(tc => columnExclusions.indexOf(tc) === -1)
                         .join(', ')} )`
-                    }
+                        :
+                      '{{grantColumns}}'
+                    
                     const value = columnExclusions.length > 0 ? ALLOWED : policyDefinition.roleGrants[roleName][action]
 
                     return {
                       action: action,
                       value: value,
                       grantColumns: grantColumns,
-                      columnExclusionsText: columnExclusionsText
+                      columnExclusionsText: columnExclusionsText,
+                      comma: (index < array.length - 1) ? ',' : ''
                     }
                   default :
                     return {
                       action: action,
-                      value: policyDefinition.roleGrants[roleName][action]
+                      value: policyDefinition.roleGrants[roleName][action],
+                      grantColumns: '',
+                      comma: (index < array.length - 1) ? ',' : ''
                     }
                 }
               }
@@ -76,10 +76,10 @@
 
         // const allowedRoleGrants = allRoleGrants
         const allowedRoleGrants = allRoleGrants.map(
-          roleGrant => {
+          (roleGrant, index, array) => {
             return {
               ...roleGrant,
-              grants: roleGrant.grants.filter(gfr => gfr.value === ALLOWED)
+              grants: roleGrant.grants.filter(gfr => gfr.value === ALLOWED),
             }
           }
         ).filter(rg => rg.grants.length > 0)

@@ -1,37 +1,23 @@
 <template>
   <v-container>
-    <h1 style="color: red;">Under Construction</h1>
-    <v-toolbar>
-      <v-btn @click="resetState">Reset</v-btn>
-      <v-btn @click="saveState">Save</v-btn>
-    </v-toolbar>
-    <hr>
+    <default-rls-using></default-rls-using>
+    <table-policy-template></table-policy-template>
   </v-container>
 </template>
 
 <script>
+import TablePolicyTemplate from '@/components/Settings/TablePolicyTemplate'
+import DefaultRlsUsing from '@/components/Settings/DefaultRlsUsing'
+
 export default {
   name: 'SecurityPolicySettings',
+  components: {
+    TablePolicyTemplate,
+    DefaultRlsUsing
+  },
   computed: {
-    // policyTemplateNoRls () {
-    //   return this.$store.state.policyTemplateNoRls
-    // },
-    // policyTemplateRls () {
-    //   return this.$store.state.policyTemplateRls
-    // },
-    // appTenantFieldName () {
-    //   return this.$store.state.appTenantFieldName
-    // }
   },
   methods: {
-    saveState () {
-    },
-    resetState () {
-      this.$store.commit('resetDefaultState')
-      this.loadState()
-    },
-    loadState () {
-    }
   },
   data () {
     return {

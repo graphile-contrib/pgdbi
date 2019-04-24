@@ -17,6 +17,8 @@ import importProject from './importProject'
 import customizeTablePolicy from './customizeTablePolicy'
 import makeGlobalTablePolicy from './makeGlobalTablePolicy'
 import deleteTablePolicy from './deleteTablePolicy'
+import updateTablePolicyTemplate from './updateTablePolicyTemplate'
+import updateDefaultRlsUsing from './updateDefaultRlsUsing'
 
 export default {
   resetDefaultState,
@@ -37,5 +39,7 @@ export default {
   assignFunctionPolicy,
   customizeTablePolicy,
   makeGlobalTablePolicy,
-  deleteTablePolicy
+  deleteTablePolicy,
+  updateTablePolicyTemplate,
+  updateDefaultRlsUsing
 }

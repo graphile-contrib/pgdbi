@@ -1,76 +1,34 @@
 <template>
   <v-container>
+    <h1>Settings</h1>
+    <h2 style="color: red;">Under Construction</h2>
+    <hr>
     <v-tabs
       v-model="activeTab"
       dark
     >
       <v-tab
-        key="roles"
+        key="table-policy-template"
         ripple
       >
-        Roles
+        Table Policy Template
       </v-tab>
       <v-tab-item
-        key="roles"
+        key="table-policy-template"
       >
-        <v-card>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card key="roles">
-                <role-filter></role-filter>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-tab-item>
-      <v-tab
-        key="schemata"
-        ripple
-      >
-        Schemata
-      </v-tab>
-      <v-tab-item
-        key="schemata"
-      >
-        <v-card>
-          <v-layout row wrap>
-            <v-flex xs4>
-              <v-card key="schemata">
-                Schemata
-                <schema-filter></schema-filter>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-tab-item>
-      <v-tab
-        key="policies"
-        ripple
-      >
-        Policy Definitions
-      </v-tab>
-      <v-tab-item
-        key="policies"
-      >
-        <v-card>
-          <policy-manager></policy-manager>
-        </v-card>
+      <security-policy-settings></security-policy-settings>
       </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
 
 <script>
-  import RoleFilter from '@/components/Role/RoleFilter'
-  import SchemaFilter from '@/components/Schema/SchemaFilter'
-  import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
+  import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
 
   export default {
     name: 'Settings',
     components: {
-      RoleFilter,
-      SchemaFilter,
-      PolicyManager
+      SecurityPolicySettings
     },
     props: {
     },
