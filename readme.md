@@ -4,12 +4,6 @@
 yarn add postgraphile-db-inspector-extension
 ```
 
-or 
-
-```
-npm install -S postgraphile-db-inspector-extension
-```
-
 Use as a server plugin; e.g.
 
 ```
@@ -19,9 +13,9 @@ postgraphile --plugins postgraphile-db-inspector-extensions -c my_db
 or
 
 ```
-const PGI = require('postgraphile-db-inspector-extension')
+const pgdbi = require('postgraphile-db-inspector-extension')
 const {postgraphile, makePluginHook} = require("postgraphile");
-const pluginHook = makePluginHook([PGI]);
+const pluginHook = makePluginHook([pgdbi]);
 
 app.use(postgraphile(connectionString, schemas, {
   pluginHook,
