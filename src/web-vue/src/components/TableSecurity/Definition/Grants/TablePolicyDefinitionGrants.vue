@@ -45,7 +45,7 @@
 
 <script>
   import TablePolicyDefinitionGrantGrid from '@/components/TableSecurity/Definition/Grants/TablePolicyDefinitionGrantGrid.vue'
-  import TablePolicyDefinitionColumnExclusions from '@/components/TableSecurity/Definition/Grants/TablePolicyDefinitionColumnExclusions.vue'
+  import TablePolicyDefinitionColumnExclusions from '@/components/TableSecurity/Definition/Grants/ColumnExclusions/TablePolicyDefinitionColumnExclusions.vue'
 
   export default {
     name: 'PolicyDefinitionGrants',

@@ -13,6 +13,10 @@ function newPolicy (state, payload) {
       policyFooterTemplate: state.policyFooterTemplate,
       roleTableGrantTemplate: state.roleTableGrantTemplate,
       enableRls: false,
+      columnExclusionOverrides: {
+        insert: [],
+        update: []
+      },
       columnExclusions: {
         insert: {},
         update: {}

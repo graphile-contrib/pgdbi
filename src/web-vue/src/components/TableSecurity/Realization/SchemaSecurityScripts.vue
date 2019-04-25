@@ -116,7 +116,7 @@
               schemaName: table.tableSchema,
               tableName: table.name
             }
-            const tablePolicy = this.computePolicy(policyTemplate, this.policyReadability, variables)
+            const tablePolicy = this.computePolicy(policyTemplate, this.policyReadability, variables, table)
             return policy.concat(tablePolicy)
           }, ''
         )

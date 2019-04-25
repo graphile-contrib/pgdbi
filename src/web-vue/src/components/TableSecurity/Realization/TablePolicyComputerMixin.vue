@@ -19,7 +19,7 @@
     },
     methods: {
       computePolicy (policyDefinition, policyReadability, variables, table) {
-        const tablePolicyTemplate = this.$store.state.tablePolicyTemplate
+        // const tablePolicyTemplate = this.$store.state.tablePolicyTemplate
 
         const allRoles = Object.keys(policyDefinition.roleGrants).map(
           roleName => {
@@ -28,6 +28,8 @@
             }
           }
         )
+
+        const revokeRolesList = `${allRoles.map(r => r.roleName).join(', ')}`
 
         const allRoleGrants =  Object.keys(policyDefinition.roleGrants).reduce(
           (allGrants, roleName) => {
@@ -38,7 +40,7 @@
                   case 'insert':
                   case 'update':
                     let columnExclusions = policyDefinition.columnExclusions[action][roleName] || []
-                    let columnExclusionsText = columnExclusions.length > 0 ? `-- excluded columns: ${columnExclusions.join(', ')}` : '-- no excluded columns'
+                    let columnExclusionsText = columnExclusions.length > 0 ? `\n        -- excluded columns: ${columnExclusions.join(', ')}` : '\n        -- no excluded columns'
                     let grantColumns = table ? 
                       `( ${table.tableColumns
                         .map(tc => tc.columnName)
@@ -46,8 +48,9 @@
                         .join(', ')} )`
                         :
                       '{{grantColumns}}'
+                    const overrideExclusions = policyDefinition.columnExclusionOverrides[action].indexOf(roleName) > -1
                     
-                    const value = columnExclusions.length > 0 ? ALLOWED : policyDefinition.roleGrants[roleName][action]
+                    const value = columnExclusions.length > 0 || overrideExclusions ? ALLOWED : policyDefinition.roleGrants[roleName][action]
 
                     return {
                       action: action,
@@ -132,9 +135,9 @@
           ...variables,
           policyName: policyDefinition.name,
           enableRls: policyDefinition.enableRls,
-          revokeRoles: allRoles,
           allowedRoleGrants: allowedRoleGrants,
-          rlsPolicies: rlsPolicies
+          rlsPolicies: rlsPolicies,
+          revokeRolesList: revokeRolesList
         }
 
         const templateVariables = policyReadability === TERSE ? regularVariables : {...verboseVariables, ...regularVariables}
@@ -147,4 +150,81 @@
     },
   }
 
+
+  const tablePolicyTemplate = `
+----------
+----------  BEGIN: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+----------  POLICY NAME:  {{policyName}}
+----------
+
+----------  REMOVE EXISTING TABLE GRANTS
+
+  revoke all privileges 
+  on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  from public;
+
+  revoke all privileges 
+  on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  from {{revokeRolesList}};
+
+{{#enableRls}}
+----------  ENABLE ROW LEVEL SECURITY
+
+  alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} enable row level security;
+
+{{#rlsPolicies}}
+  create policy {{name}}_{{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}_{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+    on {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+    as {{passStrategy}}
+    for {{action}}
+    to {{roleName}}
+    using {{{using}}}
+    {{#withCheck}}
+    with check {{withCheck}}
+    {{/withCheck}}
+    ;
+{{/rlsPolicies}}
+
+{{/enableRls}}
+{{^enableRls}}
+----------  DISABLE ROW LEVEL SECURITY
+
+  alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} disable row level security;
+{{/enableRls}}
+
+----------  CREATE NEW TABLE GRANTS
+{{#allowedRoleGrants}}
+
+----------  {{roleName}}
+  grant 
+  {{#grants}}
+    {{action}} {{grantColumns}}{{comma}} {{columnExclusionsText}}
+  {{/grants}}
+  on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  to {{roleName}};
+
+{{/allowedRoleGrants}}
+
+{{#verbose}}
+----------  IMPLIED TABLE GRANTS
+  {{#impliedRoleGrants}}
+
+  ----------  {{roleName}}
+  {{#grants}}
+  --IMPLIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
+  {{/grants}}
+  {{/impliedRoleGrants}}
+
+  ----------  DENIED TABLE GRANTS
+  {{#deniedRoleGrants}}
+
+  ----------  {{roleName}}
+  {{#grants}}
+  --DENIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
+  {{/grants}}
+  {{/deniedRoleGrants}}
+{{/verbose}}
+
+----------  END: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+--==`
 </script>

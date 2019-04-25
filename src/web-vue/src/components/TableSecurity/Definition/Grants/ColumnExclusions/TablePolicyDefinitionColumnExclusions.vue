@@ -9,53 +9,21 @@
       <template slot="items" slot-scope="props">
         <td>{{ props.item.roleName }}</td>
         <td>
-          <table-policy-column-exclusion-dialog
+          <column-exclusion-set
             :policyDefinition="policyDefinition"
             :table="table"
             :action="'insert'"
             :roleName="props.item.roleName"
-          >
-          </table-policy-column-exclusion-dialog>
-            <v-list
-            >
-              <v-list-tile
-                v-for="ice in props.item.insertColumnExclusions"
-                :key="ice"
-              >
-                <v-btn @click="removeInsertExclusion(ice, props.item.roleName)"><v-icon>clear</v-icon></v-btn> {{ice}}
-              </v-list-tile>
-            </v-list>
-          <!-- <v-data-table
-            hide-headers
-            hide-actions
-            :items="props.item.insertColumnExclusions"
-          >
-            <template slot="items" slot-scope="props">
-              <td><v-btn>Remove</v-btn></td>
-              <td>{{ props.item }}</td>
-            </template>
-          </v-data-table> -->
+          ></column-exclusion-set>
         </td>
         <td>
-          <table-policy-column-exclusion-dialog
+          <column-exclusion-set
             :policyDefinition="policyDefinition"
             :table="table"
             :action="'update'"
             :roleName="props.item.roleName"
-          >
-          </table-policy-column-exclusion-dialog>
-          <v-data-table
-            hide-headers
-            hide-actions
-            :items="props.item.updateColumnExclusions"
-          >
-            <template slot="items" slot-scope="props">
-              <td><v-btn>Remove</v-btn></td>
-              <td>{{ props.item }}</td>
-            </template>
-          </v-data-table>
+          ></column-exclusion-set>
         </td>
-        <!-- <td><v-btn @click="removeColumnExclusion(props.item)">Remove</v-btn></td> -->
       </template>
     </v-data-table>
   </v-container>
@@ -63,12 +31,12 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import TablePolicyColumnExclusionDialog from '@/components/TableSecurity/Definition/Grants/TablePolicyColumnExclusionDialog.vue'
+  import ColumnExclusionSet from '@/components/TableSecurity/Definition/Grants/ColumnExclusions/ColumnExclusionSet.vue'
 
   export default {
     name: 'PolicyDefinitionColumnExclusions',
     components: {
-      TablePolicyColumnExclusionDialog
+      ColumnExclusionSet
     },
     props: {
       policyDefinition: {

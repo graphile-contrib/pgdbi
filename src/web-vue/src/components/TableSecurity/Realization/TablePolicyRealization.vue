@@ -121,19 +121,9 @@
       doComputePolicy () {
         let variables = null
         if (this.table) {
-          // console.log('lbah', this.table.tableColumns[1])
-          // const tableColumns = this.table.tableColumns
-          //     .reduce(
-          //       (tableColumns, col) => {
-          //         return tableColumns.concat(`${col.columnName}, `)
-          //       }, '('
-          //     ).slice(0,-2).concat(')')
-
           variables = {
             schemaName: this.table.tableSchema,
             tableName: this.table.name,
-            // insertColumns: tableColumns,
-            // updateColumns: tableColumns.split(',').slice(0, 3).join(',')
           }
         }
 

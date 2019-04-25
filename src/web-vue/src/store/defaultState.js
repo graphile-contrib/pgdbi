@@ -37,87 +37,90 @@ export default {
     update: 'DENIED',
     delete: 'DENIED',
   },
-  tablePolicyTemplate: `
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  BEGIN: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  POLICY NAME:  {{policyName}}
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // tablePolicyTemplate: `
+  // ----------
+  // ----------  BEGIN: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+  // ----------  POLICY NAME:  {{policyName}}
+  // ----------
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  REMOVE EXISTING TABLE GRANTS
+  // ----------  REMOVE EXISTING TABLE GRANTS
   
-    revoke all privileges on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} from public;
-  {{#revokeRoles}}
-    revoke all privileges on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} from {{roleName}};
-  {{/revokeRoles}}
+  //   revoke all privileges 
+  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //   from public;
 
-  {{#enableRls}}
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  ENABLE ROW LEVEL SECURITY
-  
-    alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} enable row level security;
-  
-  {{#rlsPolicies}}
-    create policy {{name}}_{{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}_{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
-      on {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
-      as {{passStrategy}}
-      for {{action}}
-      to {{roleName}}
-      using {{{using}}}
-      {{#withCheck}}
-      with check {{withCheck}}
-      {{/withCheck}}
-      ;
-  {{/rlsPolicies}}
-  
-  {{/enableRls}}
-  {{^enableRls}}
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  DISABLE ROW LEVEL SECURITY
-  
-    alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} disable row level security;
-  {{/enableRls}}
-  
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  CREATE NEW TABLE GRANTS
-  {{#allowedRoleGrants}}
+  //   revoke all privileges 
+  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //   from {{revokeRolesList}};
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  {{roleName}}
-    grant 
-    {{#grants}}
-      {{action}} {{grantColumns}}{{comma}} {{columnExclusionsText}}
-    {{/grants}}
-    on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
-    to {{roleName}};
-
-  {{/allowedRoleGrants}}
+  // {{#enableRls}}
+  // ----------  ENABLE ROW LEVEL SECURITY
   
-  {{#verbose}}
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  IMPLIED TABLE GRANTS
-    {{#impliedRoleGrants}}
-
-    -------------------------------------------------------------------------------------------------------------------------------------------------------------------  {{roleName}}
-    {{#grants}}
-    --IMPLIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
-    {{/grants}}
-    {{/impliedRoleGrants}}
+  //   alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} enable row level security;
   
-    -------------------------------------------------------------------------------------------------------------------------------------------------------------------  DENIED TABLE GRANTS
-    {{#deniedRoleGrants}}
-
-    -------------------------------------------------------------------------------------------------------------------------------------------------------------------  {{roleName}}
-    {{#grants}}
-    --DENIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
-    {{/grants}}
-    {{/deniedRoleGrants}}
-  {{/verbose}}
+  // {{#rlsPolicies}}
+  //   create policy {{name}}_{{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}_{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //     on {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+  //     as {{passStrategy}}
+  //     for {{action}}
+  //     to {{roleName}}
+  //     using {{{using}}}
+  //     {{#withCheck}}
+  //     with check {{withCheck}}
+  //     {{/withCheck}}
+  //     ;
+  // {{/rlsPolicies}}
   
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  END: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
-  --==
-  `,
+  // {{/enableRls}}
+  // {{^enableRls}}
+  // ----------  DISABLE ROW LEVEL SECURITY
+  
+  //   alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} disable row level security;
+  // {{/enableRls}}
+  
+  // ----------  CREATE NEW TABLE GRANTS
+  // {{#allowedRoleGrants}}
+
+  // ----------  {{roleName}}
+  //   grant 
+  //   {{#grants}}
+  //     {{action}} {{grantColumns}}{{comma}} {{columnExclusionsText}}
+  //   {{/grants}}
+  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //   to {{roleName}};
+
+  // {{/allowedRoleGrants}}
+  
+  // {{#verbose}}
+  // ----------  IMPLIED TABLE GRANTS
+  //   {{#impliedRoleGrants}}
+
+  //   ----------  {{roleName}}
+  //   {{#grants}}
+  //   --IMPLIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
+  //   {{/grants}}
+  //   {{/impliedRoleGrants}}
+  
+  //   ----------  DENIED TABLE GRANTS
+  //   {{#deniedRoleGrants}}
+
+  //   ----------  {{roleName}}
+  //   {{#grants}}
+  //   --DENIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
+  //   {{/grants}}
+  //   {{/deniedRoleGrants}}
+  // {{/verbose}}
+  
+  // ----------  END: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+  // --==
+  // `,
   functionPolicyHeaderTemplate: `
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  BEGIN: {{schemaName}}.{{functionName}}
+  ----------  BEGIN: {{schemaName}}.{{functionName}}
   
   `,
   functionPolicyFooterTemplate: `
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------  END: {{schemaName}}.{{functionName}}`,
+  ----------  END: {{schemaName}}.{{functionName}}`,
   defaultFunctionRoleGrants: {
     execute: 'DENIED'
   }

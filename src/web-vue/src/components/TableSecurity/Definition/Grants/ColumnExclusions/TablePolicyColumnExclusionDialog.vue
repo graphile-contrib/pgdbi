@@ -6,6 +6,7 @@
           <v-btn 
             dark v-on="on"
             class="text-none"
+            :hidden="hidden"
             :disabled="disabled"
           >
             {{ displayValue }}
@@ -44,6 +45,10 @@
       roleName: {
         type: String,
         required: true
+      },
+      disabled: {
+        type: Boolean,
+        required: false
       }
     },
     data () {
@@ -56,7 +61,7 @@
       displayValue () {
           return `New ${this.action} exclusion`
       },
-      disabled () {
+      hidden () {
         return this.policyDefinition.roleGrants[this.roleName][this.action] === 'DENIED'
       }
     },
