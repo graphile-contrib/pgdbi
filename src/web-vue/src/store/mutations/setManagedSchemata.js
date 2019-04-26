@@ -40,7 +40,7 @@ function setManagedSchemata (state, payload) {
   if (!state.defaultFunctionPolicy) {
     const defaultFunctionPolicy = {
       id: (((new Date()).getTime() * 10000) + 621355968000000000),
-      name: "Default Function Policy",
+      name: "Default Function Policy - NO ACCESS",
       functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
       functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
       roleFunctionGrants: state.projectRoles.reduce(

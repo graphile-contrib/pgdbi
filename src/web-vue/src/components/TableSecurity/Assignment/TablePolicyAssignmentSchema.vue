@@ -18,22 +18,6 @@
         :items="tablesToShow"
         :hide-actions="true"
       >
-        <!-- <template slot="headers" slot-scope="props">
-          <tr>
-            <th>
-            </th>
-            <th>
-              Table Name
-            </th>
-            <th>
-              Assigned Policy
-            </th>
-            <th>
-              Current grant status compared to assigned policy - <span style="color: red;"><b>UNDER CONSTRUCTION</b></span>
-            </th>
-          </tr>
-        </template> -->
-        
         <template slot="items" slot-scope="props">
           <tr>
             <td>

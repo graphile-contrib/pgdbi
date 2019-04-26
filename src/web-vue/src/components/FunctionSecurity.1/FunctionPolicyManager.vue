@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import PolicyDefinition from '@/components/FunctionSecurity//Definition/FunctionPolicyDefinition.vue'
+  import PolicyDefinition from './FunctionPolicyDefinition.vue'
 
   export default {
     name: 'FunctionPolicyManager',

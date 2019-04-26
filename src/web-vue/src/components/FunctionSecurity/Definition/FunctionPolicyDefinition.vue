@@ -4,7 +4,7 @@
         <v-toolbar>
           <h1>Name: {{ policyDefinition.name }}</h1>
           <v-spacer></v-spacer>
-          <v-btn @click="customize" :hidden="!theFunction">customize</v-btn>
+          <!-- <v-btn @click="customize" :hidden="!theFunction">customize</v-btn> -->
         </v-toolbar>
         <v-tabs
           v-model="activeTab"
@@ -54,8 +54,8 @@
   const DENIED = 'DENIED'
   const IMPLIED = 'IMPLIED'
 
-  import PolicyDefinitionGrantGrid from './FunctionPolicyDefinitionGrantGrid.vue'
-  import PolicyRealization from './FunctionPolicyRealization.vue'
+  import PolicyDefinitionGrantGrid from '@/components/FunctionSecurity/Definition/FunctionPolicyDefinitionGrantGrid.vue'
+  import PolicyRealization from '@/components/FunctionSecurity/Realization/FunctionPolicyRealization.vue'
 
   export default {
     name: 'FunctionPolicyDefinition',
@@ -75,7 +75,6 @@
     },
     data () {
       return {
-        policyStructure: [],
         calculatedPolicy: 'NOT CALCULATED',
         toggleCompleted: false,
         activeTab: ''
@@ -84,17 +83,15 @@
     mounted () {
     },
     watch: {
-      policyDefinition () {
-      },
     },
     methods: {
-      customize () {
-        alert('not implemented: will allow for in-place editing to create new custom policy')
-      }
+      // customize () {
+      //   alert('not implemented: will allow for in-place editing to create new custom policy')
+      // }
     },
     computed: {
       disabled () {
-        return this.theFunction !== null && this.theFunction !== undefined
+        return (this.theFunction !== null && this.theFunction !== undefined) || this.policyDefinition.id === this.$store.state.defaultFunctionPolicy.id
       },
       policyDefinition () {
         const functionPolicies = this.$store.state.functionPolicies

@@ -1,7 +1,4 @@
 function assignTablePolicy (state, tableId, policyDefinitionId) {
-  // console.log('tableId', tableId)
-  // console.log('poli', policyDefinitionId)
-  // console.log('state', state)
   const stuff = state.managedSchemata.reduce(
     (stuff, schema) => {
       if (stuff.currentSchema) {
@@ -50,7 +47,7 @@ function assignTablePolicy (state, tableId, policyDefinitionId) {
 function assignAll(state, payload) {
   const tableIds = payload.tableIds
   const policyDefinitionId = payload.policyDefinitionId
-// console.log('tableIds', tableIds)
+
   tableIds.reduce(
     (state, tableId) => {
       return assignTablePolicy (state, tableId, policyDefinitionId)

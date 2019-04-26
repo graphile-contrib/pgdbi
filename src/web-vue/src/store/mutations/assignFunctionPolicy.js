@@ -1,10 +1,10 @@
-function assignTablePolicy (state, payload) {
+function assignTablePolicy (state, functionId, policyDefinitionId) {
   const stuff = state.managedSchemata.reduce(
     (stuff, schema) => {
       if (stuff.currentSchema) {
         return stuff
       } else {
-        const aFunction = schema.schemaFunctions.find(t => t.id === payload.functionId)
+        const aFunction = schema.schemaFunctions.find(t => t.id === functionId)
         if (aFunction) {
           return {
             ...stuff,
@@ -35,11 +35,24 @@ function assignTablePolicy (state, payload) {
         ...otherFunctions,
         {
           ...aFunction,
-          functionPolicyDefinitionId: payload.policyDefinitionId
+          functionPolicyDefinitionId: policyDefinitionId
         }
       ]
     }
   ]
+
+  return state
 }
 
-export default assignTablePolicy
+function assignAll(state, payload) {
+  const functionIds = payload.functionIds
+  const policyDefinitionId = payload.policyDefinitionId
+
+  functionIds.reduce(
+    (state, functionId) => {
+      return assignTablePolicy (state, functionId, policyDefinitionId)
+    }, state
+  )
+}
+
+export default assignAll

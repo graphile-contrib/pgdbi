@@ -5,7 +5,6 @@
   >
     <h1>Function Security Manager</h1>
     <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">function grants</a> are properly configured to support postgraphile</h2>
-    <h1 style="color: red;">Under Construction</h1>
     <hr>
     <v-tabs
       v-model="activeTab"
@@ -19,6 +18,7 @@
       </v-tab>
       <v-tab-item
         key="policy-manager"
+        lazy
       >
         <v-card>
           <policy-manager></policy-manager>
@@ -33,6 +33,7 @@
       </v-tab>
       <v-tab-item
         key="policyAssignment"
+        lazy
       >
         <v-card>
           <v-layout row wrap>
@@ -53,6 +54,7 @@
       </v-tab>
       <v-tab-item
         key="policies"
+        lazy
       >
         <v-card>
           <schema-security-scripts></schema-security-scripts>
@@ -65,8 +67,8 @@
 
 <script>
   import PolicyManager from '@/components/FunctionSecurity/FunctionPolicyManager'
-  import PolicyAssignment from '@/components/FunctionSecurity/FunctionPolicyAssignment'
-  import SchemaSecurityScripts from '@/components/FunctionSecurity/FunctionSchemaSecurityScripts'
+  import PolicyAssignment from '@/components/FunctionSecurity/Assignment/FunctionPolicyAssignment'
+  import SchemaSecurityScripts from '@/components/FunctionSecurity/Realization/FunctionSchemaSecurityScripts'
 
   export default {
     name: 'FunctionSecurityView',
