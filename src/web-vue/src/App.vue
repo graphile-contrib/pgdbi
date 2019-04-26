@@ -19,7 +19,9 @@
       <div>
         <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
       </div>
-      <v-spacer></v-spacer>
+      <v-btn icon @click.stop="settings">
+        <v-icon>settings</v-icon>
+      </v-btn>
       <v-btn @click="navigate('home')" :color="btnColor('home')">Home</v-btn>
       <v-btn @click="navigate('role-manager')" :color="btnColor('role-manager')">Roles</v-btn>
       <v-btn @click="navigate('table-security-manager')" :color="btnColor('table-security-manager')">Table Security</v-btn>
@@ -39,9 +41,6 @@
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-      <v-btn icon @click.stop="settings">
-        <v-icon>settings</v-icon>
-      </v-btn>
     </v-toolbar>
     <v-content>
       <v-container

@@ -3,7 +3,9 @@
     <v-toolbar>
       <v-btn
         @click="save"
+        :disabled="disabled"
       >Save</v-btn>
+      <h2>Default RLS Using Clause</h2>
     </v-toolbar>
     <v-textarea
       v-model="defaultRlsUsing"
@@ -22,6 +24,9 @@ export default {
   computed: {
     defaultDefaultRlsUsing () {
       return this.$store.state.defaultRlsUsing
+    },
+    disabled () {
+      return this.defaultRlsUsing === this.defaultDefaultRlsUsing
     }
   },
   methods: {

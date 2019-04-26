@@ -12,6 +12,7 @@
       transition
       :active.sync="active"
       v-model="selected"
+      hoverable
     ></v-treeview>
 </v-container>
 </template>

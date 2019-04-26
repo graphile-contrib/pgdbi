@@ -10,9 +10,9 @@ module.exports = (build => {
       const tableSchema = args.id.split(':')[1].split('.')[0]
       const tableName = args.id.split(':')[1].split('.')[1]
   
-      console.log('args', args)
-      console.log('tableSchema', tableSchema)
-      console.log('tableName', tableName)
+      // console.log('args', args)
+      // console.log('tableSchema', tableSchema)
+      // console.log('tableName', tableName)
   
       const rows =
       await resolveInfo.graphile.selectGraphQLResultFromTable(

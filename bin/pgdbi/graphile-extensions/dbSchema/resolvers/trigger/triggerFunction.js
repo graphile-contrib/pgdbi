@@ -31,9 +31,9 @@ module.exports = (build => {
   and p.proname = '${functionName}'
   ;
 `;
-console.log('sql',sql)
+// console.log('sql',sql)
     const result = await pgClient.query(sql, []);
-console.log('result',result)
+// console.log('result',result)
     return result.rows[0].jsonb_build_object.triggerFunction;
   } catch (e) {
       throw e;

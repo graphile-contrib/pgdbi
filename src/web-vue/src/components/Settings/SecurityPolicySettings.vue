@@ -23,9 +23,6 @@ export default {
     return {
     }
   },
-  mounted () {
-    this.loadState()
-  }
 }
 </script>
 

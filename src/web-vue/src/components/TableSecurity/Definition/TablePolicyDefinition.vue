@@ -186,7 +186,7 @@
         const isCustomPolicy = this.policyDefinition.customIdentifier ? true : false
 
         if (isDefaultPolicy) {
-          return false
+          return true
         } else if (hasTable) {
           return !isCustomPolicy
         } else {
