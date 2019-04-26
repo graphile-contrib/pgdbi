@@ -3,6 +3,7 @@
 </template>
 
 <script>
+  import Mustache from 'mustache'
   const ALLOWED = 'ALLOWED'
   const DENIED = 'DENIED'
   const IMPLIED = 'IMPLIED'
@@ -42,105 +43,109 @@ revoke all privileges on function {{schemaName}}.{{functionName}} from public;
   export default {
     name: 'FunctionComputerMixin',
     methods: {
-      securityRemoval (policyDefinition, policyReadability) {
-        return securityRemovalHeaderTemplate
-          .concat(Object.keys(policyDefinition.roleFunctionGrants).reduce(
-            (all, roleName) => {
-              // return all.concat(revokeFunctionPrivilegesFromRoleTemplate.split('{{roleName}}').join(roleName))
-              return all.concat(applyTemplate(revokeFunctionPrivilegesFromRoleTemplate, {
-                roleName: roleName
-              }))
-            }, ''
-          )
-        )
-      },
-      functionGrants (policyDefinition, policyReadability) {
-        return functionGrantsHeaderTemplate
-        .concat(Object.keys(policyDefinition.roleFunctionGrants).reduce(
-          (all, roleName) => {
-            const roleGrantSet = policyDefinition.roleFunctionGrants[roleName]
-
-            return all
-              // .concat(policyReadability === TERSE ? `` : `---------------------------------------------------------------------------------------------------------------------------------------${roleName}\n`)
-              .concat(
-                Object.keys(roleGrantSet)
-                  .filter(f => f !== 'roleName')
-                  .reduce(
-                    (all, action) => {
-                      const allInEffect = [ALLOWED, IMPLIED].indexOf(policyDefinition.roleFunctionGrants[roleName].all) > -1
-                      if (roleGrantSet[action] === ALLOWED) {
-                        if (allInEffect) {
-                          return action === ALL 
-                            ? all.concat(
-                              applyTemplate(
-                                  grantActionOnFunctionToRoleTemplate, {
-                                  action: action,
-                                  roleName: roleName
-                                }
-                              )
-                            ) 
-                            : policyReadability === TERSE
-                              ? all
-                              : all.concat(
-                                  applyTemplate(
-                                      implyGrantActionOnFunctionToRoleTemplate, {
-                                      action: action,
-                                      roleName: roleName
-                                    }
-                                  )
-                                )
-                        } else {
-                          return all.concat(
-                            applyTemplate(
-                                grantActionOnFunctionToRoleTemplate, {
-                                action: action,
-                                roleName: roleName
-                              }
-                            )
-                          )
-                        }
-                      } else if (roleGrantSet[action] === IMPLIED) {
-                        return policyReadability === TERSE ? all : all.concat(
-                          applyTemplate(
-                              implyGrantActionOnFunctionToRoleTemplate, {
-                              action: action,
-                              roleName: roleName
-                            }
-                          )
-                        )
-                      } else if (roleGrantSet[action] === DENIED) {
-                        return policyReadability === TERSE ? all : all.concat(
-                          applyTemplate(
-                              denyGrantActionOnFunctionToRoleTemplate, {
-                              action: action,
-                              roleName: roleName
-                            }
-                          )
-                        )
-                      }
-                    }, ''
-                  )
-                .concat('\n')
-              )
-            }, ''
-          )
-        )
-      },
       computePolicy (policyDefinition, policyReadability, variables) {
-        const header = policyDefinition.functionPolicyHeaderTemplate
-        const policyDefinitionName = `---------------------------------------------------------------------------POLICY DEFINITION:  ${policyDefinition.name}\n`
-        const footer = policyDefinition.functionPolicyFooterTemplate
-        // remove all existing theFunction grants
-        const securityRemoval = this.securityRemoval(policyDefinition, policyReadability)
+        const allRoles = Object.keys(policyDefinition.roleFunctionGrants).map(
+          roleName => {
+            return {
+              roleName: roleName
+            }
+          }
+        )
 
-        // theFunction grants
-        const functionGrants = this.functionGrants(policyDefinition, policyReadability)
+        const revokeRolesList = `${allRoles.map(r => r.roleName).join(', ')}`
 
-        // rls
-        const template = header.concat(policyDefinitionName).concat(securityRemoval).concat(functionGrants).concat(footer)
+        const allowedRoleGrants = Object.keys(policyDefinition.roleFunctionGrants).reduce(
+          (allowedRoleGrants, roleName) => {
+            if (policyDefinition.roleFunctionGrants[roleName].execute === 'ALLOWED') {
+              return allowedRoleGrants.concat([{roleName: roleName}])
+            } else {
+              return allowedRoleGrants
+            }
 
-        return variables ? applyTemplate(template, variables) : template
-      },
+          }, []
+        )
+
+        const impliedRoleGrants = Object.keys(policyDefinition.roleFunctionGrants).reduce(
+          (impliedRoleGrants, roleName) => {
+            if (policyDefinition.roleFunctionGrants[roleName].execute === 'IMPLIED') {
+              return impliedRoleGrants.concat([{roleName: roleName}])
+            } else {
+              return impliedRoleGrants
+            }
+
+          }, []
+        )
+
+        const deniedRoleGrants = Object.keys(policyDefinition.roleFunctionGrants).reduce(
+          (deniedRoleGrants, roleName) => {
+            if (policyDefinition.roleFunctionGrants[roleName].execute === 'DENIED') {
+              return deniedRoleGrants.concat([{roleName: roleName}])
+            } else {
+              return deniedRoleGrants
+            }
+
+          }, []
+        )
+
+        const verboseVariables = {
+          verbose: true,
+          deniedRoleGrants: deniedRoleGrants,
+          impliedRoleGrants: impliedRoleGrants
+        }
+
+        const regularVariables = {
+          ...variables,
+          policyName: policyDefinition.name,
+          allowedRoleGrants: allowedRoleGrants,
+          revokeRolesList: revokeRolesList
+        }
+
+        const templateVariables = policyReadability === TERSE ? regularVariables : {...verboseVariables, ...regularVariables}
+
+        return Mustache.render(
+          functionPolicyTemplate,
+          templateVariables
+        )
+      }
     },
   }
-</script>
+
+  const functionPolicyTemplate = `
+----------
+----------  BEGIN FUNCTION POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}}
+----------  POLICY NAME:  {{policyName}}
+----------
+
+----------  REMOVE EXISTING FUNCTION GRANTS
+
+  revoke all privileges 
+  on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+  from public;
+
+  revoke all privileges 
+  on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+  from {{revokeRolesList}};
+
+----------  CREATE NEW FUNCTION GRANTS
+{{#allowedRoleGrants}}
+
+----------  {{roleName}}
+  grant 
+  execute
+  on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+  to {{roleName}};
+
+{{/allowedRoleGrants}}
+{{#verbose}}
+----------  IMPLIED FUNCTION GRANTS
+  {{#impliedRoleGrants}}
+  --IMPLIED:   grant execute on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} to {{roleName}};
+  {{/impliedRoleGrants}}
+
+  ----------  DENIED TABLE GRANTS
+  {{#deniedRoleGrants}}
+  --DENIED:   grant execute on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} to {{roleName}};
+  {{/deniedRoleGrants}}
+{{/verbose}}
+----------  END FUNCTION POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}}
+--==`</script>

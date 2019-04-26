@@ -91,7 +91,7 @@
     },
     computed: {
       functionsToShow () {
-        return this.schema.schemaFunctions//.slice(0, 10)
+        return this.schema.schemaFunctions//.slice(0, 1)
       },
       selectAllValue () {
         return this.schema.schemaFunctions.length === this.selected.length

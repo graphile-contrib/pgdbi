@@ -16,43 +16,56 @@
         :key="schemaPolicy.name"
       >
         <v-toolbar>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon></v-btn>
-            </template>
-            <span>Expand</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn 
-                v-on="on" 
-                v-clipboard:copy="policyText(schemaPolicy)"
-                v-clipboard:success="onCopy"
-                v-clipboard:error="onError"
-              ><v-icon>file_copy</v-icon>
-            </v-btn>
-            </template>
-            <span>Copy</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn v-on="on" @click="executeSql"><v-icon>arrow_forward</v-icon></v-btn>
-            </template>
-            <span>Execute</span>
-          </v-tooltip>
-          <v-spacer></v-spacer>
-          <v-radio-group v-model="policyReadability" row>
-            <v-radio
-              key="terse"
-              label="Terse"
-              value="terse"
-            ></v-radio>
-            <v-radio
-              key="verbose"
-              label="Verbose"
-              value="verbose"
-            ></v-radio>
-          </v-radio-group>
+          <v-layout
+            align-center
+            align-content-center
+            justify-center
+            justify-content-center
+          >
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn @click="refresh" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
+              </template>
+              <span>Refresh</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
+              </template>
+              <span>Expand</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn 
+                  v-on="on" 
+                  v-clipboard:copy="policyText(schemaPolicy)"
+                  v-clipboard:success="onCopy"
+                  v-clipboard:error="onError"
+                ><v-icon>file_copy</v-icon>Copy
+              </v-btn>
+              </template>
+              <span>Copy</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
+              </template>
+              <span>Execute</span>
+            </v-tooltip>
+            <v-spacer></v-spacer>
+            <v-radio-group v-model="policyReadability" row>
+              <v-radio
+                key="terse"
+                label="Terse"
+                value="terse"
+              ></v-radio>
+              <v-radio
+                key="verbose"
+                label="Verbose"
+                value="verbose"
+              ></v-radio>
+            </v-radio-group>
+          </v-layout>
         </v-toolbar>
         <v-textarea
           :disabled="true"
@@ -92,11 +105,11 @@
       },
     },
     methods: {
-      handleCopyStatus(status) {
-        alert(status)
+      refresh () {
+        this.doComputePolicy()
       },
-      expand (schemaPolicy) {
-        schemaPolicy.policy = `${schemaPolicy.policy} `
+      expand () {
+        this.computedPolicy = `${this.computedPolicy} `
       },
       calcOnePolicy (someFunctions) {
         const retval = someFunctions.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(

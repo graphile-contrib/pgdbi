@@ -7,12 +7,6 @@
           <v-layout justify-center>
             <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>
           </v-layout>
-          <!-- <v-btn @click="customize" :hidden="!table">customize</v-btn> -->
-          <!-- <table-policy-customize-dialog
-            v-if="showCustomizeButton"
-            :currentPolicyDefinition="table.policyDefinition"
-            :tables="[table]"
-          ></table-policy-customize-dialog> -->
           <table-policy-make-global-dialog
             v-if="showMakeGlobalButton"
             :policyDefinition="policyDefinition"
