@@ -24,8 +24,15 @@ module.exports = (build => {
           sqlBuilder.orderBy(() => sql.fragment`table_name`, true)
         }
       );
-  
-      return rows
+  console.log('_schema.id', _schema)
+      return rows.map(
+        table => {
+          return {
+            ...table,
+            schemaId: `schema:${_schema.schemaName}`
+          }
+        }
+      )
     } catch (e) {
       throw e;
     }

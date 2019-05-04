@@ -35,6 +35,7 @@ function PostgraphileDE(options, pgPool) {
       ,watchPg: watchPg
       ,graphiql: true
       ,enhanceGraphiql: true
+      ,simpleCollections: 'both'
     }
   ));
   return app;

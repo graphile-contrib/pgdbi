@@ -37,6 +37,12 @@
     props: {
     },
     methods: {
+      commitVuexOrm (schemata) {
+          console.log('schemata', schemata)
+
+          this.$store.dispatch('entities/schemata/insert', { data: schemata })
+
+      },
       applyFilter () {
         this.computing = true
         this.$apollo.query({
@@ -46,8 +52,10 @@
           }
         })
         .then(result => {
+          // this.$store.commit('setManagedSchemata', result.data.allSchemataList)
+          // this.commitVuexOrm(result.data.allSchemataList)
           this.$store.commit('setManagedSchemata', result.data.allSchemata.nodes)
-          this.computing = false
+          this.commitVuexOrm(result.data.allSchemata.nodes)
         })
         .catch(error => {
           console.error(error)
@@ -62,7 +70,6 @@
         this.items = schemataToDisplay.map(
           schema => {
             return {
-                // id: `schema:${schema.schemaName}`,
                 id: schema.schemaName,
                 name: schema.schemaName,
               children: []
@@ -84,7 +91,9 @@
       init: {
         query: getDbSchemaList,
         update (result) {
+          console.log('result', result)
           this.schemata = result.allSchemata.nodes
+          // this.schemata = result.allSchemataList
           this.computeItems()          
         }
       }

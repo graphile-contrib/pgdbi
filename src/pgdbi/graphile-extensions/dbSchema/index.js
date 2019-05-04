@@ -57,6 +57,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
 
     extend type Table {
       id: String!
+      schemaId: String!
       tableColumns: [Column]!
       indices: [Index]!
       tableConstraints: [ConstraintTableUsage]!

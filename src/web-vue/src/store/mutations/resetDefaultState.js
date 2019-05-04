@@ -1,4 +1,5 @@
 import defaultState from '../defaultState'
+import resetOrm from '../orm/resetOrm'
 
 function resetDefaultState (state) {
   Object.keys(defaultState).forEach(
@@ -6,6 +7,8 @@ function resetDefaultState (state) {
       state[key] = defaultState[key]
     }
   )
+
+  resetOrm()
 }
 
 export default resetDefaultState
