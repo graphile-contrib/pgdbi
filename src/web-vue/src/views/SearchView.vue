@@ -3,28 +3,56 @@
     ma-0 
     pa-0
   >
-    <h1>Search</h1>
-    <h2>A tool to search all tables, enums, functions, etc. that reference a particular string - mostly useful for functions</h2  >
-    <hr>
-    <h1 style="color: red;">Under Construction</h1>
     <v-text-field 
       label="Search Term"
+      v-model="searchTerm"
     ></v-text-field>
+    <v-btn 
+      @click="performSearch"
+      :disabled="disabled"
+    >Search</v-btn>
+    <hr>
+    <function-list
+      :functions="functions"
+    ></function-list>
   </v-container>
 </template>
 
 <script>
+  import searchFunctions from '@/gql/mutation/searchFunctions.graphql'
+  import FunctionList from '@/components/Function/FunctionList'
+
   export default {
     name: 'SearchView',
     components: {
+      FunctionList
     },
     props: {
     },
     computed: {
+      disabled () {
+        return this.searchTerm === undefined || this.searchTerm === null || this.searchTerm === ''
+      }
     },
     data: () => ({
+      searchTerm: 'into SCHEMA.TABLE',
+      functions: []
     }),
-    watch: {
+    methods: {
+      performSearch () {
+        this.$apollo.mutate({
+          mutation: searchFunctions,
+          variables: {
+            searchTerm: this.searchTerm
+          }
+        })
+        .then(result => {
+          this.functions = result.data.searchFunctions
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
     },
   }
 </script>

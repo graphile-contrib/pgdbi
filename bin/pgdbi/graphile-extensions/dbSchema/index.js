@@ -87,6 +87,10 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       tableById(id: String!): Table
       functionById(id: String!): Function
     }
+
+    extend type Mutation {
+      searchFunctions(searchTerm: String!): [Function]!
+    }
   `,
   resolvers: {
       Schema: {
@@ -129,6 +133,9 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       Query: {
         tableById: require('./resolvers/table/tableById')(build),
         functionById: require('./resolvers/function/functionById')(build)
+      },
+      Mutation: {
+        searchFunctions: require('./resolvers/function/searchFunctions')(build),
       }
     },
   };

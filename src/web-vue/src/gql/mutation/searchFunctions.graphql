@@ -1,0 +1,12 @@
+mutation SearchFunctions(
+  $searchTerm: String!
+){
+  searchFunctions(searchTerm: $searchTerm) {
+    id
+    functionName
+    functionSchema
+    resultDataType
+    argumentDataTypes
+    definition
+  }
+}
