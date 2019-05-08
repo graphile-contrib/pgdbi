@@ -33,6 +33,14 @@
 
         const allRoleGrants =  Object.keys(policyDefinition.roleGrants).reduce(
           (allGrants, roleName) => {
+            const allowedGrantCount = Object.keys(policyDefinition.roleGrants[roleName]).reduce(
+              (count, action) => {
+                return policyDefinition.roleGrants[roleName][action] === ALLOWED ? count + 1 : count
+              }, 0
+            )
+
+            console.log('blljweijfw', allowedGrantCount)
+
             const grantsForRole = Object.keys(policyDefinition.roleGrants[roleName]).map(
               (action, index, array) => {
 
@@ -57,14 +65,14 @@
                       value: value,
                       grantColumns: grantColumns,
                       columnExclusionsText: columnExclusionsText,
-                      comma: (index < array.length - 1) ? ',' : ''
+                      comma: (index < allowedGrantCount - 1) ? ',' : ''
                     }
                   default :
                     return {
                       action: action,
                       value: policyDefinition.roleGrants[roleName][action],
                       grantColumns: '',
-                      comma: (index < array.length - 1) ? ',' : ''
+                      comma: (index < allowedGrantCount - 1) ? ',' : ''
                     }
                 }
               }
