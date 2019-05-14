@@ -57,7 +57,7 @@ the current 'modules' of pgdbi are:
     - *no_index*
       - ack: leave it alone
       - create: create it
-        - [ ] build an interface to create all the different types of indexes (like grants/rls)
+  - [ ] build an interface to create all the different types of indexes (like grants/rls)
   - [ ] build out script realization tools as for other tools
 
 other ideas:
