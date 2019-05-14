@@ -95,14 +95,14 @@ other ideas:
   - then we could build a pgdbi plugin to browse that repo
   - if we also had the script generator, this could be a great way to bootstrap a new project and to deliver tutorials
   - easy install of things like subscriptions, job queue?
-  - **smart comments manager**  --  this should really be a different tool but leaving idea here for now
-    - build plugin to consume a more rich json structure produced by this tool to replace smart comments if so desired
-    - ***big question*** is it possible this tool should operate on the introspection results of the actual server instead of at table level?
-    - ***special note*** - instead of 'smart comment', could we call these things schemutators (schema mutators)?
-      - they could still be *expressed* as smart comments, but if we build the above plugin, then that kinda goes away
-    - build policy templates to help apply common schemutators to all or many tables with an assignment strategy similar to security
-      - for instance, you might want all 'created_at' fields to be omitted from create/insert/update mutations on all tables
-    - really this is mostly TBD and will involve some more understanding of everything the current smart comments can do
+- **smart comments manager**  --  this should really be a different tool but leaving idea here for now
+  - build plugin to consume a more rich json structure produced by this tool to replace smart comments if so desired
+  - ***big question*** is it possible this tool should operate on the introspection results of the actual server instead of at table level?
+  - ***special note*** - instead of 'smart comment', could we call these things schemutators (schema mutators)?
+    - they could still be *expressed* as smart comments, but if we build the above plugin, then that kinda goes away
+  - build policy templates to help apply common schemutators to all or many tables with an assignment strategy similar to security
+    - for instance, you might want all 'created_at' fields to be omitted from create/insert/update mutations on all tables
+  - really this is mostly TBD and will involve some more understanding of everything the current smart comments can do
 
 
 my inspiration for this tool came from repeatedly seeing questions popup in the discord around many of these concepts and others.  also, nobody really likes any of the tools out there.  i had been using pgadmin3 to examine tables/functions/etc, but it is clunky, it hangs the dev process if you have to rebuild the db later, it doesn't work with later postgres versions...  other tools have their own strengths and weaknesses.
