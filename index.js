@@ -1,1 +1,1 @@
-module.exports = require('./bin/pgdbi')
+module.exports = require('./bin/pgdbi');

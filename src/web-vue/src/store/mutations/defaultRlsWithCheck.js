@@ -1,5 +1,5 @@
-function defaultRlsWithCheck (state, payload) {
-  state.defaultRlsWithCheck = payload.defaultRlsWithCheck
+function defaultRlsWithCheck(state, payload) {
+  state.defaultRlsWithCheck = payload.defaultRlsWithCheck;
 }
 
-export default defaultRlsWithCheck
+export default defaultRlsWithCheck;

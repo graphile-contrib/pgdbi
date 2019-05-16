@@ -1,5 +1,5 @@
-function defaultRlsUsing (state, payload) {
-  state.defaultRlsUsing = payload.defaultRlsUsing
+function defaultRlsUsing(state, payload) {
+  state.defaultRlsUsing = payload.defaultRlsUsing;
 }
 
-export default defaultRlsUsing
+export default defaultRlsUsing;

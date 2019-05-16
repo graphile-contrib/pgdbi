@@ -1,6 +1,5 @@
 # postgraphile-db-inspector-extension
 
-
 ## Installation
 
 ```
@@ -23,18 +22,19 @@ postgraphile --plugins postgraphile-db-inspector-extensions -c my_db
 For PostGraphile as a library/middleware, you must use the plugin hook functionality:
 
 ```js
-const pgdbi = require('postgraphile-db-inspector-extension')
-const { postgraphile, makePluginHook } = require("postgraphile");
+const pgdbi = require('postgraphile-db-inspector-extension');
+const { postgraphile, makePluginHook } = require('postgraphile');
 
 const pluginHook = makePluginHook([
   pgdbi,
   /* other server plugins can be added here */
 ]);
 
-app.use(postgraphile(connectionString, schemas, {
-  pluginHook,
-}))
+app.use(
+  postgraphile(connectionString, schemas, {
+    pluginHook,
+  }),
+);
 ```
 
 You can access pgdbi at the `/pgdbi` sub path, e.g. [http://localhost:5000/pgdbi](http://localhost:5000/pgdbi).
-

@@ -1,5 +1,5 @@
 function updateDefaultRlsUsing(state, payload) {
-  state.defaultRlsUsing = payload.defaultRlsUsing
+  state.defaultRlsUsing = payload.defaultRlsUsing;
 }
 
-module.exports = updateDefaultRlsUsing
+module.exports = updateDefaultRlsUsing;

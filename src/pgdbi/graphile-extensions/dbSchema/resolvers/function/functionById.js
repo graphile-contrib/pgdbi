@@ -1,15 +1,10 @@
-module.exports = (build => {
-  return async (
-    _schema,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_schema, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
-      const schemaName = args.id.split(':')[1].split('.')[0]
-      const functionName = args.id.split(':')[1].split('.')[1]
-  
+      const schemaName = args.id.split(':')[1].split('.')[0];
+      const functionName = args.id.split(':')[1].split('.')[1];
+
       const sql = `
       select 
         jsonb_build_object(
@@ -37,5 +32,5 @@ module.exports = (build => {
     } catch (e) {
       throw e;
     }
-  }  
-})
+  };
+};

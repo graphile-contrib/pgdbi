@@ -1,5 +1,5 @@
-function selectedRoleFamilies (state, payload) {
-  state.selectedRoleFamilies = payload.selectedRoleFamilies
+function selectedRoleFamilies(state, payload) {
+  state.selectedRoleFamilies = payload.selectedRoleFamilies;
 }
 
-export default selectedRoleFamilies
+export default selectedRoleFamilies;

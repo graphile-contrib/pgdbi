@@ -1,31 +1,34 @@
-function assignTablePolicy (state, functionId, policyDefinitionId) {
+function assignTablePolicy(state, functionId, policyDefinitionId) {
   const stuff = state.managedSchemata.reduce(
     (stuff, schema) => {
       if (stuff.currentSchema) {
-        return stuff
+        return stuff;
       } else {
-        const aFunction = schema.schemaFunctions.find(t => t.id === functionId)
+        const aFunction = schema.schemaFunctions.find(t => t.id === functionId);
         if (aFunction) {
           return {
             ...stuff,
             currentSchema: schema,
-            currentFunction: aFunction
-          }
+            currentFunction: aFunction,
+          };
         } else {
-          return stuff
+          return stuff;
         }
       }
-    }, {
+    },
+    {
       currentSchema: null,
-      currentFunction: null
-    }
-  )
+      currentFunction: null,
+    },
+  );
 
-  const schema = stuff.currentSchema
-  const aFunction = stuff.currentFunction
+  const schema = stuff.currentSchema;
+  const aFunction = stuff.currentFunction;
 
-  const otherSchemata = state.managedSchemata.filter (s => s.id !== schema.id)
-  const otherFunctions = schema.schemaFunctions.filter(t => t.id !== aFunction.id)
+  const otherSchemata = state.managedSchemata.filter(s => s.id !== schema.id);
+  const otherFunctions = schema.schemaFunctions.filter(
+    t => t.id !== aFunction.id,
+  );
 
   state.managedSchemata = [
     ...otherSchemata,
@@ -35,24 +38,22 @@ function assignTablePolicy (state, functionId, policyDefinitionId) {
         ...otherFunctions,
         {
           ...aFunction,
-          functionPolicyDefinitionId: policyDefinitionId
-        }
-      ]
-    }
-  ]
+          functionPolicyDefinitionId: policyDefinitionId,
+        },
+      ],
+    },
+  ];
 
-  return state
+  return state;
 }
 
 function assignAll(state, payload) {
-  const functionIds = payload.functionIds
-  const policyDefinitionId = payload.policyDefinitionId
+  const functionIds = payload.functionIds;
+  const policyDefinitionId = payload.policyDefinitionId;
 
-  functionIds.reduce(
-    (state, functionId) => {
-      return assignTablePolicy (state, functionId, policyDefinitionId)
-    }, state
-  )
+  functionIds.reduce((state, functionId) => {
+    return assignTablePolicy(state, functionId, policyDefinitionId);
+  }, state);
 }
 
-export default assignAll
+export default assignAll;

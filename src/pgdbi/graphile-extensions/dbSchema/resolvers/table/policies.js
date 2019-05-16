@@ -1,16 +1,11 @@
-module.exports = (build => {
-  return async (
-    _table,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_table, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
-    const tableSchema = _table.tableSchema
-    const tableName = _table.tableName
-  
-    const sql = `
+      const tableSchema = _table.tableSchema;
+      const tableName = _table.tableName;
+
+      const sql = `
       select 
         jsonb_build_object(
           'tablePolicies', (
@@ -37,12 +32,10 @@ module.exports = (build => {
       ;
     `;
 
-    const result = await pgClient.query(sql, []);
-    return result.rows[0].jsonb_build_object.tablePolicies;
-  } catch (e) {
+      const result = await pgClient.query(sql, []);
+      return result.rows[0].jsonb_build_object.tablePolicies;
+    } catch (e) {
       throw e;
     }
-  }
-})
-
-
+  };
+};
