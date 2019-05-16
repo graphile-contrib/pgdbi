@@ -9,8 +9,8 @@
   "license": "MIT",
   "scripts": {
     "dev-server": "nodemon src/devServer",
-    "dev-web-vue": "cd ./src/web-vue & yarn serve",
-    "prod-build": "cd ./src/web-vue & yarn build"
+    "dev-web-vue": "cd ./src/web-vue && yarn serve",
+    "prod-build": "cd ./src/web-vue && yarn build"
   },
   "dependencies": {
     "express": "^4.16.4",
