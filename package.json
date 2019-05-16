@@ -10,6 +10,7 @@
   "scripts": {
     "dev-server": "nodemon src/devServer",
     "dev-web-vue": "cd ./src/web-vue && yarn serve",
+    "prettier:fix": "prettier --write 'src/**/*.{js,md,json}' '*.{js,md,json}'",
     "prod-build": "cd ./src/web-vue && yarn build"
   },
   "dependencies": {
