@@ -21,6 +21,7 @@
     "postgraphile-plugin-connection-filter": "^1.0.1"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "prettier": "^1.17.1"
   }
 }
