@@ -1,9 +1,9 @@
-# postgraphile-db-inspector-extension
+# @graphile-contrib/pgdbi
 
 ## Installation
 
 ```
-yarn add postgraphile-db-inspector-extension
+yarn add @graphile-contrib/pgdbi
 ```
 
 ## Usage
@@ -16,13 +16,13 @@ This is a [PostGraphile Server Plugin](https://www.graphile.org/postgraphile/plu
 For the CLI, use `--plugins` to load the plugin (and remember this flag must come at the very start!)
 
 ```
-postgraphile --plugins postgraphile-db-inspector-extensions -c my_db
+postgraphile --plugins @graphile-contrib/pgdbis -c my_db
 ```
 
 For PostGraphile as a library/middleware, you must use the plugin hook functionality:
 
 ```js
-const pgdbi = require('postgraphile-db-inspector-extension');
+const pgdbi = require('@graphile-contrib/pgdbi');
 const { postgraphile, makePluginHook } = require('postgraphile');
 
 const pluginHook = makePluginHook([
