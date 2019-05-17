@@ -1,14 +1,9 @@
-module.exports = (build => {
-  return async (
-    _schema,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_schema, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
-      const searchTerm = args.searchTerm
-  
+      const searchTerm = args.searchTerm;
+
       const sql = `
         with procs as (
           select
@@ -47,5 +42,5 @@ module.exports = (build => {
     } catch (e) {
       throw e;
     }
-  }  
-})
+  };
+};
