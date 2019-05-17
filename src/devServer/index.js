@@ -6,9 +6,6 @@ try {
 const express = require("express");
 const {postgraphile, makePluginHook} = require("postgraphile");
 
-const pluginHook = makePluginHook([
-  require('../pgdbi')
-])
 const plugins = [
   // require('postgraphile-plugin-connection-filter'),
 ]
@@ -29,6 +26,8 @@ if (!POSTGRES_CONNECTION) {
   throw new Error("No 'POSTGRES_CONNECTION' envvar found, we don't know which database to connect to.");
 }
 
+const identity = _ => _;
+
 
 const port = PORT;
 const connection = POSTGRES_CONNECTION;
@@ -37,6 +36,10 @@ const dynamicJson = DYNAMIC_JSON === 'true';
 const disableDefaultMutations = DISABLE_DEFAULT_MUTATIONS === 'true';
 const watchPg = WATCH_PG === 'true';
 const enablePgdbi = ENABLE_PGDBI === 'true';
+
+const pluginHook = makePluginHook([
+  enablePgdbi ? require('../pgdbi') : null
+].filter(identity))
 
 const app = express();
 
@@ -52,7 +55,6 @@ app.use(postgraphile(
     ,appendPlugins: plugins
     ,watchPg: watchPg
     ,graphiql: true
-    ,enablePgdbi
   }
 ));
 

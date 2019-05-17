@@ -44,10 +44,8 @@ let pgdbiApp;
 
 module.exports = {
   'postgraphile:options'(options, {pgPool}) {
-    if (options.enablePgdbi) {
-      // Create our app
-      pgdbiApp = PostgraphileDE(options, pgPool)
-    }
+    // Create our app
+    pgdbiApp = PostgraphileDE(options, pgPool)
 
     // Must always return from a hook function
     return options;
