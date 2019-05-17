@@ -1,10 +1,10 @@
 {
-  "name": "postgraphile-db-inspector-extension",
+  "name": "@graphile-contrib/pgdbi",
   "version": "1.0.9-alpha.46",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stlbucket/postgraphile-db-inspector-extension"
+    "url": "https://github.com/graphile-contrib/pgdbi"
   },
   "license": "MIT",
   "scripts": {
