@@ -1,16 +1,11 @@
-module.exports = (build => {
-  return async (
-    _table,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_table, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
-    const tableSchema = _table.tableSchema
-    const tableName = _table.tableName
-  
-    const sql = `
+      const tableSchema = _table.tableSchema;
+      const tableName = _table.tableName;
+
+      const sql = `
       select 
         ns.nspname || '.' || t.relname id
         ,t.relname "tableName"
@@ -40,16 +35,15 @@ module.exports = (build => {
       ;
     `;
 
-    const result = await pgClient.query(sql, []);
-    return result.rows;
-  } catch (e) {
+      const result = await pgClient.query(sql, []);
+      return result.rows;
+    } catch (e) {
       throw e;
     }
-  }
-})
+  };
+};
 
-
-// select 
+// select
 // jsonb_build_object(
 //   'tableIndices', (
 //   coalesce(

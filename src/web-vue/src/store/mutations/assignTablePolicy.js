@@ -1,31 +1,32 @@
-function assignTablePolicy (state, tableId, policyDefinitionId) {
+function assignTablePolicy(state, tableId, policyDefinitionId) {
   const stuff = state.managedSchemata.reduce(
     (stuff, schema) => {
       if (stuff.currentSchema) {
-        return stuff
+        return stuff;
       } else {
-        const table = schema.schemaTables.find(t => t.id === tableId)
+        const table = schema.schemaTables.find(t => t.id === tableId);
         if (table) {
           return {
             ...stuff,
             currentSchema: schema,
-            currentTable: table
-          }
+            currentTable: table,
+          };
         } else {
-          return stuff
+          return stuff;
         }
       }
-    }, {
+    },
+    {
       currentSchema: null,
-      currentTable: null
-    }
-  )
+      currentTable: null,
+    },
+  );
 
-  const schema = stuff.currentSchema
-  const table = stuff.currentTable
+  const schema = stuff.currentSchema;
+  const table = stuff.currentTable;
 
-  const otherSchemata = state.managedSchemata.filter (s => s.id !== schema.id)
-  const otherTables = schema.schemaTables.filter(t => t.id !== table.id)
+  const otherSchemata = state.managedSchemata.filter(s => s.id !== schema.id);
+  const otherTables = schema.schemaTables.filter(t => t.id !== table.id);
 
   state.managedSchemata = [
     ...otherSchemata,
@@ -35,24 +36,22 @@ function assignTablePolicy (state, tableId, policyDefinitionId) {
         ...otherTables,
         {
           ...table,
-          policyDefinitionId: policyDefinitionId
-        }
-      ]
-    }
-  ]
+          policyDefinitionId: policyDefinitionId,
+        },
+      ],
+    },
+  ];
 
-  return state
+  return state;
 }
 
 function assignAll(state, payload) {
-  const tableIds = payload.tableIds
-  const policyDefinitionId = payload.policyDefinitionId
+  const tableIds = payload.tableIds;
+  const policyDefinitionId = payload.policyDefinitionId;
 
-  tableIds.reduce(
-    (state, tableId) => {
-      return assignTablePolicy (state, tableId, policyDefinitionId)
-    }, state
-  )
+  tableIds.reduce((state, tableId) => {
+    return assignTablePolicy(state, tableId, policyDefinitionId);
+  }, state);
 }
 
-export default assignAll
+export default assignAll;

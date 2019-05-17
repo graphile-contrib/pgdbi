@@ -1,5 +1,5 @@
-function filterSchemata (state) {
-  state.schemaFilterOn = true
+function filterSchemata(state) {
+  state.schemaFilterOn = true;
 }
 
-export default filterSchemata
+export default filterSchemata;

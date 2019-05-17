@@ -1,98 +1,98 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Initialize from './views/Initialize.vue'
-import Table from './components/Table/Table.vue'
-import Function from './components/Function/Function.vue'
-import RoleManagerView from './views/RoleManagerView.vue'
-import TableSecurityView from './views/TableSecurityView.vue'
-import FunctionSecurityView from './views/FunctionSecurityView.vue'
-import SearchView from './views/SearchView.vue'
-import Settings from './components/Settings/Settings.vue'
-import ForeignKeyIndexView from './views/ForeignKeyIndexView'
-import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager'
-import ProjectExport from './components/Project/ProjectExport.vue'
-import ProjectImport from './components/Project/ProjectImport.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from './views/Home.vue';
+import Initialize from './views/Initialize.vue';
+import Table from './components/Table/Table.vue';
+import Function from './components/Function/Function.vue';
+import RoleManagerView from './views/RoleManagerView.vue';
+import TableSecurityView from './views/TableSecurityView.vue';
+import FunctionSecurityView from './views/FunctionSecurityView.vue';
+import SearchView from './views/SearchView.vue';
+import Settings from './components/Settings/Settings.vue';
+import ForeignKeyIndexView from './views/ForeignKeyIndexView';
+import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager';
+import ProjectExport from './components/Project/ProjectExport.vue';
+import ProjectImport from './components/Project/ProjectImport.vue';
 
-import store from './store/store'
+import store from './store/store';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     } else {
-      return { x: 0, y: 0 }
+      return { x: 0, y: 0 };
     }
   },
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
     },
     {
       path: '/initialize',
       name: 'initialize',
-      component: Initialize
+      component: Initialize,
     },
     {
       path: '/role-manager',
       name: 'role-manager',
-      component: RoleManagerView
+      component: RoleManagerView,
     },
     {
       path: '/table-security-manager',
       name: 'table-security-manager',
-      component: TableSecurityView
+      component: TableSecurityView,
     },
     {
       path: '/function-security-manager',
       name: 'function-security-manager',
-      component: FunctionSecurityView
+      component: FunctionSecurityView,
     },
     {
       path: '/search-view',
       name: 'search-view',
-      component: SearchView
+      component: SearchView,
     },
     {
       path: '/fk-index-manager',
       name: 'fk-index-manager',
-      component: ForeignKeyIndexView
+      component: ForeignKeyIndexView,
     },
     {
       path: '/smart-comment-manager',
       name: 'smart-comment-manager',
-      component: SmartCommentManager
+      component: SmartCommentManager,
     },
     {
       path: '/settings',
       name: 'settings',
-      component: Settings
+      component: Settings,
     },
     {
       path: '/project-export',
       name: 'project-export',
-      component: ProjectExport
+      component: ProjectExport,
     },
     {
       path: '/project-import',
       name: 'project-import',
-      component: ProjectImport
+      component: ProjectImport,
     },
     {
       path: '/table/:id',
       name: 'table',
       component: Table,
-      props: true
+      props: true,
     },
     {
       path: '/function/:id',
       name: 'function',
       component: Function,
-      props: true
+      props: true,
     },
     {
       path: '/about',
@@ -100,15 +100,16 @@ const router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
-  ]
-})
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/About.vue'),
+    },
+  ],
+});
 
 router.beforeEach((to, from, next) => {
   if (store.state.initializing && to.name !== 'initialize') {
-    router.push('initialize')
+    router.push('initialize');
   }
-  next()
-})
-export default router
+  next();
+});
+export default router;

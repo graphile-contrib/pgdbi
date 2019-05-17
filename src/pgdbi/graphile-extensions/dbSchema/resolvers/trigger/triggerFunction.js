@@ -1,17 +1,15 @@
-module.exports = (build => {
-  return async (
-    _trigger,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_trigger, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
       // assumes action statement of the form:  'EXECUTE PROCEDURE schema_name.function_name()'
-    const schemaName = _trigger.actionStatement.split(' ')[2].split('.')[0]
-    const functionName =  _trigger.actionStatement.split(' ')[2].split('.')[1].split('(')[0]
-  
-    const sql = `
+      const schemaName = _trigger.actionStatement.split(' ')[2].split('.')[0];
+      const functionName = _trigger.actionStatement
+        .split(' ')[2]
+        .split('.')[1]
+        .split('(')[0];
+
+      const sql = `
     select 
     jsonb_build_object(
       'triggerFunction', (
@@ -31,14 +29,12 @@ module.exports = (build => {
   and p.proname = '${functionName}'
   ;
 `;
-// console.log('sql',sql)
-    const result = await pgClient.query(sql, []);
-// console.log('result',result)
-    return result.rows[0].jsonb_build_object.triggerFunction;
-  } catch (e) {
+      // console.log('sql',sql)
+      const result = await pgClient.query(sql, []);
+      // console.log('result',result)
+      return result.rows[0].jsonb_build_object.triggerFunction;
+    } catch (e) {
       throw e;
     }
-  }
-})
-
-
+  };
+};

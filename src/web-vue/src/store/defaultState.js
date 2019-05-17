@@ -16,20 +16,20 @@ export default {
   defaultRlsWithCheck: '',
   defaultRlsQualifiers: {
     all: {
-      policies: []
+      policies: [],
     },
     select: {
-      policies: []
+      policies: [],
     },
     insert: {
-      policies: []
+      policies: [],
     },
     update: {
-      policies: []
+      policies: [],
     },
     delete: {
-      policies: []
-    }
+      policies: [],
+    },
   },
   defaultRoleGrants: {
     select: 'DENIED',
@@ -44,22 +44,22 @@ export default {
   // ----------
 
   // ----------  REMOVE EXISTING TABLE GRANTS
-  
-  //   revoke all privileges 
-  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+
+  //   revoke all privileges
+  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
   //   from public;
 
-  //   revoke all privileges 
-  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //   revoke all privileges
+  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
   //   from {{revokeRolesList}};
 
   // {{#enableRls}}
   // ----------  ENABLE ROW LEVEL SECURITY
-  
+
   //   alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} enable row level security;
-  
+
   // {{#rlsPolicies}}
-  //   create policy {{name}}_{{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}_{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //   create policy {{name}}_{{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}_{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
   //     on {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
   //     as {{passStrategy}}
   //     for {{action}}
@@ -70,27 +70,27 @@ export default {
   //     {{/withCheck}}
   //     ;
   // {{/rlsPolicies}}
-  
+
   // {{/enableRls}}
   // {{^enableRls}}
   // ----------  DISABLE ROW LEVEL SECURITY
-  
+
   //   alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} disable row level security;
   // {{/enableRls}}
-  
+
   // ----------  CREATE NEW TABLE GRANTS
   // {{#allowedRoleGrants}}
 
   // ----------  {{roleName}}
-  //   grant 
+  //   grant
   //   {{#grants}}
   //     {{action}} {{grantColumns}}{{comma}} {{columnExclusionsText}}
   //   {{/grants}}
-  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} 
+  //   on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
   //   to {{roleName}};
 
   // {{/allowedRoleGrants}}
-  
+
   // {{#verbose}}
   // ----------  IMPLIED TABLE GRANTS
   //   {{#impliedRoleGrants}}
@@ -100,7 +100,7 @@ export default {
   //   --IMPLIED:   grant {{action}} on table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} to {{roleName}};
   //   {{/grants}}
   //   {{/impliedRoleGrants}}
-  
+
   //   ----------  DENIED TABLE GRANTS
   //   {{#deniedRoleGrants}}
 
@@ -110,7 +110,7 @@ export default {
   //   {{/grants}}
   //   {{/deniedRoleGrants}}
   // {{/verbose}}
-  
+
   // ----------  END: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
   // --==
   // `,
@@ -122,6 +122,6 @@ export default {
 
   ----------  END: {{schemaName}}.{{functionName}}`,
   defaultFunctionRoleGrants: {
-    execute: 'DENIED'
-  }
-}
+    execute: 'DENIED',
+  },
+};

@@ -1,17 +1,12 @@
-const clog = require('fbkt-clog')
+const clog = require('fbkt-clog');
 
-module.exports = (build => {
-  return async (
-    _schema,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_schema, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
-      const schemaName = _schema.schemaName
-  
-  const sql = `
+      const schemaName = _schema.schemaName;
+
+      const sql = `
   select jsonb_build_object(
     'id', 'enum:' || n.nspname || '.' || t.typname
     ,'enumName', t.typname
@@ -40,15 +35,13 @@ module.exports = (build => {
       ;
 `;
 
-    const result = await pgClient.query(sql, []);
+      const result = await pgClient.query(sql, []);
 
-    return result.rows.map(
-      r => {
-        return r.jsonb_build_object
-      }
-    );
-  } catch (e) {
+      return result.rows.map(r => {
+        return r.jsonb_build_object;
+      });
+    } catch (e) {
       throw e;
     }
-  }
-})
+  };
+};

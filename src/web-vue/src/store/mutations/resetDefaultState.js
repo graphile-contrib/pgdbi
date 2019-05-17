@@ -1,11 +1,9 @@
-import defaultState from '../defaultState'
+import defaultState from '../defaultState';
 
-function resetDefaultState (state) {
-  Object.keys(defaultState).forEach(
-    key => {
-      state[key] = defaultState[key]
-    }
-  )
+function resetDefaultState(state) {
+  Object.keys(defaultState).forEach(key => {
+    state[key] = defaultState[key];
+  });
 }
 
-export default resetDefaultState
+export default resetDefaultState;

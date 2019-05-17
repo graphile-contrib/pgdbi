@@ -1,15 +1,10 @@
-module.exports = (build => {
-  return async (
-    _schema,
-    args,
-    context,
-    resolveInfo
-  ) => {
+module.exports = build => {
+  return async (_schema, args, context, resolveInfo) => {
     const { pgClient } = context;
     try {
-    const schemaName = _schema.schemaName
-  
-    const sql = `
+      const schemaName = _schema.schemaName;
+
+      const sql = `
     select 
       jsonb_build_object(
         'schemaFunctions', (
@@ -32,13 +27,11 @@ module.exports = (build => {
     ;
     `;
 
-    const result = await pgClient.query(sql, []);
-    return result.rows[0].jsonb_build_object.schemaFunctions;
-  } catch (e) {
-      console.log('err', e)
+      const result = await pgClient.query(sql, []);
+      return result.rows[0].jsonb_build_object.schemaFunctions;
+    } catch (e) {
+      console.log('err', e);
       throw e;
     }
-  }
-})
-
-
+  };
+};
