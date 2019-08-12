@@ -17,9 +17,8 @@
 </template>
 
 <script>
-  import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
-  // import getDbSchemaList from '@/gql/query/getDbSchemaList.graphql';
-  // import getDbSchemaTreeBySchemaName from '@/gql/query/getDbSchemaTreeBySchemaName.graphql'
+  import getDbSchemaList from '@/gql/query/getDbSchemaList.graphql';
+  import getDbSchemaTreeBySchemaName from '@/gql/query/getDbSchemaTreeBySchemaName.graphql'
 
   export default {
     name: 'SchemaFilter',
@@ -64,8 +63,8 @@
           schema => {
             return {
                 // id: `schema:${schema.schemaName}`,
-                id: schema.name,
-                name: schema.name,
+                id: schema.schemaName,
+                name: schema.schemaName,
               children: []
             }
           }
@@ -73,7 +72,7 @@
 
         this.selected = selectedSchemata.reduce(
           (all, s) => {
-            return all.concat([s.name])
+            return all.concat([s.schemaName])
           }, []
         )
         this.computing = false
@@ -83,9 +82,9 @@
     },
     apollo: {
       init: {
-        query: dbIntrospection,
+        query: getDbSchemaList,
         update (result) {
-          this.schemata = result.dbIntrospection
+          this.schemata = result.allSchemata.nodes
           this.computeItems()          
         }
       }

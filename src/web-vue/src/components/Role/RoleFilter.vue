@@ -131,6 +131,7 @@
 
         // determine families by analyzing applicaple roles
         // ideally, 
+        console.log('roles', JSON.stringify(this.roles.filter(r => ['app_super_admin', 'app_tenant_admin'].indexOf(r.roleName) > -1), 0, 2))
         const families = this.roles
           // sort so the most senior role is first
           .sort((a,b) => { return a.applicableRoles.length >= b.applicableRoles.length ? -1 : 1})
@@ -210,6 +211,7 @@
     apollo: {
       init: {
         query: allEnabledRoles,
+        fetchPolicy: 'network-only',
         update (result) {
           this.roles = result.allEnabledRoles.nodes.map(
             role => {

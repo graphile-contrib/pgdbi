@@ -2,9 +2,11 @@ const express = require('express');
 const path = require('path');
 const { postgraphile } = require('postgraphile');
 
+
 const plugins = [
   require('./graphile-extensions/dbSchema'),
   require('postgraphile-plugin-connection-filter'),
+  require('./graphile-extensions/pgIntrospectionResultsByKind')
 ];
 
 const schemas = ['information_schema'];

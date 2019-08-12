@@ -2,12 +2,14 @@ const express = require('express');
 const path = require('path');
 const { postgraphile } = require('postgraphile');
 
+
 const plugins = [
   require('./graphile-extensions/dbSchema'),
   require('postgraphile-plugin-connection-filter'),
+  // require('./graphile-extensions/pgIntrospectionResultsByKind')
 ];
 
-const schemas = ['sqitch'];
+const schemas = ['information_schema'];
 const disableDefaultMutations = false;
 const watchPg = false;
 
@@ -55,6 +57,8 @@ function PostgraphileDE(options, pgPool) {
       enhanceGraphiql: true,
     }),
   );
+
+ 
   return app;
 }
 
@@ -74,14 +78,15 @@ module.exports = {
     pgdbiApp = PostgraphileDE(options, pgPool);
 
     pgdbiApp.setBuild = build => {
-      pgdbiApp.currentBuild = build
+      console.log(Object.keys(build));
+    
     }
 
     // Must always return from a hook function
     return {
       ...options,
       appendPlugins: [
-        ...(options.appendPlugins || []),
+        ...module(options.appendPlugins || []),
         
         myIntrospectionExtractionPlugin(pgdbiApp)
       ]}
@@ -102,7 +107,4 @@ module.exports = {
       return incomingReq;
     }
   },
-  currentBuild() {
-    return pgdbiApp.currentBuild
-  }
 };

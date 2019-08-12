@@ -8,22 +8,34 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev-server": "nodemon src/devServer",
+    "dev-server": "node --inspect src/devServer",
     "dev-web-vue": "cd ./src/web-vue && yarn serve",
     "prettier:fix": "prettier --write 'src/**/*.{js,md,json}' '*.{js,md,json}'",
     "prod-build": "cd ./src/web-vue && yarn build"
   },
   "dependencies": {
+    "@types/jest": "^24.0.16",
     "express": "^4.16.4",
     "fbkt-clog": "^1.0.5",
+    "flatted": "^2.0.1",
     "graphile-utils": "^4.2.1",
     "handlebars": "^4.1.2",
     "postgraphile": "^4.3.3",
     "postgraphile-plugin-connection-filter": "^1.0.1"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10",
-    "prettier": "^1.17.1"
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
+    "typescript": "^3.5.2"
   },
-  "files": ["src", "bin"]
+  "files": [
+    "src",
+    "bin"
+  ]
 }

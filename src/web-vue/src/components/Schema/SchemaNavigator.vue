@@ -22,6 +22,7 @@
     }),
     computed: {
       schemaFilterOn () {
+        return false
         return this.$store.state.schemaFilterOn
       }
     },
