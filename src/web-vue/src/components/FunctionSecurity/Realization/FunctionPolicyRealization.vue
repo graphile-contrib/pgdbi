@@ -114,7 +114,7 @@
       doComputePolicy () {
         const variables = this.theFunction ? {
           schemaName: this.theFunction.functionSchema,
-          functionName: this.theFunction.name
+          functionName: this.theFunction.functionName
         } : null
         this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables)
       },

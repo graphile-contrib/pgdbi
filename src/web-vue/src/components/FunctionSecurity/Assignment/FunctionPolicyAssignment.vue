@@ -54,7 +54,7 @@
                   aFunction => {
                     const policyDefinition = this.functionPolicies.find(p => p.id === aFunction.functionPolicyDefinitionId)
                     if (!policyDefinition) {
-                      console.log(aFunction.name, aFunction.functionPolicyDefinitionId, this.functionPolicies)
+                      console.log(aFunction.functionname, aFunction.functionPolicyDefinitionId, this.functionPolicies)
                       console.log('pd', policyDefinition)
                     }
                     return {
@@ -62,7 +62,7 @@
                       policyDefinition: policyDefinition
                     }
                   }
-                ).sort((a,b)=>{ return a.name < b.name ? -1 : 1})
+                ).sort((a,b)=>{ return a.functionname < b.functionname ? -1 : 1})
               }
             }
           ).sort((a,b)=>{ return a.schemaName < b.schemaName ? -1 : 1})

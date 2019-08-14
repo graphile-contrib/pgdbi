@@ -112,12 +112,12 @@
         this.computedPolicy = `${this.computedPolicy} `
       },
       calcOnePolicy (someFunctions) {
-        const retval = someFunctions.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(
+        const retval = someFunctions.sort((a,b)=>{return a.functionname < b.functionname ? -1 : 1}).reduce(
           (policy, aFunction) => {
             const policyTemplate = this.functionPolicies.find(p => p.id === aFunction.functionPolicyDefinitionId)
             const variables = {
               schemaName: aFunction.functionSchema,
-              functionName: aFunction.name
+              functionName: aFunction.functionName
             }
             const aFunctionPolicy = this.computePolicy(policyTemplate, this.policyReadability, variables)
             return policy.concat(aFunctionPolicy)

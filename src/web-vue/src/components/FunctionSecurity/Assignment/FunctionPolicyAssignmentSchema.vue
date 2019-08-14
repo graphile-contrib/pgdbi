@@ -31,7 +31,7 @@
                 <v-icon>{{ props.expanded ? 'expand_less' : 'expand_more' }}</v-icon>
               </v-btn>
             </td>
-            <td @click="props.expanded = !props.expanded">{{ props.item.name }}</td>
+            <td @click="props.expanded = !props.expanded">{{ props.item.id }}</td>
             <td @click="props.expanded = !props.expanded">
               <policy-assignment-dialog 
                 :currentPolicyDefinition="props.item.policyDefinition" 
@@ -91,7 +91,7 @@
     },
     computed: {
       functionsToShow () {
-        return this.schema.schemaFunctions//.slice(0, 1)
+        return this.schema.schemaFunctions
       },
       selectAllValue () {
         return this.schema.schemaFunctions.length === this.selected.length
@@ -118,7 +118,7 @@
         {
           text: 'Policy Name',
           sortable: false,
-        },
+        }
       ]
     })
   }

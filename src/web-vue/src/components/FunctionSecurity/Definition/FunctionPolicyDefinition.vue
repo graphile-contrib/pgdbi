@@ -44,6 +44,23 @@
             </v-card>
           </v-tab-item>
 
+          <v-tab
+            v-if="theFunction"
+            key="function-definition"
+            ripple
+          >
+            Function Definition
+          </v-tab>
+          <v-tab-item
+            v-if="theFunction"
+            key="function-definition"
+          >
+            <v-card flat>
+              <function-definition :id="theFunction.id">
+              </function-definition>
+            </v-card>
+          </v-tab-item>
+
         </v-tabs>
       </v-container>
     </v-card>
@@ -56,12 +73,14 @@
 
   import PolicyDefinitionGrantGrid from '@/components/FunctionSecurity/Definition/FunctionPolicyDefinitionGrantGrid.vue'
   import PolicyRealization from '@/components/FunctionSecurity/Realization/FunctionPolicyRealization.vue'
+  import FunctionDefinition from '@/components/Function/Function.vue'
 
   export default {
     name: 'FunctionPolicyDefinition',
     components: {
       PolicyDefinitionGrantGrid,
-      PolicyRealization
+      PolicyRealization,
+      FunctionDefinition
     },
     props: {
       policyId: {

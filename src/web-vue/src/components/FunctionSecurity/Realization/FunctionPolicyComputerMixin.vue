@@ -97,7 +97,7 @@ revoke all privileges on function {{schemaName}}.{{functionName}} from public;
           ...variables,
           policyName: policyDefinition.name,
           allowedRoleGrants: allowedRoleGrants,
-          revokeRolesList: revokeRolesList
+          revokeRolesList: revokeRolesList,
         }
 
         const templateVariables = policyReadability === TERSE ? regularVariables : {...verboseVariables, ...regularVariables}

@@ -92,14 +92,14 @@ function setManagedSchemata(state, payload) {
               table.policyDefinitionId || state.defaultPolicy.id,
           };
         }),
-        // schemaFunctions: schema.schemaFunctions.map(theFunction => {
-        //   return {
-        //     ...theFunction,
-        //     functionPolicyDefinitionId:
-        //       theFunction.functionPolicyDefinitionId ||
-        //       state.defaultFunctionPolicy.id,
-        //   };
-        // }),
+        schemaFunctions: schema.schemaFunctions.map(theFunction => {
+          return {
+            ...theFunction,
+            functionPolicyDefinitionId:
+              theFunction.functionPolicyDefinitionId ||
+              state.defaultFunctionPolicy.id,
+          };
+        }),
       };
     });
   state.managedSchemata = schemataToUnPark
