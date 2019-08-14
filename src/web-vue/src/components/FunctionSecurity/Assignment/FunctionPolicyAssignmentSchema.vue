@@ -44,7 +44,7 @@
         <template slot="expand" slot-scope="props">
           <policy-definition
             :policyId="props.item.policyDefinition.id"
-            :theFunction="props.item"
+            :aFunction="props.item"
           ></policy-definition>
         </template>
       </v-data-table>

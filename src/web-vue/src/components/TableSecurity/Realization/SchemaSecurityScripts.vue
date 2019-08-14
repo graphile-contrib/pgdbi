@@ -122,18 +122,38 @@
         )
       },
       calculateAllPolicies () {
-        this.allPolicies = this.managedSchemata
+        const masterPolicyName = 'One Script To Rule Them All'
+        const mostPolicies = this.managedSchemata
           .filter(s => !s.parked)
           .reduce(
             (all, schema) => {
-              const tables = schema.schemaTables
+              const schemaTables = schema.schemaTables
               const schemaPolicy = {
                 name: `${schema.schemaName}`,
-                policy: this.calcOnePolicy(tables)
+                policy: this.calcOnePolicy(schemaTables)
               }
               return all.concat([schemaPolicy])
             }, []
           )
+          .sort(
+            (a,b)=>{ 
+              return a.name < b.name ? -1 : 1
+            }
+          )
+
+        const masterPolicy = mostPolicies.reduce(
+          (m, p) => {
+            return m.concat(p.policy)
+          }, ''
+        )
+
+        this.allPolicies = [
+          ...mostPolicies,
+          {
+            name: masterPolicyName,
+            policy: masterPolicy
+          }
+        ]
       },
       policyText (schemaPolicy) {
         return schemaPolicy.policy

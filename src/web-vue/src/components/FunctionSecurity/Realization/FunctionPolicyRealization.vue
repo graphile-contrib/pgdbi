@@ -23,7 +23,7 @@
           <template v-slot:activator="{ on }">
             <v-btn 
               v-on="on" 
-              :hidden="!theFunction"
+              :hidden="!aFunction"
               v-clipboard:copy="computedPolicy"
               v-clipboard:success="onCopy"
               v-clipboard:error="onError"
@@ -34,7 +34,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" :hidden="!theFunction" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
+            <v-btn v-on="on" :hidden="!aFunction" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
           </template>
           <span>Execute</span>
         </v-tooltip>
@@ -81,7 +81,7 @@
         type: Object,
         required: true
       },
-      theFunction: {
+      aFunction: {
         type: Object,
         required: false
       }
@@ -112,11 +112,9 @@
         this.computedPolicy = `${this.computedPolicy} `
       },
       doComputePolicy () {
-        const variables = this.theFunction ? {
-          schemaName: this.theFunction.functionSchema,
-          functionName: this.theFunction.functionName
+        const variables = this.aFunction ? {
         } : null
-        this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables)
+        this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables, this.aFunction)
       },
       onCopy: function (e) {
         alert('Copied!')

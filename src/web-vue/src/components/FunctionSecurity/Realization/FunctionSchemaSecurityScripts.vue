@@ -116,10 +116,8 @@
           (policy, aFunction) => {
             const policyTemplate = this.functionPolicies.find(p => p.id === aFunction.functionPolicyDefinitionId)
             const variables = {
-              schemaName: aFunction.functionSchema,
-              functionName: aFunction.functionName
             }
-            const aFunctionPolicy = this.computePolicy(policyTemplate, this.policyReadability, variables)
+            const aFunctionPolicy = this.computePolicy(policyTemplate, this.policyReadability, variables, aFunction)
             return policy.concat(aFunctionPolicy)
           }, ''
         )
@@ -127,7 +125,8 @@
 
       },
       calculateAllPolicies () {
-        this.allPolicies = this.managedSchemata
+        const masterPolicyName = 'One Script To Rule Them All'
+        const mostPolicies = this.managedSchemata
           .filter(s => !s.parked)
           .reduce(
             (all, schema) => {
@@ -139,6 +138,25 @@
               return all.concat([schemaPolicy])
             }, []
           )
+          .sort(
+            (a,b)=>{ 
+              return a.name < b.name ? -1 : 1
+            }
+          )
+
+        const masterPolicy = mostPolicies.reduce(
+          (m, p) => {
+            return m.concat(p.policy)
+          }, ''
+        )
+
+        this.allPolicies = [
+          ...mostPolicies,
+          {
+            name: masterPolicyName,
+            policy: masterPolicy
+          }
+        ]
       },
       policyText (schemaPolicy) {
         return schemaPolicy.policy

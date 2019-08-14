@@ -43,7 +43,7 @@ revoke all privileges on function {{schemaName}}.{{functionName}} from public;
   export default {
     name: 'FunctionComputerMixin',
     methods: {
-      computePolicy (policyDefinition, policyReadability, variables) {
+      computePolicy (policyDefinition, policyReadability, variables, aFunction) {
         const allRoles = Object.keys(policyDefinition.roleFunctionGrants).map(
           roleName => {
             return {
@@ -93,11 +93,21 @@ revoke all privileges on function {{schemaName}}.{{functionName}} from public;
           impliedRoleGrants: impliedRoleGrants
         }
 
+        const signatureArgumentDataTypes = aFunction ? aFunction.argumentDataTypes
+          .split(',')
+          .map(
+            arg => {
+              return arg.trim().split(' ')[1]
+            }
+          )
+          .join(',') : undefined
+
         const regularVariables = {
           ...variables,
           policyName: policyDefinition.name,
           allowedRoleGrants: allowedRoleGrants,
           revokeRolesList: revokeRolesList,
+          functionSignature: aFunction ? `${aFunction.functionSchema}.${aFunction.functionName} (${signatureArgumentDataTypes})` : `{{schemaName}}.{{functionName}} ({{signatureArgumentDataTypes}})`
         }
 
         const templateVariables = policyReadability === TERSE ? regularVariables : {...verboseVariables, ...regularVariables}
@@ -112,18 +122,18 @@ revoke all privileges on function {{schemaName}}.{{functionName}} from public;
 
   const functionPolicyTemplate = `
 ----------
-----------  BEGIN FUNCTION POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}}
+----------  BEGIN FUNCTION POLICY: {{functionSignature}}
 ----------  POLICY NAME:  {{policyName}}
 ----------
 
 ----------  REMOVE EXISTING FUNCTION GRANTS
 
   revoke all privileges 
-  on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+  on function {{functionSignature}} 
   from public;
 
   revoke all privileges 
-  on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+  on function {{functionSignature}} 
   from {{revokeRolesList}};
 
 ----------  CREATE NEW FUNCTION GRANTS
@@ -132,20 +142,63 @@ revoke all privileges on function {{schemaName}}.{{functionName}} from public;
 ----------  {{roleName}}
   grant 
   execute
-  on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+  on function {{functionSignature}} 
   to {{roleName}};
 
 {{/allowedRoleGrants}}
 {{#verbose}}
 ----------  IMPLIED FUNCTION GRANTS
   {{#impliedRoleGrants}}
-  --IMPLIED:   grant execute on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} to {{roleName}};
+  --IMPLIED:   grant execute on function {{functionSignature}} to {{roleName}};
   {{/impliedRoleGrants}}
 
   ----------  DENIED TABLE GRANTS
   {{#deniedRoleGrants}}
-  --DENIED:   grant execute on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} to {{roleName}};
+  --DENIED:   grant execute on function {{functionSignature}} to {{roleName}};
   {{/deniedRoleGrants}}
 {{/verbose}}
-----------  END FUNCTION POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}}
---==`</script>
+----------  END FUNCTION POLICY: {{functionSignature}}
+--==
+
+`
+
+//   const functionPolicyTemplate = `
+// ----------
+// ----------  BEGIN FUNCTION POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}}
+// ----------  POLICY NAME:  {{policyName}}
+// ----------
+
+// ----------  REMOVE EXISTING FUNCTION GRANTS
+
+//   revoke all privileges 
+//   on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+//   from public;
+
+//   revoke all privileges 
+//   on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+//   from {{revokeRolesList}};
+
+// ----------  CREATE NEW FUNCTION GRANTS
+// {{#allowedRoleGrants}}
+
+// ----------  {{roleName}}
+//   grant 
+//   execute
+//   on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} 
+//   to {{roleName}};
+
+// {{/allowedRoleGrants}}
+// {{#verbose}}
+// ----------  IMPLIED FUNCTION GRANTS
+//   {{#impliedRoleGrants}}
+//   --IMPLIED:   grant execute on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} to {{roleName}};
+//   {{/impliedRoleGrants}}
+
+//   ----------  DENIED TABLE GRANTS
+//   {{#deniedRoleGrants}}
+//   --DENIED:   grant execute on function {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}} to {{roleName}};
+//   {{/deniedRoleGrants}}
+// {{/verbose}}
+// ----------  END FUNCTION POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{functionName}}{{^functionName}}{{=<% %>=}}{{functionName}}<%={{ }}=%>{{/functionName}}
+// --==`
+</script>

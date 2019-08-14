@@ -4,7 +4,7 @@
         <v-toolbar>
           <h1>Name: {{ policyDefinition.name }}</h1>
           <v-spacer></v-spacer>
-          <!-- <v-btn @click="customize" :hidden="!theFunction">customize</v-btn> -->
+          <!-- <v-btn @click="customize" :hidden="!aFunction">customize</v-btn> -->
         </v-toolbar>
         <v-tabs
           v-model="activeTab"
@@ -31,7 +31,7 @@
             key="policy-template"
             ripple
           >
-            {{ theFunction ? 'Policy' : 'Policy Template'}}
+            {{ aFunction ? 'Policy' : 'Policy Template'}}
           </v-tab>
           <v-tab-item
             key="policy-template"
@@ -39,24 +39,24 @@
             <v-card flat>
               <policy-realization
                 :policyDefinition="policyDefinition"
-                :theFunction="theFunction"
+                :aFunction="aFunction"
               ></policy-realization>
             </v-card>
           </v-tab-item>
 
           <v-tab
-            v-if="theFunction"
+            v-if="aFunction"
             key="function-definition"
             ripple
           >
             Function Definition
           </v-tab>
           <v-tab-item
-            v-if="theFunction"
+            v-if="aFunction"
             key="function-definition"
           >
             <v-card flat>
-              <function-definition :id="theFunction.id">
+              <function-definition :id="aFunction.id">
               </function-definition>
             </v-card>
           </v-tab-item>
@@ -87,7 +87,7 @@
         type: Number,
         required: true
       },
-      theFunction: {
+      aFunction: {
         type: Object,
         required: false
       }
@@ -110,7 +110,7 @@
     },
     computed: {
       disabled () {
-        return (this.theFunction !== null && this.theFunction !== undefined) || this.policyDefinition.id === this.$store.state.defaultFunctionPolicy.id
+        return (this.aFunction !== null && this.aFunction !== undefined) || this.policyDefinition.id === this.$store.state.defaultFunctionPolicy.id
       },
       policyDefinition () {
         const functionPolicies = this.$store.state.functionPolicies
