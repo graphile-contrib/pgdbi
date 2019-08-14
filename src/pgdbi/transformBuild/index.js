@@ -4,7 +4,6 @@ async function transformBuild(build, pgPool) {
   try {
     const querySql = `
     SELECT 
-    -- jsonb_pretty(
       (
         select coalesce((array_to_json(array_agg(row_to_json(er))))::jsonb, '[]')
         from (
@@ -228,7 +227,6 @@ async function transformBuild(build, pgPool) {
           where schema_name in ('${build.options.pgSchemas.join("','")}')
         ) s
       ) schema_tree
-    -- )
   ;
       `
 
