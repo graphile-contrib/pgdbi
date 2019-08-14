@@ -1,14 +1,13 @@
 const express = require('express');
 const path = require('path');
 const { postgraphile } = require('postgraphile');
-const transformBuild = require('./transformBuild')
 
 const plugins = [
   require('./graphile-extensions/dbSchema'),
   require('postgraphile-plugin-connection-filter'),
 ];
 
-const schemas = ['information_schema','sqitch'];
+const schemas = ['information_schema'];
 const disableDefaultMutations = false;
 const watchPg = false;
 
@@ -61,32 +60,13 @@ function PostgraphileDE(options, pgPool) {
 
 let pgdbiApp;
 
-const myIntrospectionExtractionPlugin = (pgdbiApp) => (builder) => {
-  builder.hook('build', build => {
-    pgdbiApp.setBuild(build);
-    return build;
-
-  })
-}
-
 module.exports = {
   'postgraphile:options'(options, { pgPool }) {
     // Create our app
     pgdbiApp = PostgraphileDE(options, pgPool);
 
-    pgdbiApp.setBuild = build => {
-      pgdbiApp.schemaTree = transformBuild(build, pgPool)
-    }
-
     // Must always return from a hook function
-    return {
-      ...options,
-      appendPlugins: [
-        ...(options.appendPlugins || []),
-        
-        myIntrospectionExtractionPlugin(pgdbiApp)
-      ]}
-      ;
+    return options;
   },
   'postgraphile:http:handler'(incomingReq, { options, res, next }) {
     if (
@@ -103,7 +83,4 @@ module.exports = {
       return incomingReq;
     }
   },
-  schemaTree() {
-    return pgdbiApp.schemaTree
-  }
 };

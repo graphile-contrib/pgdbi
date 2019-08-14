@@ -1,8 +1,6 @@
-const clog = require('fbkt-clog');
 const { makeExtendSchemaPlugin, gql } = require('graphile-utils');
 
 const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
-  const { pgSql: sql } = build;
   return {
     typeDefs: gql`
       type Function {
@@ -86,6 +84,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       extend type Query {
         tableById(id: String!): Table
         functionById(id: String!): Function
+        dbIntrospection: JSON!
       }
 
       extend type Mutation {
@@ -149,6 +148,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       Query: {
         tableById: require('./resolvers/table/tableById')(build),
         functionById: require('./resolvers/function/functionById')(build),
+        dbIntrospection: require('./introspection')(build)
       },
       Mutation: {
         searchFunctions: require('./resolvers/function/searchFunctions')(build),
