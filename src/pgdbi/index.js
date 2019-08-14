@@ -1,13 +1,14 @@
 const express = require('express');
 const path = require('path');
 const { postgraphile } = require('postgraphile');
+const transformBuild = require('./transformBuild')
 
 const plugins = [
   require('./graphile-extensions/dbSchema'),
   require('postgraphile-plugin-connection-filter'),
 ];
 
-const schemas = ['sqitch'];
+const schemas = ['information_schema','sqitch'];
 const disableDefaultMutations = false;
 const watchPg = false;
 
@@ -74,7 +75,7 @@ module.exports = {
     pgdbiApp = PostgraphileDE(options, pgPool);
 
     pgdbiApp.setBuild = build => {
-      pgdbiApp.currentBuild = build
+      pgdbiApp.schemaTree = transformBuild(build, pgPool)
     }
 
     // Must always return from a hook function
@@ -102,7 +103,7 @@ module.exports = {
       return incomingReq;
     }
   },
-  currentBuild() {
-    return pgdbiApp.currentBuild
+  schemaTree() {
+    return pgdbiApp.schemaTree
   }
 };

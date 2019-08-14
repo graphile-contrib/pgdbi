@@ -65,7 +65,7 @@
       },
       defaultCustomName () {
         if (this.tables.length === 1) {
-          return `Custom Policy: ${this.tables[0].tableSchema}.${this.tables[0].name}`
+          return `Custom Policy: ${this.tables[0].tableSchema}.${this.tables[0].tableName}`
         } else if (this.tables.length > 1) {
           return 'New Bulk Policy'
         } else {

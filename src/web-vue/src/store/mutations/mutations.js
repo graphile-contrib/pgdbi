@@ -19,6 +19,7 @@ import makeGlobalTablePolicy from './makeGlobalTablePolicy';
 import deleteTablePolicy from './deleteTablePolicy';
 import updateTablePolicyTemplate from './updateTablePolicyTemplate';
 import updateDefaultRlsUsing from './updateDefaultRlsUsing';
+import setEnabledRoles from './setEnabledRoles'
 
 export default {
   resetDefaultState,
@@ -42,4 +43,5 @@ export default {
   deleteTablePolicy,
   updateTablePolicyTemplate,
   updateDefaultRlsUsing,
+  setEnabledRoles
 };

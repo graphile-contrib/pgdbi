@@ -109,12 +109,12 @@
         schemaPolicy.policy = `${schemaPolicy.policy} `
       },
       calcOnePolicy (tables) {
-        return tables.sort((a,b)=>{return a.name < b.name ? -1 : 1}).reduce(
+        return tables.sort((a,b)=>{return a.tablename < b.tablename ? -1 : 1}).reduce(
           (policy, table) => {
             const policyTemplate = this.policies.find(p => p.id === table.policyDefinitionId)
             const variables = {
               schemaName: table.tableSchema,
-              tableName: table.name
+              tableName: table.tablename
             }
             const tablePolicy = this.computePolicy(policyTemplate, this.policyReadability, variables, table)
             return policy.concat(tablePolicy)

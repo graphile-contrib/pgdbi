@@ -19,8 +19,6 @@
     },
     methods: {
       computePolicy (policyDefinition, policyReadability, variables, table) {
-        // const tablePolicyTemplate = this.$store.state.tablePolicyTemplate
-
         const allRoles = Object.keys(policyDefinition.roleGrants).map(
           roleName => {
             return {
@@ -38,8 +36,6 @@
                 return policyDefinition.roleGrants[roleName][action] === ALLOWED ? count + 1 : count
               }, 0
             )
-
-            console.log('blljweijfw', allowedGrantCount)
 
             const grantsForRole = Object.keys(policyDefinition.roleGrants[roleName]).map(
               (action, index, array) => {
@@ -145,7 +141,8 @@
           enableRls: policyDefinition.enableRls,
           allowedRoleGrants: allowedRoleGrants,
           rlsPolicies: rlsPolicies,
-          revokeRolesList: revokeRolesList
+          revokeRolesList: revokeRolesList,
+          tableName: table.tableName
         }
 
         const templateVariables = policyReadability === TERSE ? regularVariables : {...verboseVariables, ...regularVariables}

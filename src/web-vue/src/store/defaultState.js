@@ -9,6 +9,7 @@ export default {
   parkedSchemata: [],
   rawSchemata: [],
   schemaFilter: [],
+  enabledRoles: [],
   projectRoles: [],
   selectedRoleFamilies: [],
   defaultRlsUsing: '( owner_id = viewer_id() )',

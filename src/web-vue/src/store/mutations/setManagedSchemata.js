@@ -85,7 +85,7 @@ function setManagedSchemata(state, payload) {
     .map(schema => {
       return {
         ...schema,
-        tables: schema.tables.map(table => {
+        schemaTables: schema.schemaTables.map(table => {
           return {
             ...table,
             policyDefinitionId:

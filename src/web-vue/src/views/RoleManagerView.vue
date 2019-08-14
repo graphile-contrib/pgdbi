@@ -23,9 +23,7 @@
     computed: {
     },
     data: () => ({
-    }),
-    apollo: {
-    }
+    })
   }
 </script>
 

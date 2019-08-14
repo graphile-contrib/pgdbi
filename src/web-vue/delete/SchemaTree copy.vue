@@ -50,12 +50,12 @@
                   children: schema.schemaTables.sort((a,b)=>{return a.name < b.name ? -1 : 1})
                 },
                 {
-                  id: `functions:${schema.name}`,
+                  id: `functions:${schema.schemaName}`,
                   name: 'functions',
                   children: schema.schemaFunctions.sort((a,b)=>{return a.name < b.name ? -1 : 1})
                 },
                 {
-                  id: `enums:${schema.name}`,
+                  id: `enums:${schema.schemaName}`,
                   name: 'enums',
                   children: schema.schemaEnums
                     .sort((a,b)=>{return a.name < b.name ? -1 : 1})

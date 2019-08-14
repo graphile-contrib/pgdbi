@@ -41,6 +41,7 @@
       managedSchemata () {
         //todo: refactor this into a store mutation
         return this.$store.state.managedSchemata
+          .filter(s => s.schemaTables.length > 0)
           .map(
             schema => {
               return {

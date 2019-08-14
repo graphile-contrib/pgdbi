@@ -36,9 +36,7 @@
     },
     data: () => ({
       activeTab: null
-    }),
-    apollo: {
-    }
+    })
   }
 </script>
 

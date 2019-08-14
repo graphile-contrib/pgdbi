@@ -123,7 +123,7 @@
 </template>
 
 <script>
-  // import tableById from '../../gql/query/tableById.graphql';
+  import tableById from '../../gql/query/tableById.graphql';
   import TableColumns from './TableColumns.vue'
   import TableIndices from './TableIndices.vue'
   import TableConstraints from './TableConstraints.vue'
@@ -181,11 +181,19 @@
       activeTab: null,
       tableInfo: {},
     }),
-    mounted () {
-      const schemaName = this.id.split(':')[1].split('.')[0]
-      const tableName = this.id.split(':')[1].split('.')[1]
-      const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
-      this.tableInfo = schema.schemaTables.find(t => t.tableName === tableName)
+    apollo: {
+      init: {
+        query: tableById,
+        variables () {
+          return {
+            id: this.id
+          }
+        },
+        update (result) {
+          console.log('table', result)
+          this.tableInfo = result.tableById
+        }
+      }
     }
   }
 </script>

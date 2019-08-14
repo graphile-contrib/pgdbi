@@ -38,17 +38,19 @@
 
 <script>
   import allEnabledRoles from '@/gql/query/allEnabledRoles.graphql'
-  import RoleFilterFunctionsMixin from './RoleFilterFunctionsMixin.vue'
   // const IS_ROLE = '***'
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
 
   export default {
     name: 'RoleFilter',
-    mixins: [RoleFilterFunctionsMixin],
+    mixins: [],
     computed: {
       initializing () {
         return this.$store.state.initializing
+      },
+      enabledRoles () {
+        return this.$store.state.enabledRoles
       },
       projectRoles () {
         return this.$store.state.projectRoles
@@ -208,23 +210,17 @@
         return family.items
       }
     },
-    apollo: {
-      init: {
-        query: allEnabledRoles,
-        fetchPolicy: 'network-only',
-        update (result) {
-          this.roles = result.allEnabledRoles.nodes.map(
-            role => {
-              const selected = (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
-              return {
-                ...role,
-                selected: (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
-              }
-            }
-          )
-          this.computeItems()
+    mounted () {
+      this.roles = this.enabledRoles.map(
+        role => {
+          const selected = (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
+          return {
+            ...role,
+            selected: (this.projectRoles.find(r => r.roleName === role.roleName) !== undefined)
+          }
         }
-      }
+      )
+      this.computeItems()
     }
   }
 </script>

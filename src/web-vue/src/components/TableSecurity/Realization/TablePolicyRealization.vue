@@ -123,7 +123,7 @@
         if (this.table) {
           variables = {
             schemaName: this.table.tableSchema,
-            tableName: this.table.name,
+            tableName: this.table.tableName,
           }
         }
 

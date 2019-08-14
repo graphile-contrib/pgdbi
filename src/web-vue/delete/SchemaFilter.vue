@@ -64,8 +64,8 @@
           schema => {
             return {
                 // id: `schema:${schema.schemaName}`,
-                id: schema.name,
-                name: schema.name,
+                id: schema.schemaName,
+                name: schema.schemaName,
               children: []
             }
           }
@@ -73,7 +73,7 @@
 
         this.selected = selectedSchemata.reduce(
           (all, s) => {
-            return all.concat([s.name])
+            return all.concat([s.schemaName])
           }, []
         )
         this.computing = false

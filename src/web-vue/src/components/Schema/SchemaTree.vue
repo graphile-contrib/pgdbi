@@ -37,11 +37,13 @@
     methods: {
       refreshSchemata () {
         this.$apollo.query({
-          query: dbIntrospection
+          query: dbIntrospection,
+          fetchPolicy: 'network-only'
         })
         .then(result => {
-          console.log('dbIntrospection', result)
+          console.log('schemata', result.data)
           this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
+          this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
         })
       },
       computeItems () {
@@ -50,28 +52,36 @@
           schema => {
             return {
               id: schema.id,
-              name: schema.name,
+              name: schema.schemaName,
               children: this.filterMode ? [] : [
                 {
-                  id: `tables:${schema.name}`,
+                  id: `tables:${schema.schemaName}`,
                   name: 'tables',
-                  children: schema.tables.sort((a,b)=>{return a.name < b.name ? -1 : 1})
+                  children: schema.schemaTables.sort((a,b)=>{return a.tableName < b.tableName ? -1 : 1})
                     .map(
                       table => {
                         return {
                           id: table.id,
-                          name: table.name
+                          name: table.tableName
+                        }
+                      }
+                    )
+                },
+                {
+                  id: `functions:${schema.schemaName}`,
+                  name: 'functions',
+                  children: (schema.schemaFunctions || []).sort((a,b)=>{return a.functionName < b.functionName ? -1 : 1})
+                    .map(
+                      aFunction => {
+                        return {
+                          id: aFunction.id
+                          ,name: aFunction.functionName
                         }
                       }
                     )
                 },
                 // {
-                //   id: `functions:${schema.name}`,
-                //   name: 'functions',
-                //   children: schema.schemaFunctions.sort((a,b)=>{return a.name < b.name ? -1 : 1})
-                // },
-                // {
-                //   id: `enums:${schema.name}`,
+                //   id: `enums:${schema.schemaName}`,
                 //   name: 'enums',
                 //   children: schema.schemaEnums
                 //     .sort((a,b)=>{return a.name < b.name ? -1 : 1})
@@ -97,7 +107,6 @@
           }
         )
         .sort((a,b)=>{return a.name < b.name ? -1 : 1})
-        console.log('items', this.items)
         this.computing = false
       },
     },
@@ -109,7 +118,6 @@
         const active = this.active[0] || ''
         const activeType = active.split(':')[0]
 
-        console.log(active)
         switch (activeType) {
           case 'table':
             this.$router.push({ name: 'table', params: { id: active }})
@@ -124,6 +132,9 @@
           break
         }
       }
+    },
+    mounted () {
+      this.computeItems()
     }
   }
 </script>
