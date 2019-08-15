@@ -1,6 +1,6 @@
 {
   "name": "@graphile-contrib/pgdbi",
-  "version": "1.0.9-alpha.50",
+  "version": "1.0.9-alpha.51",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "flatted": "^2.0.1",
     "graphile-utils": "^4.2.1",
     "handlebars": "^4.1.2",
-    "postgraphile": "^4.3.3",
+    "postgraphile": "^4.4.0",
     "postgraphile-plugin-connection-filter": "^1.0.1"
   },
   "devDependencies": {

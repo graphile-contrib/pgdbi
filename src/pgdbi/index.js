@@ -8,11 +8,13 @@ const plugins = [
   require('postgraphile-plugin-connection-filter'),
 ];
 
-const schemas = ['information_schema','sqitch'];
 const disableDefaultMutations = false;
 const watchPg = false;
 
 function PostgraphileDE(options, pgPool) {
+  const enableSqitch = options.pgdbi && options.pgdbi.enableSqitch === true
+
+  const schemas = `information_schema${enableSqitch ? ',sqitch' : ''}`.split(',')
   const app = express();
 
   app.use(

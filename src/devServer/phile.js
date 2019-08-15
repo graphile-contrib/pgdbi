@@ -65,6 +65,9 @@ const phile =  postgraphile(connection, schemas, {
   appendPlugins: plugins,
   watchPg: watchPg,
   graphiql: true,
+  pgdbi: {
+    enableSqitch: true
+  }
 })
 
 module.exports = phile
