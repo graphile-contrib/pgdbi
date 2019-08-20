@@ -9,6 +9,10 @@
       hide-default-footer
       show-expand
     >
+      <template v-slot:item.blankLink="{ item }">
+        <router-link :to="{ name: 'function', params: { id: item.id }}" target="_blank"><v-icon>launch</v-icon></router-link>
+      </template>
+
       <template slot="expanded-item" slot-scope="props">
         <td :colspan="headers.length + 1">
           <function :id="props.item.id">
@@ -76,6 +80,7 @@
         {
           text: ''
           ,sortable: false
+          ,value: 'blankLink'
         }
       ]
     }),

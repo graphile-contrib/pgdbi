@@ -1,18 +1,19 @@
-### glenn
-- [ ] upgrade to latest vuetify 2
-- [ ] make a better color scheme.  maybe something close to:  https://www.graphile.org
-- [ ] rethink tools menu, move away from top level buttons
-- [ ] hopefully vuetify 2 fixes the panel expansion problem
-- [ ] function component needs to be spiffed up
-- [ ] settings page
+### phase the now
 
-### either
-- [ ] update search page to do front-end search similar to soro orders
-- [ ] finish policy evaluation components
+- [X] upgrade to latest vuetify 2
+- [X] hopefully vuetify 2 fixes the panel expansion problem
+- [X] update search page to do front-end search
+- [ ] build new table detail: https://github.com/graphile-contrib/pgdbi/issues/8
 - [ ] add ignore role feature
-- [ ] create by-policy view:  basically a pivot on policy assignment
-
-### kevin
+- [ ] rethink tools menu, move away from top level buttons
 - [ ] refactor store structure for modular rule management
-- [ ] implement index page
 - [ ] improve the build/publish process
+
+### phase the next
+
+- [ ] implement index page
+- [ ] settings page
+- [ ] function component needs to be spiffed up
+- [ ] finish policy evaluation components
+- [ ] create by-policy view:  basically a pivot on policy assignment
+- [ ] make a better color scheme.  maybe something close to:  https://www.graphile.org
