@@ -13,6 +13,7 @@
       :active.sync="active"
       v-model="selected"
       hoverable
+      dense
     ></v-treeview>
 </v-container>
 </template>

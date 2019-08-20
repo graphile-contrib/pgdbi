@@ -5,63 +5,42 @@
     :items="rlsQualifierMatrix"
     hide-default-footer
     item-key="id"
-    dense
+    class="text-sm-left"
   >
     <template v-slot:item.roleName="{ item }">
-      <div class="text-no-wrap">{{ item.roleName }}</div>
+      {{ item.roleName }}
     </template>
 
     <template v-slot:item.all="{ item }">
-      <table-policy-rls-action
-        :policy="policy"
+      <v-btn
+        @click="addRlsPolicy(item.roleName, 'all')"
+        :hidden="disabled"
+      >Add Policy</v-btn>
+      <rls-policy-dialog
+        v-for="(policy) in item['all'].policies"
+        :key="`${policy.roleName}-${policy.id}`"
         :action="'all'"
-        :item="item"
+        :roleName="item.roleName"
+        :rlsPolicy="policy"
+        :status="'ENABLED'"
+        :disableRlsPolicy="disableRlsPolicy"
+        :updateRlsPolicy="updateRlsPolicy"
         :disabled="disabled"
-      >
-      </table-policy-rls-action>
+      ></rls-policy-dialog>
+      <rls-policy-dialog
+        v-for="(policy) in impliedPolicies(item.roleName, 'all')"
+        :key="`${policy.roleName}-${policy.id}`"
+        :action="'all'"
+        :roleName="item.roleName"
+        :rlsPolicy="policy"
+        :status="'IMPLIED'"
+        :disableRlsPolicy="disableRlsPolicy"
+        :updateRlsPolicy="updateRlsPolicy"
+        :disabled="disabled"
+      ></rls-policy-dialog>
     </template>
 
     <template v-slot:item.select="{ item }">
-      <table-policy-rls-action
-        :policy="policy"
-        :action="'select'"
-        :item="item"
-        :disabled="disabled"
-      >
-      </table-policy-rls-action>
-    </template>
-
-    <template v-slot:item.insert="{ item }">
-      <table-policy-rls-action
-        :policy="policy"
-        :action="'insert'"
-        :item="item"
-        :disabled="disabled"
-      >
-      </table-policy-rls-action>
-    </template>
-
-    <template v-slot:item.update="{ item }">
-      <table-policy-rls-action
-        :policy="policy"
-        :action="'update'"
-        :item="item"
-        :disabled="disabled"
-      >
-      </table-policy-rls-action>
-    </template>
-
-    <template v-slot:item.delete="{ item }">
-      <table-policy-rls-action
-        :policy="policy"
-        :action="'delete'"
-        :item="item"
-        :disabled="disabled"
-      >
-      </table-policy-rls-action>
-    </template>
-
-    <!-- <template v-slot:item.select="{ item }">
       <v-btn
         @click="addRlsPolicy(item.roleName, 'select')"
         :hidden="disabled"
@@ -175,7 +154,7 @@
         :updateRlsPolicy="updateRlsPolicy"
         :disabled="disabled"
       ></rls-policy-dialog>
-    </template> -->
+    </template>
 
   </v-data-table>
 </template>
@@ -185,7 +164,6 @@
   const DISABLED = 'DISABLED'
   const IMPLIED = 'IMPLIED'
   import RlsPolicyDialog from '@/components/TableSecurity/Dialogs/RlsPolicyDialog.vue'
-  import TablePolicyRlsAction from '@/components/TableSecurity/Definition/TablePolicyRlsAction.vue'
 
   export default {
     mounted () {
@@ -193,8 +171,7 @@
     },
     name: 'PolicyRlsQualifierGrid',
     components: {
-      RlsPolicyDialog,
-      TablePolicyRlsAction
+      RlsPolicyDialog
     },
     props: {
       policy: {

@@ -4,7 +4,7 @@
       <v-data-table
         :headers="headers"
         :items="referentialConstraints"
-        :hide-actions="true"
+        :hide-default-footer="true"
         stripe
       >
         <template slot="items" slot-scope="props">

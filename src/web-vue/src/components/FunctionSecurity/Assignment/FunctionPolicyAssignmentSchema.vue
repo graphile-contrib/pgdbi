@@ -16,7 +16,7 @@
       <v-data-table
         :headers="headers"
         :items="functionsToShow"
-        :hide-actions="true"
+        :hide-default-footer="true"
       >
         <template slot="items" slot-scope="props">
           <tr>

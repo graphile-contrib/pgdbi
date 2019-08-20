@@ -1,43 +1,16 @@
 <template>
   <v-container>
     <div v-for="family in roleFamilies" :key="family.name">
-      <v-toolbar>
-        <v-checkbox 
-          @change="familyCheckChanged(family)" 
-          :input-value="familyIsSelected(family)"
-        ></v-checkbox>
-        <h2>Applicable Family</h2>
-        <v-spacer></v-spacer>
-        <h2>{{ family.name }}</h2>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-      <v-data-table
-        :headers="familyHeaders(family)"
-        :items="family.dataRows"
-        hide-actions
-        item-key="id"
-        class="text-sm-left"
-      >
-        <template slot="items" slot-scope="props">
-          <tr @click="props.expanded = !props.expanded">        
-            <td>
-              <v-checkbox 
-              :input-value="roleIsSelected(props.item)" 
-              @change="roleCheckChanged(props.item)"
-              ></v-checkbox>
-            </td>
-            <td class="text-sm-left">{{ props.item.roleName }}</td>
-            <td class="text-sm-left" v-for="fieldName in family.allMemberNames" :key="fieldName">{{ props.item[fieldName] }}</td>
-          </tr>
-        </template>
-      </v-data-table>
-      <hr>
+      <applicable-family
+        :applicableFamily="family"
+      ></applicable-family>
     </div>
  </v-container>
 </template>
 
 <script>
   import allEnabledRoles from '@/gql/query/allEnabledRoles.graphql'
+  import ApplicableFamily from './ApplicableFamily'
   // const IS_ROLE = '***'
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
@@ -45,6 +18,9 @@
   export default {
     name: 'RoleFilter',
     mixins: [],
+    components: {
+      ApplicableFamily
+    },
     computed: {
       initializing () {
         return this.$store.state.initializing
@@ -87,43 +63,6 @@
       checkedRoles: {}
     }),
     methods: {
-      familyIsSelected (family) {
-        const allMembersSelected = family.members.reduce((all, m) => { return !all ? all : this.roleIsSelected(m) }, true)
-        return allMembersSelected
-      },
-      roleIsSelected (role) {
-        return  this.projectRoles.find(r => r.roleName === role.roleName) !== undefined
-      },
-      familyCheckChanged (family) {
-        const currentlySelected = this.familyIsSelected(family)
-        const projectRoles = currentlySelected
-          ? this.projectRoles.filter(r => family.members.find(m => m.roleName === r.roleName) === undefined)
-          : Array.from(new Set([...family.members, ...this.projectRoles]))
-
-          this.$store.commit('projectRoles', { projectRoles: projectRoles })
-      },
-      roleCheckChanged (role) {
-        role.selected = !(role.selected)
-        const roleIsSelectedAlready = this.projectRoles.find(r => r.roleName === role.roleName)
-        const projectRoles = roleIsSelectedAlready
-          ? this.projectRoles.filter(r => r.roleName !== role.roleName)
-          : [...this.projectRoles, ...[role]]
-
-        this.$store.commit('projectRoles', { projectRoles: projectRoles })
-      },
-      familyHeaders (family) {
-        const headers = family.allMemberNames.map(
-          memberName => {
-            return {
-              text: memberName,
-              value: memberName,
-              sortable: false
-            }
-          }
-        )
-        const allHeaders = [{ name: 'checkbox', sortable: false}, { text: 'grantee', name: 'grantee', sortable: false }].concat(headers)
-        return allHeaders
-      },
       computeItems () {
         this.roles.map(
           role => {
@@ -133,7 +72,6 @@
 
         // determine families by analyzing applicaple roles
         // ideally, 
-        console.log('roles', JSON.stringify(this.roles.filter(r => ['app_super_admin', 'app_tenant_admin'].indexOf(r.roleName) > -1), 0, 2))
         const families = this.roles
           // sort so the most senior role is first
           .sort((a,b) => { return a.applicableRoles.length >= b.applicableRoles.length ? -1 : 1})

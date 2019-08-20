@@ -4,6 +4,7 @@
       <v-dialog v-model="dialog" persistent width="800">
         <template v-slot:activator="{ on }">
           <v-btn 
+            small
             dark v-on="on"
             class="text-none"
             :disabled="disabled"
@@ -21,8 +22,6 @@
           ></v-combobox>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <!-- <v-btn :hidden="disabled" @click="updateRlsPolicy(roleName, action, rlsPolicy.id, currentUsing, currentWithCheck, currentPassStrategy, currentName); dialog=false">Update</v-btn>
-            <v-btn :hidden="disabled" @click="disableRlsPolicy(roleName, action, rlsPolicy.id); dialog=false">Disable</v-btn> -->
             <v-btn @click="dialog=false">Cancel</v-btn>
             <v-btn @click="updateTablePolicyDefinition" :disabled="updateDisabled">Update</v-btn>
             <v-spacer></v-spacer>
@@ -54,6 +53,7 @@
       }
     },
     mounted () {
+      console.log('show', this.currentPolicyDefinition)
       this.currentSelection = this.currentPolicyDefinition
     },
     data () {

@@ -19,7 +19,7 @@
           <v-data-table
             :headers="headers"
             :items="schema.schemaTables"
-            :hide-actions="true"
+      :hide-default-footer="true"
           >
             <template slot="items" slot-scope="props">
               <tr @click="props.expanded = !props.expanded">

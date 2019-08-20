@@ -4,7 +4,7 @@
       :headers="headers"
       :items="keyColumnUsage"
       class="elevation-1"
-      :hide-actions="true"
+      :hide-default-footer="true"
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.tableSchema }}</td>

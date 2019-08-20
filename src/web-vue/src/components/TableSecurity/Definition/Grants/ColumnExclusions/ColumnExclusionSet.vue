@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-checkbox 
+    <v-switch 
       v-model="overrideActive" 
-      :hidden="overrideHidden"
+      v-if="!overrideHidden"
       :label="`override implied exclusions`"
-    ></v-checkbox>
+    ></v-switch>
     <table-policy-column-exclusion-dialog
       :policyDefinition="policyDefinition"
       :table="table"
@@ -15,12 +15,12 @@
     </table-policy-column-exclusion-dialog>
       <v-list
       >
-        <v-list-tile
+        <v-list-item
           v-for="ice in currentColumnExclusions"
           :key="ice"
         >
           <v-btn @click="removeColumnExclusion(ice)"><v-icon>clear</v-icon></v-btn> {{ice}}
-        </v-list-tile>
+        </v-list-item>
       </v-list>
   </v-container>
 </template>
@@ -126,11 +126,18 @@
         return this.policyDefinition.roleGrants[this.roleName][this.action] === 'DENIED'
       },
       overrideHidden () {
-        return (['DENIED', 'ALLOWED'].indexOf(this.policyDefinition.roleGrants[this.roleName][this.action])) > -1 
+        console.log ('blah', this.policyDefinition, this.roleName, this.action, (['DENIED', 'ALLOWED'].indexOf(this.policyDefinition.roleGrants[this.roleName][this.action])), this.policyDefinition.roleGrants[this.roleName][this.action])
+        const retval = (['DENIED', 'ALLOWED'].indexOf(this.policyDefinition.roleGrants[this.roleName][this.action])) > -1
+        console.log ('blah', retval)
+        return retval
       },
       showDialogButton () {
-        return (this.overrideActive && this.policyDefinition.roleGrants[this.roleName][this.action] === 'IMPLIED')
-          || this.policyDefinition.roleGrants[this.roleName][this.action] === 'ALLOWED'
+        return true
+        return (
+          this.overrideActive && 
+          this.policyDefinition.roleGrants[this.roleName][this.action] === 'IMPLIED'
+        ) || 
+          this.policyDefinition.roleGrants[this.roleName][this.action] === 'ALLOWED'
       }
     }
   }

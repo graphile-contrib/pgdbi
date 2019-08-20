@@ -142,7 +142,7 @@
           allowedRoleGrants: allowedRoleGrants,
           rlsPolicies: rlsPolicies,
           revokeRolesList: revokeRolesList,
-          tableName: table.tableName
+          tableName: (table || {}).tableName
         }
 
         const templateVariables = policyReadability === TERSE ? regularVariables : {...verboseVariables, ...regularVariables}

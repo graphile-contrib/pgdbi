@@ -1,104 +1,106 @@
 <template>
-    <v-card color="black" :key="policyDefinition.id">
-      <v-container>
-        <v-toolbar>
-          <h1>Name: {{ policyDefinition.name }}</h1>
-          <v-spacer></v-spacer>
-          <v-layout justify-center>
-            <v-checkbox v-model="enableRls" label="Enable Rls" :disabled="disabled"></v-checkbox>
-          </v-layout>
-          <table-policy-make-global-dialog
-            v-if="showMakeGlobalButton"
-            :policyDefinition="policyDefinition"
-          ></table-policy-make-global-dialog>
-          <table-policy-delete-dialog
-            v-if="showDeleteButton"
-            :policyDefinition="policyDefinition"
-          ></table-policy-delete-dialog>
-        </v-toolbar>
-        <v-tabs
-          v-model="activeTab"
-          dark
+  <v-container fluid cols=12>
+    <v-toolbar dense>
+      <h1>Name: {{ policyDefinition.name }}</h1>
+      <v-spacer></v-spacer>
+      <v-switch
+        v-model="enableRls"
+        :label="`Enable RLS`"
+      ></v-switch>
+      <v-spacer></v-spacer>
+      <table-policy-make-global-dialog
+        v-if="showMakeGlobalButton"
+        :policyDefinition="policyDefinition"
+      ></table-policy-make-global-dialog>
+      <v-spacer></v-spacer>
+      <table-policy-delete-dialog
+        v-if="showDeleteButton"
+        :policyDefinition="policyDefinition"
+      ></table-policy-delete-dialog>
+    </v-toolbar>
+      <v-tabs
+        v-model="activeTab"
+        dark
+      >
+        <v-tab
+          key="grants"
+          ripple
         >
-          <v-tab
-            key="grants"
-            ripple
-          >
-            Table Grants
-          </v-tab>
-          <v-tab-item
-            key="grants"
-            lazy
-          >
-            <v-card flat>
-            <table-policy-definition-grants
+          Table Grants
+        </v-tab>
+        <v-tab-item
+          key="grants"
+          lazy
+        >
+          <v-card flat>
+          <table-policy-definition-grants
+            :policyDefinition="policyDefinition"
+            :disabled="disabled"
+          ></table-policy-definition-grants>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab
+          key="rls"
+          ripple
+          :disabled="!enableRls"
+        >
+          Row Level Security
+        </v-tab>
+        <v-tab-item
+          key="rls"
+          lazy
+        >
+          <v-card flat>
+          <policy-rls-qualifier-grid
+            :policy="policyDefinition"
+            :disabled="disabled"
+          ></policy-rls-qualifier-grid>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab
+          key="policy-template"
+          ripple
+        >
+          {{ table ? 'Policy' : 'Policy Template'}}
+        </v-tab>
+        <v-tab-item
+          key="policy-template"
+          lazy
+        >
+          <v-card flat>
+            <policy-realization
               :policyDefinition="policyDefinition"
-              :disabled="disabled"
-            ></table-policy-definition-grants>
-            </v-card>
-          </v-tab-item>
+              :table="table"
+              :enableRls="enableRls"
+            ></policy-realization>
+          </v-card>
+        </v-tab-item>
 
-          <v-tab
-            key="rls"
-            ripple
-            :disabled="!enableRls"
-          >
-            Row Level Security
-          </v-tab>
-          <v-tab-item
-            key="rls"
-            lazy
-          >
-            <v-card flat>
-            <policy-rls-qualifier-grid
-              :policy="policyDefinition"
-              :disabled="disabled"
-            ></policy-rls-qualifier-grid>
-            </v-card>
-          </v-tab-item>
+        <v-tab
+          v-if="table"
+          key="policy-evaluation"
+          ripple
+        >
+          Evaluation
+        </v-tab>
+        <v-tab-item
+          v-if="table"
+          key="policy-evaluation"
+          lazy
+        >
+          <v-card flat>
+            <table-policy-evaluator-detail
+              :policyDefinition="policyDefinition"
+              :table="table"
+            ></table-policy-evaluator-detail>
+          </v-card>
+        </v-tab-item>
 
-          <v-tab
-            key="policy-template"
-            ripple
-          >
-            {{ table ? 'Policy' : 'Policy Template'}}
-          </v-tab>
-          <v-tab-item
-            key="policy-template"
-            lazy
-          >
-            <v-card flat>
-              <policy-realization
-                :policyDefinition="policyDefinition"
-                :table="table"
-                :enableRls="enableRls"
-              ></policy-realization>
-            </v-card>
-          </v-tab-item>
-
-          <v-tab
-            v-if="table"
-            key="policy-evaluation"
-            ripple
-          >
-            Evaluation
-          </v-tab>
-          <v-tab-item
-            v-if="table"
-            key="policy-evaluation"
-            lazy
-          >
-            <v-card flat>
-              <table-policy-evaluator-detail
-                :policyDefinition="policyDefinition"
-                :table="table"
-              ></table-policy-evaluator-detail>
-            </v-card>
-          </v-tab-item>
-
-        </v-tabs>
-      </v-container>
-    </v-card>
+      </v-tabs>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -138,7 +140,7 @@
         policyStructure: [],
         calculatedPolicy: 'NOT CALCULATED',
         toggleCompleted: false,
-        activeTab: ''
+        activeTab: null
       }
     },
     mounted () {

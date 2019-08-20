@@ -2,7 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="functions"
-    hide-actions
+    hide-default-footer
   >
     <template slot="items" slot-scope="props">
       <td @click="props.expanded = !props.expanded">

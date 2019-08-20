@@ -3,28 +3,27 @@
     <v-data-table
       :headers="headers"
       :items="dataTableItems"
-      hide-actions
+      hide-default-footer
       class="text-sm-left"
     >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.roleName }}</td>
-        <td>
-          <column-exclusion-set
-            :policyDefinition="policyDefinition"
-            :table="table"
-            :action="'insert'"
-            :roleName="props.item.roleName"
-          ></column-exclusion-set>
-        </td>
-        <td>
-          <column-exclusion-set
-            :policyDefinition="policyDefinition"
-            :table="table"
-            :action="'update'"
-            :roleName="props.item.roleName"
-          ></column-exclusion-set>
-        </td>
-      </template>
+    <template v-slot:item.insertExclusions="{ item }">
+      <column-exclusion-set
+        :policyDefinition="policyDefinition"
+        :table="table"
+        :action="'insert'"
+        :roleName="item.roleName"
+      ></column-exclusion-set>
+    </template>
+
+    <template v-slot:item.updateExclusions="{ item }">
+      <column-exclusion-set
+        :policyDefinition="policyDefinition"
+        :table="table"
+        :action="'update'"
+        :roleName="item.roleName"
+      ></column-exclusion-set>
+    </template>
+
     </v-data-table>
   </v-container>
 </template>
@@ -57,16 +56,19 @@
         toggleComplete: false,
         headers: [
           {
-            text: 'Column Name',
-            sortable: false
+            text: 'Role Name',
+            sortable: false,
+            value: 'roleName'
           },
           {
             text: 'Insert Exclusions',
-            sortable: false
+            sortable: false,
+            value: 'insertExclusions'
           },
           {
             text: 'Update Exclusions',
-            sortable: false
+            sortable: false,
+            value: 'updateExclusions'
           },
         ]
       }
@@ -74,79 +76,8 @@
     watch: {
     },
     methods: {
-      // toggleInsert(columnExclusion) {
-      //   if (this.toggleComplete) {
-      //     this.toggleComplete = false
-      //     return
-      //   } else {
-      //     const updatedColumnExclusions = this.policyDefinition.columnExclusions
-      //       .filter(ce => ce.columnName !== columnExclusion.columnName)
-      //       .concat([
-      //         {
-      //           ...columnExclusion,
-      //           excludeForInsert: !columnExclusion.excludeForInsert
-      //         }
-      //       ])
-
-      //     const updatedPolicy = {
-      //       ...this.policyDefinition,
-      //       columnExclusions: updatedColumnExclusions
-
-      //     }
-
-      //     this.$store.commit('savePolicy', { policy: updatedPolicy })
-
-      //     this.toggleComplete = true
-      //   }
-      // },
-      // toggleUpdate(columnExclusion) {
-      //   if (this.toggleComplete) {
-      //     this.toggleComplete = false
-      //     return
-      //   } else {
-      //     const updatedColumnExclusions = this.policyDefinition.columnExclusions
-      //       .filter(ce => ce.columnName !== columnExclusion.columnName)
-      //       .concat([
-      //         {
-      //           ...columnExclusion,
-      //           excludeForUpdate: !columnExclusion.excludeForUpdate
-      //         }
-      //       ])
-
-      //     const updatedPolicy = {
-      //       ...this.policyDefinition,
-      //       columnExclusions: updatedColumnExclusions
-
-      //     }
-
-      //     this.$store.commit('savePolicy', { policy: updatedPolicy })
-
-      //     this.toggleComplete = true
-      //   }
-      // },
       removeInsertExclusion (columnExclusion, roleName) {
         console.log('columnExclusion', columnExclusion, roleName)
-
-        // const remainingInsertExclusions = this.policyDefinition.columnExclusion.insert[roleName].filter(ice => ice !== columnExclusion)
-
-        // try {
-        //   this.$store.commit('savePolicy', {
-        //     policy: {
-        //       ...this.policyDefinition,
-        //       columnExclusions: {
-        //         ...this.policyDefinition.columnExclusions,
-        //         [this.action]: {
-        //           ...this.policyDefinition.columnExclusions[this.action],
-        //           [this.roleName]: actionRoleColumnExclusions
-        //         }
-        //       }
-        //     }
-        //   })
-        // }
-        // catch (e) {
-        //   alert(e.toString())
-        //   console.error(e)
-        // }
       }
     },
     computed: {

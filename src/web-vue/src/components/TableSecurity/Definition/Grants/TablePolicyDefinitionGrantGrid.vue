@@ -2,11 +2,42 @@
   <v-data-table
     :headers="headers"
     :items="grantMatrix"
-    hide-actions
+    hide-default-footer
     item-key="id"
     class="text-sm-left"
   >
-    <template slot="items" slot-scope="props">
+    <template v-slot:item.select="{ item }">
+      <v-checkbox 
+        :input-value="roleGrantSelected(item, 'select')" 
+        @click="toggleRoleGrant(item.roleName, 'select')"
+        :disabled="roleGrantDisabled(item, 'select')"
+      ></v-checkbox>
+    </template>
+
+    <template v-slot:item.insert="{ item }">
+      <v-checkbox 
+        :input-value="roleGrantSelected(item, 'insert')" 
+        @click="toggleRoleGrant(item.roleName, 'insert')"
+        :disabled="roleGrantDisabled(item, 'insert')"
+      ></v-checkbox>
+    </template>
+
+    <template v-slot:item.update="{ item }">
+      <v-checkbox 
+        :input-value="roleGrantSelected(item, 'update')" 
+        @click="toggleRoleGrant(item.roleName, 'update')"
+        :disabled="roleGrantDisabled(item, 'update')"
+      ></v-checkbox>
+    </template>
+
+    <template v-slot:item.delete="{ item }">
+      <v-checkbox 
+        :input-value="roleGrantSelected(item, 'delete')" 
+        @click="toggleRoleGrant(item.roleName, 'delete')"
+        :disabled="roleGrantDisabled(item, 'delete')"
+      ></v-checkbox>
+    </template>
+    <!-- <template slot="items" slot-scope="props">
       <td>{{ props.item.roleName }}</td>          
       <td>
         <v-checkbox 
@@ -36,7 +67,7 @@
           :disabled="roleGrantDisabled(props.item, 'delete')"
         ></v-checkbox>
       </td>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 
@@ -156,23 +187,28 @@
         return [
           {
             text: 'Role Name',
-            sortable: false
+            sortable: false,
+            value: 'roleName'
           },
           {
             text: 'SELECT',
-            sortable: false
+            sortable: false,
+            value: 'select'
           },
           {
             text: 'INSERT',
-            sortable: false
+            sortable: false,
+            value: 'insert'
           },
           {
             text: 'UPDATE',
-            sortable: false
+            sortable: false,
+            value: 'update'
           },
           {
             text: 'DELETE',
-            sortable: false
+            sortable: false,
+            value: 'delete'
           }
         ]
       },

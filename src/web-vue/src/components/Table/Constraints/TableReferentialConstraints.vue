@@ -4,8 +4,7 @@
       :headers="headers"
       :items="mappedConstraints"
       class="elevation-1"
-      :pagination.sync="pagination"
-      :hide-actions="true"
+      :hide-default-footer="true"
       item-key="constraintName"
     >
       <template slot="items" slot-scope="props">

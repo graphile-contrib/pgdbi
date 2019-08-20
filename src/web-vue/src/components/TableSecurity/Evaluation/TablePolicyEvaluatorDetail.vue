@@ -12,7 +12,7 @@
     <v-data-table
       :headers="headers"
       :items="tablePolicyEvaluationItems"
-      hide-actions
+      hide-default-footer
       item-key="id"
     >
       <template slot="items" slot-scope="props">

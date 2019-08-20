@@ -16,7 +16,44 @@
       <v-data-table
         :headers="headers"
         :items="tablesToShow"
-        :hide-actions="true"
+        item-key="id"
+        dense
+        disable-pagination
+        disable-sort
+        hide-default-footer
+        show-select
+        show-expand
+      >
+          <template v-slot:item.name="{ item }">
+            {{ item.tableName }}
+          </template>
+
+          <template v-slot:item.assignedPolicy="{ item }">
+            <policy-assignment-dialog 
+              :currentPolicyDefinition="item.policyDefinition" 
+              :tables="[item]"
+            ></policy-assignment-dialog>
+            <table-policy-customize-dialog
+              v-if="showCustomizeButton(item)"
+              :currentPolicyDefinition="item.policyDefinition"
+              :tables="[item]"
+            ></table-policy-customize-dialog>
+          </template>
+
+        <template slot="expanded-item" slot-scope="props">
+          <td :colspan="headers.length + 2">
+            <policy-definition
+              :key="props.item.id"
+              :policyId="props.item.policyDefinition.id"
+            ></policy-definition>
+          </td>
+        </template>
+      </v-data-table>
+
+      <!-- <v-data-table
+        :headers="headers"
+        :items="tablesToShow"
+        :hide-default-footer="true"
       >
         <template slot="items" slot-scope="props">
           <tr>
@@ -32,7 +69,6 @@
               </v-btn>
               {{ props.item.name }}
             </td>
-            <!-- <td>{{ props.item.policyDefinition.name }}</td> -->
             <td @mousedown="props.expanded = !props.expanded">      
               <policy-assignment-dialog 
                 :currentPolicyDefinition="props.item.policyDefinition" 
@@ -60,7 +96,8 @@
             :table="props.item"
           ></policy-definition>
         </template>
-      </v-data-table>
+      </v-data-table> -->
+
       <!-- <mugen-scroll :handler="fetchData" :should-handle="!loa    ding">
         loading...
       </mugen-scroll> -->
@@ -157,19 +194,21 @@
           text: 'Table Name',
           align: 'left',
           sortable: false,
+          value: 'name'
         },
         {
           text: 'Assigned Policy',
           align: 'left',
           sortable: false,
+          value: 'assignedPolicy'
         },
-        {
-          text: 'Current grant status compared to assigned policy - UNDER CONSTRUCTION',
-          align: 'center',
-          class: 'blah',
-          sortable: false,
-          colspan: 4
-        }
+        // {
+        //   text: 'Current grant status compared to assigned policy - UNDER CONSTRUCTION',
+        //   align: 'center',
+        //   class: 'blah',
+        //   sortable: false,
+        //   colspan: 4
+        // }
       ]
     })
   }

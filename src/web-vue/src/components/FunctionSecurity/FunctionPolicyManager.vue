@@ -19,7 +19,7 @@
       <v-data-table
         :headers="headers"
         :items="policies"
-        hide-actions
+        hide-default-footer
         item-key="id"
         class="text-sm-left"
       >

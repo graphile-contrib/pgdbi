@@ -2,7 +2,7 @@
 <template>
   <v-data-table 
     :items="items" 
-    :hide-actions="true"
+    :hide-default-footer="true"
     :hide-headers="false"
     :headers="headers"
   >

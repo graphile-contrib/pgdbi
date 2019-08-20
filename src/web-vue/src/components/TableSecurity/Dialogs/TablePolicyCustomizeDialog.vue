@@ -3,7 +3,8 @@
     <div>
       <v-dialog v-model="dialog" persistent width="800">
         <template v-slot:activator="{ on }">
-          <v-btn 
+          <v-btn
+            small
             dark v-on="on"
             class="text-none"
             :disabled="disabled"

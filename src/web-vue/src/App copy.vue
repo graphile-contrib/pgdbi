@@ -1,22 +1,24 @@
 <template>
-  <v-app id="inspire">
+  <v-app dark>
     <v-navigation-drawer
       v-model="drawer"
+      persistent
       :mini-variant="miniVariant"
       :clipped="clipped"
       enable-resize-watcher
-      persistent
-      app      
+      width="400"
+      app
     >
     <project-navigator></project-navigator>
     </v-navigation-drawer>
-
-    <v-app-bar
+    <v-toolbar
       app
-      clipped-left
+      :clipped-left="clipped"
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <div>
+        <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
+      </div>
       <v-btn icon @click.stop="settings">
         <v-icon>settings</v-icon>
       </v-btn>
@@ -35,8 +37,7 @@
       <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Indexes</v-btn>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-    </v-app-bar>
-
+    </v-toolbar>
     <v-content>
       <v-container
         justify-start
@@ -46,9 +47,8 @@
         <router-view></router-view>
       </v-container>
     </v-content>
-
-    <v-footer app>
-      <span>&copy; 2019</span>
+    <v-footer :fixed="fixed" app>
+      <span>&copy; 2017</span>
     </v-footer>
   </v-app>
 </template>
@@ -58,9 +58,6 @@ import ProjectNavigator from '@/components/Project/ProjectNavigator'
 
 export default {
   name: 'App',
-  props: {
-    source: String,
-  },
   components: { 
     ProjectNavigator
   },
@@ -95,8 +92,20 @@ export default {
       title: 'pg-db-inspector'
     }
   },
-  created () {
-    this.$vuetify.theme.dark = true
-  },
+  // mounted () {
+  //   console.log(this.currentRoute)
+  // }
 }
 </script>
+
+<style lang="css">
+  .treeview-label { background-color: #494544; }
+
+  .selectable { cursor: pointer; }
+
+  .v-content .container { height: 100%; }
+  .v-content .container > .layout { height: 100%; }
+  .v-content .container > .layout .v-card.theme--dark { 	height: 100%; }
+  .v-content .container > .layout .v-card.theme--dark .grid-list-md .row.wrap.layout { 	height: 100%; }
+  .graphiql-parent { 	height: 90%; }
+</style>

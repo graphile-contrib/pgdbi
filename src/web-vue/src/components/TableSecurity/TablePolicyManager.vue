@@ -19,29 +19,22 @@
       <v-data-table
         :headers="headers"
         :items="policies"
-        hide-actions
         item-key="id"
-        class="text-sm-left"
+        dense
+        disable-pagination
+        disable-sort
+        hide-default-footer
+        show-expand
       >
-        <template slot="items" slot-scope="props">
-          <!-- <tr @click="props.expanded = !props.expanded"> -->
-          <tr>
-            <td>      
-              <v-btn icon @click.stop="props.expanded = !props.expanded">
-                <v-icon>{{ props.expanded ? 'expand_less' : 'expand_more' }}</v-icon>
-              </v-btn>
-            </td>
-            <td key="id">{{ props.item.id }}</td>
-            <td key="name">{{ props.item.name }}</td>
-          </tr>
+        <template slot="expanded-item" slot-scope="props">
+          <td :colspan="headers.length + 1">
+            <policy-definition
+              :key="props.item.id"
+              :policyId="props.item.id"
+            ></policy-definition>
+          </td>
         </template>
 
-        <template slot="expand" slot-scope="props">
-          <policy-definition
-            :key="props.item.id"
-            :policyId="props.item.id"
-          ></policy-definition>
-        </template>
       </v-data-table>
     </div>
 </template>
@@ -77,16 +70,17 @@
         newPolicyName: 'New Table Policy',
         headers: [
           {
-            text: '',
-            sortable: false
+            text: ''
           },
           {
             text: 'ID',
-            sortable: false
+            sortable: false,
+            value: 'id'
           },
           {
             text: 'Name',
-            sortable: false
+            sortable: false,
+            value: 'name'
           },
         ]
       }
