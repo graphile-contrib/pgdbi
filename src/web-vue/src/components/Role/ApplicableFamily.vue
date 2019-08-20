@@ -67,7 +67,7 @@
       itemSelected (selectedItems) {
         const newProjectRoles = [
           ...this.projectRoles.filter(pr => this.applicableFamily.allMemberNames.indexOf(pr.roleName) === -1 )
-          ,...selectedItems
+          ,...selectedItems.map(i => this.applicableFamily.members.find(m => m.roleName === i.roleName))
         ]
         this.$store.commit('projectRoles', { projectRoles: newProjectRoles })
       }

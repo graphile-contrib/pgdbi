@@ -3,8 +3,6 @@
       <v-container>
         <v-toolbar>
           <h1>Name: {{ policyDefinition.name }}</h1>
-          <v-spacer></v-spacer>
-          <!-- <v-btn @click="customize" :hidden="!aFunction">customize</v-btn> -->
         </v-toolbar>
         <v-tabs
           v-model="activeTab"
@@ -96,7 +94,7 @@
       return {
         calculatedPolicy: 'NOT CALCULATED',
         toggleCompleted: false,
-        activeTab: ''
+        activeTab: 0
       }
     },
     mounted () {

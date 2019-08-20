@@ -126,9 +126,7 @@
         return this.policyDefinition.roleGrants[this.roleName][this.action] === 'DENIED'
       },
       overrideHidden () {
-        console.log ('blah', this.policyDefinition, this.roleName, this.action, (['DENIED', 'ALLOWED'].indexOf(this.policyDefinition.roleGrants[this.roleName][this.action])), this.policyDefinition.roleGrants[this.roleName][this.action])
         const retval = (['DENIED', 'ALLOWED'].indexOf(this.policyDefinition.roleGrants[this.roleName][this.action])) > -1
-        console.log ('blah', retval)
         return retval
       },
       showDialogButton () {

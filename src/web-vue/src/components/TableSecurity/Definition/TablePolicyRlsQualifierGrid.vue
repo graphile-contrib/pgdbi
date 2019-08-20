@@ -188,9 +188,6 @@
   import TablePolicyRlsAction from '@/components/TableSecurity/Definition/TablePolicyRlsAction.vue'
 
   export default {
-    mounted () {
-      console.log('qual', this.rlsQualifierMatrix)
-    },
     name: 'PolicyRlsQualifierGrid',
     components: {
       RlsPolicyDialog,

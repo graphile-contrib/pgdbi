@@ -4,10 +4,10 @@
       <v-layout
         align-center
         align-content-center
-        justify-center
+        justify-left
         justify-content-center
       >
-        <v-tooltip bottom>
+        <!-- <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn @click="refresh" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
           </template>
@@ -18,7 +18,19 @@
             <v-btn @click="expand" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
           </template>
           <span>Expand</span>
-        </v-tooltip>
+        </v-tooltip> -->
+        <v-radio-group v-model="policyReadability" row>
+          <v-radio
+            key="terse"
+            label="Terse"
+            value="terse"
+          ></v-radio>
+          <v-radio
+            key="verbose"
+            label="Verbose"
+            value="verbose"
+          ></v-radio>
+        </v-radio-group>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn 
@@ -34,11 +46,11 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" :hidden="!table" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
+            <v-btn v-on="on" :hidden="!table" @click="executeSql" disabled><v-icon>arrow_forward</v-icon>Execute</v-btn>
           </template>
           <span>Execute</span>
         </v-tooltip>
-        <v-spacer></v-spacer>
+        <!-- <v-spacer></v-spacer>
         <v-radio-group v-model="policyReadability" row>
           <v-radio
             key="terse"
@@ -50,7 +62,7 @@
             label="Verbose"
             value="verbose"
           ></v-radio>
-        </v-radio-group>
+        </v-radio-group> -->
       </v-layout>
     </v-toolbar>
     <v-textarea

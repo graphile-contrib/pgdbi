@@ -22,7 +22,7 @@
             justify-center
             justify-content-center
           >
-            <v-tooltip bottom>
+            <!-- <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-btn @click="refresh" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
               </template>
@@ -33,7 +33,7 @@
                 <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
               </template>
               <span>Expand</span>
-            </v-tooltip>
+            </v-tooltip> -->
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-btn 
@@ -48,7 +48,7 @@
             </v-tooltip>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-btn v-on="on" @click="executeSql"><v-icon>arrow_forward</v-icon>Execute</v-btn>
+                <v-btn v-on="on" @click="executeSql" disabled><v-icon>arrow_forward</v-icon>Execute</v-btn>
               </template>
               <span>Execute</span>
             </v-tooltip>

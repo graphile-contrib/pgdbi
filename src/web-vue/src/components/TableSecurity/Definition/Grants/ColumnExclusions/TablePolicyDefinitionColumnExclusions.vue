@@ -4,7 +4,7 @@
       :headers="headers"
       :items="dataTableItems"
       hide-default-footer
-      class="text-sm-left"
+      dense
     >
     <template v-slot:item.insertExclusions="{ item }">
       <column-exclusion-set

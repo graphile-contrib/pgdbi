@@ -1,8 +1,6 @@
 <template>
   <v-container fluid cols=12>
     <v-toolbar dense>
-      <h1>Name: {{ policyDefinition.name }}</h1>
-      <v-spacer></v-spacer>
       <v-switch
         v-model="enableRls"
         :label="`Enable RLS`"
@@ -17,6 +15,8 @@
         v-if="showDeleteButton"
         :policyDefinition="policyDefinition"
       ></table-policy-delete-dialog>
+      <v-spacer></v-spacer>
+      <h4 class="text-no-wrap">{{ title }}</h4>
     </v-toolbar>
       <v-tabs
         v-model="activeTab"
@@ -97,9 +97,8 @@
             ></table-policy-evaluator-detail>
           </v-card>
         </v-tab-item>
-
       </v-tabs>
-    </v-row>
+
   </v-container>
 </template>
 
@@ -157,6 +156,8 @@
             enableRls: this.enableRls
           }
         })
+
+        if (!this.enableRls && this.activeTab === 1) this.activeTab = 0
       }
     },
     methods: {
@@ -199,6 +200,9 @@
         const policies = this.$store.state.policies
         const pol = this.$store.state.policies.find(p => p.id === this.policyId)
         return pol
+      },
+      title () {
+        return `Policy Name: ${ this.policyDefinition.name }`
       }
     }
   }

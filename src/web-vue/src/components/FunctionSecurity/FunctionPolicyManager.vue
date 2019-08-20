@@ -10,8 +10,8 @@
             <v-text-field label="Name" v-model="newPolicyName"></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" flat @click="saveNewPolicy">Save</v-btn>
-              <v-btn color="green darken-1" flat @click="dialog = false">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="saveNewPolicy">Save</v-btn>
+              <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -19,22 +19,20 @@
       <v-data-table
         :headers="headers"
         :items="policies"
-        hide-default-footer
         item-key="id"
-        class="text-sm-left"
+        dense
+        disable-pagination
+        disable-sort
+        hide-default-footer
+        show-expand
       >
-        <template slot="items" slot-scope="props">
-          <tr @click="props.expanded = !props.expanded">
-            <td key="id">{{ props.item.id }}</td>
-            <td key="name">{{ props.item.name }}</td>
-          </tr>
-        </template>
-
-        <template slot="expand" slot-scope="props">
-          <policy-definition
-            :key="props.item.id"
-            :policyId="props.item.id"
-          ></policy-definition>
+        <template slot="expanded-item" slot-scope="props">
+          <td :colspan="headers.length + 1">
+            <policy-definition
+              :key="props.item.id"
+              :policyId="props.item.id"
+            ></policy-definition>
+          </td>
         </template>
       </v-data-table>
     </div>
@@ -71,12 +69,18 @@
         newPolicyName: 'New Function Policy',
         headers: [
           {
-            text: 'ID',
+            text: '',
             sortable: false
           },
           {
+            text: 'ID',
+            sortable: false,
+            value: 'id'
+          },
+          {
             text: 'Name',
-            sortable: false
+            sortable: false,
+            value: 'name'
           },
         ]
       }

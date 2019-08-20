@@ -6,14 +6,7 @@
     item-key="id"
     class="text-sm-left"
   >
-    <template v-slot:item.execute="{ item }">
-      <v-checkbox 
-        :input-value="roleGrantSelected(item, 'execute')" 
-        @click="toggleRoleGrant(item.roleName, 'execute')"
-        :disabled="roleGrantDisabled(item, 'execute')"
-      ></v-checkbox>
-    </template>
-    <!-- <template slot="items" slot-scope="props">
+    <template slot="items" slot-scope="props">
       <td>{{ props.item.roleName }}</td>          
       <td>
         <v-checkbox 
@@ -22,7 +15,7 @@
           :disabled="roleGrantDisabled(props.item, 'execute')"
         ></v-checkbox>
       </td>
-    </template> -->
+    </template>
   </v-data-table>
 </template>
 
@@ -143,13 +136,11 @@
         return [
           {
             text: 'Role Name',
-            sortable: false,
-            value: 'roleName'
+            sortable: false
           },
           {
             text: 'EXECUTE',
-            sortable: false,
-            value: 'execute'
+            sortable: false
           }
         ]
       },

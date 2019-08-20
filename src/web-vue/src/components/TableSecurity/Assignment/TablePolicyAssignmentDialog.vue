@@ -53,7 +53,6 @@
       }
     },
     mounted () {
-      console.log('show', this.currentPolicyDefinition)
       this.currentSelection = this.currentPolicyDefinition
     },
     data () {

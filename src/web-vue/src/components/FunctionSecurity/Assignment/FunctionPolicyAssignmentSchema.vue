@@ -1,24 +1,46 @@
 <template>
     <div>
       <v-toolbar>
-        <v-checkbox 
-          @change="selectAllChanged()" 
-          :input-value="selectAllValue"
-        ></v-checkbox>
-        <v-spacer></v-spacer>
         <policy-assignment-dialog 
           :currentPolicyDefinition="defaultPolicy" 
-          :functions="functionsToShow"
+          :functions="selected"
           :bulkAssign="true"
           :disabled="selected.length === 0"
         ></policy-assignment-dialog>
       </v-toolbar>
       <v-data-table
+        v-model="selected"
         :headers="headers"
         :items="functionsToShow"
-        :hide-default-footer="true"
+        item-key="id"
+        dense
+        disable-pagination
+        disable-sort
+        hide-default-footer
+        show-select
+        show-expand
       >
-        <template slot="items" slot-scope="props">
+          <template v-slot:item.name="{ item }">
+            {{ item.functionName }}
+          </template>
+
+          <template v-slot:item.assignedPolicy="{ item }">
+            <policy-assignment-dialog 
+              :currentPolicyDefinition="item.policyDefinition" 
+              :functions="[item]"
+            ></policy-assignment-dialog>
+          </template>
+
+        <template slot="expanded-item" slot-scope="props">
+          <td :colspan="headers.length + 2">
+            <policy-definition
+              :policyId="props.item.policyDefinition.id"
+              :aFunction="props.item"
+            ></policy-definition>
+          </td>
+        </template>
+
+        <!-- <template slot="items" slot-scope="props">
           <tr>
             <td>
               <v-checkbox 
@@ -46,7 +68,7 @@
             :policyId="props.item.policyDefinition.id"
             :aFunction="props.item"
           ></policy-definition>
-        </template>
+        </template> -->
       </v-data-table>
     </div>
 </template>
@@ -68,24 +90,24 @@
       }
     },
     methods: {
-      functionCheckValue (item) {
-        return (this.selected.find(i => i.id === item.id)) !== undefined
-      },
-      functionCheckChanged (item) {
-        const existing = this.selected.find(i => i.id === item.id)
-        if (existing) {
-          this.selected = this.selected.filter(i => i.id !== item.id)
-        } else {
-          this.selected = this.selected.concat([item])
-        }
-      },
-      selectAllChanged (value) {
-        if (this.selectAllValue) {
-          this.selected = []
-        } else {
-          this.selected = [...this.schema.schemaFunctions]
-        }
-      }
+      // functionCheckValue (item) {
+      //   return (this.selected.find(i => i.id === item.id)) !== undefined
+      // },
+      // functionCheckChanged (item) {
+      //   const existing = this.selected.find(i => i.id === item.id)
+      //   if (existing) {
+      //     this.selected = this.selected.filter(i => i.id !== item.id)
+      //   } else {
+      //     this.selected = this.selected.concat([item])
+      //   }
+      // },
+      // selectAllChanged (value) {
+      //   if (this.selectAllValue) {
+      //     this.selected = []
+      //   } else {
+      //     this.selected = [...this.schema.schemaFunctions]
+      //   }
+      // }
     },
     watch: {
     },
@@ -114,10 +136,12 @@
         {
           text: 'Function Name',
           sortable: false,
+          value: 'functionName'
         },
         {
           text: 'Policy Name',
           sortable: false,
+          value: 'assignedPolicy'
         }
       ]
     })

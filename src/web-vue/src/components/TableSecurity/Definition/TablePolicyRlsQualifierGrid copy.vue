@@ -166,9 +166,6 @@
   import RlsPolicyDialog from '@/components/TableSecurity/Dialogs/RlsPolicyDialog.vue'
 
   export default {
-    mounted () {
-      console.log('qual', this.rlsQualifierMatrix)
-    },
     name: 'PolicyRlsQualifierGrid',
     components: {
       RlsPolicyDialog
