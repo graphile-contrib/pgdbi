@@ -1,5 +1,23 @@
 <template>
-  <v-data-table
+    <v-data-table
+      :headers="headers"
+      :items="functions"
+      item-key="id"
+      dense
+      disable-pagination
+      disable-sort
+      hide-default-footer
+      show-expand
+    >
+      <template slot="expanded-item" slot-scope="props">
+        <td :colspan="headers.length + 1">
+          <function :id="props.item.id">
+          </function>
+        </td>
+      </template>
+    </v-data-table>
+
+  <!-- <v-data-table
     :headers="headers"
     :items="functions"
     hide-default-footer
@@ -20,7 +38,7 @@
       <function :id="props.item.id">
       </function>
     </template>
-  </v-data-table>
+  </v-data-table> -->
 </template>
 
 <script>
@@ -48,10 +66,12 @@
         {
           text: 'schema'
           ,sortable: false
+          ,value: 'functionSchema'
         },
         {
           text: 'function'
           ,sortable: false
+          ,value: 'functionName'
         },
         {
           text: ''

@@ -22,18 +22,6 @@
             justify-center
             justify-content-center
           >
-            <!-- <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn @click="refresh" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
-              </template>
-              <span>Refresh</span>
-            </v-tooltip>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
-              </template>
-              <span>Expand</span>
-            </v-tooltip> -->
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-btn 
