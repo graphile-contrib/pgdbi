@@ -5,6 +5,7 @@
 - [X] update search page to do front-end search
 - [ ] build new table detail: https://github.com/graphile-contrib/pgdbi/issues/8
 - [ ] add ignore role feature
+- [ ] improve UI feedback during schema refresh
 - [ ] rethink tools menu, move away from top level buttons
 - [ ] refactor store structure for modular rule management
 - [ ] improve the build/publish process
