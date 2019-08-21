@@ -2,11 +2,6 @@
   <v-container>
     <h1>{{ id }}</h1>
     <hr/>
-    <!-- <v-card flat>
-      <table-detail
-        :tableInfo="tableInfo"
-      ></table-detail>
-    </v-card> -->
     <v-tabs
       v-model="activeTab"
       dark

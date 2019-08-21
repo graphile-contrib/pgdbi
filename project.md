@@ -3,15 +3,16 @@
 - [X] upgrade to latest vuetify 2
 - [X] hopefully vuetify 2 fixes the panel expansion problem
 - [X] update search page to do front-end search
+- [X] improve UI feedback during schema refresh
 - [ ] build new table detail: https://github.com/graphile-contrib/pgdbi/issues/8
 - [ ] add ignore role feature
-- [ ] improve UI feedback during schema refresh
 - [ ] rethink tools menu, move away from top level buttons
 - [ ] refactor store structure for modular rule management
 - [ ] improve the build/publish process
 
 ### phase the next
 
+- [ ] add enums/types browser
 - [ ] implement index page
 - [ ] settings page
 - [ ] function component needs to be spiffed up

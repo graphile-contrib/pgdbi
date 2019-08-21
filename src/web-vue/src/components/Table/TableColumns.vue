@@ -3,19 +3,19 @@
     <v-data-table
       :headers="headers"
       :items="tableDetail"
-      class="elevation-1"
+      class="elevation-1 text-no-wrap"
       hide-default-footer
       show-expand
+      dense
     >
-    <template v-slot:item.fkInfo="{ item }">
-      {{ item.fkInfo }}
+    <template v-slot:item.isPKColumn="{ item }">
+        {{ item.isPKColumn ? 'YES' : '' }}
     </template>
 
-    <template v-slot:item.fkIndex="{ item }">
-      <div :class="fkIndexClass(item.fkIndex)">
-        <router-link :to="{ name: 'table', params: { id: item.fkIndexLinkId }}" target="_blank" v-if="item.fkIndexLinkId">{{item.fkIndex}}</router-link>
-        <span v-if="!item.fkIndexLinkId">{{item.fkIndex}}</span>
-      </div>
+    <template v-slot:item.fkInfo="{ item }">
+        <span v-if="item.fkInfo"><router-link :to="{ name: 'table', params: { id: item.fkTableLinkId }}" target="_blank" v-if="item.fkTableLinkId">{{item.fkInfo}}</router-link>
+        <hr>
+        Index: <span :class="fkIndexClass(item.fkIndex)">{{item.fkIndex}}</span></span>
     </template>
 
     <template slot="expanded-item" slot-scope="props">
@@ -33,6 +33,7 @@
 <script>
   const NO_INDEX = 'NO INDEX'
   import ColumnDetail from './ColumnDetail.vue'
+import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariables';
 
   export default {
     name: 'TableColumns',
@@ -61,34 +62,44 @@
     computed: {
       tableDetail () {
         console.log('table', this.tableInfo)
+        const pkColumns = this.tableInfo.primaryKeyConstraints.reduce(
+          (pkCols, pkc) => {
+            const cols = pkc.keyColumnUsage.reduce(
+              (pkCols, kcu) => {
+                return [...pkCols, kcu.columnName]
+              }, []
+            )
+            return [...pkCols, ...cols]
+          }, []
+        )
         const retval = (this.tableInfo.tableColumns || [])
           .map(
             c => {
+              // primary keys
+              const isPKColumn = pkColumns.indexOf(c.columnName) > -1 
+
+              // foreign keys
               const fkConstraintUsage = ((this.tableInfo.referentialConstraints || [])
                 .find(
                   rc => {
                     return rc.referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName) !== undefined
                   }
                 ) || {referencedColumnUsage: []}).referencedColumnUsage[0]
-                // ) || {referencingColumnUsage: []}).referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName)
-
               const fkInfo = !fkConstraintUsage ? '' : `${fkConstraintUsage.tableSchema}.${fkConstraintUsage.tableName}.${fkConstraintUsage.columnName}`
-
-              const fkIndex = this.tableInfo.indices
-                .find(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
-
+              const fkIndex = this.tableInfo.indices.find(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
               const fkIndexEvaluation = !fkConstraintUsage ? '' : (!fkIndex ? NO_INDEX : `${fkIndex.indexName}`)
-
-              const fkIndexLinkId = !fkConstraintUsage || fkIndexEvaluation === NO_INDEX ? '' : `table:${fkConstraintUsage.tableSchema}.${fkConstraintUsage.tableName}`
+              const fkTableLinkId = !fkConstraintUsage ? '' : `table:${fkConstraintUsage.tableSchema}.${fkConstraintUsage.tableName}`
 
               return {
                 ...c
                 ,fkInfo: fkInfo
                 ,fkIndex: fkIndexEvaluation
-                ,fkIndexLinkId: fkIndexLinkId
+                ,fkTableLinkId: fkTableLinkId
+                ,isPKColumn: isPKColumn
               }
             }
           )
+          console.log('tableDetail', retval)
           return retval
       },
     },
@@ -96,51 +107,43 @@
       headers: [
         {
           text: 'Ordinal',
-          align: 'left',
           sortable: true,
           value: 'ordinalPosition'
         },
         {
           text: 'Column Name',
-          align: 'left',
           sortable: true,
           value: 'columnName'
         },
         { 
           text: 'Data Type', 
-          align: 'right',
           sortable: true,
           value: 'dataType'
         },
-        { 
-          text: 'Identity', 
-          align: 'right',
-          sortable: true,
-          value: 'isIdentity'
-        },
+        // { 
+        //   text: 'Identity', 
+        //   sortable: true,
+        //   value: 'isIdentity'
+        // },
         { 
           text: 'Nullable', 
-          align: 'right',
           sortable: true,
           value: 'isNullable'
         },
         { 
-          text: 'Default Value', 
-          align: 'right',
+          text: 'PK Column', 
           sortable: true,
-          value: 'columnDefault'
+          value: 'isPKColumn'
         },
         { 
           text: 'FK Reference', 
-          align: 'left',
           sortable: true,
           value: 'fkInfo'
         },
         { 
-          text: 'FK Index', 
-          align: 'left',
+          text: 'Default Value', 
           sortable: true,
-          value: 'fkIndex'
+          value: 'columnDefault'
         },
       ],
       pagination: {

@@ -37,6 +37,7 @@
     }),
     methods: {
       refreshSchemata () {
+        this.$loading(true)
         this.$apollo.query({
           query: dbIntrospection,
           fetchPolicy: 'network-only'
@@ -45,6 +46,12 @@
           console.log('schemata', result.data)
           this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
           this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
+          this.$loading(false)
+        })
+        .catch(error => {
+          this.$loading(false)
+          console.error(error)
+          alert(error.toString())
         })
       },
       computeItems () {

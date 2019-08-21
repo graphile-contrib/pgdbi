@@ -5,10 +5,12 @@ import router from './router';
 import store from './store/store';
 import { createProvider } from './vue-apollo';
 import VueClipboard from 'vue-clipboard2';
-
+import VueLoading from 'vuejs-loading-plugin'
+ 
 Vue.config.productionTip = false;
 
 Vue.use(VueClipboard);
+Vue.use(VueLoading)
 
 new Vue({
   vuetify,
