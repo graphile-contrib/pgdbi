@@ -114,7 +114,7 @@ async function transformBuild(build, pgPool) {
                     from (
                       select
                         tr.*
-                        ,'trigger:' || s.schema_name || '.' || t.table_name || '.' || tr.trigger_name id
+                        ,'trigger:' || s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || tr.action_timing || '.' || tr.event_manipulation id
                         ,(
                           select (array_to_json(array_agg(row_to_json(tf))))::jsonb
                           from (

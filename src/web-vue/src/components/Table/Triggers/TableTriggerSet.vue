@@ -1,32 +1,19 @@
 <template>
   <v-container>
+    <h2>{{actionTiming}} - {{eventManipulation}}</h2>
     <v-data-table
       :headers="headers"
       :items="mappedTriggers"
       class="elevation-1"
       :hide-default-footer="true"
       item-key="id"
+      show-expand
     >
-      <template slot="items" slot-scope="props">
-        <tr @click="props.expanded = !props.expanded">        
-          <td>{{ props.item.triggerName }}</td>
-          <td>{{ props.item.eventManipulation }}</td>
-          <td>{{ props.item.actionOrientation }}</td>
-          <td>{{ props.item.actionTiming }}</td>
-          <td>{{ props.item.actionStatement }}</td>
-        </tr>
-      </template>
-
-      <template slot="expand" slot-scope="props">
-        <v-card flat>
-          <v-textarea
-            readonly
-            outline
-            :value="props.item.functionDefinition"
-            auto-grow
-          >
-          </v-textarea>
-        </v-card>
+      <template slot="expanded-item" slot-scope="props">
+        <td :colspan="headers.length + 1">
+          <function :id="props.item.functionId">
+          </function>
+        </td>
       </template>
 
     </v-data-table>
@@ -34,23 +21,42 @@
 </template>
 
 <script>
-  export default {
+  import Function from '@/components/Function/Function'
+
+export default {
     name: 'TableTriggers',
     props: {
+      actionTiming: {
+        type: String,
+        required: true
+      },
+      eventManipulation: {
+        type: String,
+        required: true
+      },
       triggers: {
         type: Array,
         required: true
       }
     },
+    components: {
+      Function
+    },
     computed: {
       mappedTriggers () {
         return this.triggers.map(
           trigger => {
+            const functionId = `function:${trigger.actionStatement.split(' ')[2].split('(')[0]}`
+            
             return {
               ...trigger,
-              expanded: false,
-              functionDefinition: trigger.triggerFunction ? trigger.triggerFunction.definition : 'N/A'
+              functionId: functionId
             }
+          }
+        )
+        .sort(
+          (a, b) => {
+            return a.actionTiming < b.actionTiming
           }
         )
       }
@@ -74,22 +80,16 @@
           value: 'triggerName'
         },
         {
-          text: 'Trigger On',
-          align: 'left',
-          sortable: true,
-          value: 'eventManipulation'
-        },
-        {
-          text: 'Action Orientation',
-          align: 'left',
-          sortable: true,
-          value: 'actionOrientation'
-        },
-        {
           text: 'Timing',
           align: 'left',
           sortable: true,
           value: 'actionTiming'
+        },
+        {
+          text: 'Trigger On',
+          align: 'left',
+          sortable: true,
+          value: 'eventManipulation'
         },
         {
           text: 'Statement',

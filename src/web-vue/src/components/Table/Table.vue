@@ -2,6 +2,11 @@
   <v-container>
     <h1>{{ id }}</h1>
     <hr/>
+    <!-- <v-card flat>
+      <table-detail
+        :tableInfo="tableInfo"
+      ></table-detail>
+    </v-card> -->
     <v-tabs
       v-model="activeTab"
       dark
@@ -17,7 +22,7 @@
       >
         <v-card flat>
           <table-columns
-            :tableColumns="tableColumns"
+            :tableInfo="tableInfo"
           ></table-columns>
         </v-card>
       </v-tab-item>
@@ -124,17 +129,19 @@
 
 <script>
   // import tableById from '../../gql/query/tableById.graphql';
+  import TableDetail from './TableDetail.vue'
   import TableColumns from './TableColumns.vue'
   import TableIndices from './TableIndices.vue'
   import TableConstraints from './TableConstraints.vue'
   import TableGrants from './TableGrants.vue'
   import TableColumnGrants from './TableColumnGrants.vue'
   import TablePolicies from './TablePolicies.vue'
-  import TableTriggers from './TableTriggers.vue'
+  import TableTriggers from './Triggers/TableTriggers.vue'
 
   export default {
     name: 'Table',
     components: {
+      TableDetail,
       TableColumns,
       TableConstraints,
       TableIndices,

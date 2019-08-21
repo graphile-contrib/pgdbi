@@ -35,7 +35,7 @@
   import ColumnDetail from './ColumnDetail.vue'
 
   export default {
-    name: 'TableColumns',
+    name: 'TableDetail',
     props: {
       tableInfo: {
         type: Object,
