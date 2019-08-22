@@ -72,6 +72,16 @@ async function transformBuild(build, pgPool) {
                       select
                         c.*
                         ,'primary_key_constraint:' || s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
+                        ,(
+                          select (array_to_json(array_agg(row_to_json(kcu))))::jsonb
+                          from (
+                            select
+                            kcu.*
+                            from information_schema.key_column_usage kcu
+                            where kcu.constraint_schema = c.constraint_schema
+                            and kcu.constraint_name = c.constraint_name
+                          ) kcu
+                        ) key_column_usage
                       from information_schema.table_constraints c
                       where c.table_schema = t.table_schema
                       and c.table_name = t.table_name

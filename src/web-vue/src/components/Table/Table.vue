@@ -23,6 +23,22 @@
       </v-tab-item>
 
       <v-tab
+        key="tabletriggers"
+        ripple
+      >
+        Triggers
+      </v-tab>
+      <v-tab-item
+        key="tabletriggers"
+      >
+        <v-card flat>
+          <table-triggers
+            :triggers="tableTriggers"
+          ></table-triggers>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab
         key="constraints"
         ripple
       >
@@ -39,6 +55,23 @@
       </v-tab-item>
 
       <v-tab
+        key="tablePolicy"
+        ripple
+      >
+        Assigned Policy
+      </v-tab>
+      <v-tab-item
+        key="tablePolicy"
+      >
+        <v-card flat>
+          <table-policy-definition
+            :policyId="tableInfo.policyDefinitionId"
+            :table="tableInfo"
+          ></table-policy-definition>
+        </v-card>
+      </v-tab-item>
+
+      <!-- <v-tab
         key="indices"
         ripple
       >
@@ -100,23 +133,7 @@
             :policies="tablePolicies"
           ></table-policies>
         </v-card>
-      </v-tab-item>
-
-      <v-tab
-        key="tabletriggers"
-        ripple
-      >
-        Triggers
-      </v-tab>
-      <v-tab-item
-        key="tabletriggers"
-      >
-        <v-card flat>
-          <table-triggers
-            :triggers="tableTriggers"
-          ></table-triggers>
-        </v-card>
-      </v-tab-item>
+      </v-tab-item> -->
 
     </v-tabs>
   </v-container>
@@ -132,6 +149,7 @@
   import TableColumnGrants from './TableColumnGrants.vue'
   import TablePolicies from './TablePolicies.vue'
   import TableTriggers from './Triggers/TableTriggers.vue'
+  import TablePolicyDefinition from '../TableSecurity/Definition/TablePolicyDefinition'
 
   export default {
     name: 'Table',
@@ -143,7 +161,8 @@
       TableGrants,
       TableColumnGrants,
       TablePolicies,
-      TableTriggers
+      TableTriggers,
+      TablePolicyDefinition
     },
     props: {
       id: {

@@ -1,21 +1,32 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-data-table
       :headers="headers"
       :items="tableDetail"
       class="elevation-1 text-no-wrap"
       hide-default-footer
       show-expand
+      calculate-widths
       dense
     >
     <template v-slot:item.isPKColumn="{ item }">
-        {{ item.isPKColumn ? 'YES' : '' }}
+      <v-icon v-if="item.isPKColumn">check</v-icon>
     </template>
 
     <template v-slot:item.fkInfo="{ item }">
-        <span v-if="item.fkInfo"><router-link :to="{ name: 'table', params: { id: item.fkTableLinkId }}" target="_blank" v-if="item.fkTableLinkId">{{item.fkInfo}}</router-link>
-        <hr>
-        Index: <span :class="fkIndexClass(item.fkIndex)">{{item.fkIndex}}</span></span>
+      <span><v-icon v-if="item.fkConstraintUsage.length" :color="fkIndexClass(item)">check</v-icon></span>
+    </template>
+
+    <template v-slot:item.columnIndices="{ item }">
+      <v-icon v-if="item.columnIndices.length">check</v-icon>
+    </template>
+
+    <template v-slot:item.isNullable="{ item }">
+      <v-icon v-if="item.isNullable === 'YES'">check</v-icon>
+    </template>
+
+    <template v-slot:item.unique="{ item }">
+      <span><v-icon v-if="item.uqConstraintUsage.length" :color="uqIndexClass(item)">check</v-icon></span>
     </template>
 
     <template slot="expanded-item" slot-scope="props">
@@ -32,6 +43,7 @@
 
 <script>
   const NO_INDEX = 'NO INDEX'
+  const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
   import ColumnDetail from './ColumnDetail.vue'
 import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariables';
 
@@ -55,13 +67,23 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
           this.pagination.descending = false
         }
       },
-      fkIndexClass (text) {
-        return text === NO_INDEX ? 'red--text' : ''
+      fkIndexClass (fk) {
+        const noIndexCount = fk.fkConstraintUsage.filter(cu => cu.fkIndexEvaluation === NO_INDEX).length
+        const multiIndexCount = fk.fkConstraintUsage.filter(cu => cu.fkIndexEvaluation === MULTIPLE_INDICES).length
+
+        return noIndexCount > 0 ? 'red' : (multiIndexCount > 0 ? 'yellow' : 'green')
+      },
+      uqIndexClass (uq) {
+        const noIndexCount = uq.uqConstraintUsage.filter(cu => cu.uqIndexEvaluation === NO_INDEX).length
+        const multiIndexCount = uq.uqConstraintUsage.filter(cu => cu.uqIndexEvaluation === MULTIPLE_INDICES).length
+
+        return noIndexCount > 0 ? 'red' : (multiIndexCount > 0 ? 'yellow' : 'green')
       }
     },
     computed: {
       tableDetail () {
         console.log('table', this.tableInfo)
+        // console.log('refs', JSON.stringify(this.tableInfo.referentialConstraints,null,2))
         const pkColumns = this.tableInfo.primaryKeyConstraints.reduce(
           (pkCols, pkc) => {
             const cols = pkc.keyColumnUsage.reduce(
@@ -75,27 +97,58 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
         const retval = (this.tableInfo.tableColumns || [])
           .map(
             c => {
+              const columnIndices = this.tableInfo.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
+
               // primary keys
               const isPKColumn = pkColumns.indexOf(c.columnName) > -1 
 
               // foreign keys
-              const fkConstraintUsage = ((this.tableInfo.referentialConstraints || [])
-                .find(
+              const fkConstraintUsage = (this.tableInfo.referentialConstraints || [])
+                .filter(
                   rc => {
                     return rc.referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName) !== undefined
                   }
-                ) || {referencedColumnUsage: []}).referencedColumnUsage[0]
-              const fkInfo = !fkConstraintUsage ? '' : `${fkConstraintUsage.tableSchema}.${fkConstraintUsage.tableName}.${fkConstraintUsage.columnName}`
-              const fkIndex = this.tableInfo.indices.find(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
-              const fkIndexEvaluation = !fkConstraintUsage ? '' : (!fkIndex ? NO_INDEX : `${fkIndex.indexName}`)
-              const fkTableLinkId = !fkConstraintUsage ? '' : `table:${fkConstraintUsage.tableSchema}.${fkConstraintUsage.tableName}`
+                )
+                .map(
+                  rc => {
+                    const fkIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
+                    const rcu = rc.referencedColumnUsage[0]
+                    return {
+                      constraintName: rc.constraintName,
+                      fkPath: `${rcu.tableSchema}.${rcu.tableName}.${rcu.columnName}`,
+                      fkIndices: columnIndices,
+                      fkIndexEvaluation: fkIndexEvaluation,
+                      fkTableLinkId: `table:${rcu.tableSchema}.${rcu.tableName}`
+                    }
+                  }
+                )
+
+              // unique constraints
+              const uqConstraintUsage = (this.tableInfo.uniqueConstraints || [])
+                .filter(
+                  rc => {
+                    return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
+                  }
+                )
+                .map(
+                  rc => {
+                    const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
+                    const kcu = rc.keyColumnUsage[0]
+                    return {
+                      constraintName: rc.constraintName,
+                      uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
+                      uqIndices: columnIndices,
+                      uqIndexEvaluation: uqIndexEvaluation,
+                    }
+                  }
+                )
 
               return {
                 ...c
-                ,fkInfo: fkInfo
-                ,fkIndex: fkIndexEvaluation
-                ,fkTableLinkId: fkTableLinkId
+                ,fkConstraintUsage: fkConstraintUsage
+                ,uqConstraintUsage: uqConstraintUsage
                 ,isPKColumn: isPKColumn
+                ,columnIndices: columnIndices
               }
             }
           )
@@ -126,24 +179,34 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
         //   value: 'isIdentity'
         // },
         { 
-          text: 'Nullable', 
-          sortable: true,
-          value: 'isNullable'
-        },
-        { 
-          text: 'PK Column', 
-          sortable: true,
-          value: 'isPKColumn'
-        },
-        { 
-          text: 'FK Reference', 
+          text: 'Foreign Keys',
           sortable: true,
           value: 'fkInfo'
+        },
+        { 
+          text: 'Unique',
+          sortable: true,
+          value: 'unique'
         },
         { 
           text: 'Default Value', 
           sortable: true,
           value: 'columnDefault'
+        },
+        { 
+          text: 'Nullable', 
+          sortable: true,
+          value: 'isNullable'
+        },
+        { 
+          text: 'PK', 
+          sortable: true,
+          value: 'isPKColumn'
+        },
+        { 
+          text: 'Indices',
+          sortable: true,
+          value: 'columnIndices'
         },
       ],
       pagination: {

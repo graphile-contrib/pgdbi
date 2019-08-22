@@ -2,9 +2,10 @@
   <v-container
     ma-0 
     pa-0
+    dense
   >
     <v-toolbar>
-      <v-btn @click="refreshSchemata">Refresh Schemata</v-btn>
+      <v-btn @click="refreshSchemata" small >Refresh Schemata</v-btn>
     </v-toolbar>    
     <v-treeview
       :items="items"

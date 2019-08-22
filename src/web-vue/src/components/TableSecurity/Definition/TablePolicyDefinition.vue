@@ -4,6 +4,7 @@
       <v-switch
         v-model="enableRls"
         :label="`Enable RLS`"
+        :disabled="disabled"
       ></v-switch>
       <v-spacer></v-spacer>
       <table-policy-make-global-dialog

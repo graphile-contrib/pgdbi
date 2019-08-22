@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <h2>{{actionTiming}} - {{eventManipulation}}</h2>
+  <v-container class="pa-1 ma-1 blue darken-4">
+    <h4>{{actionTiming}} - {{eventManipulation}}</h4>
     <v-data-table
       :headers="headers"
       :items="mappedTriggers"
