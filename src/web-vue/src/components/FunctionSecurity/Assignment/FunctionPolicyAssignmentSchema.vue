@@ -113,7 +113,18 @@
     },
     computed: {
       functionsToShow () {
-        return this.schema.schemaFunctions
+        return this.schema.schemaFunctions.map(
+          aFunction => {
+            const policyDefinitionId = this.$store.state.functionPolicyAssignments[aFunction.id]
+            const policyDefinition = this.$store.state.functionPolicies.find(p => p.id === policyDefinitionId)
+
+            return {
+              ...aFunction
+              ,policyDefinition: policyDefinition
+              ,policyDefinitionId: policyDefinitionId
+            }
+          }
+        )
       },
       selectAllValue () {
         return this.schema.schemaFunctions.length === this.selected.length

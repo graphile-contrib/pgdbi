@@ -1,4 +1,4 @@
-function setManagedSchemata(state, payload) {
+function ensureDefaultTablePolicy(state) {
   if (!state.defaultPolicy) {
     const defaultPolicy = {
       id: new Date().getTime() * 10000 + 621355968000000000,
@@ -32,7 +32,9 @@ function setManagedSchemata(state, payload) {
     state.defaultPolicy = defaultPolicy;
     state.policies = state.policies.concat([defaultPolicy]);
   }
+}
 
+function ensureDefaultFunctionPolicy(state) {
   if (!state.defaultFunctionPolicy) {
     const defaultFunctionPolicy = {
       id: new Date().getTime() * 10000 + 621355968000000000,
@@ -52,60 +54,59 @@ function setManagedSchemata(state, payload) {
       defaultFunctionPolicy,
     ]);
   }
+}
 
-  const schemataToRemainManaged = state.managedSchemata.reduce(
-    (all, schema) => {
-      return payload.find(s => s.id === schema.id) ? all.concat([schema]) : all;
-    },
-    [],
-  );
+function assignMissingDefaultTablePolicies(state, schemata) {
+  state.tablePolicyAssignments = schemata
+    .reduce(
+      (all, schema) => {
 
-  const schemataToPark = state.managedSchemata.reduce((all, schema) => {
-    return payload.find(s => s.id === schema.id) ? all : all.concat([schema]);
-  }, []);
+        const schemaTableAssignments = schema.schemaTables.reduce(
+          (all, table) => {
+            return {
+              ...all,
+              [table.id]: state.tablePolicyAssignments[table.id] || state.defaultPolicy.id
+            }
+          }, {}
+        )
 
-  const schemataToUnPark = state.parkedSchemata.reduce((all, schema) => {
-    return payload.find(s => s.id === schema.id) ? all.concat([schema]) : all;
-  }, []);
+        return {
+          ...all
+          ,...schemaTableAssignments
+        }
+      }, {}
+    )
+}
 
-  const schemataToRemainParked = state.parkedSchemata.reduce((all, schema) => {
-    return schemataToUnPark.find(s => s.id === schema.id)
-      ? all
-      : all.concat([schema]);
-  }, []);
+function assignMissingDefaultFunctionPolicies(state, schemata) {
+  state.functionPolicyAssignments = schemata
+    .reduce(
+      (all, schema) => {
 
-  const newlyManagedSchemata = payload
-    .reduce((all, schema) => {
-      return schemataToUnPark
-        .concat(schemataToRemainManaged)
-        .find(s => s.id === schema.id)
-        ? all
-        : all.concat([schema]);
-    }, [])
-    .map(schema => {
-      return {
-        ...schema,
-        schemaTables: schema.schemaTables.map(table => {
-          return {
-            ...table,
-            policyDefinitionId:
-              table.policyDefinitionId || state.defaultPolicy.id,
-          };
-        }),
-        schemaFunctions: schema.schemaFunctions.map(theFunction => {
-          return {
-            ...theFunction,
-            functionPolicyDefinitionId:
-              theFunction.functionPolicyDefinitionId ||
-              state.defaultFunctionPolicy.id,
-          };
-        }),
-      };
-    });
-  state.managedSchemata = schemataToUnPark
-    .concat(newlyManagedSchemata)
-    .concat(schemataToRemainManaged);
-  state.parkedSchemata = schemataToPark.concat(schemataToRemainParked);
+        const schemaFunctionAssignments = schema.schemaFunctions.reduce(
+          (all, aFunction) => {
+            return {
+              ...all,
+              [aFunction.id]: state.functionPolicyAssignments[aFunction.id] || state.defaultFunctionPolicy.id
+            }
+          }, {}
+        )
+
+        return {
+          ...all
+          ,...schemaFunctionAssignments
+        }
+      }, {}
+    )
+}
+
+function setManagedSchemata(state, payload) {
+  ensureDefaultTablePolicy(state)
+  ensureDefaultFunctionPolicy(state)
+  assignMissingDefaultTablePolicies(state, payload)
+  assignMissingDefaultFunctionPolicies(state, payload)
+
+  state.managedSchemata = payload
   state.initializing = false;
   state.schemaFilterOn = false;
 }

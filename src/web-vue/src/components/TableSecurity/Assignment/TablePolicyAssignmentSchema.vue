@@ -95,7 +95,18 @@
     },
     computed: {
       tablesToShow () {
-        return this.schema.schemaTables
+        return this.schema.schemaTables.map(
+          table => {
+            const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id]
+            const policyDefinition = this.policies.find(p => p.id === policyDefinitionId)
+
+            return {
+              ...table
+              ,policyDefinition: policyDefinition
+              ,policyDefinitionId: policyDefinitionId
+            }
+          }
+        )
       },
       defaultPolicy () {
         return this.$store.state.defaultPolicy

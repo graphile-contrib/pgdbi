@@ -7,20 +7,13 @@ function deleteTablePolicy(state, payload) {
     return a.id < b.id;
   });
 
-  state.managedSchemata = state.managedSchemata.map(schema => {
-    return {
-      ...schema,
-      schemaTables: schema.schemaTables.map(table => {
-        return {
-          ...table,
-          policyDefinitionId:
-            table.policyDefinitionId === policyDefinitionId
-              ? state.defaultPolicy.id
-              : table.policyDefinitionId,
-        };
-      }),
-    };
-  });
+  Object.keys(state.tablePolicyAssignments).forEach(
+    tableId => {
+      if (state.tablePolicyAssignments[tableId] === policyDefinitionId) {
+        state.tablePolicyAssignments[tableId] = state.defaultPolicy.id
+      }
+    }
+  )
 }
 
 export default deleteTablePolicy;

@@ -18,19 +18,11 @@ function customizeTablePolicy(state, payload) {
     return a.id < b.id;
   });
 
-  state.managedSchemata = state.managedSchemata.map(schema => {
-    return {
-      ...schema,
-      schemaTables: schema.schemaTables.map(table => {
-        return tableIds.indexOf(table.id) > -1
-          ? {
-              ...table,
-              policyDefinitionId: newPolicy.id,
-            }
-          : table;
-      }),
-    };
-  });
+  tableIds.forEach(
+    tableId => {
+      state.tablePolicyAssignments[tableId] = newPolicy.id
+    }
+  )
 }
 
 export default customizeTablePolicy;

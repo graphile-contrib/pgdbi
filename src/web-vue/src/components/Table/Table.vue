@@ -175,7 +175,13 @@
         const schemaName = this.id.split(':')[1].split('.')[0]
         const tableName = this.id.split(':')[1].split('.')[1]
         const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
-        return schema.schemaTables.find(t => t.tableName === tableName)
+        const table = schema.schemaTables.find(t => t.tableName === tableName)
+        const tableSecurityPolicyId = this.$store.state.tablePolicyAssignments[this.id]
+
+        return {
+          ...table
+          ,policyDefinitionId: tableSecurityPolicyId
+        }
       },
       tableName () {
         return this.tableInfo.tableName || 'N/A'

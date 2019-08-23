@@ -102,7 +102,7 @@
       calcOnePolicy (someFunctions) {
         const retval = someFunctions.sort((a,b)=>{return a.functionname < b.functionname ? -1 : 1}).reduce(
           (policy, aFunction) => {
-            const policyTemplate = this.functionPolicies.find(p => p.id === aFunction.functionPolicyDefinitionId)
+            const policyTemplate = this.functionPolicies.find(p => p.id === this.$store.state.functionPolicyAssignments[aFunction.id])
             const variables = {
             }
             const aFunctionPolicy = this.computePolicy(policyTemplate, this.policyReadability, variables, aFunction)

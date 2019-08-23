@@ -2,7 +2,7 @@ export default {
   initializing: true,
   schemaFilterOn: true,
   policies: [],
-  policyAssignments: {},
+  tablePolicyAssignments: {},
   functionPolicies: [],
   functionPolicyAssignments: {},
   defaultPolicy: null,

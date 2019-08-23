@@ -8,7 +8,7 @@
       show-expand
       calculate-widths
       dense
-      items-per-page="100"
+      :items-per-page="100"
     >
     <template v-slot:item.isPKColumn="{ item }">
       <v-icon v-if="item.isPKColumn">check</v-icon>
