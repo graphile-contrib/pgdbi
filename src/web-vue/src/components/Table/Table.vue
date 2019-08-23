@@ -39,22 +39,6 @@
       </v-tab-item>
 
       <v-tab
-        key="constraints"
-        ripple
-      >
-        Constraints
-      </v-tab>
-      <v-tab-item
-        key="constraints"
-      >
-        <v-card flat>
-          <table-constraints
-            :tableInfo="tableInfo"
-          ></table-constraints>
-        </v-card>
-      </v-tab-item>
-
-      <v-tab
         key="tablePolicy"
         ripple
       >
@@ -68,6 +52,22 @@
             :policyId="tableInfo.policyDefinitionId"
             :table="tableInfo"
           ></table-policy-definition>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab
+        key="constraints"
+        ripple
+      >
+        Constraints
+      </v-tab>
+      <v-tab-item
+        key="constraints"
+      >
+        <v-card flat>
+          <table-constraints
+            :tableInfo="tableInfo"
+          ></table-constraints>
         </v-card>
       </v-tab-item>
 
