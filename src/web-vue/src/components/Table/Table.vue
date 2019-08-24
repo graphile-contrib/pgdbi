@@ -172,11 +172,11 @@
     },
     computed: {
       tableInfo () {
-        const schemaName = this.id.split(':')[1].split('.')[0]
-        const tableName = this.id.split(':')[1].split('.')[1]
+        const schemaName = this.id.split('.')[0]
+        const tableName = this.id.split('.')[1]
         const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
         const table = schema.schemaTables.find(t => t.tableName === tableName)
-        const tableSecurityPolicyId = this.$store.state.tablePolicyAssignments[this.id]
+        const tableSecurityPolicyId = this.$store.state.tablePolicyAssignments[this.id].policyDefinitionId
 
         return {
           ...table
@@ -187,7 +187,7 @@
         return this.tableInfo.tableName || 'N/A'
       },
       tableSchema () {
-        return (this.tableInfo.id || 'N/A:N/A.N/A').split(':')[1].split('.')[0]
+        return (this.tableInfo.id || 'N/A.N/A').split('.')[0]
       },
       tableColumns () {
         return this.tableInfo.tableColumns || []
@@ -225,12 +225,6 @@
       console.log('from', from)
       next()
     },
-    // mounted () {
-    //   const schemaName = this.id.split(':')[1].split('.')[0]
-    //   const tableName = this.id.split(':')[1].split('.')[1]
-    //   const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
-    //   this.tableInfo = schema.schemaTables.find(t => t.tableName === tableName)
-    // }
   }
 </script>
 

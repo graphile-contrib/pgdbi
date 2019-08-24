@@ -97,7 +97,7 @@
       tablesToShow () {
         return this.schema.schemaTables.map(
           table => {
-            const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id]
+            const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId
             const policyDefinition = this.policies.find(p => p.id === policyDefinitionId)
 
             return {

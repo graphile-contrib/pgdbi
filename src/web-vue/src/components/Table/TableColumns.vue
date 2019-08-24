@@ -103,51 +103,34 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
               // primary keys
               const isPKColumn = pkColumns.indexOf(c.columnName) > -1 
 
-              // foreign keys
-              const fkConstraintUsage = (this.tableInfo.referentialConstraints || [])
-                .filter(
-                  rc => {
-                    return rc.referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName) !== undefined
-                  }
-                )
-                .map(
-                  rc => {
-                    const fkIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
-                    const rcu = rc.referencedColumnUsage[0]
-                    return {
-                      constraintName: rc.constraintName,
-                      fkPath: `${rcu.tableSchema}.${rcu.tableName}.${rcu.columnName}`,
-                      fkIndices: columnIndices,
-                      fkIndexEvaluation: fkIndexEvaluation,
-                      fkTableLinkId: `table:${rcu.tableSchema}.${rcu.tableName}`
-                    }
-                  }
-                )
+              const fkConstraintUsage = this.$store.state.fkIndex.evaluations[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
 
               // unique constraints
-              const uqConstraintUsage = (this.tableInfo.uniqueConstraints || [])
-                .filter(
-                  rc => {
-                    return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
-                  }
-                )
-                .map(
-                  rc => {
-                    const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
-                    const kcu = rc.keyColumnUsage[0]
-                    return {
-                      constraintName: rc.constraintName,
-                      uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
-                      uqIndices: columnIndices,
-                      uqIndexEvaluation: uqIndexEvaluation,
-                    }
-                  }
-                )
+              const uqConstraintUsage = this.$store.state.uqIndex.evaluations[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
+
+              // const uqConstraintUsage = (this.tableInfo.uniqueConstraints || [])
+              //   .filter(
+              //     rc => {
+              //       return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
+              //     }
+              //   )
+              //   .map(
+              //     rc => {
+              //       const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
+              //       const kcu = rc.keyColumnUsage[0]
+              //       return {
+              //         constraintName: rc.constraintName,
+              //         uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
+              //         uqIndices: columnIndices,
+              //         uqIndexEvaluation: uqIndexEvaluation,
+              //       }
+              //     }
+              //   )
 
               return {
                 ...c
-                ,fkConstraintUsage: fkConstraintUsage
-                ,uqConstraintUsage: uqConstraintUsage
+                ,fkConstraintUsage: fkConstraintUsage || []
+                ,uqConstraintUsage: uqConstraintUsage || []
                 ,isPKColumn: isPKColumn
                 ,columnIndices: columnIndices
               }

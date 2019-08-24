@@ -7,6 +7,12 @@ export default {
   functionPolicyAssignments: {},
   defaultPolicy: null,
   defaultFunctionPolicy: null,
+  fkIndex: {
+    evaluations: {}
+  },
+  uqIndex: {
+    evaluations: {}
+  },
   managedSchemata: [],
   parkedSchemata: [],
   rawSchemata: [],

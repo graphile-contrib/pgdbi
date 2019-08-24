@@ -1,3 +1,8 @@
+import assignTablePolicy from './assignTablePolicy'
+import assignFunctionPolicy from './assignFunctionPolicy'
+const NO_INDEX = 'NO INDEX'
+const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
+
 function ensureDefaultTablePolicy(state) {
   if (!state.defaultPolicy) {
     const defaultPolicy = {
@@ -57,47 +62,157 @@ function ensureDefaultFunctionPolicy(state) {
 }
 
 function assignMissingDefaultTablePolicies(state, schemata) {
-  state.tablePolicyAssignments = schemata
-    .reduce(
-      (all, schema) => {
+  const tableIds = schemata.reduce(
+    (all, schema) => {
+      return [
+        ...all
+        ,...schema.schemaTables.filter(t => state.tablePolicyAssignments[t.id] === undefined).map(t => t.id)
+      ]
+    }, []
+  )
 
-        const schemaTableAssignments = schema.schemaTables.reduce(
-          (all, table) => {
-            return {
-              ...all,
-              [table.id]: state.tablePolicyAssignments[table.id] || state.defaultPolicy.id
-            }
-          }, {}
-        )
-
-        return {
-          ...all
-          ,...schemaTableAssignments
-        }
-      }, {}
-    )
+  assignTablePolicy(state, {
+    tableIds: tableIds
+    ,policyDefinitionId: state.defaultPolicy.id
+  })
 }
 
 function assignMissingDefaultFunctionPolicies(state, schemata) {
-  state.functionPolicyAssignments = schemata
+  const functionIds = schemata.reduce(
+    (all, schema) => {
+      return [
+        ...all
+        ,...schema.schemaFunctions.filter(f => state.functionPolicyAssignments[f.id] === undefined).map(f => f.id)
+      ]
+    }, []
+  )
+
+  assignFunctionPolicy(state, {
+    functionIds: functionIds
+    ,policyDefinitionId: state.defaultFunctionPolicy.id
+  })
+
+}
+
+function evaluateFkIndexes(state) {
+  const evaluations = state.managedSchemata
     .reduce(
       (all, schema) => {
-
-        const schemaFunctionAssignments = schema.schemaFunctions.reduce(
-          (all, aFunction) => {
-            return {
-              ...all,
-              [aFunction.id]: state.functionPolicyAssignments[aFunction.id] || state.defaultFunctionPolicy.id
-            }
-          }, {}
-        )
-
         return {
           ...all
-          ,...schemaFunctionAssignments
+          ,...schema.schemaTables.reduce(
+            (all, table) => {
+              const fkColumnEvaluations = (table.tableColumns || [])
+              .reduce(
+                (all, c) => {
+                  const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
+                  // foreign keys
+                  const fkConstraintUsage = (table.referentialConstraints || [])
+                    .filter(
+                      rc => {
+                        return rc.referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName) !== undefined
+                      }
+                    )
+                    .map(
+                      rc => {
+                        const fkIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
+                        const rcu = rc.referencedColumnUsage[0]
+                        return {
+                          constraintName: rc.constraintName,
+                          fkPath: `${rcu.tableSchema}.${rcu.tableName}.${rcu.columnName}`,
+                          fkIndices: columnIndices,
+                          fkIndexEvaluation: fkIndexEvaluation,
+                          fkTableLinkId: `${rcu.tableSchema}.${rcu.tableName}`
+                        }
+                      }
+                    )
+      
+                  if (fkConstraintUsage.length > 0) {
+                    return {
+                      ...all
+                      ,[c.id]: fkConstraintUsage
+                    }  
+                  } else {
+                    return all
+                  }
+                }, {}
+              )
+    
+              return {
+                ...all
+                ,...fkColumnEvaluations
+              }
+            }, {}
+          )
         }
       }, {}
     )
+
+  console.log('fk evaluations', evaluations)
+  state.fkIndex = {
+    ...state.fkIndex
+    ,evaluations: evaluations
+  }
+}
+
+function evaluateUqIndexes(state) {
+  const evaluations = state.managedSchemata
+    .reduce(
+      (all, schema) => {
+        return {
+          ...all
+          ,...schema.schemaTables.reduce(
+            (all, table) => {
+              const uqColumnEvaluations = (table.tableColumns || [])
+              .reduce(
+                (all, c) => {
+                  const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
+                  // foreign keys
+                  const uqConstraintUsage = (table.uniqueConstraints || [])
+                    .filter(
+                      rc => {
+                        return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
+                      }
+                    )
+                    .map(
+                      rc => {
+                        const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
+                        const kcu = rc.keyColumnUsage[0]
+                        return {
+                          constraintName: rc.constraintName,
+                          uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
+                          uqIndices: columnIndices,
+                          uqIndexEvaluation: uqIndexEvaluation,
+                        }
+                      }
+                    )
+      
+                  if (uqConstraintUsage.length > 0) {
+                    return {
+                      ...all
+                      ,[c.id]: uqConstraintUsage
+                    }  
+                  } else {
+                    return all
+                  }
+                }, {}
+              )
+    
+              return {
+                ...all
+                ,...uqColumnEvaluations
+              }
+            }, {}
+          )
+        }
+      }, {}
+    )
+
+  console.log('uq evaluations', evaluations)
+  state.uqIndex = {
+    ...state.uqIndex
+    ,evaluations: evaluations
+  }
 }
 
 function setManagedSchemata(state, payload) {
@@ -107,6 +222,10 @@ function setManagedSchemata(state, payload) {
   assignMissingDefaultFunctionPolicies(state, payload)
 
   state.managedSchemata = payload
+  
+  evaluateFkIndexes(state)
+  evaluateUqIndexes(state)
+
   state.initializing = false;
   state.schemaFilterOn = false;
 }

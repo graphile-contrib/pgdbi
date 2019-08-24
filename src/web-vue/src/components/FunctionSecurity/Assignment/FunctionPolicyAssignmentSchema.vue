@@ -115,7 +115,7 @@
       functionsToShow () {
         return this.schema.schemaFunctions.map(
           aFunction => {
-            const policyDefinitionId = this.$store.state.functionPolicyAssignments[aFunction.id]
+            const policyDefinitionId = this.$store.state.functionPolicyAssignments[aFunction.id].policyDefinitionId
             const policyDefinition = this.$store.state.functionPolicies.find(p => p.id === policyDefinitionId)
 
             return {

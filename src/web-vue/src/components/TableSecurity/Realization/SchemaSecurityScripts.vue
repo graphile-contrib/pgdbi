@@ -111,7 +111,7 @@
       calcOnePolicy (tables) {
         return tables.sort((a,b)=>{return a.tablename < b.tablename ? -1 : 1}).reduce(
           (policy, table) => {
-            const policyTemplate = this.policies.find(p => p.id === this.$store.state.tablePolicyAssignments[table.id])
+            const policyTemplate = this.policies.find(p => p.id === this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId)
             const variables = {
               schemaName: table.tableSchema,
               tableName: table.tablename

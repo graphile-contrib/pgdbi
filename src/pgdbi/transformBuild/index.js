@@ -26,19 +26,22 @@ async function transformBuild(build, pgPool) {
         FROM (
           select 
             s.*
-            ,'schema:' || s.schema_name id
+            ,'schema' __typename
+            ,s.schema_name id
             ,(
               select coalesce((array_to_json(array_agg(row_to_json(t))))::jsonb, '[]')
               from (
                 select
                   t.*
-                  ,'table:' || s.schema_name || '.' || t.table_name id
+                  ,'table' __typename
+                  ,s.schema_name || '.' || t.table_name id
                   ,(
                     select (array_to_json(array_agg(row_to_json(c))))::jsonb
                     from (
                       select
                         c.*
-                        ,'column:' || s.schema_name || '.' || t.table_name || '.' || c.column_name id
+                        ,'column' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || c.column_name id
                       from information_schema.columns c
                       where c.table_schema = t.table_schema
                       and c.table_name = t.table_name
@@ -49,7 +52,8 @@ async function transformBuild(build, pgPool) {
                     from (
                       select
                         c.*
-                        ,'primary_key_constraint:' || s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
+                        ,'primary_key_constraint' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
                         ,(
                           select (array_to_json(array_agg(row_to_json(kcu))))::jsonb
                           from (
@@ -71,7 +75,8 @@ async function transformBuild(build, pgPool) {
                     from (
                       select
                         c.*
-                        ,'primary_key_constraint:' || s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
+                        ,'unique_constraint' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
                         ,(
                           select (array_to_json(array_agg(row_to_json(kcu))))::jsonb
                           from (
@@ -91,8 +96,9 @@ async function transformBuild(build, pgPool) {
                   ,(
                     select (array_to_json(array_agg(row_to_json(i))))::jsonb
                     from (
-                      select 
-                        'index:' || ns.nspname || '.' || tb.relname || '.' || a.attname id
+                      select
+                        'index' __typename 
+                        ,ns.nspname || '.' || tb.relname || '.' || a.attname id
                         ,tb.relname table_name
                         ,ns.nspname table_schema
                         ,a.attname column_name
@@ -134,12 +140,14 @@ async function transformBuild(build, pgPool) {
                     from (
                       select
                         tr.*
-                        ,'trigger:' || s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || tr.action_timing || '.' || tr.event_manipulation id
+                        ,'trigger' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || tr.action_timing || '.' || tr.event_manipulation id
                         ,(
                           select (array_to_json(array_agg(row_to_json(tf))))::jsonb
                           from (
                             select
-                              'trigger_function:' || s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || p.proname id
+                              'trigger_function' __typename
+                              ,s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || p.proname id
                               ,p.proname function_name
                               ,n.nspname function_schema
                               ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type
@@ -232,7 +240,8 @@ async function transformBuild(build, pgPool) {
               select (array_to_json(array_agg(row_to_json(sf))))::jsonb
               from (
                 select
-                  'function:' || s.schema_name || '.' ||  p.proname id
+                  'function' __typename
+                  ,s.schema_name || '.' ||  p.proname id
                   ,p.proname function_name
                   ,n.nspname function_schema
                   ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type

@@ -60,7 +60,7 @@
         this.items = this.managedSchemata.map(
           schema => {
             return {
-              id: schema.id,
+              id: `schema:${schema.id}`,
               name: schema.schemaName,
               children: this.filterMode ? [] : [
                 {
@@ -70,7 +70,7 @@
                     .map(
                       table => {
                         return {
-                          id: table.id,
+                          id: `table:${table.id}`,
                           name: table.tableName
                         }
                       }
@@ -83,7 +83,7 @@
                     .map(
                       aFunction => {
                         return {
-                          id: aFunction.id
+                          id: `function:${aFunction.id}`
                           ,name: aFunction.functionName
                         }
                       }
@@ -126,15 +126,16 @@
       active () {
         const active = this.active[0] || ''
         const activeType = active.split(':')[0]
+        const activeId = active.split(':')[1]
 
         switch (activeType) {
           case 'table':
-            this.$router.push({ name: 'table', params: { id: active }})
+            this.$router.push({ name: 'table', params: { id: activeId }})
           break
           case 'tables':
           break
           case 'function':
-            this.$router.push({ name: 'function', params: { id: active }})
+            this.$router.push({ name: 'function', params: { id: activeId }})
           break
           default:
 

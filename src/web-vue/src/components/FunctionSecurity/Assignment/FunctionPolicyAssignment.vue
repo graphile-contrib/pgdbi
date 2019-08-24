@@ -54,8 +54,6 @@
                   aFunction => {
                     const policyDefinition = this.functionPolicies.find(p => p.id === aFunction.functionPolicyDefinitionId)
                     if (!policyDefinition) {
-                      console.log(aFunction.functionname, aFunction.functionPolicyDefinitionId, this.functionPolicies)
-                      console.log('pd', policyDefinition)
                     }
                     return {
                       ...aFunction,
