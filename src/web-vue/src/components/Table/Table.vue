@@ -71,7 +71,7 @@
         </v-card>
       </v-tab-item>
 
-      <!-- <v-tab
+      <v-tab
         key="indices"
         ripple
       >
@@ -82,12 +82,12 @@
       >
         <v-card flat>
           <table-indices
-            :indices="indices"
+            :tableInfo="tableInfo"
           ></table-indices>
         </v-card>
       </v-tab-item>
-
-      <v-tab
+      
+      <!--  <v-tab
         key="tablegrants"
         ripple
       >

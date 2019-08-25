@@ -2,41 +2,23 @@
   <v-container>
     <h1>{{ id }}</h1>
     <hr/>
-    <v-toolbar>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn 
-            v-on="on" 
-            v-clipboard:copy="definition"
-            v-clipboard:success="onCopy"
-            v-clipboard:error="onError"
-          ><v-icon>file_copy</v-icon>Copy
-        </v-btn>
-        </template>
-        <span>Copy</span>
-      </v-tooltip>
-      <v-spacer></v-spacer>
-      <v-switch
-        v-model="hideFunctionDeclaration"
-        :label="`Hide Declaration`"
-      ></v-switch>
-    </v-toolbar>
-    <v-textarea
-      readonly
-      :value="definition"
-      auto-grow
-      background-color="black"
-      disabled
-    >
-    </v-textarea>
+    <script-viewer
+      :scriptText="definition"
+      @declaration-visibility-changed="declarationVisibilityChanged"
+      showDeclarationVisibility
+      :showReadability="false"
+    ></script-viewer>
   </v-container>
 </template>
 
 <script>
-  // import functionById from '@/gql/query/functionById.graphql'
+  import ScriptViewer from '@/components/_common/ScriptViewer'
 
   export default {
     name: 'Function',
+    components: {
+      ScriptViewer
+    },
     props: {
       id: {
         type: String,
@@ -45,7 +27,7 @@
     },
     computed: {
       definition () {
-        return this.hideFunctionDeclaration ? this.fn.definition.split('$function$')[1] : this.fn.definition
+        return this.declarationVisibility === 'hide' ? this.fn.definition.split('$function$')[1] : this.fn.definition
       },
       functionName () {
         return this.fn.functionName
@@ -56,9 +38,12 @@
     },
     data: () => ({
       fn: {},
-      hideFunctionDeclaration: false
+      declarationVisibility: 'show'
     }),
     methods: {
+      declarationVisibilityChanged (declarationVisibility) {
+        this.declarationVisibility = declarationVisibility
+      },
       onCopy: function (e) {
         alert('Copied!')
       },

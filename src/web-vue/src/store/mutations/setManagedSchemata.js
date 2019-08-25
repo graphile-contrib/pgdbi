@@ -106,8 +106,10 @@ function evaluateFkIndexes(state) {
               .reduce(
                 (all, c) => {
                   const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
+
                   // foreign keys
                   const fkConstraintUsage = (table.referentialConstraints || [])
+                    .filter(rc => rc.referencingColumnUsage.length === 1)
                     .filter(
                       rc => {
                         return rc.referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName) !== undefined
@@ -148,7 +150,6 @@ function evaluateFkIndexes(state) {
       }, {}
     )
 
-  console.log('fk evaluations', evaluations)
   state.fkIndex = {
     ...state.fkIndex
     ,evaluations: evaluations
@@ -169,7 +170,8 @@ function evaluateUqIndexes(state) {
                   const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
                   // foreign keys
                   const uqConstraintUsage = (table.uniqueConstraints || [])
-                    .filter(
+                  .filter(rc => rc.keyColumnUsage.length === 1)
+                  .filter(
                       rc => {
                         return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
                       }
@@ -208,7 +210,6 @@ function evaluateUqIndexes(state) {
       }, {}
     )
 
-  console.log('uq evaluations', evaluations)
   state.uqIndex = {
     ...state.uqIndex
     ,evaluations: evaluations

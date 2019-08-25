@@ -16,58 +16,10 @@
         :key="schemaPolicy.name"
         lazy
       >
-        <v-toolbar>
-        <!-- <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn @click="refresh(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Refresh</v-btn>
-          </template>
-          <span>Refresh</span>
-        </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn @click="expand(schemaPolicy)" v-on="on"><v-icon>note_add</v-icon>Expand</v-btn>
-            </template>
-            <span>Expand</span>
-          </v-tooltip> -->
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn 
-                v-on="on" 
-                v-clipboard:copy="policyText(schemaPolicy)"
-                v-clipboard:success="onCopy"
-                v-clipboard:error="onError"
-              ><v-icon>file_copy</v-icon>Copy
-            </v-btn>
-            </template>
-            <span>Copy</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn v-on="on" @click="executeSql" disabled><v-icon>arrow_forward</v-icon>Execute</v-btn>
-            </template>
-            <span>Execute</span>
-          </v-tooltip>
-          <v-spacer></v-spacer>
-          <v-radio-group v-model="policyReadability" row>
-            <v-radio
-              key="terse"
-              label="Terse"
-              value="terse"
-            ></v-radio>
-            <v-radio
-              key="verbose"
-              label="Verbose"
-              value="verbose"
-            ></v-radio>
-          </v-radio-group>
-        </v-toolbar>
-        <v-textarea
-          :disabled="true"
-          :value="schemaPolicy.policy"
-          auto-grow
-          spellcheck="false"
-          background-color="black"
-        ></v-textarea>
+        <script-viewer
+          :scriptText="schemaPolicy.policy"
+          @readability-changed="policyReadabilityChanged"
+        ></script-viewer>
       </v-tab-item>
     </v-tabs>
 
@@ -76,6 +28,7 @@
 
 <script>
   import PolicyComputerMixin from './TablePolicyComputerMixin'
+  import ScriptViewer from '@/components/_common/ScriptViewer'
   import { mapState } from 'vuex'
 
   export default {
@@ -84,6 +37,7 @@
       PolicyComputerMixin
     ],
     components: {
+      ScriptViewer
     },
     props: {
     },
@@ -94,11 +48,14 @@
       // policies () {
       //   this.calculateAllPolicies()
       // },
-      // policyReadability () {
-      //   this.calculateAllPolicies()
-      // },
+      policyReadability () {
+        this.calculateAllPolicies()
+      },
     },
     methods: {
+      policyReadabilityChanged (policyReadability) {
+        this.policyReadability = policyReadability
+      },
       handleCopyStatus(status) {
         alert(status)
       },

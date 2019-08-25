@@ -15,7 +15,7 @@
         v-for="schemaPolicy in allPolicies"
         :key="schemaPolicy.name"
       >
-        <v-toolbar>
+        <!-- <v-toolbar>
           <v-layout
             align-center
             align-content-center
@@ -54,14 +54,18 @@
               ></v-radio>
             </v-radio-group>
           </v-layout>
-        </v-toolbar>
-        <v-textarea
+        </v-toolbar> -->
+        <!-- <v-textarea
           :disabled="true"
           :value="schemaPolicy.policy"
           auto-grow
           spellcheck="false"
           background-color="black"
-        ></v-textarea>
+        ></v-textarea> -->
+        <script-viewer
+          :scriptText="schemaPolicy.policy"
+          @readability-changed="readabilityChanged"
+        ></script-viewer>
       </v-tab-item>
     </v-tabs>
 
@@ -70,6 +74,7 @@
 
 <script>
   import PolicyComputerMixin from '@/components/FunctionSecurity/Realization/FunctionPolicyComputerMixin'
+  import ScriptViewer from '@/components/_common/ScriptViewer'
   import { mapState } from 'vuex'
 
   export default {
@@ -78,6 +83,7 @@
       PolicyComputerMixin
     ],
     components: {
+      ScriptViewer
     },
     props: {
     },
@@ -93,6 +99,9 @@
       },
     },
     methods: {
+      readabilityChanged (readability) {
+        this.policyReadability = readability
+      },
       refresh () {
         this.doComputePolicy()
       },
@@ -167,7 +176,6 @@
       defaultNoRlsPolicies: 'NOT CALCULATED',
       selectedTabName: '',
       policyReadability: 'terse'
-
     }),
     mounted () {
       this.calculateAllPolicies()

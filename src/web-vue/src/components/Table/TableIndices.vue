@@ -1,27 +1,71 @@
 <template>
-  <v-container>
-    <v-data-table
-      :headers="headers"
-      :items="indices"
-      class="elevation-1"
-      :hide-default-footer="true"
+    <v-tabs
+      v-model="activeTab"
+      dark
     >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.tableSchema }}</td>
-        <td>{{ props.item.tableName }}</td>
-        <td>{{ props.item.columnName }}</td>
-        <td>{{ props.item.indexName }}</td>
-      </template>
-    </v-data-table>
-  </v-container>
+      <v-tab
+        key="allIndices"
+        ripple
+      >
+        All Indices
+      </v-tab>
+      <v-tab-item
+        key="allIndices"
+      >
+        <v-card flat>
+          <table-generic-indices
+            :indices="allIndices"
+          ></table-generic-indices>
+        </v-card>
+      </v-tab-item>
+      <v-tab
+        key="fkIndices"
+        ripple
+      >
+        Foreign Key Indices
+      </v-tab>
+      <v-tab-item
+        key="fkIndices"
+      >
+        <v-card flat>
+          <table-fk-indices
+            :fkIndices="fkIndices"
+          ></table-fk-indices>
+        </v-card>
+      </v-tab-item>
+      <v-tab
+        key="uqIndices"
+        ripple
+      >
+        Unique Indices
+      </v-tab>
+      <v-tab-item
+        key="uqIndices"
+      >
+        <v-card flat>
+          <table-uq-indices
+            :uqIndices="uqIndices"
+          ></table-uq-indices>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
 </template>
 
 <script>
+  import TableGenericIndices from './TableGenericIndices'
+  import TableFkIndices from './TableFkIndices'
+  import TableUqIndices from './TableUqIndices'
+
   export default {
-    name: 'TableIndicies',
+    name: 'TableIndexAnalysis',
+    components: {
+      TableGenericIndices,
+      TableFkIndices,
+      TableUqIndices
+    },
     props: {
-      indices: {
-        type: Array,
+      tableInfo: {
+        type: Object,
         required: true
       }
     },
@@ -35,30 +79,26 @@
         }
       }
     },
+    computed: {
+      allIndices () {
+        return this.tableInfo.indices
+      },
+      fkIndices () {
+        return this.tableInfo.indices
+      },
+      uqIndices () {
+        return this.tableInfo.indices
+      }
+    },
     data: () => ({
+      activeTab: 0,
       headers: [
         {
-          text: 'Schema',
-          align: 'left',
-          sortable: true,
-          value: 'tableSchema'
-        },
-        {
-          text: 'Table',
-          align: 'left',
-          sortable: true,
-          value: 'tableName'
-        },
-        {
           text: 'Column',
-          align: 'left',
-          sortable: true,
           value: 'columnName'
         },
         {
           text: 'Index Name',
-          align: 'left',
-          sortable: true,
           value: 'indexName'
         },
       ],

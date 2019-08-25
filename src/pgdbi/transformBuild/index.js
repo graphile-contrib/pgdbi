@@ -72,8 +72,8 @@ async function transformBuild(build, pgPool) {
                   ) primary_key_constraints
                   ,(
                     select (array_to_json(array_agg(row_to_json(c))))::jsonb
-                    from (
-                      select
+                      from (
+                        select
                         c.*
                         ,'unique_constraint' __typename
                         ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
@@ -87,7 +87,9 @@ async function transformBuild(build, pgPool) {
                             and kcu.constraint_name = c.constraint_name
                           ) kcu
                         ) key_column_usage
+                        ,pg_get_constraintdef(pgc.oid) constraint_definition
                       from information_schema.table_constraints c
+                      join pg_catalog.pg_constraint pgc on pgc.conname = c.constraint_name
                       where c.table_schema = t.table_schema
                       and c.table_name = t.table_name
                       and c.constraint_type = 'UNIQUE'
@@ -96,32 +98,40 @@ async function transformBuild(build, pgPool) {
                   ,(
                     select (array_to_json(array_agg(row_to_json(i))))::jsonb
                     from (
-                      select
-                        'index' __typename 
-                        ,ns.nspname || '.' || tb.relname || '.' || a.attname id
+                      select 
+                        i.relname id
                         ,tb.relname table_name
                         ,ns.nspname table_schema
-                        ,a.attname column_name
                         ,i.relname index_name
+                        ,(
+                          select (array_to_json(array_agg(row_to_json(c))))::jsonb
+                          from (
+                            select a.attname column_name
+                            from pg_attribute a
+                            where a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
+                          ) c
+                        ) index_columns
+                        ,pg_get_indexdef(ix.indexrelid) || ';' index_definition
                       from 
                         pg_index ix
                         join pg_class tb on tb.oid = ix.indrelid
                         join pg_class i on i.oid = ix.indexrelid
                         join pg_namespace ns on tb.relnamespace = ns.oid
-                        join pg_attribute a on a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
                       where
-                        ns.nspname = t.table_schema
+                        ns.nspname = 'pgdbi_dev'
                       and
-                        tb.relname = t.table_name
+                        tb.relname = 'contrived_sink_reference'
                       group by
                         ns.nspname,
+                        tb.oid,
                         tb.relname,
-                        a.attname,
+                        ix.indexrelid,
+                        ix.indkey,
                         i.relname
                       order by
                           ns.nspname,
                           tb.relname,
-                          a.attname,
+                          ix.indexrelid,
                           i.relname
                     ) i
                   ) indices
