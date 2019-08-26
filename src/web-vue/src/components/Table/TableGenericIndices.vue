@@ -12,6 +12,7 @@
         <td :colspan="headers.length + 1">
           <script-viewer
             :scriptText="props.item.indexDefinition"
+            :showReadability="false"
           ></script-viewer>
         </td>
       </template>

@@ -15,53 +15,6 @@
         v-for="schemaPolicy in allPolicies"
         :key="schemaPolicy.name"
       >
-        <!-- <v-toolbar>
-          <v-layout
-            align-center
-            align-content-center
-            justify-center
-            justify-content-center
-          >
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn 
-                  v-on="on" 
-                  v-clipboard:copy="policyText(schemaPolicy)"
-                  v-clipboard:success="onCopy"
-                  v-clipboard:error="onError"
-                ><v-icon>file_copy</v-icon>Copy
-              </v-btn>
-              </template>
-              <span>Copy</span>
-            </v-tooltip>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on" @click="executeSql" disabled><v-icon>arrow_forward</v-icon>Execute</v-btn>
-              </template>
-              <span>Execute</span>
-            </v-tooltip>
-            <v-spacer></v-spacer>
-            <v-radio-group v-model="policyReadability" row>
-              <v-radio
-                key="terse"
-                label="Terse"
-                value="terse"
-              ></v-radio>
-              <v-radio
-                key="verbose"
-                label="Verbose"
-                value="verbose"
-              ></v-radio>
-            </v-radio-group>
-          </v-layout>
-        </v-toolbar> -->
-        <!-- <v-textarea
-          :disabled="true"
-          :value="schemaPolicy.policy"
-          auto-grow
-          spellcheck="false"
-          background-color="black"
-        ></v-textarea> -->
         <script-viewer
           :scriptText="schemaPolicy.policy"
           @readability-changed="readabilityChanged"

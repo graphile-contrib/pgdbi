@@ -45,9 +45,6 @@
       ...mapState(['policies', 'managedSchemata']),
     },
     watch: {
-      // policies () {
-      //   this.calculateAllPolicies()
-      // },
       policyReadability () {
         this.calculateAllPolicies()
       },
