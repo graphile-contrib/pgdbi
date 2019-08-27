@@ -103,6 +103,7 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
               // primary keys
               const isPKColumn = pkColumns.indexOf(c.columnName) > -1 
 
+              // foreign keys
               const fkConstraintUsage = this.$store.state.fkIndex.evaluations[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
 
               // unique constraints

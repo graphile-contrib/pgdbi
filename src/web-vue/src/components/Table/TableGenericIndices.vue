@@ -67,12 +67,12 @@
     data: () => ({
       headers: [
         {
-          text: 'Column Name',
-          value: 'columnNames'
-        },
-        {
           text: 'Index Name',
           value: 'indexName'
+        },
+        {
+          text: 'Column Name',
+          value: 'columnNames'
         }
       ],
       pagination: {

@@ -118,9 +118,9 @@ async function transformBuild(build, pgPool) {
                         join pg_class i on i.oid = ix.indexrelid
                         join pg_namespace ns on tb.relnamespace = ns.oid
                       where
-                        ns.nspname = 'pgdbi_dev'
+                        ns.nspname = t.table_schema
                       and
-                        tb.relname = 'contrived_sink_reference'
+                        tb.relname = t.table_name
                       group by
                         ns.nspname,
                         tb.oid,

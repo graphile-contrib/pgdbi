@@ -1,7 +1,7 @@
   select
     c.*
     ,'unique_constraint' __typename
-    ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
+    -- ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
     ,(
       select (array_to_json(array_agg(row_to_json(kcu))))::jsonb
       from (
@@ -20,3 +20,8 @@
   where c.table_schema = 'pgdbi_dev'
   and c.table_name = 'contrived_sink_reference'
   and c.constraint_type = 'UNIQUE'
+;
+
+select oid, relname from pg_class where relname = 'contrived_sink_reference';
+
+select pg_get_tabledef(574884);

@@ -14,6 +14,12 @@
     <v-btn @click="$router.push('project-export')">Export Project</v-btn>
     <v-btn @click="$router.push('project-import')">Import Project</v-btn>
     <hr>
+    <h3>links</h3>
+    <ul>
+      <li><a href="https://www.graphile.org/postgraphile/">postgraphile</a></li>
+      <li><a href="https://www.postgresql.org/docs/">postgres</a></li>
+      <li><a href="https://graphql.org/">graphql</a></li>
+    </ul>
   </v-container>
 </template>
 

@@ -221,8 +221,8 @@
       // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
       // will be reused, and this hook will be called when that happens.
       // has access to `this` component instance.
-      console.log('to', to)
-      console.log('from', from)
+      // console.log('to', to)
+      // console.log('from', from)
       next()
     },
   }

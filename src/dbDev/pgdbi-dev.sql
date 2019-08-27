@@ -85,38 +85,107 @@ $$ LANGUAGE PLPGSQL;
     kitchen_id bigint not null,
     ordinal integer not null,
     singleton_value integer not null,
+    over_indexed integer not null,
     constraint uq_contrived_sink_reference_single_column unique (singleton_value),
     constraint uq_contrived_sink_reference_multi_column unique (kitchen_id, ordinal),
     constraint pk_contrived_sink_reference primary key (id)
   );
   alter table pgdbi_dev.contrived_sink_reference add constraint fk_contrived_sink_reference_with_index foreign key ( kitchen_id, ordinal ) references pgdbi_dev.sink( kitchen_id, ordinal );
   create index idx_contrived_sink_reference_with_index on pgdbi_dev.contrived_sink_reference( kitchen_id, ordinal);
-
-
-  -- before insert/update trigger
+  create index idx_over_indexed_one on pgdbi_dev.contrived_sink_reference(over_indexed);
+  create index idx_over_indexed_two on pgdbi_dev.contrived_sink_reference(over_indexed);
   
+
+
+  -- before insert trigger  
   -- the trigger function
-  create or replace function pgdbi_dev.fn_timestamp_update_sink() returns trigger AS $$
+  create or replace function pgdbi_dev.fn_contrived_sink_reference_before_insert() returns trigger AS $$
   begin
-    if NEW.app_tenant_id is null then 
-      -- only users with 'SuperAdmin' permission_key will be able to arbitrarily set this value
-      -- rls policy (below) will prevent users from specifying an alternate app_tenant_id
-      NEW.app_tenant_id := auth_fn.current_app_tenant_id();
-    end if;
-
-    NEW.updated_at = current_timestamp;
-
+    -- before insert
     return NEW;
   end; $$ language plpgsql;
 
+  -- the trigger
+  create trigger tg_contrived_sink_reference_before_insert
+    before insert on pgdbi_dev.contrived_sink_reference
+    for each row
+    execute procedure pgdbi_dev.fn_contrived_sink_reference_before_insert();
+  -- end before insert trigger
+
+  -- after insert trigger  
+  -- the trigger function
+  create or replace function pgdbi_dev.fn_contrived_sink_reference_after_insert() returns trigger AS $$
+  begin
+    -- after insert
+    return NEW;
+  end; $$ language plpgsql;
 
   -- the trigger
-  create trigger tg_timestamp_update_sink
-    before insert or update on pgdbi_dev.sink
+  create trigger tg_contrived_sink_reference_after_insert
+    after insert on pgdbi_dev.contrived_sink_reference
     for each row
-    execute procedure pgdbi_dev.fn_timestamp_update_sink();
+    execute procedure pgdbi_dev.fn_contrived_sink_reference_after_insert();
+  -- end after insert trigger
 
-  -- end before insert/update trigger
+  -- before update trigger  
+  -- the trigger function
+  create or replace function pgdbi_dev.fn_contrived_sink_reference_before_update() returns trigger AS $$
+  begin
+    -- before update
+    return NEW;
+  end; $$ language plpgsql;
+
+  -- the trigger
+  create trigger tg_contrived_sink_reference_before_update
+    before update on pgdbi_dev.contrived_sink_reference
+    for each row
+    execute procedure pgdbi_dev.fn_contrived_sink_reference_before_update();
+  -- end before update trigger
+
+  -- after update trigger  
+  -- the trigger function
+  create or replace function pgdbi_dev.fn_contrived_sink_reference_after_update() returns trigger AS $$
+  begin
+    -- after update
+    return NEW;
+  end; $$ language plpgsql;
+
+  -- the trigger
+  create trigger tg_contrived_sink_reference_after_update
+    after update on pgdbi_dev.contrived_sink_reference
+    for each row
+    execute procedure pgdbi_dev.fn_contrived_sink_reference_after_update();
+  -- end after update trigger
+
+  -- before delete trigger  
+  -- the trigger function
+  create or replace function pgdbi_dev.fn_contrived_sink_reference_before_delete() returns trigger AS $$
+  begin
+    -- before delete
+    return NEW;
+  end; $$ language plpgsql;
+
+  -- the trigger
+  create trigger tg_contrived_sink_reference_before_delete
+    before delete on pgdbi_dev.contrived_sink_reference
+    for each row
+    execute procedure pgdbi_dev.fn_contrived_sink_reference_before_delete();
+  -- end before delete trigger
+
+  -- after delete trigger  
+  -- the trigger function
+  create or replace function pgdbi_dev.fn_contrived_sink_reference_after_delete() returns trigger AS $$
+  begin
+    -- after delete
+    return NEW;
+  end; $$ language plpgsql;
+
+  -- the trigger
+  create trigger tg_contrived_sink_reference_after_delete
+    after delete on pgdbi_dev.contrived_sink_reference
+    for each row
+    execute procedure pgdbi_dev.fn_contrived_sink_reference_after_delete();
+  -- end after delete trigger
 
 
 

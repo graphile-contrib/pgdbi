@@ -2,13 +2,20 @@
   <v-app id="inspire">
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      enable-resize-watcher
-      persistent
-      app      
+      :mini-variant="false"
+      :clipped="true"
+      app
+      disable-resize-watcher
+      :width="navDrawerWidth"
     >
-    <project-navigator></project-navigator>
+    <v-switch
+      :true-value="true"
+      :false-value="false"
+      v-model="expandNav"
+      :label="`expand`"
+    ></v-switch>
+    <project-navigator
+    ></project-navigator>
     </v-navigation-drawer>
 
     <v-app-bar
@@ -25,14 +32,7 @@
       <v-btn @click="navigate('table-security-manager')" :color="btnColor('table-security-manager')">Table Security</v-btn>
       <v-btn @click="navigate('function-security-manager')" :color="btnColor('function-security-manager')">Function Security</v-btn>
       <v-btn @click="navigate('search-view')" :color="btnColor('search-view')">Search</v-btn>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <h1>&larr;&mdash;usable</h1>
-      <h1>&mdash;&mdash;&mdash;</h1>
-      <h1>not usable&mdash;&rarr;</h1>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Indexes</v-btn>
+      <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')" disabled>Indexes</v-btn>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
     </v-app-bar>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import bus from './AppBus'
 import ProjectNavigator from '@/components/Project/ProjectNavigator'
 
 export default {
@@ -67,9 +68,16 @@ export default {
   computed: {
     currentRoute () {
       return this.$router.currentRoute
+    },
+    navDrawerWidth () {
+      return this.expandNav ? '500px' : '256px'
     }
   },
   methods: {
+    focusToRoute () {
+      this.expandNav = false
+      this.drawer = false
+    },
     btnColor (routeName) {
       return this.$router.currentRoute.name === routeName ? 'blue' : 'blue-grey'
     },
@@ -85,6 +93,7 @@ export default {
  },
   data () {
     return {
+      expandNav: false,
       clipped: true,
       drawer: true,
       fixed: false,
@@ -97,6 +106,7 @@ export default {
   },
   created () {
     this.$vuetify.theme.dark = true
+    bus.$on('focus-route', this.focusToRoute)
   },
 }
 </script>

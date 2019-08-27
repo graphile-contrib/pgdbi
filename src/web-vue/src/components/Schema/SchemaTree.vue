@@ -4,9 +4,6 @@
     pa-0
     dense
   >
-    <v-toolbar>
-      <v-btn @click="refreshSchemata" small >Refresh Schemata</v-btn>
-    </v-toolbar>    
     <v-treeview
       :items="items"
       activatable
@@ -15,49 +12,24 @@
       v-model="selected"
       hoverable
       dense
+      v-scroll
     ></v-treeview>
 </v-container>
 </template>
 
 <script>
-  import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
+  import appBus from '../../AppBus'
 
   export default {
     name: 'SchemaTree',
-    computed: {
-      managedSchemata () {
-        return this.$store.state.managedSchemata
-      }
-    },
     data: () => ({
       active: [],
-      items: [],
       schemata: [],
       selected: [],
-      computing: false
     }),
-    methods: {
-      refreshSchemata () {
-        this.$loading(true)
-        this.$apollo.query({
-          query: dbIntrospection,
-          fetchPolicy: 'network-only'
-        })
-        .then(result => {
-          console.log('schemata', result.data)
-          this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
-          this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
-          this.$loading(false)
-        })
-        .catch(error => {
-          this.$loading(false)
-          console.error(error)
-          alert(error.toString())
-        })
-      },
-      computeItems () {
-        this.computing = true
-        this.items = this.managedSchemata.map(
+    computed: {
+      items () {
+        return this.$store.state.managedSchemata.map(
           schema => {
             return {
               id: `schema:${schema.id}`,
@@ -89,40 +61,14 @@
                       }
                     )
                 },
-                // {
-                //   id: `enums:${schema.schemaName}`,
-                //   name: 'enums',
-                //   children: schema.schemaEnums
-                //     .sort((a,b)=>{return a.name < b.name ? -1 : 1})
-                //     .map(
-                //       e => {
-                //         return {
-                //           id: e.id
-                //           ,name: e.name
-                //           ,children: e.enumValues.map(
-                //             ev => {
-                //               return {
-                //                 id: `ev:${e.name}:${ev}`,
-                //                 name: ev
-                //               }
-                //             }
-                //           )
-                //         }
-                //       }
-                //     )
-                // }
               ]
             }
           }
         )
         .sort((a,b)=>{return a.name < b.name ? -1 : 1})
-        this.computing = false
       },
     },
     watch: {
-      managedSchemata () {
-        this.computeItems()
-      },
       active () {
         const active = this.active[0] || ''
         const activeType = active.split(':')[0]
@@ -130,11 +76,13 @@
 
         switch (activeType) {
           case 'table':
+            appBus.$emit('focus-route')
             this.$router.push({ name: 'table', params: { id: activeId }})
           break
           case 'tables':
           break
           case 'function':
+            appBus.$emit('focus-route')
             this.$router.push({ name: 'function', params: { id: activeId }})
           break
           default:
@@ -143,9 +91,6 @@
         }
       }
     },
-    mounted () {
-      this.computeItems()
-    }
   }
 </script>
 

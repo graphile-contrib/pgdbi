@@ -3,17 +3,24 @@
     ma-0 
     pa-0
   >
-    <schema-tree></schema-tree>
+    <v-toolbar>
+      <v-btn @click="refreshSchemata" small >Refresh Schemata</v-btn>
+    </v-toolbar>    
+    <schema-tree
+    ></schema-tree>
   </v-container>
 </template>
 
 <script>
+  import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
   import SchemaTree from '@/components/Schema/SchemaTree'
 
   export default {
     name: 'SchemaNavigator',
     components: {
       SchemaTree,
+    },
+    props: {
     },
     data: () => ({
     }),
@@ -22,6 +29,24 @@
     watch: {
     },
     methods: {
+      refreshSchemata () {
+        this.$loading(true)
+        this.$apollo.query({
+          query: dbIntrospection,
+          fetchPolicy: 'network-only'
+        })
+        .then(result => {
+          console.log('schemata', result.data)
+          this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
+          this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
+          this.$loading(false)
+        })
+        .catch(error => {
+          this.$loading(false)
+          console.error(error)
+          alert(error.toString())
+        })
+      },
     }
   }
 </script>

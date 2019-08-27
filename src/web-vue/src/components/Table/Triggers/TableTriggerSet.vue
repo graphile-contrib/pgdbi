@@ -46,7 +46,7 @@ export default {
       mappedTriggers () {
         return this.triggers.map(
           trigger => {
-            const functionId = `function:${trigger.actionStatement.split(' ')[2].split('(')[0]}`
+            const functionId = `${trigger.actionStatement.split(' ')[2].split('(')[0]}`
             
             return {
               ...trigger,

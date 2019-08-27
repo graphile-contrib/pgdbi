@@ -1,7 +1,7 @@
 import assignTablePolicy from './assignTablePolicy'
 import assignFunctionPolicy from './assignFunctionPolicy'
-const NO_INDEX = 'NO INDEX'
-const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
+import evaluateFkIndexes from './evaluate/evaluateFkIndexes'
+import evaluateUqIndexes from './evaluate/evaluateUqIndexes'
 
 function ensureDefaultTablePolicy(state) {
   if (!state.defaultPolicy) {
@@ -92,128 +92,6 @@ function assignMissingDefaultFunctionPolicies(state, schemata) {
     ,policyDefinitionId: state.defaultFunctionPolicy.id
   })
 
-}
-
-function evaluateFkIndexes(state) {
-  const evaluations = state.managedSchemata
-    .reduce(
-      (all, schema) => {
-        return {
-          ...all
-          ,...schema.schemaTables.reduce(
-            (all, table) => {
-              const fkColumnEvaluations = (table.tableColumns || [])
-              .reduce(
-                (all, c) => {
-                  const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
-
-                  // foreign keys
-                  const fkConstraintUsage = (table.referentialConstraints || [])
-                    .filter(rc => rc.referencingColumnUsage.length === 1)
-                    .filter(
-                      rc => {
-                        return rc.referencingColumnUsage.find(rcu => rcu.tableSchema === c.tableSchema && rcu.tableName === c.tableName && rcu.columnName === c.columnName) !== undefined
-                      }
-                    )
-                    .map(
-                      rc => {
-                        const fkIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
-                        const rcu = rc.referencedColumnUsage[0]
-                        return {
-                          constraintName: rc.constraintName,
-                          fkPath: `${rcu.tableSchema}.${rcu.tableName}.${rcu.columnName}`,
-                          fkIndices: columnIndices,
-                          fkIndexEvaluation: fkIndexEvaluation,
-                          fkTableLinkId: `${rcu.tableSchema}.${rcu.tableName}`
-                        }
-                      }
-                    )
-      
-                  if (fkConstraintUsage.length > 0) {
-                    return {
-                      ...all
-                      ,[c.id]: fkConstraintUsage
-                    }  
-                  } else {
-                    return all
-                  }
-                }, {}
-              )
-    
-              return {
-                ...all
-                ,...fkColumnEvaluations
-              }
-            }, {}
-          )
-        }
-      }, {}
-    )
-
-  state.fkIndex = {
-    ...state.fkIndex
-    ,evaluations: evaluations
-  }
-}
-
-function evaluateUqIndexes(state) {
-  const evaluations = state.managedSchemata
-    .reduce(
-      (all, schema) => {
-        return {
-          ...all
-          ,...schema.schemaTables.reduce(
-            (all, table) => {
-              const uqColumnEvaluations = (table.tableColumns || [])
-              .reduce(
-                (all, c) => {
-                  const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
-                  // foreign keys
-                  const uqConstraintUsage = (table.uniqueConstraints || [])
-                  .filter(rc => rc.keyColumnUsage.length === 1)
-                  .filter(
-                      rc => {
-                        return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
-                      }
-                    )
-                    .map(
-                      rc => {
-                        const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
-                        const kcu = rc.keyColumnUsage[0]
-                        return {
-                          constraintName: rc.constraintName,
-                          uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
-                          uqIndices: columnIndices,
-                          uqIndexEvaluation: uqIndexEvaluation,
-                        }
-                      }
-                    )
-      
-                  if (uqConstraintUsage.length > 0) {
-                    return {
-                      ...all
-                      ,[c.id]: uqConstraintUsage
-                    }  
-                  } else {
-                    return all
-                  }
-                }, {}
-              )
-    
-              return {
-                ...all
-                ,...uqColumnEvaluations
-              }
-            }, {}
-          )
-        }
-      }, {}
-    )
-
-  state.uqIndex = {
-    ...state.uqIndex
-    ,evaluations: evaluations
-  }
 }
 
 function setManagedSchemata(state, payload) {

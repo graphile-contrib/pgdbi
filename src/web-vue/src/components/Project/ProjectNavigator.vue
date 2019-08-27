@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <schema-navigator></schema-navigator> 
+    <schema-navigator
+    ></schema-navigator> 
   </v-container>
 </template>
 
@@ -9,6 +10,8 @@
 
   export default {
     name: 'ProjectNavigator',
+    props: {
+    },
     components: {
       SchemaNavigator,
     },
