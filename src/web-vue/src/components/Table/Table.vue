@@ -55,7 +55,7 @@
         </v-card>
       </v-tab-item>
 
-      <v-tab
+      <!-- <v-tab
         key="constraints"
         ripple
       >
@@ -69,13 +69,13 @@
             :tableInfo="tableInfo"
           ></table-constraints>
         </v-card>
-      </v-tab-item>
+      </v-tab-item> -->
 
       <v-tab
         key="indices"
         ripple
       >
-        Indices
+        Indices And Constraints
       </v-tab>
       <v-tab-item
         key="indices"
