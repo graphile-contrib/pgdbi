@@ -14,7 +14,7 @@
       >
         <v-card flat>
           <table-generic-indices
-            :indices="allIndices"
+            :tableInfo="tableInfo"
           ></table-generic-indices>
         </v-card>
       </v-tab-item>
@@ -29,7 +29,7 @@
       >
         <v-card flat>
           <table-fk-indices
-            :fkIndices="fkIndices"
+            :tableInfo="tableInfo"
           ></table-fk-indices>
         </v-card>
       </v-tab-item>
@@ -44,7 +44,7 @@
       >
         <v-card flat>
           <table-uq-indices
-            :uqIndices="uqIndices"
+            :tableInfo="tableInfo"
           ></table-uq-indices>
         </v-card>
       </v-tab-item>
@@ -83,9 +83,9 @@
       allIndices () {
         return this.tableInfo.indices
       },
-      fkIndices () {
-        return this.tableInfo.indices
-      },
+      // fkIndices () {
+      //   return this.tableInfo
+      // },
       uqIndices () {
         return this.tableInfo.indices
       }

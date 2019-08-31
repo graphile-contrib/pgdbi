@@ -8,11 +8,13 @@ export default {
   defaultPolicy: null,
   defaultFunctionPolicy: null,
   genericIndexEvaluations: {},
-  fkIndex: {
-    evaluations: {}
+  fkIndexEvaluations: {
+    singleColumn: {},
+    multiColumn: {}
   },
-  uqIndex: {
-    evaluations: {}
+  uqIndexEvaluations: {
+    singleColumn: {},
+    multiColumn: {}
   },
   managedSchemata: [],
   parkedSchemata: [],

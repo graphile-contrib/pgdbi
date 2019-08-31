@@ -111,7 +111,8 @@ async function transformBuild(build, pgPool) {
                             where a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
                           ) c
                         ) index_columns
-                        ,pg_get_indexdef(ix.indexrelid) || ';' index_definition
+                        ,replace((pg_get_indexdef(ix.indexrelid) || ';'),'INDEX ','INDEX IF NOT EXISTS ') index_definition
+                        ,'DROP INDEX IF EXISTS ' || ns.nspname || '.' || i.relname || ';' index_drop
                       from 
                         pg_index ix
                         join pg_class tb on tb.oid = ix.indrelid

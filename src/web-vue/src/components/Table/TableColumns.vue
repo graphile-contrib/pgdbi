@@ -85,6 +85,7 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
       tableDetail () {
         console.log('table', this.tableInfo)
         // console.log('refs', JSON.stringify(this.tableInfo.referentialConstraints,null,2))
+        // console.log('indices', JSON.stringify(this.tableInfo.indices,null,2))
         const pkColumns = this.tableInfo.primaryKeyConstraints.reduce(
           (pkCols, pkc) => {
             const cols = pkc.keyColumnUsage.reduce(
@@ -104,10 +105,10 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
               const isPKColumn = pkColumns.indexOf(c.columnName) > -1 
 
               // foreign keys
-              const fkConstraintUsage = this.$store.state.fkIndex.evaluations[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
+              const fkConstraintUsage = this.$store.state.fkIndexEvaluations.singleColumn[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
 
               // unique constraints
-              const uqConstraintUsage = this.$store.state.uqIndex.evaluations[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
+              const uqConstraintUsage = this.$store.state.uqIndexEvaluations[`${c.tableSchema}.${c.tableName}.${c.columnName}`]
 
               return {
                 ...c
