@@ -11,7 +11,8 @@ function evaluateGenericIndexEvaluations(state) {
             (all, table) => {
               const genericIndexEvaluations = table.indices.reduce(
                 (all, idx) => {
-                  const idxColumns = idx.indexColumns.map(c => c.columnName).sort((a,b)=>{return a<b?-1:1}).join('+')
+                  // const idxColumns = idx.indexColumns.map(c => c.columnName).sort((a,b)=>{return a<b?-1:1}).join('+')
+                  const idxColumns = idx.indkey.map(ik => idx.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
                   const idxKey = `${idx.tableSchema}.${idx.tableName}.${idxColumns}`
                   const existing = all[idxKey]
                   const idxEvaluation = existing ? 

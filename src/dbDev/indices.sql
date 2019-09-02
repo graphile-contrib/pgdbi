@@ -7,15 +7,35 @@ select jsonb_pretty(
         ,tb.relname table_name
         ,ns.nspname table_schema
         ,i.relname index_name
+        ,ix.indexrelid
+        ,ix.indrelid
+        ,ix.indnatts
         ,ix.indisunique
         ,ix.indisprimary
+        ,ix.indisexclusion
+        ,ix.indimmediate
+        ,ix.indisclustered
+        ,ix.indisvalid
+        ,ix.indcheckxmin
+        ,ix.indisready
+        ,ix.indislive
+        ,ix.indisreplident
+        ,ix.indkey
+        ,ix.indcollation
+        ,ix.indclass
+        ,ix.indoption
+        ,ix.indexprs
+        ,ix.indpred
         ,pg_get_indexdef(ix.indexrelid) index_definition
         ,(
           select (array_to_json(array_agg(row_to_json(c))))::jsonb
           from (
-            select a.attname column_name
+            select 
+              a.attname column_name,
+              a.attnum indkey
             from pg_attribute a
-            where a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
+            where a.attrelid = tb.oid 
+            and a.attnum = ANY(ix.indkey)
           ) c
         ) index_columns
         -- ,(
@@ -34,15 +54,31 @@ select jsonb_pretty(
       where
         ns.nspname = 'pgdbi_dev'
       and
-        tb.relname = 'contrived_sink_reference'
+        tb.relname = 'sink'
+      and i.relname = 'idx_fk_multi_column_with_index'
       group by
         ns.nspname
         ,tb.oid
         ,tb.relname
-        ,ix.indkey
+        ,ix.indexrelid
+        ,ix.indrelid
+        ,ix.indnatts
         ,ix.indisunique
         ,ix.indisprimary
-        ,ix.indexrelid
+        ,ix.indisexclusion
+        ,ix.indimmediate
+        ,ix.indisclustered
+        ,ix.indisvalid
+        ,ix.indcheckxmin
+        ,ix.indisready
+        ,ix.indislive
+        ,ix.indisreplident
+        ,ix.indkey
+        ,ix.indcollation
+        ,ix.indclass
+        ,ix.indoption
+        ,ix.indexprs
+        ,ix.indpred
         ,i.relname
       order by
         ns.nspname
@@ -60,13 +96,13 @@ select jsonb_pretty(
 
 -- select * from 
 
-select
-  pgc.conname
-  ,pgc.conrelid
-  ,pgn.nspname
-  ,pgcl.relname
-from pg_catalog.pg_constraint pgc
-join pg_catalog.pg_namespace pgn on pgc.connamespace = pgn.oid
-join pg_class pgcl on pgcl.oid = pgc.conrelid
-where pgc.conname like '%contrived%'
-;
+-- select
+--   pgc.conname
+--   ,pgc.conrelid
+--   ,pgn.nspname
+--   ,pgcl.relname
+-- from pg_catalog.pg_constraint pgc
+-- join pg_catalog.pg_namespace pgn on pgc.connamespace = pgn.oid
+-- join pg_class pgcl on pgcl.oid = pgc.conrelid
+-- where pgc.conname like '%contrived%'
+-- ;

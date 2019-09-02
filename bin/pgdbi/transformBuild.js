@@ -102,11 +102,32 @@ async function transformBuild(build, pgPool) {
                         i.relname id
                         ,tb.relname table_name
                         ,ns.nspname table_schema
+                        ,ix.indexrelid
+                        ,ix.indrelid
+                        ,ix.indnatts
+                        ,ix.indisunique
+                        ,ix.indisprimary
+                        ,ix.indisexclusion
+                        ,ix.indimmediate
+                        ,ix.indisclustered
+                        ,ix.indisvalid
+                        ,ix.indcheckxmin
+                        ,ix.indisready
+                        ,ix.indislive
+                        ,ix.indisreplident
+                        ,ix.indkey
+                        ,ix.indcollation
+                        ,ix.indclass
+                        ,ix.indoption
+                        ,ix.indexprs
+                        ,ix.indpred
                         ,i.relname index_name
                         ,(
                           select (array_to_json(array_agg(row_to_json(c))))::jsonb
                           from (
-                            select a.attname column_name
+                            select 
+                              a.attname column_name,
+                              a.attnum indkey
                             from pg_attribute a
                             where a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
                           ) c
@@ -123,12 +144,29 @@ async function transformBuild(build, pgPool) {
                       and
                         tb.relname = t.table_name
                       group by
-                        ns.nspname,
-                        tb.oid,
-                        tb.relname,
-                        ix.indexrelid,
-                        ix.indkey,
-                        i.relname
+                        ns.nspname
+                        ,tb.oid
+                        ,tb.relname
+                        ,ix.indexrelid
+                        ,ix.indrelid
+                        ,ix.indnatts
+                        ,ix.indisunique
+                        ,ix.indisprimary
+                        ,ix.indisexclusion
+                        ,ix.indimmediate
+                        ,ix.indisclustered
+                        ,ix.indisvalid
+                        ,ix.indcheckxmin
+                        ,ix.indisready
+                        ,ix.indislive
+                        ,ix.indisreplident
+                        ,ix.indkey
+                        ,ix.indcollation
+                        ,ix.indclass
+                        ,ix.indoption
+                        ,ix.indexprs
+                        ,ix.indpred
+                        ,i.relname
                       order by
                           ns.nspname,
                           tb.relname,

@@ -23,6 +23,39 @@
       </v-tab-item>
 
       <v-tab
+        key="indices"
+        ripple
+      >
+        Indices And Constraints
+      </v-tab>
+      <v-tab-item
+        key="indices"
+      >
+        <v-card flat>
+          <table-indices
+            :tableInfo="tableInfo"
+          ></table-indices>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab
+        key="constraints-and-indices"
+        ripple
+      >
+        Constraints and Indices
+      </v-tab>
+      <v-tab-item
+        key="constraints-and-indices"
+      >
+        <v-card flat>
+          <constraints-and-indices
+            :tableSchema="tableSchema"
+            :tableName="tableName"
+          ></constraints-and-indices>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab
         key="tabletriggers"
         ripple
       >
@@ -52,38 +85,6 @@
             :policyId="tableInfo.policyDefinitionId"
             :table="tableInfo"
           ></table-policy-definition>
-        </v-card>
-      </v-tab-item>
-
-      <!-- <v-tab
-        key="constraints"
-        ripple
-      >
-        Constraints
-      </v-tab>
-      <v-tab-item
-        key="constraints"
-      >
-        <v-card flat>
-          <table-constraints
-            :tableInfo="tableInfo"
-          ></table-constraints>
-        </v-card>
-      </v-tab-item> -->
-
-      <v-tab
-        key="indices"
-        ripple
-      >
-        Indices And Constraints
-      </v-tab>
-      <v-tab-item
-        key="indices"
-      >
-        <v-card flat>
-          <table-indices
-            :tableInfo="tableInfo"
-          ></table-indices>
         </v-card>
       </v-tab-item>
       
@@ -150,6 +151,7 @@
   import TablePolicies from './TablePolicies.vue'
   import TableTriggers from './Triggers/TableTriggers.vue'
   import TablePolicyDefinition from '../TableSecurity/Definition/TablePolicyDefinition'
+  import ConstraintsAndIndices from '../ForeignKeyIndex/ConstraintsAndIndices'
 
   export default {
     name: 'Table',
@@ -162,7 +164,8 @@
       TableColumnGrants,
       TablePolicies,
       TableTriggers,
-      TablePolicyDefinition
+      TablePolicyDefinition,
+      ConstraintsAndIndices
     },
     props: {
       id: {
@@ -172,10 +175,8 @@
     },
     computed: {
       tableInfo () {
-        const schemaName = this.id.split('.')[0]
-        const tableName = this.id.split('.')[1]
-        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
-        const table = schema.schemaTables.find(t => t.tableName === tableName)
+        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === this.tableSchema)
+        const table = schema.schemaTables.find(t => t.tableName === this.tableName)
         const tableSecurityPolicyId = this.$store.state.tablePolicyAssignments[this.id].policyDefinitionId
 
         return {
@@ -184,10 +185,10 @@
         }
       },
       tableName () {
-        return this.tableInfo.tableName || 'N/A'
+        return this.id.split('.')[1]
       },
       tableSchema () {
-        return (this.tableInfo.id || 'N/A.N/A').split('.')[0]
+        return this.id.split('.')[0]
       },
       tableColumns () {
         return this.tableInfo.tableColumns || []

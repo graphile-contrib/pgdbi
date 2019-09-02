@@ -100,10 +100,11 @@ function evaluateMultiColumnUqIndexes(state) {
                     .filter(i => i.indexColumns.length === uc.keyColumnUsage.length)
                     .filter(
                       i => {
-                        const indexCols = i.indexColumns
-                          .map(ic => ic.columnName)
-                          .sort((a,b)=>{return a<b?-1:1})
-                          .join(', ')
+                        const indexCols = i.indkey.map(ik => i.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
+                        // const indexCols = i.indexColumns
+                        //   .map(ic => ic.columnName)
+                        //   .sort((a,b)=>{return a<b?-1:1})
+                        //   .join(', ')
                         // console.log(i.indexName)
                         // console.log(indexCols)
                         // console.log(uqSource)

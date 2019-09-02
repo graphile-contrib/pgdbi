@@ -32,7 +32,7 @@ $$ LANGUAGE PLPGSQL;
     identifier_two text not null CHECK (identifier_two <> ''),
     identifier_three text not null CHECK (identifier_three <> ''),
     constraint uq_kitchen_name_identifier_one unique (name, identifier_one),
-    constraint uq_kitchen_name_identifier_two unique (name, identifier_two),
+    constraint uq_kitchen_name_identifier_two unique (identifier_two, name),
     constraint uq_kitchen_name_identifier_three unique (name, identifier_three),
     constraint pk_kitchen primary key (id)
   );

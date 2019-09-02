@@ -39,6 +39,8 @@ function evaluateSingleColumnForeignKeys(state){
                         return {
                           id: rc.constraintName,
                           constraintName: rc.constraintName,
+                          tableSchema: table.tableSchema,
+                          tableName: table.tableName,
                           fkTable: `${rcu.tableSchema}.${rcu.tableName}`,
                           fkSource: [c.columnName],
                           fkTarget: [`${rcu.columnName}`],
@@ -106,10 +108,11 @@ function evaluateMultiColumnForeignKeys(state){
                     .filter(i => i.indexColumns.length === rc.referencingColumnUsage.length)
                     .filter(
                       i => {
-                        const indexCols = i.indexColumns
-                          .map(ic => ic.columnName)
-                          .sort((a,b)=>{return a<b?-1:1})
-                          .join(', ')
+                        const indexCols = i.indkey.map(ik => i.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
+                        // const indexCols = i.indexColumns
+                        //   .map(ic => ic.columnName)
+                        //   .sort((a,b)=>{return a<b?-1:1})
+                        //   .join(', ')
                         // console.log(i.indexName)
                         // console.log(indexCols)
                         // console.log(fkSource)
@@ -124,6 +127,8 @@ function evaluateMultiColumnForeignKeys(state){
                   return {
                     id: rc.constraintName,
                     constraintName: rc.constraintName,
+                    tableSchema: table.tableSchema,
+                    tableName: table.tableName,
                     fkTable: `${rcu.tableSchema}.${rcu.tableName}`,
                     fkSource: fkSource.split(', '),
                     fkTarget: fkTarget.split(', '),

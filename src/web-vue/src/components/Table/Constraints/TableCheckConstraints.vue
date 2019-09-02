@@ -1,18 +1,18 @@
 <template>
   <v-container>
-    <v-data-table
-      :headers="headers"
-      :items="mappedConstraints"
-      class="elevation-1"
-      :hide-default-footer="true"
-    >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.constraintSchema }}</td>
-        <td>{{ props.item.tableName }}</td>
-        <td>{{ props.item.constraintName }}</td>
-        <td>{{ props.item.checkClause }}</td>
-      </template>
-    </v-data-table>
+    <v-card
+      class="ma-3 pa-3 blue darken-4"
+      dense
+    >            
+      <h2>Check Constraints</h2>
+      <v-data-table
+        :headers="headers"
+        :items="mappedConstraints"
+        class="elevation-1"
+        :hide-default-footer="true"
+      >
+      </v-data-table>
+    </v-card>
   </v-container>
 </template>
 
@@ -50,18 +50,18 @@
     },
     data: () => ({
       headers: [
-        {
-          text: 'Schema',
-          align: 'left',
-          sortable: true,
-          value: 'constraintSchema'
-        },
-        {
-          text: 'Table',
-          align: 'left',
-          sortable: true,
-          value: 'tableName'
-        },
+        // {
+        //   text: 'Schema',
+        //   align: 'left',
+        //   sortable: true,
+        //   value: 'constraintSchema'
+        // },
+        // {
+        //   text: 'Table',
+        //   align: 'left',
+        //   sortable: true,
+        //   value: 'tableName'
+        // },
         {
           text: 'Name',
           align: 'left',

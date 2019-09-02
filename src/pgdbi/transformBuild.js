@@ -26,19 +26,22 @@ async function transformBuild(build, pgPool) {
         FROM (
           select 
             s.*
-            ,'schema:' || s.schema_name id
+            ,'schema' __typename
+            ,s.schema_name id
             ,(
               select coalesce((array_to_json(array_agg(row_to_json(t))))::jsonb, '[]')
               from (
                 select
                   t.*
-                  ,'table:' || s.schema_name || '.' || t.table_name id
+                  ,'table' __typename
+                  ,s.schema_name || '.' || t.table_name id
                   ,(
                     select (array_to_json(array_agg(row_to_json(c))))::jsonb
                     from (
                       select
                         c.*
-                        ,'column:' || s.schema_name || '.' || t.table_name || '.' || c.column_name id
+                        ,'column' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || c.column_name id
                       from information_schema.columns c
                       where c.table_schema = t.table_schema
                       and c.table_name = t.table_name
@@ -49,7 +52,8 @@ async function transformBuild(build, pgPool) {
                     from (
                       select
                         c.*
-                        ,'primary_key_constraint:' || s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
+                        ,'primary_key_constraint' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
                         ,(
                           select (array_to_json(array_agg(row_to_json(kcu))))::jsonb
                           from (
@@ -68,10 +72,11 @@ async function transformBuild(build, pgPool) {
                   ) primary_key_constraints
                   ,(
                     select (array_to_json(array_agg(row_to_json(c))))::jsonb
-                    from (
-                      select
+                      from (
+                        select
                         c.*
-                        ,'primary_key_constraint:' || s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
+                        ,'unique_constraint' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || c.constraint_name id
                         ,(
                           select (array_to_json(array_agg(row_to_json(kcu))))::jsonb
                           from (
@@ -82,7 +87,9 @@ async function transformBuild(build, pgPool) {
                             and kcu.constraint_name = c.constraint_name
                           ) kcu
                         ) key_column_usage
+                        ,pg_get_constraintdef(pgc.oid) constraint_definition
                       from information_schema.table_constraints c
+                      join pg_catalog.pg_constraint pgc on pgc.conname = c.constraint_name
                       where c.table_schema = t.table_schema
                       and c.table_name = t.table_name
                       and c.constraint_type = 'UNIQUE'
@@ -92,30 +99,78 @@ async function transformBuild(build, pgPool) {
                     select (array_to_json(array_agg(row_to_json(i))))::jsonb
                     from (
                       select 
-                        'index:' || ns.nspname || '.' || tb.relname || '.' || a.attname id
+                        i.relname id
                         ,tb.relname table_name
                         ,ns.nspname table_schema
-                        ,a.attname column_name
+                        ,ix.indexrelid
+                        ,ix.indrelid
+                        ,ix.indnatts
+                        ,ix.indisunique
+                        ,ix.indisprimary
+                        ,ix.indisexclusion
+                        ,ix.indimmediate
+                        ,ix.indisclustered
+                        ,ix.indisvalid
+                        ,ix.indcheckxmin
+                        ,ix.indisready
+                        ,ix.indislive
+                        ,ix.indisreplident
+                        ,ix.indkey
+                        ,ix.indcollation
+                        ,ix.indclass
+                        ,ix.indoption
+                        ,ix.indexprs
+                        ,ix.indpred
                         ,i.relname index_name
+                        ,(
+                          select (array_to_json(array_agg(row_to_json(c))))::jsonb
+                          from (
+                            select 
+                              a.attname column_name,
+                              a.attnum indkey
+                            from pg_attribute a
+                            where a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
+                          ) c
+                        ) index_columns
+                        ,replace((pg_get_indexdef(ix.indexrelid) || ';'),'INDEX ','INDEX IF NOT EXISTS ') index_definition
+                        ,'DROP INDEX IF EXISTS ' || ns.nspname || '.' || i.relname || ';' index_drop
                       from 
                         pg_index ix
                         join pg_class tb on tb.oid = ix.indrelid
                         join pg_class i on i.oid = ix.indexrelid
                         join pg_namespace ns on tb.relnamespace = ns.oid
-                        join pg_attribute a on a.attrelid = tb.oid and a.attnum = ANY(ix.indkey)
                       where
                         ns.nspname = t.table_schema
                       and
                         tb.relname = t.table_name
                       group by
-                        ns.nspname,
-                        tb.relname,
-                        a.attname,
-                        i.relname
+                        ns.nspname
+                        ,tb.oid
+                        ,tb.relname
+                        ,ix.indexrelid
+                        ,ix.indrelid
+                        ,ix.indnatts
+                        ,ix.indisunique
+                        ,ix.indisprimary
+                        ,ix.indisexclusion
+                        ,ix.indimmediate
+                        ,ix.indisclustered
+                        ,ix.indisvalid
+                        ,ix.indcheckxmin
+                        ,ix.indisready
+                        ,ix.indislive
+                        ,ix.indisreplident
+                        ,ix.indkey
+                        ,ix.indcollation
+                        ,ix.indclass
+                        ,ix.indoption
+                        ,ix.indexprs
+                        ,ix.indpred
+                        ,i.relname
                       order by
                           ns.nspname,
                           tb.relname,
-                          a.attname,
+                          ix.indexrelid,
                           i.relname
                     ) i
                   ) indices
@@ -134,12 +189,14 @@ async function transformBuild(build, pgPool) {
                     from (
                       select
                         tr.*
-                        ,'trigger:' || s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || tr.action_timing || '.' || tr.event_manipulation id
+                        ,'trigger' __typename
+                        ,s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || tr.action_timing || '.' || tr.event_manipulation id
                         ,(
                           select (array_to_json(array_agg(row_to_json(tf))))::jsonb
                           from (
                             select
-                              'trigger_function:' || s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || p.proname id
+                              'trigger_function' __typename
+                              ,s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || p.proname id
                               ,p.proname function_name
                               ,n.nspname function_schema
                               ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type
@@ -232,7 +289,8 @@ async function transformBuild(build, pgPool) {
               select (array_to_json(array_agg(row_to_json(sf))))::jsonb
               from (
                 select
-                  'function:' || s.schema_name || '.' ||  p.proname id
+                  'function' __typename
+                  ,s.schema_name || '.' ||  p.proname id
                   ,p.proname function_name
                   ,n.nspname function_schema
                   ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type
