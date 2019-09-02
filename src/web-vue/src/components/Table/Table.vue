@@ -22,7 +22,7 @@
         </v-card>
       </v-tab-item>
 
-      <v-tab
+      <!-- <v-tab
         key="indices"
         ripple
       >
@@ -37,7 +37,7 @@
           ></table-indices>
         </v-card>
       </v-tab-item>
-
+ -->
       <v-tab
         key="constraints-and-indices"
         ripple
