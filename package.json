@@ -1,6 +1,6 @@
 {
   "name": "@graphile-contrib/pgdbi",
-  "version": "1.0.9-alpha.60",
+  "version": "1.0.9-alpha.61",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -13,6 +13,9 @@
     "prettier:fix": "prettier --write 'src/**/*.{js,md,json}' '*.{js,md,json}'",
     "prod-build": "cd ./src/web-vue && yarn build"
   },
+  "files": [
+    "bin/**/*"
+  ],
   "dependencies": {
     "@types/jest": "^24.0.16",
     "camelcase-keys": "^6.0.1",
@@ -35,8 +38,4 @@
     "nodemon": "^1.19.1",
     "typescript": "^3.5.2"
   },
-  "files": [
-    "src",
-    "bin"
-  ]
 }
