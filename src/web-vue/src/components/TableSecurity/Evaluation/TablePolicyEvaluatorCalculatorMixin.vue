@@ -34,8 +34,6 @@
         }
       },
       tablePolicyEvaluation () {
-        // console.log('table', JSON.stringify(this.table.roleTableGrants,0,2))
-        // console.log('policyDefinition', this.policyDefinition)
         const ignoredRoleNames = this.$store.state.ignoredRoles.map(r => r.roleName)
 
         const grantEvaluation = Object.keys(this.policyDefinition.roleGrants).reduce(

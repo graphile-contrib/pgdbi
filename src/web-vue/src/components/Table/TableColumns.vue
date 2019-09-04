@@ -5,7 +5,6 @@
       :items="tableDetail"
       class="elevation-1 text-no-wrap"
       hide-default-footer
-      show-expand
       calculate-widths
       dense
       :items-per-page="100"
@@ -14,29 +13,9 @@
       <v-icon v-if="item.isPKColumn">check</v-icon>
     </template>
 
-    <!-- <template v-slot:item.fkInfo="{ item }">
-      <span><v-icon v-if="item.fkConstraintUsage.length" :color="fkIndexClass(item)">check</v-icon></span>
-    </template> -->
-
-    <!-- <template v-slot:item.columnIndices="{ item }">
-      <v-icon v-if="item.columnIndices.length">check</v-icon>
-    </template> -->
-
     <template v-slot:item.isNullable="{ item }">
       <v-icon v-if="item.isNullable === 'YES'">check</v-icon>
     </template>
-
-    <!-- <template v-slot:item.unique="{ item }">
-      <span><v-icon v-if="item.uqConstraintUsage.length" :color="uqIndexClass(item)">check</v-icon></span>
-    </template> -->
-
-    <!-- <template slot="expanded-item" slot-scope="props">
-      <td :colspan="headers.length + 1">
-        <column-detail
-          :columnInfo="props.item"
-        ></column-detail>
-      </td>
-    </template> -->
 
     </v-data-table>
   </v-container>

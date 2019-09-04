@@ -27,7 +27,7 @@
     <table-trigger-set
       actionTiming="AFTER"
       eventManipulation="UPDATE"
-      :triggers="afterInsert"
+      :triggers="afterUpdate"
     ></table-trigger-set>
 
     <table-trigger-set

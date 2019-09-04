@@ -27,7 +27,18 @@
     },
     computed: {
       definition () {
-        return this.declarationVisibility === 'hide' ? this.fn.definition.split('$function$')[1] : this.fn.definition
+        return this.declarationVisibility === 'hide' ? this.modifiedFunction : this.rawFunction
+      },
+      rawFunction () {
+        return this.fn.definition
+      },
+      modifiedFunction () {
+        const fnDeclaration = this.fn.definition.split('$function$')[0]
+        const fnBody = this.fn.definition.split('$function$')[1]
+
+        const commentedDeclaration = fnDeclaration.split('\n').map(l => `-- ${l}`).join('\n')
+
+        return `${commentedDeclaration} $function$${fnBody} -- $function$\n`
       },
       functionName () {
         return this.fn.functionName
