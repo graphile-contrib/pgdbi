@@ -89,9 +89,6 @@
       },
     },
     watch: {
-      selected () {
-        console.log('selected', this.selected)
-      }
     },
     computed: {
       tablesToShow () {
@@ -99,6 +96,7 @@
           table => {
             const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId
             const policyDefinition = this.policies.find(p => p.id === policyDefinitionId)
+            // console.log(policyDefinitionId, policyDefinition)
 
             return {
               ...table

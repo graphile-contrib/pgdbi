@@ -1,22 +1,17 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="false"
-      :clipped="true"
-      app
-      disable-resize-watcher
-      :width="navDrawerWidth"
-    >
-    <v-switch
-      :true-value="true"
-      :false-value="false"
-      v-model="expandNav"
-      :label="`expand`"
-    ></v-switch>
-    <project-navigator
-    ></project-navigator>
-    </v-navigation-drawer>
+    <v-hover v-slot:default="{ hover }">
+      <v-navigation-drawer
+        v-model="drawer"
+        :clipped="true"
+        app
+        :width="hover ? 500 : 200"
+        disable-route-watcher
+      >
+        <project-navigator
+        ></project-navigator>
+      </v-navigation-drawer>
+    </v-hover>
 
     <v-app-bar
       app
@@ -67,16 +62,13 @@ export default {
   computed: {
     currentRoute () {
       return this.$router.currentRoute
-    },
-    navDrawerWidth () {
-      return this.expandNav ? '500px' : '256px'
     }
   },
   methods: {
-    focusToRoute () {
-      this.expandNav = false
-      this.drawer = false
-    },
+    // focusToRoute () {
+    //   this.expandNav = false
+    //   this.drawer = false
+    // },
     btnColor (routeName) {
       return this.$router.currentRoute.name === routeName ? 'blue' : 'blue-grey'
     },

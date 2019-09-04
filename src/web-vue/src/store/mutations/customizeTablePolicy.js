@@ -1,3 +1,5 @@
+import assignTablePolicy from './assignTablePolicy'
+
 function customizeTablePolicy(state, payload) {
   const sourcePolicyDefinitionId = payload.sourcePolicyDefinitionId;
   const newFields = payload.newFields;
@@ -14,15 +16,15 @@ function customizeTablePolicy(state, payload) {
     customIdentifier: tableIds.length === 1 ? tableIds[0] : null,
   };
 
-  state.policies = [...state.policies, ...[newPolicy]].sort(function(a, b) {
-    return a.id < b.id;
-  });
+  state.policies = [...state.policies, newPolicy]
+    .sort(function(a, b) {
+      return a.id < b.id;
+    });
 
-  tableIds.forEach(
-    tableId => {
-      state.tablePolicyAssignments[tableId] = newPolicy.id
-    }
-  )
+  assignTablePolicy(state, {
+    tableIds: tableIds,
+    policyDefinitionId: newPolicy.id
+  });
 }
 
 export default customizeTablePolicy;

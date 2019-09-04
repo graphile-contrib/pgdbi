@@ -22,6 +22,7 @@ export default {
   schemaFilter: [],
   enabledRoles: [],
   projectRoles: [],
+  ignoredRoles: [],
   selectedRoleFamilies: [],
   defaultRlsUsing: '( owner_id = viewer_id() )',
   // defaultRlsUsing: '(auth_fn.app_user_has_access(app_tenant_id) = true)',

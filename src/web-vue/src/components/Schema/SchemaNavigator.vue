@@ -4,7 +4,7 @@
     pa-0
   >
     <v-toolbar>
-      <v-btn @click="refreshSchemata" small >Refresh Schemata</v-btn>
+      <v-btn @click="refreshSchemata" block >Refresh<br>Schemata</v-btn>
     </v-toolbar>    
     <schema-tree
     ></schema-tree>

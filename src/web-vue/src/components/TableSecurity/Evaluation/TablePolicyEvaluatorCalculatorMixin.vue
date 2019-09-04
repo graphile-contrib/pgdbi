@@ -36,62 +36,65 @@
       tablePolicyEvaluation () {
         // console.log('table', JSON.stringify(this.table.roleTableGrants,0,2))
         // console.log('policyDefinition', this.policyDefinition)
+        const ignoredRoleNames = this.$store.state.ignoredRoles.map(r => r.roleName)
 
         const grantEvaluation = Object.keys(this.policyDefinition.roleGrants).reduce(
           (grantEval, roleName) => {
-            return Object.keys(this.policyDefinition.roleGrants[roleName]).reduce(
-              (grantEval, action) => {
-                const expectedRoleAction = this.policyDefinition.roleGrants[roleName][action]
-                const existingGrant = this.table.roleTableGrants.find(rg => rg.grantee === roleName && rg.privilegeType === action.toUpperCase())
+            return Object.keys(this.policyDefinition.roleGrants[roleName])
+              .filter(roleName => ignoredRoleNames.indexOf(roleName) === -1)
+              .reduce(
+                (grantEval, action) => {
+                  const expectedRoleAction = this.policyDefinition.roleGrants[roleName][action]
+                  const existingGrant = this.table.roleTableGrants.find(rg => rg.grantee === roleName && rg.privilegeType === action.toUpperCase())
 
-                switch (expectedRoleAction) {
-                  case ALLOWED:
-                    if (existingGrant) {
-                      return {
-                        ...grantEval,
-                        expected: [...grantEval.expected, {
-                          ...existingGrant,
-                          statusColor: this.grantStatusColors.expected
-                        }]
+                  switch (expectedRoleAction) {
+                    case ALLOWED:
+                      if (existingGrant) {
+                        return {
+                          ...grantEval,
+                          expected: [...grantEval.expected, {
+                            ...existingGrant,
+                            statusColor: this.grantStatusColors.expected
+                          }]
+                        }
+                      } else {
+                        return {
+                          ...grantEval,
+                          missing: [...grantEval.missing, {
+                            roleName,
+                            expectedRoleAction,
+                            action,
+                            statusColor: this.grantStatusColors.missing
+                          }]
+                        }
                       }
-                    } else {
-                      return {
-                        ...grantEval,
-                        missing: [...grantEval.missing, {
-                          roleName,
-                          expectedRoleAction,
-                          action,
-                          statusColor: this.grantStatusColors.missing
-                        }]
+                    case DENIED:
+                      if (existingGrant) {
+                        return {
+                          ...grantEval,
+                          unexpected: [...grantEval.unexpected, {
+                            ...existingGrant,
+                            statusColor: this.grantStatusColors.unexpected
+                          }]
+                        } 
+                      } else {
+                        return grantEval
                       }
-                    }
-                  case DENIED:
-                    if (existingGrant) {
-                      return {
-                        ...grantEval,
-                        unexpected: [...grantEval.unexpected, {
-                          ...existingGrant,
-                          statusColor: this.grantStatusColors.unexpected
-                        }]
-                      } 
-                    } else {
-                      return grantEval
-                    }
-                  case IMPLIED:
-                    if (existingGrant) {
-                      return {
-                        ...grantEval,
-                        extra: [...grantEval.extra, {
-                          ...existingGrant,
-                          statusColor: this.grantStatusColors.extra
-                        }]
+                    case IMPLIED:
+                      if (existingGrant) {
+                        return {
+                          ...grantEval,
+                          extra: [...grantEval.extra, {
+                            ...existingGrant,
+                            statusColor: this.grantStatusColors.extra
+                          }]
+                        }
+                      } else {
+                        return grantEval
                       }
-                    } else {
-                      return grantEval
-                    }
-                }
-              }, grantEval
-            )
+                  }
+                }, grantEval
+              )
           }, {
             expected: [],
             missing: [],

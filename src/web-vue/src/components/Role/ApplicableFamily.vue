@@ -14,6 +14,10 @@
       :value="selected"
       @input="itemSelected"
     >
+      <template v-slot:item.ignore="{ item }">
+        <ignore-role :role="item"></ignore-role>
+      </template>
+
       <template slot="items" slot-scope="props">
         <tr>
           <td class="" key="grantee">{{ props.item.roleName }}</td>
@@ -27,10 +31,14 @@
 <script>
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
+  import IgnoreRole from './IgnoreRole'
 
   export default {
     name: 'ApplicableFamily',
     mixins: [],
+    components: {
+      IgnoreRole
+    },
     props: {
       applicableFamily: {
         type: Object,
@@ -48,7 +56,21 @@
             }
           }
         )
-        const allHeaders = [{ text: 'grantee', name: 'roleName', value: 'roleName', sortable: false }].concat(headers)
+
+        const allHeaders = [
+          { 
+            text: 'select family',
+            name: 'roleName',
+            value: 'roleName', 
+            sortable: false 
+          },
+          {
+            text: 'ignore',
+            value: 'ignore'
+          },
+          ,...headers
+        ]
+        
         return allHeaders
       },
       projectRoles () {
@@ -61,7 +83,7 @@
     watch: {
     },
     data: () => ({
-      // selected: []
+      debounce: false
     }),
     methods: {
       itemSelected (selectedItems) {

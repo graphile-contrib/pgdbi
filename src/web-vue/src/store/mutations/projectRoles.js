@@ -46,6 +46,10 @@ function projectRoles(state, payload) {
       }, {}),
     };
   });
+
+  const projectRoleNames = projectRoles.map(pr => pr.roleName)
+
+  state.ignoredRoles = state.ignoredRoles.filter(ir => projectRoleNames.indexOf(ir.roleName) === -1)
 }
 
 export default projectRoles;
