@@ -11,7 +11,10 @@
     >
       <template slot="expanded-item" slot-scope="props">
         <td :colspan="headers.length + 1">
-          <function :id="props.item.functionId">
+          <function 
+            :id="props.item.functionId"
+            context="trigger"
+          >
           </function>
         </td>
       </template>

@@ -5,7 +5,7 @@
     <script-viewer
       :scriptText="definition"
       @declaration-visibility-changed="declarationVisibilityChanged"
-      showDeclarationVisibility
+      :showDeclarationVisibility="false"
       :showReadability="false"
     ></script-viewer>
   </v-container>
@@ -23,11 +23,19 @@
       id: {
         type: String,
         required: true
+      },
+      context: {
+        type: String,
+        default: 'default'
       }
     },
     computed: {
       definition () {
-        return this.declarationVisibility === 'hide' ? this.modifiedFunction : this.rawFunction
+        const contextMap = {
+          default: this.rawFunction,
+          trigger: this.triggerFunction
+        }
+        return contextMap[this.context]
       },
       rawFunction () {
         return this.fn.definition
@@ -40,6 +48,10 @@
 
         return `${commentedDeclaration} $function$${fnBody} -- $function$\n`
       },
+      triggerFunction () {
+        const fnBody = this.fn.definition.split('$function$')[1]
+        return fnBody
+      },
       functionName () {
         return this.fn.functionName
       },
@@ -48,7 +60,7 @@
       }
     },
     data: () => ({
-      fn: {},
+      fn: {definition: ''},
       declarationVisibility: 'show'
     }),
     methods: {
@@ -61,13 +73,29 @@
       onError: function (e) {
         alert('Failed to copy texts')
       },
+      setFn () {
+        const schemaName = this.id.split('.')[0]
+        const functionName = this.id.split('.')[1]
+        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
+        this.fn = schema.schemaFunctions.find(f => f.functionName === functionName)
+      }
     },
     mounted () {
-      const schemaName = this.id.split('.')[0]
-      const functionName = this.id.split('.')[1]
-      const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
-      this.fn = schema.schemaFunctions.find(f => f.functionName === functionName)
-    }
+      this.setFn()
+    },
+    beforeRouteUpdate (to, from, next) {
+      // called when the route that renders this component has changed,
+      // but this component is reused in the new route.
+      // For example, for a route with dynamic params `/foo/:id`, when we
+      // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+      // will be reused, and this hook will be called when that happens.
+      // has access to `this` component instance.
+      // console.log('to', to)
+      // console.log('from', from)
+      
+      this.setFn()
+      next()
+    },
   }
 </script>
 
