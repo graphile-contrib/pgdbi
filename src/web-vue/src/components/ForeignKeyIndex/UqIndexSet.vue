@@ -110,15 +110,15 @@
           width: '30%'
         },
         {
+          text: 'Uq Column',
+          value: 'uqSource',
+          width: '35%'
+        },
+        {
           text: 'Index',
           value: 'uqIndexEvaluation',
           width: '35%'
         },
-        {
-          text: 'Uq Column',
-          value: 'uqSource',
-          width: '35%'
-        }
       ]
     })
   }

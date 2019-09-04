@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-1 ma-1 blue darken-4">
+  <v-container>
     <h4>{{actionTiming}} - {{eventManipulation}}</h4>
     <v-data-table
       :headers="headers"
