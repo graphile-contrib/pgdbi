@@ -49,7 +49,7 @@
       <v-tab
         key="policies"
         ripple
-ß      >
+      >
         Schema Security Scripts
       </v-tab>
       <v-tab-item
@@ -60,12 +60,30 @@
           <schema-security-scripts></schema-security-scripts>
         </v-card>
       </v-tab-item>
+      
+      <v-tab
+        key="cheatsheet"
+        lazy
+      >
+        Cheatsheet
+      </v-tab>
+      <v-tab-item
+        key="cheatsheet"
+        lazy
+      >
+        <v-card>
+          <div v-html="cheatsheetData"></div>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
 
     </v-tabs>
   </v-container>
 </template>
 
 <script>
+  import rp from 'request-promise'
+
   import PolicyAssignment from '@/components/TableSecurity/Assignment/TablePolicyAssignment'
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SchemaSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
@@ -82,6 +100,19 @@
     props: {
     },
     computed: {
+      async cheatsheetData () {
+        const data = await rp('https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf')
+        console.log(data)
+        return data
+
+        // return rp('https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf')
+        //     .then(function (htmlString) {
+        //         return htmlString
+        //     })
+        //     .catch(function (err) {
+        //         console.error(err)
+        //     });
+      }
     },
     data: () => ({
       activeTab: null

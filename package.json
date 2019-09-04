@@ -23,6 +23,7 @@
     "fbkt-clog": "^1.0.5",
     "flatted": "^2.0.1",
     "graphile-utils": "^4.2.1",
+    "graphile-worker": "^0.1.0-alpha.0",
     "handlebars": "^4.1.2",
     "postgraphile": "^4.4.0",
     "postgraphile-plugin-connection-filter": "^1.0.1"

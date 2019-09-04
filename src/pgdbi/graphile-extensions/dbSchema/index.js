@@ -85,6 +85,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
         tableById(id: String!): Table
         functionById(id: String!): Function
         dbIntrospection: JSON!
+        pgdbiOptions: JSON!
       }
 
       extend type Mutation {
@@ -148,7 +149,8 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
       Query: {
         tableById: require('./resolvers/table/tableById')(build),
         functionById: require('./resolvers/function/functionById')(build),
-        dbIntrospection: require('./introspection')(build)
+        dbIntrospection: require('./introspection')(build),
+        pgdbiOptions: require('./pgdbiOptions')(build)
       },
       Mutation: {
         searchFunctions: require('./resolvers/function/searchFunctions')(build),
