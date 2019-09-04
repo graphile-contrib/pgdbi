@@ -7,7 +7,7 @@
       <h2>Single-Column Foreign Keys</h2>
       <hr>
       <v-data-table
-        :headers="singleColumnHeaders"
+        :headers="headers"
         :items="singleColumnItems"
         class="elevation-1 text-no-wrap"
         hide-default-footer
@@ -33,7 +33,7 @@
         </template>
 
         <template slot="expanded-item" slot-scope="props">
-          <td :colspan="singleColumnHeaders.length + 1">
+          <td :colspan="headers.length + 1">
             <table-generic-index-detail
               :evaluation="props.item"
             ></table-generic-index-detail>
@@ -49,7 +49,7 @@
       <h2>Multi-Column Foreign Keys</h2>
       <hr>
       <v-data-table
-        :headers="multiColumnHeaders"
+        :headers="headers"
         :items="multiColumnItems"
         class="elevation-1 text-no-wrap"
         hide-default-footer
@@ -75,7 +75,7 @@
         </template>
 
         <template slot="expanded-item" slot-scope="props">
-          <td :colspan="multiColumnHeaders.length + 1">
+          <td :colspan="headers.length + 1">
             <generic-index-detail
               :evaluation="props.item"
             ></generic-index-detail>
@@ -119,53 +119,33 @@
       }
     },
     data: () => ({
-      singleColumnHeaders: [
+      headers: [
         {
           text: 'Constraint Name',
-          value: 'constraintName'
-        },
-        {
-          text: 'Index',
-          value: 'fkIndexEvaluation'
+          value: 'constraintName',
+          width: '15%'
         },
         {
           text: 'FK Table',
-          value: 'fkTable'
+          value: 'fkTable',
+          width: '15%'
         },
         {
           text: 'FK Source',
-          value: 'fkSource'
+          value: 'fkSource',
+          width: '25%'
         },
         {
           text: 'FK Target',
-          value: 'fkTarget'
-        }
-      ],
-      multiColumnHeaders: [
-        {
-          text: 'Constraint Name',
-          value: 'constraintName'
+          value: 'fkTarget',
+          width: '25%'
         },
         {
           text: 'Index',
-          value: 'fkIndexEvaluation'
+          value: 'fkIndexEvaluation',
+          width: '20%'
         },
-        {
-          text: 'FK Table',
-          value: 'fkTable'
-        },
-        {
-          text: 'FK Source',
-          value: 'fkSource'
-        },
-        {
-          text: 'FK Target',
-          value: 'fkTarget'
-        }
-      ],      // pagination: {
-      //   sortBy: 'constraintName',
-      //   rowsPerPage: -1
-      // },
+      ]
     })
   }
 </script>

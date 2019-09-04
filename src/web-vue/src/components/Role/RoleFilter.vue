@@ -3,6 +3,7 @@
     <div v-for="family in roleFamilies" :key="family.name">
       <applicable-family
         :applicableFamily="family"
+        :maxFamilySize="maxFamilySize"
       ></applicable-family>
     </div>
  </v-container>
@@ -22,6 +23,14 @@
       ApplicableFamily
     },
     computed: {
+      maxFamilySize () {
+        return this.roleFamilies.reduce(
+          (max, f) => {
+            return f.members.length > max ? f.members.length : max
+          }, 0
+        )
+
+      },
       initializing () {
         return this.$store.state.initializing
       },

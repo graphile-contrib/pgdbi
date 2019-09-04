@@ -29,7 +29,7 @@
         </template>
 
         <template v-slot:item.evaluation="{ item }">
-          <span :class="item.indexDisplayClass">{{ item.evaluation }}</span>
+          <div :class="item.indexDisplayClass" v-for="col in item.evaluation" :key="col">{{col}}</div>
         </template>
 
         <template slot="expanded-item" slot-scope="props">
@@ -71,7 +71,7 @@
         </template>
 
         <template v-slot:item.evaluation="{ item }">
-          <span :class="item.indexDisplayClass">{{ item.evaluation }}</span>
+          <div :class="item.indexDisplayClass" v-for="col in item.evaluation" :key="col">{{col}}</div>
         </template>
 
         <template slot="expanded-item" slot-scope="props">
@@ -119,7 +119,8 @@
             idx => {
               return {
                 ...idx,
-                columnDisplay: idx.idxColumns.split('+')
+                columnDisplay: idx.idxColumns.split(', '),
+                evaluation: idx.evaluation.split(', ')
               }
             }
           )
@@ -130,7 +131,8 @@
             idx => {
               return {
                 ...idx,
-                columnDisplay: idx.idxColumns.split('+')
+                columnDisplay: idx.idxColumns.split(', '),
+                evaluation: idx.evaluation.split(', ')
               }
             }
           )
@@ -141,19 +143,23 @@
       headers: [
         {
           text: 'Schema',
-          value: 'tableSchema'
+          value: 'tableSchema',
+          width: '10%'
         },
         {
           text: 'Table',
-          value: 'tableName'
+          value: 'tableName',
+          width: '10%'
         },
         {
           text: 'Index Columns',
-          value: 'columnDisplay'
+          value: 'columnDisplay',
+          width: '40%'
         },
         {
           text: 'Evaluation',
-          value: 'evaluation'
+          value: 'evaluation',
+          width: '40%'
         }
       ],
       pagination: {

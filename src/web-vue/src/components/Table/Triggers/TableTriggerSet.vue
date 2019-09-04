@@ -77,25 +77,29 @@ export default {
           text: 'Name',
           align: 'left',
           sortable: true,
-          value: 'triggerName'
+          value: 'triggerName',
+          width: '20%'
         },
         {
           text: 'Timing',
           align: 'left',
           sortable: true,
-          value: 'actionTiming'
+          value: 'actionTiming',
+          width: '10%'
         },
         {
           text: 'Trigger On',
           align: 'left',
           sortable: true,
-          value: 'eventManipulation'
+          value: 'eventManipulation',
+          width: '10%'
         },
         {
           text: 'Statement',
           align: 'left',
           sortable: true,
-          value: 'actionStatement'
+          value: 'actionStatement',
+          width: '60%'
         },
       ],
       pagination: {

@@ -18,12 +18,6 @@
         <ignore-role :role="item"></ignore-role>
       </template>
 
-      <template slot="items" slot-scope="props">
-        <tr>
-          <td class="" key="grantee">{{ props.item.roleName }}</td>
-          <td class="" v-for="fieldName in family.allMemberNames" :key="fieldName">{{ props.item[fieldName] }}</td>
-        </tr>
-      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -43,32 +37,47 @@
       applicableFamily: {
         type: Object,
         required: true
+      },
+      maxFamilySize: {
+        type: Number,
+        required: true
       }
     },
     computed: {
       familyHeaders () {
+        const headerWidth = `${100/(this.maxFamilySize + 2)}%`
+
         const headers = this.applicableFamily.allMemberNames.map(
           memberName => {
             return {
               text: memberName,
               value: memberName,
-              sortable: false
+              sortable: false,
+              width: headerWidth
             }
           }
         )
+
+        const placeHolders = new Array(this.maxFamilySize - this.applicableFamily.members.length).fill({
+          text: '',
+          width: headerWidth
+        })
 
         const allHeaders = [
           { 
             text: 'select family',
             name: 'roleName',
             value: 'roleName', 
-            sortable: false 
+            sortable: false,
+            width: headerWidth
           },
           {
             text: 'ignore',
-            value: 'ignore'
+            value: 'ignore',
+            width: headerWidth
           },
-          ,...headers
+          ,...headers,
+          ...placeHolders,
         ]
         
         return allHeaders

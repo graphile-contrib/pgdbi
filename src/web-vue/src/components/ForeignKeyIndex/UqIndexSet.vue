@@ -7,7 +7,7 @@
       <h2>Single-Column Unique Indices</h2>
       <hr>
       <v-data-table
-        :headers="singleColumnHeaders"
+        :headers="headers"
         :items="singleColumnItems"
         class="elevation-1 text-no-wrap"
         hide-default-footer
@@ -25,7 +25,7 @@
         </template>
 
         <template slot="expanded-item" slot-scope="props">
-          <td :colspan="singleColumnHeaders.length + 1">
+          <td :colspan="headers.length + 1">
             <table-generic-index-detail
               :evaluation="props.item"
             ></table-generic-index-detail>
@@ -41,7 +41,7 @@
       <h2>Multi-Column Unique Indices</h2>
       <hr>
       <v-data-table
-        :headers="multiColumnHeaders"
+        :headers="headers"
         :items="multiColumnItems"
         class="elevation-1 text-no-wrap"
         hide-default-footer
@@ -59,7 +59,7 @@
         </template>
 
         <template slot="expanded-item" slot-scope="props">
-          <td :colspan="singleColumnHeaders.length + 1">
+          <td :colspan="headers.length + 1">
             <table-generic-index-detail
               :evaluation="props.item"
             ></table-generic-index-detail>
@@ -101,53 +101,25 @@
       multiColumnItems () {
         return Object.values(this.uqIndexEvaluations.multiColumn).flat()
       }
-      // singleColumnItems () {
-      //   return this.tableInfo.tableColumns
-      //     .reduce(
-      //       (all, c) => {
-      //         // console.log('singleColumn', JSON.stringify(this.$store.state.uqIndexEvaluations.singleColumn[c.id],null,2))
-      //         const uqIndexEvaluation = this.$store.state.uqIndexEvaluations.singleColumn[c.id]
-      //         return uqIndexEvaluation ? [...all, ...uqIndexEvaluation] : all
-      //       },[]
-      //     )
-      // },
-      // multiColumnItems () {
-      //   // console.log('multiColumn', JSON.stringify(this.$store.state.uqIndexEvaluations.multiColumn[this.tableInfo.id],null,2))
-      //   return this.$store.state.uqIndexEvaluations.multiColumn[this.tableInfo.id]
-      // }
     },
     data: () => ({
-      singleColumnHeaders: [
+      headers: [
         {
           text: 'Constraint Name',
-          value: 'constraintName'
+          value: 'constraintName',
+          width: '30%'
         },
         {
           text: 'Index',
-          value: 'uqIndexEvaluation'
+          value: 'uqIndexEvaluation',
+          width: '35%'
         },
         {
           text: 'Uq Column',
-          value: 'uqSource'
+          value: 'uqSource',
+          width: '35%'
         }
-      ],
-      multiColumnHeaders: [
-        {
-          text: 'Constraint Name',
-          value: 'constraintName'
-        },
-        {
-          text: 'Index',
-          value: 'uqIndexEvaluation'
-        },
-        {
-          text: 'Uq Column(s)',
-          value: 'uqSource'
-        }
-      ],      // pagination: {
-      //   sortBy: 'constraintName',
-      //   rowsPerPage: -1
-      // },
+      ]
     })
   }
 </script>
