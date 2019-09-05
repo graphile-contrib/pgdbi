@@ -34,6 +34,8 @@ function evaluateSingleColumnUqIndexes(state) {
                         return {
                           id: uc.constraintName,
                           constraintName: uc.constraintName,
+                          tableSchema: table.tableSchema,
+                          tableName: table.tableName,
                           uqSource: uqSource,
                           uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
                           uqIndices: columnIndices,
@@ -119,6 +121,8 @@ function evaluateMultiColumnUqIndexes(state) {
                   return {
                     id: uc.constraintName,
                     constraintName: uc.constraintName,
+                    tableSchema: table.tableSchema,
+                    tableName: table.tableName,
                     uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
                     uqSource: uqSource,
                     uqIndices: uqIndices,

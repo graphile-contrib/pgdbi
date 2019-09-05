@@ -27,7 +27,9 @@
       <v-btn @click="navigate('table-security-manager')" :color="btnColor('table-security-manager')">Table Security</v-btn>
       <v-btn @click="navigate('function-security-manager')" :color="btnColor('function-security-manager')">Function Security</v-btn>
       <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Indexes</v-btn>
-      <v-btn @click="navigate('search-view')" :color="btnColor('search-view')">Search</v-btn>
+      <v-btn @click="navigate('search-view')" :color="btnColor('search-view')">Function Search</v-btn>
+      <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
+      <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn>
       <v-spacer></v-spacer>
     </v-app-bar>
 
@@ -62,6 +64,12 @@ export default {
   computed: {
     currentRoute () {
       return this.$router.currentRoute
+    },
+    disableGraphileWorker () {
+      return this.$store.state.pgdbiOptions.enableGraphileWorker !== true
+    },
+    disableSqitch () {
+      return this.$store.state.pgdbiOptions.enableSqitch !== true
     }
   },
   methods: {

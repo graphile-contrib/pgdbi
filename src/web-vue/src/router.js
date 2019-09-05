@@ -13,6 +13,8 @@ import ForeignKeyIndexView from './views/ForeignKeyIndexView';
 import SmartCommentManager from './components/SmartCommentManager/SmartCommentManager';
 import ProjectExport from './components/Project/ProjectExport.vue';
 import ProjectImport from './components/Project/ProjectImport.vue';
+import SqitchView from './views/SqitchView.vue'
+import WorkerView from './views/WorkerView.vue'
 
 import store from './store/store';
 
@@ -81,6 +83,16 @@ const router = new Router({
       path: '/project-import',
       name: 'project-import',
       component: ProjectImport,
+    },
+    {
+      path: '/sqitch',
+      name: 'sqitch',
+      component: SqitchView,
+    },
+    {
+      path: '/worker',
+      name: 'worker',
+      component: WorkerView,
     },
     {
       path: '/table/:id',

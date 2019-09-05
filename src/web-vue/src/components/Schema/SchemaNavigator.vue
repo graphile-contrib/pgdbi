@@ -39,6 +39,7 @@
           console.log('schemata', result.data)
           this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
           this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
+          this.$store.commit('setPgdbiOptions', {pgdbiOptions: result.data.pgdbiOptions})
           this.$loading(false)
         })
         .catch(error => {

@@ -1,3 +1,4 @@
 query {
-  dbIntrospection 
+  dbIntrospection
+  pgdbiOptions
 }

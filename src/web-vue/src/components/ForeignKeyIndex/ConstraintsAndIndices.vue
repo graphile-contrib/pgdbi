@@ -48,10 +48,11 @@
           ></uq-index-set>
         </v-card>
       </v-tab-item>
-      <!-- 
+      
       <v-tab
         key="chk"
         ripple
+        :hidden="hideCheckConstraints"
       >
         Check Constraints
       </v-tab>
@@ -59,11 +60,11 @@
         key="chk"
       >
         <v-card flat>
-          <table-check-constraints
+          <check-constraints
             :checkConstraints="checkConstraints"
-          ></table-check-constraints>
+          ></check-constraints>
         </v-card>
-      </v-tab-item> -->
+      </v-tab-item>
     </v-tabs>
 </template>
 
@@ -71,7 +72,7 @@
   import GenericIndexSet from './GenericIndexSet'
   import FkIndexConstraints from './FkIndexConstraints'
   import UqIndexSet from './UqIndexSet'
-  // import TableCheckConstraints from './Constraints/TableCheckConstraints.vue'
+  import CheckConstraints from './Constraints/CheckConstraints.vue'
 
   export default {
     name: 'ConstraintsAndIndices',
@@ -79,7 +80,7 @@
       GenericIndexSet,
       FkIndexConstraints,
       UqIndexSet,
-      // TableCheckConstraints
+      CheckConstraints
     },
     props: {
       tableSchema: {
@@ -136,10 +137,49 @@
         return tableFiltered
       },
       uqIndexEvaluations () {
-        return this.$store.state.uqIndexEvaluations
+        const all = this.$store.state.uqIndexEvaluations
+
+        const schemaFiltered = this.tableSchema ? {
+          singleColumn: Object.values(all.singleColumn).filter(
+            e => {
+              const fkidx = e[0] || {}
+              return this.tableSchema ?  fkidx.tableSchema === this.tableSchema : true
+            }
+          ),
+          multiColumn: Object.values(all.multiColumn).filter(
+            e => {
+              const fkidx = e[0] || {}
+              return this.tableSchema ?  fkidx.tableSchema === this.tableSchema : true
+            }
+          )
+        } : all
+
+        const tableFiltered = this.tableName ? {
+          singleColumn: Object.values(all.singleColumn).filter(
+            e => {
+              const fkidx = e[0] || {}
+              return this.tableName ?  fkidx.tableName === this.tableName : true
+            }
+          ),
+          multiColumn: Object.values(all.multiColumn).filter(
+            e => {
+              const fkidx = e[0] || {}
+              return this.tableName ?  fkidx.tableName === this.tableName : true
+            }
+          )
+        } : schemaFiltered
+
+        return tableFiltered
+      },
+      hideCheckConstraints () {
+        return this.tableName === null || this.tableName === undefined
       },
       checkConstraints () {
-        // return this.tableInfo.checkConstraints || []
+        if (this.tableSchema && this.tableName) {
+          return this.$store.state.managedSchemata.find(s => s.schemaName === this.tableSchema).schemaTables.find(t => t.tableName === this.tableName).checkConstraints
+        } else {
+          return []
+        }
       },
     },
     data: () => ({

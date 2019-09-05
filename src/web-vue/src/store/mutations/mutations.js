@@ -21,6 +21,8 @@ import updateTablePolicyTemplate from './updateTablePolicyTemplate';
 import updateDefaultRlsUsing from './updateDefaultRlsUsing';
 import setEnabledRoles from './setEnabledRoles'
 import toggleIgnoreRole from './toggleIgnoreRole'
+import setPgdbiOptions from './setPgdbiOptions'
+import toggleIndexForDrop from './toggleIndexForDrop'
 
 export default {
   resetDefaultState,
@@ -45,5 +47,7 @@ export default {
   updateTablePolicyTemplate,
   updateDefaultRlsUsing,
   setEnabledRoles,
-  toggleIgnoreRole
+  toggleIgnoreRole,
+  setPgdbiOptions,
+  toggleIndexForDrop,
 };

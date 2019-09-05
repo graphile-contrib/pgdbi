@@ -1,4 +1,5 @@
 export default {
+  pgdbiOtions: {},
   initializing: true,
   schemaFilterOn: true,
   policies: [],
@@ -16,6 +17,7 @@ export default {
     singleColumn: {},
     multiColumn: {}
   },
+  indicesToDrop: {},
   managedSchemata: [],
   parkedSchemata: [],
   rawSchemata: [],

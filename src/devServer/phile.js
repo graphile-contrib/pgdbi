@@ -67,7 +67,7 @@ const phile =  postgraphile(connection, schemas, {
   graphiql: true,
   pgdbi: {
     enableSqitch: true,
-    enableGraphileWorker: true
+    enableGraphileWorker: false
   }
 })
 

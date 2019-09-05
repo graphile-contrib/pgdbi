@@ -6,7 +6,12 @@
       class="elevation-1"
       :hide-default-footer="true"
       show-expand
+      show-select
+      @item-selected="itemSelected"
     >
+      <template slot="header.data-table-select">
+        Drop
+      </template>
       <template slot="expanded-item" slot-scope="props">
         <td :colspan="headers.length + 1">
           <v-tabs
@@ -75,12 +80,21 @@
           .split(',').join('\n  ,')
           .split(');').join('\n);')
 
+      },
+      itemSelected (item) {
+        console.log('selected', item)
+        this.$store.commit('toggleIndexForDrop', item)
       }
     },
     computed: {
     },
     data: () => ({
       headers: [
+        {
+          text: '',
+          value: 'drop',
+          width: '5%'
+        },
         {
           text: 'Index Name',
           value: 'indexName'
