@@ -16,6 +16,10 @@
         dense
         :items-per-page="singleColumnItems.length"
       >
+        <template v-slot:item.uqTableId="{ item }">
+          <router-link :to="{ name: 'table', params: { id: item.uqTableId }}" target="_blank" v-if="item.uqTableId">{{item.uqTableId}}</router-link>
+        </template>
+
         <template v-slot:item.uqIndexEvaluation="{ item }">
           <span :class="item.indexDisplayClass">{{ item.uqIndexEvaluation }}</span>
         </template>
@@ -50,6 +54,10 @@
         dense
         :items-per-page="multiColumnItems.length"
       >
+        <template v-slot:item.uqTableId="{ item }">
+          <router-link :to="{ name: 'table', params: { id: item.uqTableId }}" target="_blank" v-if="item.uqTableId">{{item.uqTableId}}</router-link>
+        </template>
+
         <template v-slot:item.uqIndexEvaluation="{ item }">
           <span :class="item.indexDisplayClass">{{ item.uqIndexEvaluation }}</span>
         </template>
@@ -107,17 +115,22 @@
         {
           text: 'Constraint Name',
           value: 'constraintName',
-          width: '30%'
+          width: '25%'
+        },
+        {
+          text: 'Table',
+          value: 'uqTableId',
+          width: '20%'
         },
         {
           text: 'Uq Column',
           value: 'uqSource',
-          width: '35%'
+          width: '25%'
         },
         {
           text: 'Index',
           value: 'uqIndexEvaluation',
-          width: '35%'
+          width: '30%'
         },
       ]
     })
