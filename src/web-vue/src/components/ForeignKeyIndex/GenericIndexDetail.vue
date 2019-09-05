@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-data-table
+      v-model="selected"
       :headers="headers"
       :items="evaluation.indices"
       class="elevation-1"
@@ -12,6 +13,7 @@
       <template slot="header.data-table-select">
         Drop
       </template>
+      
       <template slot="expanded-item" slot-scope="props">
         <td :colspan="headers.length + 1">
           <v-tabs
@@ -79,7 +81,6 @@
           .split(' (').join(' (\n  ')
           .split(',').join('\n  ,')
           .split(');').join('\n);')
-
       },
       itemSelected (item) {
         console.log('selected', item)
@@ -87,8 +88,10 @@
       }
     },
     computed: {
+
     },
     data: () => ({
+      selected: [],
       headers: [
         {
           text: '',
@@ -99,12 +102,13 @@
           text: 'Index Name',
           value: 'indexName'
         },
-        // {
-        //   text: 'Evaluation',
-        //   value: 'evaluation'
-        // }
       ],
-    })
+    }),
+    mounted () {
+      const theseIndicesNames = this.evaluation.indices.map(i => i.indexName)
+
+      this.selected = this.evaluation.indices.filter(i => this.$store.state.indicesToDrop[i.indexName] !== undefined)
+    }
   }
 </script>
 

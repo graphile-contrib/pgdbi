@@ -65,6 +65,22 @@
           ></check-constraints>
         </v-card>
       </v-tab-item>
+
+      <v-tab
+        key="drop"
+        ripple
+      >
+        Drop Indices Script
+      </v-tab>
+      <v-tab-item
+        key="drop"
+      >
+        <v-card flat>
+          <drop-indices-script
+            :indicesToDrop="indicesToDrop"
+          ></drop-indices-script>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
 </template>
 
@@ -73,6 +89,7 @@
   import FkIndexConstraints from './FkIndexConstraints'
   import UqIndexSet from './UqIndexSet'
   import CheckConstraints from './Constraints/CheckConstraints.vue'
+  import DropIndicesScript from './DropIndicesScript'
 
   export default {
     name: 'ConstraintsAndIndices',
@@ -80,7 +97,8 @@
       GenericIndexSet,
       FkIndexConstraints,
       UqIndexSet,
-      CheckConstraints
+      CheckConstraints,
+      DropIndicesScript
     },
     props: {
       tableSchema: {
@@ -120,13 +138,13 @@
         } : all
 
         const tableFiltered = this.tableName ? {
-          singleColumn: Object.values(all.singleColumn).filter(
+          singleColumn: Object.values(schemaFiltered.singleColumn).filter(
             e => {
               const fkidx = e[0] || {}
               return this.tableName ?  fkidx.tableName === this.tableName : true
             }
           ),
-          multiColumn: Object.values(all.multiColumn).filter(
+          multiColumn: Object.values(schemaFiltered.multiColumn).filter(
             e => {
               const fkidx = e[0] || {}
               return this.tableName ?  fkidx.tableName === this.tableName : true
@@ -155,13 +173,13 @@
         } : all
 
         const tableFiltered = this.tableName ? {
-          singleColumn: Object.values(all.singleColumn).filter(
+          singleColumn: Object.values(schemaFiltered.singleColumn).filter(
             e => {
               const fkidx = e[0] || {}
               return this.tableName ?  fkidx.tableName === this.tableName : true
             }
           ),
-          multiColumn: Object.values(all.multiColumn).filter(
+          multiColumn: Object.values(schemaFiltered.multiColumn).filter(
             e => {
               const fkidx = e[0] || {}
               return this.tableName ?  fkidx.tableName === this.tableName : true
@@ -181,6 +199,23 @@
           return []
         }
       },
+      indicesToDrop () {
+        const all = this.$store.state.indicesToDrop
+
+        const schemaFiltered = this.tableSchema ? Object.values(all).filter(
+            e => {
+              return this.tableSchema ?  e.tableSchema === this.tableSchema : true
+            }
+          ) : all
+
+        const tableFiltered = this.tableName ? Object.values(schemaFiltered).filter(
+            e => {
+              return this.tableName ?  e.tableName === this.tableName : true
+            }
+          ) : schemaFiltered
+
+        return Object.values(tableFiltered)
+      }
     },
     data: () => ({
       activeTab: 0
