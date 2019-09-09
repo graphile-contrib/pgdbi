@@ -39,25 +39,21 @@
       headers: [
         {
           text: 'Schema',
-          align: 'left',
           sortable: true,
           value: 'tableSchema'
         },
         {
           text: 'Table',
-          align: 'left',
           sortable: true,
           value: 'tableName'
         },
         {
           text: 'Column',
-          align: 'left',
           sortable: true,
           value: 'columnName'
         },
         {
           text: 'Index Name',
-          align: 'left',
           sortable: true,
           value: 'indexName'
         },

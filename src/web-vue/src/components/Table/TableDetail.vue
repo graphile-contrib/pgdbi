@@ -96,49 +96,41 @@
       headers: [
         {
           text: 'Ordinal',
-          align: 'left',
           sortable: true,
           value: 'ordinalPosition'
         },
         {
           text: 'Column Name',
-          align: 'left',
           sortable: true,
           value: 'columnName'
         },
         { 
           text: 'Data Type', 
-          align: 'right',
           sortable: true,
           value: 'dataType'
         },
         { 
           text: 'Identity', 
-          align: 'right',
           sortable: true,
           value: 'isIdentity'
         },
         { 
           text: 'Nullable', 
-          align: 'right',
           sortable: true,
           value: 'isNullable'
         },
         { 
           text: 'Default Value', 
-          align: 'right',
           sortable: true,
           value: 'columnDefault'
         },
         { 
           text: 'FK Reference', 
-          align: 'left',
           sortable: true,
           value: 'fkInfo'
         },
         { 
           text: 'FK Index', 
-          align: 'left',
           sortable: true,
           value: 'fkIndex'
         },

@@ -44,8 +44,7 @@
           },
           {
             text: 'expected',
-            align: 'left',
-            sortable: false
+              sortable: false
           },
           {
             text: '',
@@ -53,8 +52,7 @@
           },
           {
             text: 'extra',
-            align: 'left',
-            sortable: false
+              sortable: false
           },
           {
             text: '',
@@ -62,8 +60,7 @@
           },
           {
             text: 'missing',
-            align: 'left',
-            sortable: false
+              sortable: false
           },
           {
             text: '',
@@ -71,8 +68,7 @@
           },
           {
             text: 'unexpected',
-            align: 'left',
-            sortable: false
+              sortable: false
           },
         ]
       }

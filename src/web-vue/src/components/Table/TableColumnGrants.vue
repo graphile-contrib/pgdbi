@@ -42,43 +42,36 @@
       headers: [
         {
           text: 'Schema',
-          align: 'left',
           sortable: true,
           value: 'tableSchema'
         },
         {
           text: 'Table',
-          align: 'left',
           sortable: true,
           value: 'tableName'
         },
         {
           text: 'Column',
-          align: 'left',
           sortable: true,
           value: 'columnName'
         },
         {
           text: 'Grantee',
-          align: 'left',
           sortable: true,
           value: 'grantee'
         },
         {
           text: 'Grantor',
-          align: 'left',
           sortable: true,
           value: 'grantor'
         },
         {
           text: 'Privilege Type',
-          align: 'left',
           sortable: true,
           value: 'privilegeType'
         },
         {
           text: 'Is Grantable',
-          align: 'left',
           sortable: true,
           value: 'isGrantable'
         }

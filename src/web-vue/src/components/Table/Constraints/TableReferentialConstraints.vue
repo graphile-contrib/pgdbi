@@ -76,31 +76,26 @@
       headers: [
         {
           text: 'Source Constraint',
-          align: 'left',
           sortable: true,
           value: 'constraintName'
         },
         {
           text: 'Target Constraint',
-          align: 'left',
           sortable: true,
           value: 'uniqueConstraintName'
         },
         {
           text: 'On Match',
-          align: 'left',
           sortable: true,
           value: 'matchOption'
         },
         {
           text: 'On Update',
-          align: 'left',
           sortable: true,
           value: 'updateRule'
         },
         {
           text: 'On Delete',
-          align: 'left',
           sortable: true,
           value: 'deleteRule'
         },

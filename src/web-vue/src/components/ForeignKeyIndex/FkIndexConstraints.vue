@@ -34,9 +34,9 @@
 
         <template slot="expanded-item" slot-scope="props">
           <td :colspan="headers.length + 1">
-            <table-generic-index-detail
+            <generic-index-detail
               :evaluation="props.item"
-            ></table-generic-index-detail>
+            ></generic-index-detail>
           </td>
         </template>
       </v-data-table>
@@ -112,6 +112,8 @@
     },
     computed: {
       singleColumnItems () {
+        // console.log('blah', this.fkIndexEvaluations.singleColumn)
+        // console.log('mah', this.fkIndexEvaluations.singleColumn.flat())
         return Object.values(this.fkIndexEvaluations.singleColumn).flat()
       },
       multiColumnItems () {

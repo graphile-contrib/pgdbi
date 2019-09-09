@@ -70,10 +70,26 @@
         key="drop"
         ripple
       >
-        Drop Indices Script
+        Create Indices Script
       </v-tab>
       <v-tab-item
         key="drop"
+      >
+        <v-card flat>
+          <create-indices-script
+            :indicesToCreate="indicesToCreate"
+          ></create-indices-script>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab
+        key="create"
+        ripple
+      >
+        Drop Indices Script
+      </v-tab>
+      <v-tab-item
+        key="create"
       >
         <v-card flat>
           <drop-indices-script
@@ -90,6 +106,7 @@
   import UqIndexSet from './UqIndexSet'
   import CheckConstraints from './Constraints/CheckConstraints.vue'
   import DropIndicesScript from './DropIndicesScript'
+  import CreateIndicesScript from './CreateIndicesScript'
 
   export default {
     name: 'ConstraintsAndIndices',
@@ -201,6 +218,23 @@
       },
       indicesToDrop () {
         const all = this.$store.state.indicesToDrop
+
+        const schemaFiltered = this.tableSchema ? Object.values(all).filter(
+            e => {
+              return this.tableSchema ?  e.tableSchema === this.tableSchema : true
+            }
+          ) : all
+
+        const tableFiltered = this.tableName ? Object.values(schemaFiltered).filter(
+            e => {
+              return this.tableName ?  e.tableName === this.tableName : true
+            }
+          ) : schemaFiltered
+
+        return Object.values(tableFiltered)
+      },
+      indicesToCreate () {
+        const all = this.$store.state.indicesToCreate
 
         const schemaFiltered = this.tableSchema ? Object.values(all).filter(
             e => {

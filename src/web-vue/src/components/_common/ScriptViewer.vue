@@ -21,7 +21,7 @@
       </v-tooltip>
       <v-spacer></v-spacer>
       <v-container fluid >
-        <v-row align="space-around" justify="end">
+        <v-row>
           <v-spacer></v-spacer>
           <v-spacer></v-spacer>
           <v-layout v-if="showReadability">

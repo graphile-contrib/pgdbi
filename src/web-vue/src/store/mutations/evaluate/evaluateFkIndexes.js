@@ -34,7 +34,28 @@ function evaluateSingleColumnForeignKeys(state){
 
                         const fkIndexEvaluation = fkIndices.length == 0 ? NO_INDEX : (fkIndices.length > 1 ? MULTIPLE_INDICES : fkIndices[0].indexName)
                         const indexDisplayClass = fkIndexEvaluation === NO_INDEX || fkIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
-                        
+                        const defaultIndexName = `${c.tableSchema}_${c.tableName}_${c.columnName}`
+                        const defaultRealization = {
+                          create: `create index if not exists idx_${defaultIndexName} on ${c.tableSchema}.${c.tableName} using btree(${c.columnName});`
+                        }
+                        const currentRealization = fkIndices.reduce(
+                          (all, idx) => {
+                            const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
+                            if (isIgnored) {
+                              return {
+                                ...all,  
+                                drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                              }  
+                            } else {
+                              return {
+                                ...all,  
+                                create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                              }  
+                            }
+                          }, {}
+                        )
+                        const desiredRealization = currentRealization.drop === undefined && currentRealization.create === undefined ? defaultRealization : currentRealization
+
                         const rcu = rc.referencedColumnUsage[0]
                         return {
                           id: rc.constraintName,
@@ -50,7 +71,8 @@ function evaluateSingleColumnForeignKeys(state){
                           evaluation: fkIndexEvaluation,
                           idxColumns: [c.columnName],
                           indices: fkIndices,
-                          indexDisplayClass: indexDisplayClass
+                          indexDisplayClass: indexDisplayClass,
+                          desiredRealization: desiredRealization
                         }
                       }
                     )
@@ -95,12 +117,14 @@ function evaluateMultiColumnForeignKeys(state){
               .map(
                 rc => {
                   const fkSource = rc.referencingColumnUsage
-                    .sort((a,b)=>{return a.columnName < b.columnName ? -1 : 1})
+                    // .sort((a,b)=>{return a.columnName < b.columnName ? -1 : 1})
                     .map(rcu => rcu.columnName)
                     .join(', ')
 
+                  const defaultIndexName = fkSource.split(', ').join('_')
+
                   const fkTarget = rc.referencedColumnUsage
-                    .sort((a,b)=>{return a.columnName < b.columnName ? -1 : 1})
+                    // .sort((a,b)=>{return a.columnName < b.columnName ? -1 : 1})
                     .map(rcu => rcu.columnName)
                     .join(', ')
 
@@ -109,13 +133,6 @@ function evaluateMultiColumnForeignKeys(state){
                     .filter(
                       i => {
                         const indexCols = i.indkey.map(ik => i.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
-                        // const indexCols = i.indexColumns
-                        //   .map(ic => ic.columnName)
-                        //   .sort((a,b)=>{return a<b?-1:1})
-                        //   .join(', ')
-                        // console.log(i.indexName)
-                        // console.log(indexCols)
-                        // console.log(fkSource)
                         return indexCols === fkSource                   
                       }
                     )
@@ -123,6 +140,27 @@ function evaluateMultiColumnForeignKeys(state){
                   
                   const fkIndexEvaluation = fkIndices.length == 0 ? NO_INDEX : (fkIndices.length > 1 ? MULTIPLE_INDICES : fkIndices[0].indexName)                        
                   const indexDisplayClass = fkIndexEvaluation === NO_INDEX || fkIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
+                  const defaultRealization = {
+                    create: `create index if not exists idx_${table.tableSchema}_${table.tableName}_${defaultIndexName} on ${table.tableSchema}_${table.tableName} using btree(${fkSource});`
+                  }
+                  const currentRealization = fkIndices.reduce(
+                    (all, idx) => {
+                      const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
+                      if (isIgnored) {
+                        return {
+                          ...all,  
+                          drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                        }  
+                      } else {
+                        return {
+                          ...all,  
+                          create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                        }  
+                      }
+                    }, {}
+                  )
+                  const desiredRealization = currentRealization.drop === undefined && currentRealization.create === undefined ? defaultRealization : currentRealization
+
                   const rcu = rc.referencedColumnUsage[0]
                   return {
                     id: rc.constraintName,
@@ -138,7 +176,8 @@ function evaluateMultiColumnForeignKeys(state){
                     evaluation: fkIndexEvaluation,
                     idxColumns: fkSource.split(', '),
                     indices: fkIndices,
-                    indexDisplayClass: indexDisplayClass
+                    indexDisplayClass: indexDisplayClass,
+                    desiredRealization: desiredRealization
                   }
                 }
               )

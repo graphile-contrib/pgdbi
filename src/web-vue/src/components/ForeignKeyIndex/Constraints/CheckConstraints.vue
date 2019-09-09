@@ -50,27 +50,13 @@
     },
     data: () => ({
       headers: [
-        // {
-        //   text: 'Schema',
-        //   align: 'left',
-        //   sortable: true,
-        //   value: 'constraintSchema'
-        // },
-        // {
-        //   text: 'Table',
-        //   align: 'left',
-        //   sortable: true,
-        //   value: 'tableName'
-        // },
         {
           text: 'Name',
-          align: 'left',
           sortable: true,
           value: 'constraintName'
         },
         {
           text: 'Check Clause',
-          align: 'left',
           sortable: true,
           value: 'checkClause'
         },
@@ -83,6 +69,5 @@
   }
 </script>
 
-<style>
 
 </style>

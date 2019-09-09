@@ -1,3 +1,5 @@
+import evaluateAll from './evaluate/evaluateAll'
+
 function toggleIndexForDrop(state, payload) {
   if (payload.value === true && !state.indicesToDrop[payload.item.id]) {  // add the index
     const indexId = payload.item.id
@@ -17,6 +19,8 @@ function toggleIndexForDrop(state, payload) {
         }, {}
       )
   }
+
+  evaluateAll(state)
 }
 
 export default toggleIndexForDrop;

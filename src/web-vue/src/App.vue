@@ -19,9 +19,7 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
-      <v-btn icon @click.stop="settings">
-        <v-icon>settings</v-icon>
-      </v-btn>
+      <v-spacer></v-spacer>
       <v-btn @click="navigate('home')" :color="btnColor('home')">Home</v-btn>
       <v-btn @click="navigate('role-manager')" :color="btnColor('role-manager')">Roles</v-btn>
       <v-btn @click="navigate('table-security-manager')" :color="btnColor('table-security-manager')">Table Security</v-btn>
@@ -31,6 +29,17 @@
       <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
       <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn>
       <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-btn icon @click.stop="settings">
+        <v-icon>settings</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-content>

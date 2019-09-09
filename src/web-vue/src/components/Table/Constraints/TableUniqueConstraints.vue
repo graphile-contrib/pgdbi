@@ -37,13 +37,11 @@
       headers: [
         {
           text: 'Schema',
-          align: 'left',
           sortable: true,
           value: 'constraintSchema'
         },
         {
           text: 'Name',
-          align: 'left',
           sortable: true,
           value: 'constraintName'
         },

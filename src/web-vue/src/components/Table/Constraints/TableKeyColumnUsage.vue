@@ -30,19 +30,16 @@
       headers: [
         {
           text: 'Schema',
-          align: 'left',
           sortable: false,
           value: 'tableSchema'
         },
         {
           text: 'Table',
-          align: 'left',
           sortable: false,
           value: 'tableName'
         },
         {
           text: 'Column',
-          align: 'left',
           sortable: false,
           value: 'columnName'
         },

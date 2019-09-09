@@ -1,0 +1,1511 @@
+{
+  "fkIndexEvaluations": {
+    "singleColumn": {
+      "pgdbi_dev.sink.fk_single_column_kitchen_id_with_index": [
+        {
+          "id": "fk_single_column_with_index",
+          "constraintName": "fk_single_column_with_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "fkTable": "pgdbi_dev.kitchen",
+          "fkSource": ["fk_single_column_kitchen_id_with_index"],
+          "fkTarget": ["id"],
+          "fkIndices": [
+            {
+              "id": "idx_single_column_fk_with_index",
+              "indkey": [2],
+              "indpred": null,
+              "indclass": ["3124"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_index;",
+              "indexName": "idx_single_column_fk_with_index",
+              "indexrelid": "584153",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["0"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 2,
+                  "columnName": "fk_single_column_kitchen_id_with_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_index ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_with_index);"
+            }
+          ],
+          "fkIndexEvaluation": "idx_single_column_fk_with_index",
+          "fkTableLinkId": "pgdbi_dev.kitchen",
+          "evaluation": "idx_single_column_fk_with_index",
+          "idxColumns": ["fk_single_column_kitchen_id_with_index"],
+          "indices": [
+            {
+              "id": "idx_single_column_fk_with_index",
+              "indkey": [2],
+              "indpred": null,
+              "indclass": ["3124"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_index;",
+              "indexName": "idx_single_column_fk_with_index",
+              "indexrelid": "584153",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["0"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 2,
+                  "columnName": "fk_single_column_kitchen_id_with_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_index ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_with_index);"
+            }
+          ],
+          "indexDisplayClass": "green--text"
+        }
+      ],
+      "pgdbi_dev.sink.fk_single_column_kitchen_id_no_index": [
+        {
+          "id": "fk_single_column_no_index",
+          "constraintName": "fk_single_column_no_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "fkTable": "pgdbi_dev.kitchen",
+          "fkSource": ["fk_single_column_kitchen_id_no_index"],
+          "fkTarget": ["id"],
+          "fkIndices": [],
+          "fkIndexEvaluation": "NO_INDEX",
+          "fkTableLinkId": "pgdbi_dev.kitchen",
+          "evaluation": "NO_INDEX",
+          "idxColumns": ["fk_single_column_kitchen_id_no_index"],
+          "indices": [],
+          "indexDisplayClass": "red--text"
+        }
+      ],
+      "pgdbi_dev.sink.fk_single_column_kitchen_id_multiple_index": [
+        {
+          "id": "fk_single_column_multiple_index",
+          "constraintName": "fk_single_column_multiple_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "fkTable": "pgdbi_dev.kitchen",
+          "fkSource": ["fk_single_column_kitchen_id_multiple_index"],
+          "fkTarget": ["id"],
+          "fkIndices": [
+            {
+              "id": "idx_single_column_fk_with_multiple_index_one",
+              "indkey": [4],
+              "indpred": null,
+              "indclass": ["3124"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_multiple_index_one;",
+              "indexName": "idx_single_column_fk_with_multiple_index_one",
+              "indexrelid": "584164",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["0"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 4,
+                  "columnName": "fk_single_column_kitchen_id_multiple_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_multiple_index_one ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_multiple_index);"
+            },
+            {
+              "id": "idx_single_column_fk_with_multiple_index_two",
+              "indkey": [4],
+              "indpred": null,
+              "indclass": ["3124"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_multiple_index_two;",
+              "indexName": "idx_single_column_fk_with_multiple_index_two",
+              "indexrelid": "584165",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["0"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 4,
+                  "columnName": "fk_single_column_kitchen_id_multiple_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_multiple_index_two ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_multiple_index);"
+            }
+          ],
+          "fkIndexEvaluation": "MULTIPLE_INDICES",
+          "fkTableLinkId": "pgdbi_dev.kitchen",
+          "evaluation": "MULTIPLE_INDICES",
+          "idxColumns": ["fk_single_column_kitchen_id_multiple_index"],
+          "indices": [
+            {
+              "id": "idx_single_column_fk_with_multiple_index_one",
+              "indkey": [4],
+              "indpred": null,
+              "indclass": ["3124"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_multiple_index_one;",
+              "indexName": "idx_single_column_fk_with_multiple_index_one",
+              "indexrelid": "584164",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["0"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 4,
+                  "columnName": "fk_single_column_kitchen_id_multiple_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_multiple_index_one ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_multiple_index);"
+            },
+            {
+              "id": "idx_single_column_fk_with_multiple_index_two",
+              "indkey": [4],
+              "indpred": null,
+              "indclass": ["3124"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_multiple_index_two;",
+              "indexName": "idx_single_column_fk_with_multiple_index_two",
+              "indexrelid": "584165",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["0"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 4,
+                  "columnName": "fk_single_column_kitchen_id_multiple_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_multiple_index_two ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_multiple_index);"
+            }
+          ],
+          "indexDisplayClass": "red--text"
+        }
+      ]
+    },
+    "multiColumn": {
+      "pgdbi_dev.sink": [
+        {
+          "id": "fk_multi_column_with_index",
+          "constraintName": "fk_multi_column_with_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "fkTable": "pgdbi_dev.kitchen",
+          "fkSource": [
+            "fk_multi_column_with_index_kitchen_identifier_one",
+            "fk_multi_column_with_index_kitchen_name"
+          ],
+          "fkTarget": ["identifier_one", "name"],
+          "fkIndices": [],
+          "fkIndexEvaluation": "NO_INDEX",
+          "fkTableLinkId": "pgdbi_dev.kitchen",
+          "evaluation": "NO_INDEX",
+          "idxColumns": [
+            "fk_multi_column_with_index_kitchen_identifier_one",
+            "fk_multi_column_with_index_kitchen_name"
+          ],
+          "indices": [],
+          "indexDisplayClass": "red--text"
+        },
+        {
+          "id": "fk_multi_column_no_index",
+          "constraintName": "fk_multi_column_no_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "fkTable": "pgdbi_dev.kitchen",
+          "fkSource": [
+            "fk_multi_column_no_index_kitchen_identifier_two",
+            "fk_multi_column_no_index_kitchen_name"
+          ],
+          "fkTarget": ["identifier_two", "name"],
+          "fkIndices": [],
+          "fkIndexEvaluation": "NO_INDEX",
+          "fkTableLinkId": "pgdbi_dev.kitchen",
+          "evaluation": "NO_INDEX",
+          "idxColumns": [
+            "fk_multi_column_no_index_kitchen_identifier_two",
+            "fk_multi_column_no_index_kitchen_name"
+          ],
+          "indices": [],
+          "indexDisplayClass": "red--text"
+        },
+        {
+          "id": "fk_multi_column_multiple_index",
+          "constraintName": "fk_multi_column_multiple_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "fkTable": "pgdbi_dev.kitchen",
+          "fkSource": [
+            "fk_multi_column_multiple_index_kitchen_identifier_three",
+            "fk_multi_column_multiple_index_kitchen_name"
+          ],
+          "fkTarget": ["identifier_one", "name"],
+          "fkIndices": [],
+          "fkIndexEvaluation": "NO_INDEX",
+          "fkTableLinkId": "pgdbi_dev.kitchen",
+          "evaluation": "NO_INDEX",
+          "idxColumns": [
+            "fk_multi_column_multiple_index_kitchen_identifier_three",
+            "fk_multi_column_multiple_index_kitchen_name"
+          ],
+          "indices": [],
+          "indexDisplayClass": "red--text"
+        }
+      ],
+      "pgdbi_dev.kitchen": []
+    }
+  },
+  "genericIndexEvaluations": {
+    "pgdbi_dev.sink.id": {
+      "id": "pgdbi_dev.sink.id",
+      "idxKey": "pgdbi_dev.sink.id",
+      "idxColumns": "id",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "green--text",
+      "evaluation": "id",
+      "indices": [
+        {
+          "id": "pk_sink",
+          "indkey": [1],
+          "indpred": null,
+          "indclass": ["3124"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.pk_sink;",
+          "indexName": "pk_sink",
+          "indexrelid": "584142",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["0"],
+          "indimmediate": true,
+          "indisprimary": true,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [{ "indkey": 1, "columnName": "id" }],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS pk_sink ON pgdbi_dev.sink USING btree (id);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.uq_single_column": {
+      "id": "pgdbi_dev.sink.uq_single_column",
+      "idxKey": "pgdbi_dev.sink.uq_single_column",
+      "idxColumns": "uq_single_column",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "green--text",
+      "evaluation": "uq_single_column",
+      "indices": [
+        {
+          "id": "sink_uq_single_column_key",
+          "indkey": [11],
+          "indpred": null,
+          "indclass": ["3126"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.sink_uq_single_column_key;",
+          "indexName": "sink_uq_single_column_key",
+          "indexrelid": "584144",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [{ "indkey": 11, "columnName": "uq_single_column" }],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS sink_uq_single_column_key ON pgdbi_dev.sink USING btree (uq_single_column);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.uq_single_column_multiple_index": {
+      "id": "pgdbi_dev.sink.uq_single_column_multiple_index",
+      "idxKey": "pgdbi_dev.sink.uq_single_column_multiple_index",
+      "idxColumns": "uq_single_column_multiple_index",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "green--text",
+      "evaluation": "uq_single_column_multiple_index",
+      "indices": [
+        {
+          "id": "sink_uq_single_column_multiple_index_key",
+          "indkey": [12],
+          "indpred": null,
+          "indclass": ["3126"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.sink_uq_single_column_multiple_index_key;",
+          "indexName": "sink_uq_single_column_multiple_index_key",
+          "indexrelid": "584146",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            { "indkey": 12, "columnName": "uq_single_column_multiple_index" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS sink_uq_single_column_multiple_index_key ON pgdbi_dev.sink USING btree (uq_single_column_multiple_index);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.fk_single_column_kitchen_id_with_index": {
+      "id": "pgdbi_dev.sink.fk_single_column_kitchen_id_with_index",
+      "idxKey": "pgdbi_dev.sink.fk_single_column_kitchen_id_with_index",
+      "idxColumns": "fk_single_column_kitchen_id_with_index",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "green--text",
+      "evaluation": "fk_single_column_kitchen_id_with_index",
+      "indices": [
+        {
+          "id": "idx_single_column_fk_with_index",
+          "indkey": [2],
+          "indpred": null,
+          "indclass": ["3124"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_index;",
+          "indexName": "idx_single_column_fk_with_index",
+          "indexrelid": "584153",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["0"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 2,
+              "columnName": "fk_single_column_kitchen_id_with_index"
+            }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_index ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_with_index);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.fk_single_column_kitchen_id_multiple_index": {
+      "id": "pgdbi_dev.sink.fk_single_column_kitchen_id_multiple_index",
+      "idxKey": "pgdbi_dev.sink.fk_single_column_kitchen_id_multiple_index",
+      "idxColumns": "fk_single_column_kitchen_id_multiple_index",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "red--text",
+      "evaluation": "MULTIPLE_INDICES",
+      "indices": [
+        {
+          "id": "idx_single_column_fk_with_multiple_index_one",
+          "indkey": [4],
+          "indpred": null,
+          "indclass": ["3124"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_multiple_index_one;",
+          "indexName": "idx_single_column_fk_with_multiple_index_one",
+          "indexrelid": "584164",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["0"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 4,
+              "columnName": "fk_single_column_kitchen_id_multiple_index"
+            }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_multiple_index_one ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_multiple_index);"
+        },
+        {
+          "id": "idx_single_column_fk_with_multiple_index_two",
+          "indkey": [4],
+          "indpred": null,
+          "indclass": ["3124"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_single_column_fk_with_multiple_index_two;",
+          "indexName": "idx_single_column_fk_with_multiple_index_two",
+          "indexrelid": "584165",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["0"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 4,
+              "columnName": "fk_single_column_kitchen_id_multiple_index"
+            }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_single_column_fk_with_multiple_index_two ON pgdbi_dev.sink USING btree (fk_single_column_kitchen_id_multiple_index);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.fk_multi_column_with_index_kitchen_name, fk_multi_column_with_index_kitchen_identifier_one": {
+      "id": "pgdbi_dev.sink.fk_multi_column_with_index_kitchen_name, fk_multi_column_with_index_kitchen_identifier_one",
+      "idxKey": "pgdbi_dev.sink.fk_multi_column_with_index_kitchen_name, fk_multi_column_with_index_kitchen_identifier_one",
+      "idxColumns": "fk_multi_column_with_index_kitchen_name, fk_multi_column_with_index_kitchen_identifier_one",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "green--text",
+      "evaluation": "fk_multi_column_with_index_kitchen_name, fk_multi_column_with_index_kitchen_identifier_one",
+      "indices": [
+        {
+          "id": "idx_fk_multi_column_with_index",
+          "indkey": [5, 6],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_fk_multi_column_with_index;",
+          "indexName": "idx_fk_multi_column_with_index",
+          "indexrelid": "584171",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 5,
+              "columnName": "fk_multi_column_with_index_kitchen_name"
+            },
+            {
+              "indkey": 6,
+              "columnName": "fk_multi_column_with_index_kitchen_identifier_one"
+            }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_fk_multi_column_with_index ON pgdbi_dev.sink USING btree (fk_multi_column_with_index_kitchen_name, fk_multi_column_with_index_kitchen_identifier_one);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.fk_multi_column_multiple_index_kitchen_name, fk_multi_column_multiple_index_kitchen_identifier_three": {
+      "id": "pgdbi_dev.sink.fk_multi_column_multiple_index_kitchen_name, fk_multi_column_multiple_index_kitchen_identifier_three",
+      "idxKey": "pgdbi_dev.sink.fk_multi_column_multiple_index_kitchen_name, fk_multi_column_multiple_index_kitchen_identifier_three",
+      "idxColumns": "fk_multi_column_multiple_index_kitchen_name, fk_multi_column_multiple_index_kitchen_identifier_three",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "red--text",
+      "evaluation": "MULTIPLE_INDICES",
+      "indices": [
+        {
+          "id": "idx_fk_multi_column_with_multiple_index_one",
+          "indkey": [9, 10],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_fk_multi_column_with_multiple_index_one;",
+          "indexName": "idx_fk_multi_column_with_multiple_index_one",
+          "indexrelid": "584182",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 9,
+              "columnName": "fk_multi_column_multiple_index_kitchen_name"
+            },
+            {
+              "indkey": 10,
+              "columnName": "fk_multi_column_multiple_index_kitchen_identifier_three"
+            }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_fk_multi_column_with_multiple_index_one ON pgdbi_dev.sink USING btree (fk_multi_column_multiple_index_kitchen_name, fk_multi_column_multiple_index_kitchen_identifier_three);"
+        },
+        {
+          "id": "idx_fk_multi_column_with_multiple_index_two",
+          "indkey": [9, 10],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_fk_multi_column_with_multiple_index_two;",
+          "indexName": "idx_fk_multi_column_with_multiple_index_two",
+          "indexrelid": "584183",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 9,
+              "columnName": "fk_multi_column_multiple_index_kitchen_name"
+            },
+            {
+              "indkey": 10,
+              "columnName": "fk_multi_column_multiple_index_kitchen_identifier_three"
+            }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_fk_multi_column_with_multiple_index_two ON pgdbi_dev.sink USING btree (fk_multi_column_multiple_index_kitchen_name, fk_multi_column_multiple_index_kitchen_identifier_three);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.uq_multi_column_one, uq_multi_column_two": {
+      "id": "pgdbi_dev.sink.uq_multi_column_one, uq_multi_column_two",
+      "idxKey": "pgdbi_dev.sink.uq_multi_column_one, uq_multi_column_two",
+      "idxColumns": "uq_multi_column_one, uq_multi_column_two",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "green--text",
+      "evaluation": "uq_multi_column_one, uq_multi_column_two",
+      "indices": [
+        {
+          "id": "uq_multi_column",
+          "indkey": [13, 14],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_multi_column;",
+          "indexName": "uq_multi_column",
+          "indexrelid": "584185",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            { "indkey": 13, "columnName": "uq_multi_column_one" },
+            { "indkey": 14, "columnName": "uq_multi_column_two" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_multi_column ON pgdbi_dev.sink USING btree (uq_multi_column_one, uq_multi_column_two);"
+        }
+      ]
+    },
+    "pgdbi_dev.sink.uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two": {
+      "id": "pgdbi_dev.sink.uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two",
+      "idxKey": "pgdbi_dev.sink.uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two",
+      "idxColumns": "uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two",
+      "tableKey": "pgdbi_dev.sink",
+      "indexDisplayClass": "red--text",
+      "evaluation": "MULTIPLE_INDICES",
+      "indices": [
+        {
+          "id": "uq_multi_column_multiple_index",
+          "indkey": [15, 16],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_multi_column_multiple_index;",
+          "indexName": "uq_multi_column_multiple_index",
+          "indexrelid": "584187",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 15,
+              "columnName": "uq_multi_column_multiple_index_one"
+            },
+            { "indkey": 16, "columnName": "uq_multi_column_multiple_index_two" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_multi_column_multiple_index ON pgdbi_dev.sink USING btree (uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two);"
+        },
+        {
+          "id": "idx_multi_column_uq_with_multiple_index_two",
+          "indkey": [15, 16],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584135",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_multi_column_uq_with_multiple_index_two;",
+          "indexName": "idx_multi_column_uq_with_multiple_index_two",
+          "indexrelid": "584189",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "sink",
+          "indisunique": false,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            {
+              "indkey": 15,
+              "columnName": "uq_multi_column_multiple_index_one"
+            },
+            { "indkey": 16, "columnName": "uq_multi_column_multiple_index_two" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_multi_column_uq_with_multiple_index_two ON pgdbi_dev.sink USING btree (uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two);"
+        }
+      ]
+    },
+    "pgdbi_dev.kitchen.id": {
+      "id": "pgdbi_dev.kitchen.id",
+      "idxKey": "pgdbi_dev.kitchen.id",
+      "idxColumns": "id",
+      "tableKey": "pgdbi_dev.kitchen",
+      "indexDisplayClass": "green--text",
+      "evaluation": "id",
+      "indices": [
+        {
+          "id": "pk_kitchen",
+          "indkey": [1],
+          "indpred": null,
+          "indclass": ["3124"],
+          "indexprs": null,
+          "indnatts": 1,
+          "indrelid": "584116",
+          "indislive": true,
+          "indoption": [0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.pk_kitchen;",
+          "indexName": "pk_kitchen",
+          "indexrelid": "584127",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "kitchen",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["0"],
+          "indimmediate": true,
+          "indisprimary": true,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [{ "indkey": 1, "columnName": "id" }],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS pk_kitchen ON pgdbi_dev.kitchen USING btree (id);"
+        }
+      ]
+    },
+    "pgdbi_dev.kitchen.name, identifier_one": {
+      "id": "pgdbi_dev.kitchen.name, identifier_one",
+      "idxKey": "pgdbi_dev.kitchen.name, identifier_one",
+      "idxColumns": "name, identifier_one",
+      "tableKey": "pgdbi_dev.kitchen",
+      "indexDisplayClass": "green--text",
+      "evaluation": "name, identifier_one",
+      "indices": [
+        {
+          "id": "uq_kitchen_name_identifier_one",
+          "indkey": [2, 3],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584116",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_kitchen_name_identifier_one;",
+          "indexName": "uq_kitchen_name_identifier_one",
+          "indexrelid": "584129",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "kitchen",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            { "indkey": 2, "columnName": "name" },
+            { "indkey": 3, "columnName": "identifier_one" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_kitchen_name_identifier_one ON pgdbi_dev.kitchen USING btree (name, identifier_one);"
+        }
+      ]
+    },
+    "pgdbi_dev.kitchen.identifier_two, name": {
+      "id": "pgdbi_dev.kitchen.identifier_two, name",
+      "idxKey": "pgdbi_dev.kitchen.identifier_two, name",
+      "idxColumns": "identifier_two, name",
+      "tableKey": "pgdbi_dev.kitchen",
+      "indexDisplayClass": "green--text",
+      "evaluation": "identifier_two, name",
+      "indices": [
+        {
+          "id": "uq_kitchen_name_identifier_two",
+          "indkey": [4, 2],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584116",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_kitchen_name_identifier_two;",
+          "indexName": "uq_kitchen_name_identifier_two",
+          "indexrelid": "584131",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "kitchen",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            { "indkey": 2, "columnName": "name" },
+            { "indkey": 4, "columnName": "identifier_two" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_kitchen_name_identifier_two ON pgdbi_dev.kitchen USING btree (identifier_two, name);"
+        }
+      ]
+    },
+    "pgdbi_dev.kitchen.name, identifier_three": {
+      "id": "pgdbi_dev.kitchen.name, identifier_three",
+      "idxKey": "pgdbi_dev.kitchen.name, identifier_three",
+      "idxColumns": "name, identifier_three",
+      "tableKey": "pgdbi_dev.kitchen",
+      "indexDisplayClass": "green--text",
+      "evaluation": "name, identifier_three",
+      "indices": [
+        {
+          "id": "uq_kitchen_name_identifier_three",
+          "indkey": [2, 5],
+          "indpred": null,
+          "indclass": ["3126", "3126"],
+          "indexprs": null,
+          "indnatts": 2,
+          "indrelid": "584116",
+          "indislive": true,
+          "indoption": [0, 0],
+          "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_kitchen_name_identifier_three;",
+          "indexName": "uq_kitchen_name_identifier_three",
+          "indexrelid": "584133",
+          "indisready": true,
+          "indisvalid": true,
+          "tableName": "kitchen",
+          "indisunique": true,
+          "indcheckxmin": false,
+          "indcollation": ["100", "100"],
+          "indimmediate": true,
+          "indisprimary": false,
+          "tableSchema": "pgdbi_dev",
+          "indexColumns": [
+            { "indkey": 2, "columnName": "name" },
+            { "indkey": 5, "columnName": "identifier_three" }
+          ],
+          "indisclustered": false,
+          "indisexclusion": false,
+          "indisreplident": false,
+          "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_kitchen_name_identifier_three ON pgdbi_dev.kitchen USING btree (name, identifier_three);"
+        }
+      ]
+    }
+  },
+  "uqIndexEvaluations": {
+    "singleColumn": {
+      "pgdbi_dev.sink.uq_single_column": [
+        {
+          "id": "sink_uq_single_column_key",
+          "constraintName": "sink_uq_single_column_key",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "uqSource": "uq_single_column",
+          "uqPath": "pgdbi_dev.sink.uq_single_column",
+          "uqTableId": "pgdbi_dev.sink",
+          "uqIndices": [
+            {
+              "id": "sink_uq_single_column_key",
+              "indkey": [11],
+              "indpred": null,
+              "indclass": ["3126"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.sink_uq_single_column_key;",
+              "indexName": "sink_uq_single_column_key",
+              "indexrelid": "584144",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                { "indkey": 11, "columnName": "uq_single_column" }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS sink_uq_single_column_key ON pgdbi_dev.sink USING btree (uq_single_column);"
+            }
+          ],
+          "uqIndexEvaluation": "sink_uq_single_column_key",
+          "evaluation": "sink_uq_single_column_key",
+          "idxColumns": ["uq_single_column"],
+          "indices": [
+            {
+              "id": "sink_uq_single_column_key",
+              "indkey": [11],
+              "indpred": null,
+              "indclass": ["3126"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.sink_uq_single_column_key;",
+              "indexName": "sink_uq_single_column_key",
+              "indexrelid": "584144",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                { "indkey": 11, "columnName": "uq_single_column" }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS sink_uq_single_column_key ON pgdbi_dev.sink USING btree (uq_single_column);"
+            }
+          ],
+          "indexDisplayClass": "green--text"
+        }
+      ],
+      "pgdbi_dev.sink.uq_single_column_multiple_index": [
+        {
+          "id": "sink_uq_single_column_multiple_index_key",
+          "constraintName": "sink_uq_single_column_multiple_index_key",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "uqSource": "uq_single_column_multiple_index",
+          "uqPath": "pgdbi_dev.sink.uq_single_column_multiple_index",
+          "uqTableId": "pgdbi_dev.sink",
+          "uqIndices": [
+            {
+              "id": "sink_uq_single_column_multiple_index_key",
+              "indkey": [12],
+              "indpred": null,
+              "indclass": ["3126"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.sink_uq_single_column_multiple_index_key;",
+              "indexName": "sink_uq_single_column_multiple_index_key",
+              "indexrelid": "584146",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 12,
+                  "columnName": "uq_single_column_multiple_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS sink_uq_single_column_multiple_index_key ON pgdbi_dev.sink USING btree (uq_single_column_multiple_index);"
+            }
+          ],
+          "uqIndexEvaluation": "sink_uq_single_column_multiple_index_key",
+          "evaluation": "sink_uq_single_column_multiple_index_key",
+          "idxColumns": ["uq_single_column_multiple_index"],
+          "indices": [
+            {
+              "id": "sink_uq_single_column_multiple_index_key",
+              "indkey": [12],
+              "indpred": null,
+              "indclass": ["3126"],
+              "indexprs": null,
+              "indnatts": 1,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.sink_uq_single_column_multiple_index_key;",
+              "indexName": "sink_uq_single_column_multiple_index_key",
+              "indexrelid": "584146",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 12,
+                  "columnName": "uq_single_column_multiple_index"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS sink_uq_single_column_multiple_index_key ON pgdbi_dev.sink USING btree (uq_single_column_multiple_index);"
+            }
+          ],
+          "indexDisplayClass": "green--text"
+        }
+      ]
+    },
+    "multiColumn": {
+      "pgdbi_dev.sink": [
+        {
+          "id": "uq_multi_column",
+          "constraintName": "uq_multi_column",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "uqPath": "pgdbi_dev.sink.uq_multi_column_one",
+          "uqTableId": "pgdbi_dev.sink",
+          "uqSource": "uq_multi_column_one, uq_multi_column_two",
+          "uqIndices": [
+            {
+              "id": "uq_multi_column",
+              "indkey": [13, 14],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_multi_column;",
+              "indexName": "uq_multi_column",
+              "indexrelid": "584185",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                { "indkey": 13, "columnName": "uq_multi_column_one" },
+                { "indkey": 14, "columnName": "uq_multi_column_two" }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_multi_column ON pgdbi_dev.sink USING btree (uq_multi_column_one, uq_multi_column_two);"
+            }
+          ],
+          "uqIndexEvaluation": "uq_multi_column",
+          "evaluation": "uq_multi_column",
+          "idxColumns": ["uq_multi_column_one", "uq_multi_column_two"],
+          "indices": [
+            {
+              "id": "uq_multi_column",
+              "indkey": [13, 14],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_multi_column;",
+              "indexName": "uq_multi_column",
+              "indexrelid": "584185",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                { "indkey": 13, "columnName": "uq_multi_column_one" },
+                { "indkey": 14, "columnName": "uq_multi_column_two" }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_multi_column ON pgdbi_dev.sink USING btree (uq_multi_column_one, uq_multi_column_two);"
+            }
+          ],
+          "indexDisplayClass": "green--text"
+        },
+        {
+          "id": "uq_multi_column_multiple_index",
+          "constraintName": "uq_multi_column_multiple_index",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "sink",
+          "uqPath": "pgdbi_dev.sink.uq_multi_column_multiple_index_one",
+          "uqTableId": "pgdbi_dev.sink",
+          "uqSource": "uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two",
+          "uqIndices": [
+            {
+              "id": "uq_multi_column_multiple_index",
+              "indkey": [15, 16],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_multi_column_multiple_index;",
+              "indexName": "uq_multi_column_multiple_index",
+              "indexrelid": "584187",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 15,
+                  "columnName": "uq_multi_column_multiple_index_one"
+                },
+                {
+                  "indkey": 16,
+                  "columnName": "uq_multi_column_multiple_index_two"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_multi_column_multiple_index ON pgdbi_dev.sink USING btree (uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two);"
+            },
+            {
+              "id": "idx_multi_column_uq_with_multiple_index_two",
+              "indkey": [15, 16],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_multi_column_uq_with_multiple_index_two;",
+              "indexName": "idx_multi_column_uq_with_multiple_index_two",
+              "indexrelid": "584189",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 15,
+                  "columnName": "uq_multi_column_multiple_index_one"
+                },
+                {
+                  "indkey": 16,
+                  "columnName": "uq_multi_column_multiple_index_two"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_multi_column_uq_with_multiple_index_two ON pgdbi_dev.sink USING btree (uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two);"
+            }
+          ],
+          "uqIndexEvaluation": "MULTIPLE_INDICES",
+          "evaluation": "MULTIPLE_INDICES",
+          "idxColumns": [
+            "uq_multi_column_multiple_index_one",
+            "uq_multi_column_multiple_index_two"
+          ],
+          "indices": [
+            {
+              "id": "uq_multi_column_multiple_index",
+              "indkey": [15, 16],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_multi_column_multiple_index;",
+              "indexName": "uq_multi_column_multiple_index",
+              "indexrelid": "584187",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 15,
+                  "columnName": "uq_multi_column_multiple_index_one"
+                },
+                {
+                  "indkey": 16,
+                  "columnName": "uq_multi_column_multiple_index_two"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_multi_column_multiple_index ON pgdbi_dev.sink USING btree (uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two);"
+            },
+            {
+              "id": "idx_multi_column_uq_with_multiple_index_two",
+              "indkey": [15, 16],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584135",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.idx_multi_column_uq_with_multiple_index_two;",
+              "indexName": "idx_multi_column_uq_with_multiple_index_two",
+              "indexrelid": "584189",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "sink",
+              "indisunique": false,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                {
+                  "indkey": 15,
+                  "columnName": "uq_multi_column_multiple_index_one"
+                },
+                {
+                  "indkey": 16,
+                  "columnName": "uq_multi_column_multiple_index_two"
+                }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE INDEX IF NOT EXISTS idx_multi_column_uq_with_multiple_index_two ON pgdbi_dev.sink USING btree (uq_multi_column_multiple_index_one, uq_multi_column_multiple_index_two);"
+            }
+          ],
+          "indexDisplayClass": "red--text"
+        }
+      ],
+      "pgdbi_dev.kitchen": [
+        {
+          "id": "uq_kitchen_name_identifier_one",
+          "constraintName": "uq_kitchen_name_identifier_one",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "kitchen",
+          "uqPath": "pgdbi_dev.kitchen.identifier_one",
+          "uqTableId": "pgdbi_dev.kitchen",
+          "uqSource": "identifier_one, name",
+          "uqIndices": [],
+          "uqIndexEvaluation": "NO_INDEX",
+          "evaluation": "NO_INDEX",
+          "idxColumns": ["identifier_one", "name"],
+          "indices": [],
+          "indexDisplayClass": "red--text"
+        },
+        {
+          "id": "uq_kitchen_name_identifier_two",
+          "constraintName": "uq_kitchen_name_identifier_two",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "kitchen",
+          "uqPath": "pgdbi_dev.kitchen.identifier_two",
+          "uqTableId": "pgdbi_dev.kitchen",
+          "uqSource": "identifier_two, name",
+          "uqIndices": [
+            {
+              "id": "uq_kitchen_name_identifier_two",
+              "indkey": [4, 2],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584116",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_kitchen_name_identifier_two;",
+              "indexName": "uq_kitchen_name_identifier_two",
+              "indexrelid": "584131",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "kitchen",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                { "indkey": 2, "columnName": "name" },
+                { "indkey": 4, "columnName": "identifier_two" }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_kitchen_name_identifier_two ON pgdbi_dev.kitchen USING btree (identifier_two, name);"
+            }
+          ],
+          "uqIndexEvaluation": "uq_kitchen_name_identifier_two",
+          "evaluation": "uq_kitchen_name_identifier_two",
+          "idxColumns": ["identifier_two", "name"],
+          "indices": [
+            {
+              "id": "uq_kitchen_name_identifier_two",
+              "indkey": [4, 2],
+              "indpred": null,
+              "indclass": ["3126", "3126"],
+              "indexprs": null,
+              "indnatts": 2,
+              "indrelid": "584116",
+              "indislive": true,
+              "indoption": [0, 0],
+              "indexDrop": "DROP INDEX IF EXISTS pgdbi_dev.uq_kitchen_name_identifier_two;",
+              "indexName": "uq_kitchen_name_identifier_two",
+              "indexrelid": "584131",
+              "indisready": true,
+              "indisvalid": true,
+              "tableName": "kitchen",
+              "indisunique": true,
+              "indcheckxmin": false,
+              "indcollation": ["100", "100"],
+              "indimmediate": true,
+              "indisprimary": false,
+              "tableSchema": "pgdbi_dev",
+              "indexColumns": [
+                { "indkey": 2, "columnName": "name" },
+                { "indkey": 4, "columnName": "identifier_two" }
+              ],
+              "indisclustered": false,
+              "indisexclusion": false,
+              "indisreplident": false,
+              "indexDefinition": "CREATE UNIQUE INDEX IF NOT EXISTS uq_kitchen_name_identifier_two ON pgdbi_dev.kitchen USING btree (identifier_two, name);"
+            }
+          ],
+          "indexDisplayClass": "green--text"
+        },
+        {
+          "id": "uq_kitchen_name_identifier_three",
+          "constraintName": "uq_kitchen_name_identifier_three",
+          "tableSchema": "pgdbi_dev",
+          "tableName": "kitchen",
+          "uqPath": "pgdbi_dev.kitchen.identifier_three",
+          "uqTableId": "pgdbi_dev.kitchen",
+          "uqSource": "identifier_three, name",
+          "uqIndices": [],
+          "uqIndexEvaluation": "NO_INDEX",
+          "evaluation": "NO_INDEX",
+          "idxColumns": ["identifier_three", "name"],
+          "indices": [],
+          "indexDisplayClass": "red--text"
+        }
+      ]
+    }
+  }
+}

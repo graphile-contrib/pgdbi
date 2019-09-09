@@ -120,28 +120,18 @@
       headers: [
         {
           text: '',
-          align: 'left',
           sortable: false,
         },
         {
           text: 'Table Name',
-          align: 'left',
           sortable: false,
           value: 'name'
         },
         {
           text: 'Assigned Policy',
-          align: 'left',
           sortable: false,
           value: 'assignedPolicy'
         },
-        // {
-        //   text: 'Current grant status compared to assigned policy - UNDER CONSTRUCTION',
-        //   align: 'center',
-        //   class: 'blah',
-        //   sortable: false,
-        //   colspan: 4
-        // }
       ]
     })
   }
