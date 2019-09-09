@@ -47,7 +47,7 @@
     </v-toolbar>
     <v-textarea
       :disabled="true"
-      :value="scriptText"
+      :value="formatScript(scriptText)"
       auto-grow
       spellcheck="false"
       background-color="black"
@@ -76,6 +76,10 @@
       showToolbar: {
         type: Boolean,
         default: true
+      },
+      skipFormat: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
@@ -89,6 +93,16 @@
       }
     },
     methods: {
+      formatScript (scriptText) {
+        return this.skipFormat ? scriptText : (scriptText || '')
+          .toLowerCase()
+          .split(' exists').join(' exists\n  ')
+          .split(' on').join('\non')
+          .split(' using').join('\nusing')
+          .split(' (').join(' (\n  ')
+          .split(',').join('\n  ,')
+          .split(');').join('\n);')
+      },
       handleCopyStatus(status) {
         alert(status)
       },

@@ -24,7 +24,7 @@
       <v-btn @click="navigate('role-manager')" :color="btnColor('role-manager')">Roles</v-btn>
       <v-btn @click="navigate('table-security-manager')" :color="btnColor('table-security-manager')">Table Security</v-btn>
       <v-btn @click="navigate('function-security-manager')" :color="btnColor('function-security-manager')">Function Security</v-btn>
-      <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Indexes</v-btn>
+      <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Constraints And Indices</v-btn>
       <v-btn @click="navigate('search-view')" :color="btnColor('search-view')">Function Search</v-btn>
       <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
       <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn>
@@ -114,7 +114,7 @@ export default {
   },
   created () {
     this.$vuetify.theme.dark = true
-    bus.$on('focus-route', this.focusToRoute)
+    // bus.$on('focus-route', this.focusToRoute)
   },
 }
 </script>

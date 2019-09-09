@@ -24,7 +24,7 @@
               lazy
             >
               <script-viewer
-                :scriptText="formatScript(props.item.indexDefinition)"
+                :scriptText="props.item.indexDefinition"
                 :showReadability="false"
               ></script-viewer>
             </v-tab-item>
@@ -66,16 +66,6 @@
       ScriptViewer
     },
     methods: {
-      formatScript (scriptText) {
-        return scriptText
-          .split(' EXISTS').join(' EXISTS\n  ')
-          .split(' ON').join('\nON')
-          .split(' USING').join('\nUSING')
-          .split(' (').join(' (\n  ')
-          .split(',').join('\n  ,')
-          .split(');').join('\n);')
-
-      }
     },
     computed: {
     },

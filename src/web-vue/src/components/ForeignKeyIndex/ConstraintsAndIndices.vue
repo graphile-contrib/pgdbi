@@ -76,9 +76,9 @@
         key="drop"
       >
         <v-card flat>
-          <create-indices-script
-            :indicesToCreate="indicesToCreate"
-          ></create-indices-script>
+          <script-viewer
+            :scriptText="createIndicesScript"
+          ></script-viewer>
         </v-card>
       </v-tab-item>
 
@@ -92,9 +92,9 @@
         key="create"
       >
         <v-card flat>
-          <drop-indices-script
-            :indicesToDrop="indicesToDrop"
-          ></drop-indices-script>
+          <script-viewer
+            :scriptText="dropIndicesScript"
+          ></script-viewer>
         </v-card>
       </v-tab-item>
     </v-tabs>
@@ -105,8 +105,7 @@
   import FkIndexConstraints from './FkIndexConstraints'
   import UqIndexSet from './UqIndexSet'
   import CheckConstraints from './Constraints/CheckConstraints.vue'
-  import DropIndicesScript from './DropIndicesScript'
-  import CreateIndicesScript from './CreateIndicesScript'
+  import ScriptViewer from '@/components/_common/ScriptViewer'
 
   export default {
     name: 'ConstraintsAndIndices',
@@ -115,7 +114,7 @@
       FkIndexConstraints,
       UqIndexSet,
       CheckConstraints,
-      DropIndicesScript
+      ScriptViewer
     },
     props: {
       tableSchema: {
@@ -216,39 +215,25 @@
           return []
         }
       },
-      indicesToDrop () {
-        const all = this.$store.state.indicesToDrop
+      createIndicesScript () {
+        return Object.values(this.$store.state.genericIndexEvaluations).reduce(
+          (all, e) => {
+            if (this.tableName && this.tableName !== e.tableName) { return all }
+            if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
 
-        const schemaFiltered = this.tableSchema ? Object.values(all).filter(
-            e => {
-              return this.tableSchema ?  e.tableSchema === this.tableSchema : true
-            }
-          ) : all
-
-        const tableFiltered = this.tableName ? Object.values(schemaFiltered).filter(
-            e => {
-              return this.tableName ?  e.tableName === this.tableName : true
-            }
-          ) : schemaFiltered
-
-        return Object.values(tableFiltered)
+            return e.desiredRealization.create ? all.concat(e.desiredRealization.create) : all
+          }, ''
+        )
       },
-      indicesToCreate () {
-        const all = this.$store.state.indicesToCreate
+      dropIndicesScript () {
+        return Object.values(this.$store.state.genericIndexEvaluations).reduce(
+          (all, e) => {
+            if (this.tableName && this.tableName !== e.tableName) { return all }
+            if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
 
-        const schemaFiltered = this.tableSchema ? Object.values(all).filter(
-            e => {
-              return this.tableSchema ?  e.tableSchema === this.tableSchema : true
-            }
-          ) : all
-
-        const tableFiltered = this.tableName ? Object.values(schemaFiltered).filter(
-            e => {
-              return this.tableName ?  e.tableName === this.tableName : true
-            }
-          ) : schemaFiltered
-
-        return Object.values(tableFiltered)
+            return e.desiredRealization.drop ? all.concat(e.desiredRealization.drop) : all
+          }, ''
+        )
       }
     },
     data: () => ({

@@ -71,12 +71,10 @@
         key="cheatsheet"
         lazy
       >
-        <v-card>
-          <div v-html="cheatsheetData"></div>
-        </v-card>
+        <v-container fluid>
+          <pdf src="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf"></pdf>
+        </v-container>
       </v-tab-item>
-    </v-tabs>
-
     </v-tabs>
   </v-container>
 </template>
@@ -88,6 +86,8 @@
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SchemaSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
   import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
+  import pdf from 'vue-pdf'
+
 
   export default {
     name: 'TableSecurityView',
@@ -95,24 +95,12 @@
       SecurityPolicySettings,
       SchemaSecurityScripts,
       PolicyManager,
-      PolicyAssignment
+      PolicyAssignment,
+      pdf
     },
     props: {
     },
     computed: {
-      async cheatsheetData () {
-        const data = await rp('https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf')
-        console.log(data)
-        return data
-
-        // return rp('https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf')
-        //     .then(function (htmlString) {
-        //         return htmlString
-        //     })
-        //     .catch(function (err) {
-        //         console.error(err)
-        //     });
-      }
     },
     data: () => ({
       activeTab: null

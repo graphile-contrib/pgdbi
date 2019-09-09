@@ -13,8 +13,13 @@ const watchPg = false;
 
 function PostgraphileDE(options, pgPool) {
   const enableSqitch = options.pgdbi && options.pgdbi.enableSqitch === true
+  const enableGraphileWorker = options.pgdbi && options.pgdbi.enableGraphileWorker === true
 
-  const schemas = `information_schema${enableSqitch ? ',sqitch' : ''}`.split(',')
+  // const schemas = `information_schema${enableSqitch ? ',sqitch' : ''}`.split(',')
+  let schemas = ['information_schema']
+  schemas = enableGraphileWorker ? [...schemas, 'graphile_worker'] : schemas
+  schemas = enableSqitch ? [...schemas, 'sqitch'] : schemas
+
   const app = express();
 
   app.use(
@@ -67,7 +72,6 @@ const myIntrospectionExtractionPlugin = (pgdbiApp) => (builder) => {
   builder.hook('build', build => {
     pgdbiApp.setBuild(build);
     return build;
-
   })
 }
 
@@ -75,6 +79,7 @@ module.exports = {
   'postgraphile:options'(options, { pgPool }) {
     // Create our app
     pgdbiApp = PostgraphileDE(options, pgPool);
+    pgdbiApp.pdgbiOptions = options.pgdbi || {}
 
     pgdbiApp.setBuild = build => {
       pgdbiApp.schemaTree = transformBuild(build, pgPool)
@@ -107,5 +112,8 @@ module.exports = {
   },
   schemaTree() {
     return pgdbiApp.schemaTree
+  },
+  pdgbiOptions() {
+    return pgdbiApp.pdgbiOptions
   }
 };

@@ -85,12 +85,14 @@
         const genericIndexEvaluations = Object.values(this.$store.state.genericIndexEvaluations).filter(e => e.tableKey === `${this.tableInfo.tableSchema}.${this.tableInfo.tableName}`)
         const genericDrops = genericIndexEvaluations.reduce(
           (all, e) => {
-            return e.desiredRealization.drop !== '' ? [...all, this.formatScript(e.desiredRealization.drop)] : all
+            // return e.desiredRealization.drop !== '' ? [...all, this.formatScript(e.desiredRealization.drop)] : all
+            return e.desiredRealization.drop !== '' ? [...all, e.desiredRealization.drop] : all
           }, []
         )
         const genericCreates = genericIndexEvaluations.reduce(
           (all, e) => {
-            return e.desiredRealization.create !== '' ? [...all, this.formatScript(e.desiredRealization.create)] : all
+            // return e.desiredRealization.create !== '' ? [...all, this.formatScript(e.desiredRealization.create)] : all
+            return e.desiredRealization.create !== '' ? [...all, e.desiredRealization.create] : all
           }, []
         )
 
@@ -106,16 +108,16 @@
       }
     },
     methods: {
-      formatScript (scriptText) {
-        return (scriptText || '')
-          .toLowerCase()
-          .split(' exists').join(' exists\n  ')
-          .split(' on').join('\non')
-          .split(' using').join('\nusing')
-          .split(' (').join(' (\n  ')
-          .split(',').join('\n  ,')
-          .split(');').join('\n);')
-      },
+      // formatScript (scriptText) {
+      //   return (scriptText || '')
+      //     .toLowerCase()
+      //     .split(' exists').join(' exists\n  ')
+      //     .split(' on').join('\non')
+      //     .split(' using').join('\nusing')
+      //     .split(' (').join(' (\n  ')
+      //     .split(',').join('\n  ,')
+      //     .split(');').join('\n);')
+      // },
     },
     data: () => ({
       activeTab: null,

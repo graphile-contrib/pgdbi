@@ -3,6 +3,7 @@
     <script-viewer
       :scriptText="computedPolicy"
       @readability-changed="policyReadabilityChanged"
+      skipFormat
     ></script-viewer>
   </v-container>
 </template>

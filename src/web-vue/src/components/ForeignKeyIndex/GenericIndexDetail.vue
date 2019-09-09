@@ -19,7 +19,7 @@
         <td :colspan="headers.length + 2">
           <h2>Current Realization in Database Under Development</h2>
           <script-viewer
-            :scriptText="formatScript(props.item.indexDefinition)"
+            :scriptText="props.item.indexDefinition"
             :showReadability="false"
             :showToolbar="false"
           ></script-viewer>
@@ -28,7 +28,7 @@
     </v-data-table>
     <h2>Current Realization To Be Generated</h2>
     <script-viewer
-      :scriptText="formatScript(desiredRealization)"
+      :scriptText="desiredRealization"
       :showReadability="false"
     ></script-viewer>
   </v-container>
@@ -49,16 +49,6 @@
       ScriptViewer
     },
     methods: {
-      formatScript (scriptText) {
-        return (scriptText || '')
-          .toLowerCase()
-          .split(' exists').join(' exists\n  ')
-          .split(' on').join('\non')
-          .split(' using').join('\nusing')
-          .split(' (').join(' (\n  ')
-          .split(',').join('\n  ,')
-          .split(');').join('\n);')
-      },
       itemSelected (item) {
         this.$store.commit('toggleIndexForDrop', item)
       }
@@ -71,7 +61,6 @@
         const dropText = this.evaluation.desiredRealization.drop ? `-- INDICES TO DROP\n\n ${this.evaluation.desiredRealization.drop}` : ''
         const createText = this.evaluation.desiredRealization.create ? `-- INDICES TO CREATE\n\n ${this.evaluation.desiredRealization.create}` : ''
         const dr = dropText.concat('\n\n').concat(createText)
-
         return dr
       }
     },

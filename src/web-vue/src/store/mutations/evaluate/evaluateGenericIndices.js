@@ -38,6 +38,8 @@ function evaluateGenericIndexEvaluations(state) {
                       idxKey: idxKey,
                       idxColumns: idxColumns,
                       tableKey: `${idx.tableSchema}.${idx.tableName}`,
+                      tableSchema: `${idx.tableSchema}`,
+                      tableName: `${idx.tableName}`,
                       indexDisplayClass: 'green--text',
                       evaluation: idxColumns,
                       indices: [idx],

@@ -18,6 +18,7 @@
         <script-viewer
           :scriptText="schemaPolicy.policy"
           @readability-changed="readabilityChanged"
+          skipFormat
         ></script-viewer>
       </v-tab-item>
     </v-tabs>

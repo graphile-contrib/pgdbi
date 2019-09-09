@@ -7,6 +7,7 @@
       @declaration-visibility-changed="declarationVisibilityChanged"
       :showDeclarationVisibility="false"
       :showReadability="false"
+      skipFormat
     ></script-viewer>
   </v-container>
 </template>
