@@ -75,10 +75,10 @@ export default {
       return this.$router.currentRoute
     },
     disableGraphileWorker () {
-      return this.$store.state.pgdbiOptions.enableGraphileWorker !== true
+      return (this.$store.state.pgdbiOptions || {enableGraphileWorker: false}).enableGraphileWorker !== true
     },
     disableSqitch () {
-      return this.$store.state.pgdbiOptions.enableSqitch !== true
+      return (this.$store.state.pgdbiOptions || {enableSqitch: false}).enableSqitch !== true
     }
   },
   methods: {
