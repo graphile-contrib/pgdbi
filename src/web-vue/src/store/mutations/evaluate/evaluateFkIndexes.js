@@ -136,7 +136,6 @@ function evaluateMultiColumnForeignKeys(state){
                         return indexCols === fkSource                   
                       }
                     )
-                  // console.log('wha', JSON.stringify(fkIndices,null,2))
                   
                   const fkIndexEvaluation = fkIndices.length == 0 ? NO_INDEX : (fkIndices.length > 1 ? MULTIPLE_INDICES : fkIndices[0].indexName)                        
                   const indexDisplayClass = fkIndexEvaluation === NO_INDEX || fkIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'

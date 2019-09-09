@@ -30,9 +30,9 @@
 
         <template slot="expanded-item" slot-scope="props">
           <td :colspan="headers.length + 1">
-            <table-generic-index-detail
+            <generic-index-detail
               :evaluation="props.item"
-            ></table-generic-index-detail>
+            ></generic-index-detail>
           </td>
         </template>
       </v-data-table>
@@ -68,9 +68,9 @@
 
         <template slot="expanded-item" slot-scope="props">
           <td :colspan="headers.length + 1">
-            <table-generic-index-detail
+            <generic-index-detail
               :evaluation="props.item"
-            ></table-generic-index-detail>
+            ></generic-index-detail>
           </td>
         </template>
       </v-data-table>
@@ -79,12 +79,12 @@
 </template>
 
 <script>
-  import TableGenericIndexDetail from '@/components/Table/TableGenericIndexDetail'
+  import GenericIndexDetail from './GenericIndexDetail'
   
   export default {
     name: 'TableUqIndices',
     components: {
-      TableGenericIndexDetail
+      GenericIndexDetail
     },
     props: {
       uqIndexEvaluations: {

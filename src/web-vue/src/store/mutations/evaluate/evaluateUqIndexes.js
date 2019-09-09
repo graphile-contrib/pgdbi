@@ -22,29 +22,52 @@ function evaluateSingleColumnUqIndexes(state) {
                     )
                     .map(
                       uc => {
-                        const columnIndices = table.indices
+                        const uqIndices = table.indices
                           .filter(i => i.indexColumns.length === 1)
                           .filter(i => i.indexColumns[0].columnName === c.columnName)
 
+                        const kcu = uc.keyColumnUsage[0]
                         const uqSource = uc.keyColumnUsage[0].columnName
 
-                        const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
+                        const uqIndexEvaluation = uqIndices.length == 0 ? NO_INDEX : (uqIndices.length > 1 ? MULTIPLE_INDICES : uqIndices[0].indexName)
                         const indexDisplayClass = uqIndexEvaluation === NO_INDEX || uqIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
-                        const kcu = uc.keyColumnUsage[0]
+                        const defaultIndexName = `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`
+                        const defaultRealization = {
+                          create: `create index if not exists idx_${defaultIndexName} on ${c.tableSchema}.${c.tableName} using btree(${c.columnName});`
+                        }
+                        const currentRealization = uqIndices.reduce(
+                          (all, idx) => {
+                            const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
+                            if (isIgnored) {
+                              return {
+                                ...all,  
+                                drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                              }  
+                            } else {
+                              return {
+                                ...all,  
+                                create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                              }  
+                            }
+                          }, {}
+                        )
+                        const desiredRealization = currentRealization.drop === undefined && currentRealization.create === undefined ? defaultRealization : currentRealization
+
                         return {
                           id: uc.constraintName,
                           constraintName: uc.constraintName,
                           tableSchema: table.tableSchema,
                           tableName: table.tableName,
                           uqSource: uqSource,
-                          uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
+                          uqPath: defaultIndexName,
                           uqTableId: `${kcu.tableSchema}.${kcu.tableName}`,
-                          uqIndices: columnIndices,
+                          uqIndices: uqIndices,
                           uqIndexEvaluation: uqIndexEvaluation,
                           evaluation: uqIndexEvaluation,
                           idxColumns: [c.columnName],
-                          indices: columnIndices,
-                          indexDisplayClass: indexDisplayClass
+                          indices: uqIndices,
+                          indexDisplayClass: indexDisplayClass,
+                          desiredRealization: desiredRealization
                         }
                       }
                     )
@@ -93,32 +116,41 @@ function evaluateMultiColumnUqIndexes(state) {
                     .map(kcu => kcu.columnName)
                     .join(', ')
 
-                  // console.log('uqSource', uqSource)
-                  // const uqTarget = rc.referencedColumnUsage
-                  //   .sort((a,b)=>{return a.columnName < b.columnName ? -1 : 1})
-                  //   .map(rcu => rcu.columnName)
-                  //   .join(', ')
+                  const defaultIndexName = uqSource.split(', ').join('_')
 
                   const uqIndices = table.indices
                     .filter(i => i.indexColumns.length === uc.keyColumnUsage.length)
                     .filter(
                       i => {
                         const indexCols = i.indkey.map(ik => i.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
-                        // const indexCols = i.indexColumns
-                        //   .map(ic => ic.columnName)
-                        //   .sort((a,b)=>{return a<b?-1:1})
-                        //   .join(', ')
-                        // console.log(i.indexName)
-                        // console.log(indexCols)
-                        // console.log(uqSource)
                         return indexCols === uqSource                   
                       }
                     )
-                  // console.log('wha', JSON.stringify(uqIndices,null,2))
                   
                   const uqIndexEvaluation = uqIndices.length == 0 ? NO_INDEX : (uqIndices.length > 1 ? MULTIPLE_INDICES : uqIndices[0].indexName)                        
                   const indexDisplayClass = uqIndexEvaluation === NO_INDEX || uqIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
                   const kcu = uc.keyColumnUsage[0]
+                  const defaultRealization = {
+                    create: `create index if not exists idx_${table.tableSchema}_${table.tableName}_${defaultIndexName} on ${table.tableSchema}_${table.tableName} using btree(${uqSource});`
+                  }
+                  const currentRealization = uqIndices.reduce(
+                    (all, idx) => {
+                      const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
+                      if (isIgnored) {
+                        return {
+                          ...all,  
+                          drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                        }  
+                      } else {
+                        return {
+                          ...all,  
+                          create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                        }  
+                      }
+                    }, {}
+                  )
+                  const desiredRealization = currentRealization.drop === undefined && currentRealization.create === undefined ? defaultRealization : currentRealization
+
                   return {
                     id: uc.constraintName,
                     constraintName: uc.constraintName,
@@ -132,7 +164,8 @@ function evaluateMultiColumnUqIndexes(state) {
                     evaluation: uqIndexEvaluation,
                     idxColumns: uqSource.split(', '),
                     indices: uqIndices,
-                    indexDisplayClass: indexDisplayClass
+                    indexDisplayClass: indexDisplayClass,
+                    desiredRealization
                   }
                 }
               )
@@ -142,47 +175,6 @@ function evaluateMultiColumnUqIndexes(state) {
                 ...all
                 ,[table.id]: uqIndexEvaluations
               }
-
-              // const uqColumnEvaluations = (table.tableColumns || [])
-              // .reduce(
-              //   (all, c) => {
-              //     const columnIndices = table.indices.filter(i => i.tableSchema === c.tableSchema && i.tableName === c.tableName && i.columnName === c.columnName)
-              //     // foreign keys
-              //     const uqConstraintUsage = (table.uniqueConstraints || [])
-              //     .filter(rc => rc.keyColumnUsage.length === 1)
-              //     .filter(
-              //         rc => {
-              //           return rc.keyColumnUsage.find(kcu => kcu.tableSchema === c.tableSchema && kcu.tableName === c.tableName && kcu.columnName === c.columnName) !== undefined
-              //         }
-              //       )
-              //       .map(
-              //         rc => {
-              //           const uqIndexEvaluation = columnIndices.length == 0 ? NO_INDEX : (columnIndices.length > 1 ? MULTIPLE_INDICES : columnIndices[0].indexName)
-              //           const kcu = rc.keyColumnUsage[0]
-              //           return {
-              //             constraintName: rc.constraintName,
-              //             uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
-              //             uqIndices: columnIndices,
-              //             uqIndexEvaluation: uqIndexEvaluation,
-              //           }
-              //         }
-              //       )
-      
-              //     if (uqConstraintUsage.length > 0) {
-              //       return {
-              //         ...all
-              //         ,[c.id]: uqConstraintUsage
-              //       }  
-              //     } else {
-              //       return all
-              //     }
-              //   }, {}
-              // )
-    
-              // return {
-              //   ...all
-              //   ,...uqColumnEvaluations
-              // }
             }, {}
           )
         }

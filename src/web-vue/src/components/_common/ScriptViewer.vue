@@ -1,6 +1,6 @@
 <template>
   <v-container>
-   <v-toolbar>
+   <v-toolbar v-if="showToolbar">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn 
@@ -72,6 +72,10 @@
       showDeclarationVisibility: {
         type: Boolean,
         default: false
+      },
+      showToolbar: {
+        type: Boolean,
+        default: true
       }
     },
     computed: {

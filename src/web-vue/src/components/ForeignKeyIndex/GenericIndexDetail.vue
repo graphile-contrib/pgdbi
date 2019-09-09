@@ -17,7 +17,13 @@
       
       <template slot="expanded-item" slot-scope="props">
         <td :colspan="headers.length + 2">
-          <v-tabs
+          <h2>Current Realization in Database Under Development</h2>
+          <script-viewer
+            :scriptText="formatScript(props.item.indexDefinition)"
+            :showReadability="false"
+            :showToolbar="false"
+          ></script-viewer>
+          <!-- <v-tabs
             dark
             slider-color="yellow"
           >
@@ -34,6 +40,7 @@
               <script-viewer
                 :scriptText="formatScript(props.item.indexDefinition)"
                 :showReadability="false"
+                :showToolbar="false"
               ></script-viewer>
             </v-tab-item>
 
@@ -50,13 +57,14 @@
               <script-viewer
                 :scriptText="props.item.indexDrop"
                 :showReadability="false"
+                :showToolbar="false"
               ></script-viewer>
             </v-tab-item>
-          </v-tabs>
+          </v-tabs> -->
         </td>
       </template>
     </v-data-table>
-    <h2>Current Realization</h2>
+    <h2>Current Realization To Be Generated</h2>
     <script-viewer
       :scriptText="formatScript(desiredRealization)"
       :showReadability="false"

@@ -15,12 +15,23 @@ function evaluateGenericIndexEvaluations(state) {
                   const idxColumns = idx.indkey.map(ik => idx.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
                   const idxKey = `${idx.tableSchema}.${idx.tableName}.${idxColumns}`
                   const existing = all[idxKey]
+
+                  const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
+
+                  const currentRealization = isIgnored ? { drop: `${idx.indexDrop}\n\n`, create: '' } : { drop: '', create: `${idx.indexDefinition}\n\n` }
+
+                  const desiredRealization = currentRealization
+
                   const idxEvaluation = existing ? 
                     {
                       ...existing,
-                      evaluation: MULTIPLE_INDICES,
                       indexDisplayClass: 'red--text',
-                      indices: [...existing.indices, idx]
+                      evaluation: MULTIPLE_INDICES,
+                      indices: [...existing.indices, idx],
+                      desiredRealization: {
+                        drop: existing.desiredRealization.drop.concat(currentRealization.drop),
+                        create: existing.desiredRealization.create.concat(currentRealization.create),
+                      }
                     } :
                     {
                       id: idxKey,
@@ -29,7 +40,8 @@ function evaluateGenericIndexEvaluations(state) {
                       tableKey: `${idx.tableSchema}.${idx.tableName}`,
                       indexDisplayClass: 'green--text',
                       evaluation: idxColumns,
-                      indices: [idx]
+                      indices: [idx],
+                      desiredRealization: desiredRealization
                     }
 
                   return {
