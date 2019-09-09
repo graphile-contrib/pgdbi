@@ -64,7 +64,7 @@
           key="policy-template"
           ripple
         >
-          {{ table ? 'Policy' : 'Policy Template'}}
+          {{ table ? 'Policy Script' : 'Policy Script Template'}}
         </v-tab>
         <v-tab-item
           key="policy-template"

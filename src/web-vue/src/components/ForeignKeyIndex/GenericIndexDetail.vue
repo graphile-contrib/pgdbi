@@ -23,44 +23,6 @@
             :showReadability="false"
             :showToolbar="false"
           ></script-viewer>
-          <!-- <v-tabs
-            dark
-            slider-color="yellow"
-          >
-            <v-tab
-              key="create"
-              ripple
-            >
-            Create
-            </v-tab>
-            <v-tab-item
-              key="create"
-              lazy
-            >
-              <script-viewer
-                :scriptText="formatScript(props.item.indexDefinition)"
-                :showReadability="false"
-                :showToolbar="false"
-              ></script-viewer>
-            </v-tab-item>
-
-            <v-tab
-              key="drop"
-              ripple
-            >
-            Drop
-            </v-tab>
-            <v-tab-item
-              key="drop"
-              lazy
-            >
-              <script-viewer
-                :scriptText="props.item.indexDrop"
-                :showReadability="false"
-                :showToolbar="false"
-              ></script-viewer>
-            </v-tab-item>
-          </v-tabs> -->
         </td>
       </template>
     </v-data-table>

@@ -22,22 +22,6 @@
         </v-card>
       </v-tab-item>
 
-      <!-- <v-tab
-        key="indices"
-        ripple
-      >
-        Indices And Constraints
-      </v-tab>
-      <v-tab-item
-        key="indices"
-      >
-        <v-card flat>
-          <table-indices
-            :tableInfo="tableInfo"
-          ></table-indices>
-        </v-card>
-      </v-tab-item>
- -->
       <v-tab
         key="constraints-and-indices"
         ripple
@@ -85,6 +69,22 @@
             :policyId="tableInfo.policyDefinitionId"
             :table="tableInfo"
           ></table-policy-definition>
+        </v-card>
+      </v-tab-item>
+      
+      <v-tab
+        key="tableScripts"
+        ripple
+      >
+        Generated Scripts
+      </v-tab>
+      <v-tab-item
+        key="tableScripts"
+      >
+        <v-card flat>
+          <table-scripts
+            :tableInfo="tableInfo"
+          ></table-scripts>
         </v-card>
       </v-tab-item>
       
@@ -152,6 +152,7 @@
   import TableTriggers from './Triggers/TableTriggers.vue'
   import TablePolicyDefinition from '../TableSecurity/Definition/TablePolicyDefinition'
   import ConstraintsAndIndices from '../ForeignKeyIndex/ConstraintsAndIndices'
+  import TableScripts from './TableScripts'
 
   export default {
     name: 'Table',
@@ -165,7 +166,8 @@
       TablePolicies,
       TableTriggers,
       TablePolicyDefinition,
-      ConstraintsAndIndices
+      ConstraintsAndIndices,
+      TableScripts
     },
     props: {
       id: {

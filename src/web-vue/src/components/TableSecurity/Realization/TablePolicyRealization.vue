@@ -13,7 +13,7 @@
   import VueClipboard from 'vue-clipboard2'
 
   export default {
-    name: 'PolicyDefinition',
+    name: 'TablePolicyRealization',
     mixins: [
       PolicyComputerMixin,
       VueClipboard
@@ -32,7 +32,7 @@
       },
       enableRls: {
         type: Boolean,
-        required: true
+        required: false
       }
     },
     data () {
