@@ -1,7 +1,7 @@
 drop schema if exists pgdbi_dev cascade;
 create schema pgdbi_dev;
 
-CREATE TYPE pgdbi_dev.enum_type AS ENUM (
+create type pgdbi_dev.enum_type AS ENUM (
   'Value_One',
   'Value_Two'
 );
@@ -9,8 +9,8 @@ CREATE TYPE pgdbi_dev.enum_type AS ENUM (
 create sequence pgdbi_dev.global_id_sequence;
 grant usage on sequence pgdbi_dev.global_id_sequence to app_user;
 
-CREATE OR REPLACE FUNCTION pgdbi_dev.id_generator(OUT result bigint) AS $$
-DECLARE
+create OR REPLACE FUNCTION pgdbi_dev.id_generator(OUT result bigint) AS $$
+declare
     our_epoch bigint := 1314220021721;
     seq_id bigint;
     now_millis bigint;
@@ -181,6 +181,21 @@ $$ LANGUAGE PLPGSQL;
     execute procedure pgdbi_dev.fn_sink_after_delete();
   -- end after delete trigger
 
+
+  create type pgdbi_dev.fn_options AS (option_1 int, option_2 text);
+
+  CREATE OR REPLACE FUNCTION pgdbi_dev.fn_sample_function_with_options(
+    param_1 text,
+    param_2 jsonb,
+    param_3 pgdbi_dev.fn_options
+  )
+  RETURNS text
+  LANGUAGE plpgsql
+  AS $function$
+    begin
+      -- before delete
+      return param_1 || ' - ' || param_2::text || ' - ' || param_3::text;
+    end; $function$
 
   -- security
   -- these settings will vary depending on your application, and should be actively managed

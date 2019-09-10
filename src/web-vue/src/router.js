@@ -16,6 +16,7 @@ import ProjectImport from './components/Project/ProjectImport.vue';
 import SqitchView from './views/SqitchView.vue'
 import WorkerView from './views/WorkerView.vue'
 import Enum from './components/Enum/Enum.vue'
+import Udt from './components/Udt/Udt.vue'
 
 import store from './store/store';
 
@@ -111,6 +112,12 @@ const router = new Router({
       path: '/enum/:id',
       name: 'enum',
       component: Enum,
+      props: true,
+    },
+    {
+      path: '/udt/:id',
+      name: 'udt',
+      component: Udt,
       props: true,
     },
     {

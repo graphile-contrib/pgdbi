@@ -1,3 +1,13 @@
+import Mustache from 'mustache'
+
+const enumTemplate = `
+create type {{enumSchema}}.{{enumName}} as (
+  {{#enumValues}}
+    '{{value}}'{{comma}}
+  {{/enumValues}}
+);
+`
+
 function evaluateEnumScripts(state){
   state.managedSchemata = state.managedSchemata
     .map(
@@ -7,13 +17,24 @@ function evaluateEnumScripts(state){
           ,schemaEnums: schema.schemaEnums
             .map(
               e => {
+                const enumDefinition = Mustache.render(
+                  enumTemplate,
+                  {
+                    ...e
+                    ,enumValues: e.enumValues.map(
+                      (v,i) => {
+                        return {
+                          value: v
+                          ,comma: i === e.enumValues.length -1 ? '' : ','
+                        } 
+                      }
+                    )
+                  }
+                )
+
                 return {
                   ...e
-                  ,enumDefinition: `
-CREATE TYPE ${e.enumSchema}.${e.enumName} AS ENUM (
-  '${e.enumValues.join(`', \n  '`)}'
-);                  
-`
+                  ,enumDefinition: enumDefinition
                 }
               }
             )

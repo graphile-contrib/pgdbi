@@ -15,7 +15,7 @@
   import ScriptViewer from '@/components/_common/ScriptViewer'
 
   export default {
-    name: 'Enum',
+    name: 'Udt',
     components: {
       ScriptViewer
     },
@@ -27,11 +27,11 @@
     },
     computed: {
       definition () {
-        return this.ENUM.enumDefinition
+        return this.UDT.udtDefinition
       },
     },
     data: () => ({
-      ENUM: {enumDefinition: 'N/A'}
+      UDT: {udtDefinition: 'N/A'}
     }),
     methods: {
       onCopy: function (e) {
@@ -40,14 +40,14 @@
       onError: function (e) {
         alert('Failed to copy texts')
       },
-      setEnum () {
-        const enumSchema = this.id.split('.')[0]
-        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === enumSchema)
-        this.ENUM = schema.schemaEnums.find(e => e.id === this.id)
+      setUdt () {
+        const udtSchema = this.id.split('.')[0]
+        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === udtSchema)
+        this.UDT = schema.schemaUdts.find(e => e.id === this.id)
       }
     },
     mounted () {
-      this.setEnum()
+      this.setUdt()
     },
     beforeRouteUpdate (to, from, next) {
       // called when the route that renders this component has changed,
@@ -59,7 +59,7 @@
       // console.log('to', to)
       // console.log('from', from)
       
-      this.setEnum()
+      this.setUdt()
       next()
     },
   }

@@ -74,6 +74,19 @@
                       }
                     )
                 },
+                {
+                  id: `udts:${schema.schemaName}`,
+                  name: 'udts',
+                  children: (schema.schemaUdts || []).sort((a,b)=>{return a.udtName < b.udtName ? -1 : 1})
+                    .map(
+                      aUdt => {
+                        return {
+                          id: `udt:${aUdt.id}`
+                          ,name: aUdt.udtName
+                        }
+                      }
+                    )
+                },
               ]
             }
           }
@@ -102,6 +115,10 @@
           case 'enum':
             // appBus.$emit('focus-route')
             this.$router.push({ name: 'enum', params: { id: activeId }})
+          break
+          case 'udt':
+            // appBus.$emit('focus-route')
+            this.$router.push({ name: 'udt', params: { id: activeId }})
           break
           default:
 
