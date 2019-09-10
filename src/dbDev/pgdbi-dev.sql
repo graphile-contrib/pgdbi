@@ -1,6 +1,11 @@
 drop schema if exists pgdbi_dev cascade;
 create schema pgdbi_dev;
 
+CREATE TYPE pgdbi_dev.enum_type AS ENUM (
+  'Value_One',
+  'Value_Two'
+);
+
 create sequence pgdbi_dev.global_id_sequence;
 grant usage on sequence pgdbi_dev.global_id_sequence to app_user;
 
@@ -175,7 +180,6 @@ $$ LANGUAGE PLPGSQL;
     for each row
     execute procedure pgdbi_dev.fn_sink_after_delete();
   -- end after delete trigger
-
 
 
   -- security

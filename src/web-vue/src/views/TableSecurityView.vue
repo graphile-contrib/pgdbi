@@ -72,7 +72,9 @@
         lazy
       >
         <v-container fluid>
-          <pdf src="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf"></pdf>
+          <v-row no-gutters>
+            <pdf src="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf"></pdf>
+          </v-row>
         </v-container>
       </v-tab-item>
     </v-tabs>

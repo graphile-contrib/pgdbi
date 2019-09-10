@@ -3,6 +3,7 @@ import assignFunctionPolicy from './assignFunctionPolicy'
 import evaluateFkIndexes from './evaluate/evaluateFkIndexes'
 import evaluateUqIndexes from './evaluate/evaluateUqIndexes'
 import evaluateGenericIndices from './evaluate/evaluateGenericIndices'
+import evaluateEnumScripts from './evaluate/evaluateEnumScripts'
 
 function ensureDefaultTablePolicy(state) {
   if (!state.defaultPolicy) {
@@ -106,6 +107,7 @@ function setManagedSchemata(state, payload) {
   evaluateFkIndexes(state)
   evaluateUqIndexes(state)
   evaluateGenericIndices(state)
+  evaluateEnumScripts(state)
 
   state.initializing = false;
   state.schemaFilterOn = false;

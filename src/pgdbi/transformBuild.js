@@ -286,6 +286,36 @@ async function transformBuild(build, pgPool) {
               ) t
             ) schema_tables
             ,(
+              select coalesce((array_to_json(array_agg(row_to_json(enums))))::jsonb, '[]')
+              from (
+                select
+                (n.nspname || '.' || t.typname) id
+                ,'enum' __typename
+                ,t.typname enum_name
+                ,n.nspname enum_schema
+                ,(
+                  with vals as(
+                  select e.enumlabel
+                  from pg_enum e
+                  where e.enumtypid = t.oid
+                  order by e.enumlabel
+                  )
+                  select array_agg(enumlabel)
+                  from vals
+                ) enum_values
+              from pg_type t
+              join pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+              where t.oid in (select enumtypid from pg_enum)
+              and n.nspname = s.schema_name
+              group by
+                n.nspname
+                ,t.typname
+                ,t.oid
+              order by 
+                t.typname
+                ) enums
+            ) schema_enums
+            ,(
               select (array_to_json(array_agg(row_to_json(sf))))::jsonb
               from (
                 select

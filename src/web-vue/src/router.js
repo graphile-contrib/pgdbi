@@ -15,6 +15,7 @@ import ProjectExport from './components/Project/ProjectExport.vue';
 import ProjectImport from './components/Project/ProjectImport.vue';
 import SqitchView from './views/SqitchView.vue'
 import WorkerView from './views/WorkerView.vue'
+import Enum from './components/Enum/Enum.vue'
 
 import store from './store/store';
 
@@ -104,6 +105,12 @@ const router = new Router({
       path: '/function/:id',
       name: 'function',
       component: Function,
+      props: true,
+    },
+    {
+      path: '/enum/:id',
+      name: 'enum',
+      component: Enum,
       props: true,
     },
     {

@@ -61,6 +61,19 @@
                       }
                     )
                 },
+                {
+                  id: `enums:${schema.schemaName}`,
+                  name: 'enums',
+                  children: (schema.schemaEnums || []).sort((a,b)=>{return a.enumName < b.enumName ? -1 : 1})
+                    .map(
+                      aEnum => {
+                        return {
+                          id: `enum:${aEnum.id}`
+                          ,name: aEnum.enumName
+                        }
+                      }
+                    )
+                },
               ]
             }
           }
@@ -73,17 +86,22 @@
         const active = this.active[0] || ''
         const activeType = active.split(':')[0]
         const activeId = active.split(':')[1]
+        console.log('enum', activeType, activeId, this.active)
 
         switch (activeType) {
           case 'table':
-            appBus.$emit('focus-route')
+            // appBus.$emit('focus-route')
             this.$router.push({ name: 'table', params: { id: activeId }})
           break
           case 'tables':
           break
           case 'function':
-            appBus.$emit('focus-route')
+            // appBus.$emit('focus-route')
             this.$router.push({ name: 'function', params: { id: activeId }})
+          break
+          case 'enum':
+            // appBus.$emit('focus-route')
+            this.$router.push({ name: 'enum', params: { id: activeId }})
           break
           default:
 
