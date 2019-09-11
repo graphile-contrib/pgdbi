@@ -246,7 +246,7 @@
         return allIndices.reduce(
           (all, e) => {
 // console.log('e)', e)
-            return e.desiredRealization.create ? all.concat(`${e.desiredRealization.create}`) : all
+            return e.desiredRealization.create ? all.concat(`${e.desiredRealization.create}\n`) : all
           }, ''
         )        
 

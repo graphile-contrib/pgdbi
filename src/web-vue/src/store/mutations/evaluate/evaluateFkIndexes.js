@@ -62,7 +62,7 @@ function evaluateSingleColumnForeignKeys(state){
                             tableSchema: c.tableSchema,
                             tableName: c.tableName,
                             indexColumns: c.columnName,
-                          })}\n-----------------------------`
+                          })}\n-----------------------------\n`
                         }
 
                         const currentRealization = fkIndices.reduce(
@@ -71,14 +71,14 @@ function evaluateSingleColumnForeignKeys(state){
                             if (isIgnored) {
                               return {
                                 ...all,  
-                                drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                                drop: (all.drop || '').concat(`${idx.indexDrop}`)
                               }  
                             } else {
-                              const createScript = `---- EXISTING SINGLE-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------`
+                              const createScript = `---- EXISTING SINGLE-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------\n`
 
                               return {
                                 ...all,  
-                                create: (all.create || '').concat(`${createScript}\n\n`)
+                                create: (all.create || '').concat(`${createScript}`)
                               }  
                             }
                           }, {}
@@ -175,7 +175,7 @@ function evaluateMultiColumnForeignKeys(state){
                         tableSchema: table.tableSchema,
                         tableName: table.tableName,
                         indexColumns: fkSource.split(', ').join(',\n    '),
-                    })}\n-----------------------------`
+                    })}\n-----------------------------\n`
                   }
 
                   const currentRealization = fkIndices.reduce(
@@ -184,13 +184,13 @@ function evaluateMultiColumnForeignKeys(state){
                       if (isIgnored) {
                         return {
                           ...all,  
-                          drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                          drop: (all.drop || '').concat(`${idx.indexDrop}`)
                         }  
                       } else {
-                        const createScript = `---- EXISTING MULTI-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------`
+                        const createScript = `---- EXISTING MULTI-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------\n`
                         return {
                           ...all,  
-                          create: (all.create || '').concat(`${createScript}\n\n`)
+                          create: (all.create || '').concat(`${createScript}`)
                         }  
                       }
                     }, {}
