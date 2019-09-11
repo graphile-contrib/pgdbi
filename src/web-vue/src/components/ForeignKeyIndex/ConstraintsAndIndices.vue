@@ -78,6 +78,7 @@
         <v-card flat>
           <script-viewer
             :scriptText="createIndicesScript"
+            skipFormat
           ></script-viewer>
         </v-card>
       </v-tab-item>
@@ -169,6 +170,15 @@
         } : schemaFiltered
 
         return tableFiltered
+          // .sort(
+          //   (a,b) => {
+          //     if (a.schemaName < b.schemaName) { return -1 }
+          //     if (a.schemaName > b.schemaName) { return 1 }
+          //     if (a.tableName < b.tableName) { return -1 }
+          //     if (a.tableName > b.tableName) { return 1 }
+
+          //   }
+          // )
       },
       uqIndexEvaluations () {
         const all = this.$store.state.uqIndexEvaluations
@@ -216,24 +226,59 @@
         }
       },
       createIndicesScript () {
-        return Object.values(this.$store.state.genericIndexEvaluations).reduce(
-          (all, e) => {
-            if (this.tableName && this.tableName !== e.tableName) { return all }
-            if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
+        const singleColumnFkIndices = Object.values(this.$store.state.fkIndexEvaluations.singleColumn)
+          .filter(e => e.length > 0)
+          .filter(e => this.tableName ? this.tableName === e[0].tableName : true)
+          .filter(e => this.tableSchema ? this.tableSchema === e[0].tableSchema : true)
+          .map(e => e[0])
 
-            return e.desiredRealization.create ? all.concat(e.desiredRealization.create) : all
+        const multiColumnFkIndices = Object.values(this.$store.state.fkIndexEvaluations.multiColumn)
+          .filter(e => e.length > 0)
+          .filter(e => this.tableName ? this.tableName === e[0].tableName : true)
+          .filter(e => this.tableSchema ? this.tableSchema === e[0].tableSchema : true)
+          // .map(e => e[0])
+
+        const allIndices = [
+          ...singleColumnFkIndices
+          ,...multiColumnFkIndices
+        ].flat()
+
+        return allIndices.reduce(
+          (all, e) => {
+// console.log('e)', e)
+            return e.desiredRealization.create ? all.concat(`${e.desiredRealization.create}`) : all
           }, ''
-        )
+        )        
+
+        // return Object.values(this.$store.state.genericIndexEvaluations).reduce(
+        //   (all, e) => {
+        //     if (this.tableName && this.tableName !== e.tableName) { return all }
+        //     if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
+
+        //     return e.desiredRealization.create ? all.concat(e.desiredRealization.create) : all
+        //   }, ''
+        // )
       },
       dropIndicesScript () {
-        return Object.values(this.$store.state.genericIndexEvaluations).reduce(
-          (all, e) => {
+        return Object.values(this.$store.state.fkIndexEvaluations.singleColumn).reduce(
+          (all, fkIndexEvaluation) => {
+            const e = fkIndexEvaluation[0]
+
             if (this.tableName && this.tableName !== e.tableName) { return all }
             if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
 
             return e.desiredRealization.drop ? all.concat(e.desiredRealization.drop) : all
           }, ''
         )
+
+        // return Object.values(this.$store.state.genericIndexEvaluations).reduce(
+        //   (all, e) => {
+        //     if (this.tableName && this.tableName !== e.tableName) { return all }
+        //     if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
+
+        //     return e.desiredRealization.drop ? all.concat(e.desiredRealization.drop) : all
+        //   }, ''
+        // )
       }
     },
     data: () => ({

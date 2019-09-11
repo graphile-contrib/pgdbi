@@ -1,5 +1,26 @@
+import Mustache from 'mustache'
+
 const NO_INDEX = 'NO_INDEX'
 const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
+
+function formatScript (scriptText) {
+  return (scriptText || '')
+    .toLowerCase()
+    .split(' exists').join(' exists\n    ')
+    .split(' on').join('\n  on\n    ')
+    .split(' using').join('\n  using')
+    .split(' (').join(' (\n    ')
+    .split(', ').join(',\n    ')
+    .split(');').join('\n);')
+}
+
+const createIndexTemplate = `create index if not exists 
+    {{indexName}}
+  on 
+    {{tableSchema}}.{{tableName}}
+  using btree(
+    {{indexColumns}}
+  );`
 
 function evaluateSingleColumnForeignKeys(state){
   const evaluations = state.managedSchemata
@@ -36,8 +57,14 @@ function evaluateSingleColumnForeignKeys(state){
                         const indexDisplayClass = fkIndexEvaluation === NO_INDEX || fkIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
                         const defaultIndexName = `${c.tableSchema}_${c.tableName}_${c.columnName}`
                         const defaultRealization = {
-                          create: `create index if not exists idx_${defaultIndexName} on ${c.tableSchema}.${c.tableName} using btree(${c.columnName});`
+                          create: `---- NEW SINGLE-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${ Mustache.render(createIndexTemplate, {
+                              indexName: `idx_${defaultIndexName}`,
+                            tableSchema: c.tableSchema,
+                            tableName: c.tableName,
+                            indexColumns: c.columnName,
+                          })}\n-----------------------------`
                         }
+
                         const currentRealization = fkIndices.reduce(
                           (all, idx) => {
                             const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
@@ -47,9 +74,11 @@ function evaluateSingleColumnForeignKeys(state){
                                 drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
                               }  
                             } else {
+                              const createScript = `---- EXISTING SINGLE-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------`
+
                               return {
                                 ...all,  
-                                create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                                create: (all.create || '').concat(`${createScript}\n\n`)
                               }  
                             }
                           }, {}
@@ -140,8 +169,15 @@ function evaluateMultiColumnForeignKeys(state){
                   const fkIndexEvaluation = fkIndices.length == 0 ? NO_INDEX : (fkIndices.length > 1 ? MULTIPLE_INDICES : fkIndices[0].indexName)                        
                   const indexDisplayClass = fkIndexEvaluation === NO_INDEX || fkIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
                   const defaultRealization = {
-                    create: `create index if not exists idx_${table.tableSchema}_${table.tableName}_${defaultIndexName} on ${table.tableSchema}_${table.tableName} using btree(${fkSource});`
+                    // create: `create index if not exists idx_${table.tableSchema}_${table.tableName}_${defaultIndexName} on ${table.tableSchema}_${table.tableName} using btree(${fkSource});`
+                    create: `---- NEW MULTI-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${ Mustache.render(createIndexTemplate, {
+                      indexName: `idx_${defaultIndexName}`,
+                        tableSchema: table.tableSchema,
+                        tableName: table.tableName,
+                        indexColumns: fkSource.split(', ').join(',\n    '),
+                    })}\n-----------------------------`
                   }
+
                   const currentRealization = fkIndices.reduce(
                     (all, idx) => {
                       const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
@@ -151,9 +187,10 @@ function evaluateMultiColumnForeignKeys(state){
                           drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
                         }  
                       } else {
+                        const createScript = `---- EXISTING MULTI-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------`
                         return {
                           ...all,  
-                          create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                          create: (all.create || '').concat(`${createScript}\n\n`)
                         }  
                       }
                     }, {}
