@@ -75,7 +75,6 @@ function evaluateSingleColumnForeignKeys(state){
                               }  
                             } else {
                               const createScript = `---- EXISTING SINGLE-COLUMN FK-INDEX FOR CONSTRAINT: ${rc.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------\n`
-
                               return {
                                 ...all,  
                                 create: (all.create || '').concat(`${createScript}`)

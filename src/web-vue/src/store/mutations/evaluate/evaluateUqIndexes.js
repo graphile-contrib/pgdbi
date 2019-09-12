@@ -1,5 +1,26 @@
+import Mustache from 'mustache'
+
 const NO_INDEX = 'NO_INDEX'
 const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
+
+function formatScript (scriptText) {
+  return (scriptText || '')
+    .toLowerCase()
+    .split(' exists').join(' exists\n    ')
+    .split(' on').join('\n  on\n    ')
+    .split(' using').join('\n  using')
+    .split(' (').join(' (\n    ')
+    .split(', ').join(',\n    ')
+    .split(');').join('\n);')
+}
+
+const createIndexTemplate = `create index if not exists 
+    {{indexName}}
+  on 
+    {{tableSchema}}.{{tableName}}
+  using btree(
+    {{indexColumns}}
+  );`
 
 function evaluateSingleColumnUqIndexes(state) {
   const evaluations = state.managedSchemata
@@ -22,6 +43,9 @@ function evaluateSingleColumnUqIndexes(state) {
                     )
                     .map(
                       uc => {
+                        // const idxColumns = idx.indkey.map(ik => idx.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
+                        // const idxKey = `${table.tableSchema}.${table.tableName}.${}`
+
                         const uqIndices = table.indices
                           .filter(i => i.indexColumns.length === 1)
                           .filter(i => i.indexColumns[0].columnName === c.columnName)
@@ -33,7 +57,13 @@ function evaluateSingleColumnUqIndexes(state) {
                         const indexDisplayClass = uqIndexEvaluation === NO_INDEX || uqIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
                         const defaultIndexName = `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`
                         const defaultRealization = {
-                          create: `create index if not exists idx_${defaultIndexName} on ${c.tableSchema}.${c.tableName} using btree(${c.columnName});`
+                          create: `---- NEW SINGLE-COLUMN UNIQUE-INDEX FOR CONSTRAINT: ${kcu.constraintName}\n  ${ Mustache.render(createIndexTemplate, {
+                            indexName: `idx_${defaultIndexName}`,
+                            tableSchema: c.tableSchema,
+                            tableName: c.tableName,
+                            indexColumns: c.columnName,
+                          })}\n-----------------------------\n`
+                          // create: `create index if not exists idx_${defaultIndexName} on ${c.tableSchema}.${c.tableName} using btree(${c.columnName});`
                         }
                         const currentRealization = uqIndices.reduce(
                           (all, idx) => {
@@ -41,12 +71,13 @@ function evaluateSingleColumnUqIndexes(state) {
                             if (isIgnored) {
                               return {
                                 ...all,  
-                                drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                                drop: (all.drop || '').concat(`${idx.indexDrop}`)
                               }  
                             } else {
+                              const createScript = `---- EXISTING SINGLE-COLUMN UNIQUE-INDEX FOR CONSTRAINT: ${kcu.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------\n`
                               return {
                                 ...all,  
-                                create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                                create: (all.create || '').concat(`${createScript}`)
                               }  
                             }
                           }, {}
@@ -55,6 +86,7 @@ function evaluateSingleColumnUqIndexes(state) {
 
                         return {
                           id: uc.constraintName,
+                          idxKey: defaultIndexName,
                           constraintName: uc.constraintName,
                           tableSchema: table.tableSchema,
                           tableName: table.tableName,
@@ -131,7 +163,13 @@ function evaluateMultiColumnUqIndexes(state) {
                   const indexDisplayClass = uqIndexEvaluation === NO_INDEX || uqIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
                   const kcu = uc.keyColumnUsage[0]
                   const defaultRealization = {
-                    create: `create index if not exists idx_${table.tableSchema}_${table.tableName}_${defaultIndexName} on ${table.tableSchema}_${table.tableName} using btree(${uqSource});`
+                    // create: `create index if not exists idx_${table.tableSchema}_${table.tableName}_${defaultIndexName} on ${table.tableSchema}_${table.tableName} using btree(${uqSource});`
+                    create: `---- NEW MULTI-COLUMN UNIQUE-INDEX FOR CONSTRAINT: ${kcu.constraintName}\n  ${ Mustache.render(createIndexTemplate, {
+                      indexName: `idx_${defaultIndexName}`,
+                        tableSchema: table.tableSchema,
+                        tableName: table.tableName,
+                        indexColumns: uqSource.split(', ').join(',\n    '),
+                    })}\n-----------------------------\n`
                   }
                   const currentRealization = uqIndices.reduce(
                     (all, idx) => {
@@ -139,12 +177,13 @@ function evaluateMultiColumnUqIndexes(state) {
                       if (isIgnored) {
                         return {
                           ...all,  
-                          drop: (all.drop || '').concat(`${idx.indexDrop}\n\n`)
+                          drop: (all.drop || '').concat(`${idx.indexDrop}`)
                         }  
                       } else {
+                        const createScript = `---- EXISTING MULTI-COLUMN UNIQUE-INDEX FOR CONSTRAINT: ${kcu.constraintName}\n  ${formatScript(idx.indexDefinition)}\n-----------------------------\n`
                         return {
                           ...all,  
-                          create: (all.create || '').concat(`${idx.indexDefinition}\n\n`)
+                          create: (all.create || '').concat(`${createScript}`)
                         }  
                       }
                     }, {}
@@ -153,6 +192,7 @@ function evaluateMultiColumnUqIndexes(state) {
 
                   return {
                     id: uc.constraintName,
+                    idxKey: defaultIndexName,
                     constraintName: uc.constraintName,
                     tableSchema: table.tableSchema,
                     tableName: table.tableName,

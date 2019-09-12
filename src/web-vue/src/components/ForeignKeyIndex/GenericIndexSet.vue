@@ -119,7 +119,7 @@
             idx => {
               return {
                 ...idx,
-                columnDisplay: idx.idxColumns.split(', '),
+                columnDisplay: idx.idxColumns,
                 evaluation: idx.evaluation.split(', ')
               }
             }
@@ -131,7 +131,7 @@
             idx => {
               return {
                 ...idx,
-                columnDisplay: idx.idxColumns.split(', '),
+                columnDisplay: idx.idxColumns,
                 evaluation: idx.evaluation.split(', ')
               }
             }

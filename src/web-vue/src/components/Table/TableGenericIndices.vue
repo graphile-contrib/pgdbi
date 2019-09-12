@@ -106,7 +106,7 @@
             idx => {
               return {
                 ...idx,
-                columnDisplay: idx.idxColumns.split('+')
+                columnDisplay: idx.idxColumns //.split('+')
               }
             }
           )
