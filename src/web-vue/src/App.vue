@@ -18,17 +18,16 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
+      <v-spacer></v-spacer>
       <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn @click="navigate('home')" :color="btnColor('home')">Home</v-btn>
-      <v-btn @click="navigate('role-manager')" :color="btnColor('role-manager')">Roles</v-btn>
-      <v-btn @click="navigate('table-security-manager')" :color="btnColor('table-security-manager')">Table Security</v-btn>
-      <v-btn @click="navigate('function-security-manager')" :color="btnColor('function-security-manager')">Function Security</v-btn>
-      <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')">Constraints And Indices</v-btn>
-      <v-btn @click="navigate('search-view')" :color="btnColor('search-view')">Function Search</v-btn>
+      <v-btn @click="navigate('security-manager')" :color="btnColor('security-manager')" :disabled="initializing">Security Scripts</v-btn>
+      <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')" :disabled="initializing">Constraints And Indices</v-btn>
+      <v-btn @click="navigate('search-view')" :color="btnColor('search-view')" :disabled="initializing">Function Search</v-btn>
       <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
       <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn>
-      <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
@@ -59,7 +58,7 @@
 </template>
 
 <script>
-import bus from './AppBus'
+import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
 import ProjectNavigator from '@/components/Project/ProjectNavigator'
 
 export default {
@@ -71,6 +70,9 @@ export default {
     ProjectNavigator
   },
   computed: {
+    initializing () {
+      return this.$store.state.initializing
+    },
     currentRoute () {
       return this.$router.currentRoute
     },
@@ -81,11 +83,34 @@ export default {
       return (this.$store.state.pgdbiOptions || {enableSqitch: false}).enableSqitch !== true
     }
   },
+  watch: {
+    initializing () {
+      this.setRefreshBtnClass()
+    }
+  },
   methods: {
-    // focusToRoute () {
-    //   this.expandNav = false
-    //   this.drawer = false
-    // },
+      setRefreshBtnClass () {
+        this.refreshBtnClass = this.initializing ? 'refreshBtnInitializing' : 'refreshBtn' 
+        this.refreshBtnColor = this.initializing ? 'yellow darken-3' : 'blue-grey' 
+      },
+      refreshSchemata () {
+        this.$loading(true)
+        this.$apollo.query({
+          query: dbIntrospection,
+          fetchPolicy: 'network-only'
+        })
+        .then(result => {
+          this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
+          this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
+          this.$store.commit('setPgdbiOptions', {pgdbiOptions: result.data.pgdbiOptions})
+          this.$loading(false)
+        })
+        .catch(error => {
+          this.$loading(false)
+          console.error(error)
+          alert(error.toString())
+        })
+      },
     btnColor (routeName) {
       return this.$router.currentRoute.name === routeName ? 'blue' : 'blue-grey'
     },
@@ -109,8 +134,13 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'pg-db-inspector'
+      title: 'pg-db-inspector',
+      refreshBtnClass: 'refreshBtn',
+      refreshBtnColor: 'blue-grey'
     }
+  },
+  mounted() {
+    this.setRefreshBtnClass()
   },
   created () {
     this.$vuetify.theme.dark = true

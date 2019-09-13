@@ -8,10 +8,6 @@
       label="Search Term"
       v-model="searchTerm"
     ></v-text-field>
-    <!-- <v-btn 
-      @click="performSearch"
-      :disabled="disabled"
-    >Search</v-btn> -->
     <hr>
     <function-list
       :functions="functions"
@@ -45,7 +41,6 @@
         )
       },
       functions () {
-        console.log(this.allFunctions)
         return this.allFunctions.filter(
           f => {
             return f.functionSchema.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1 ||
@@ -59,23 +54,8 @@
     },
     data: () => ({
       searchTerm: '',
-      // functions: []
     }),
     methods: {
-      // performSearch () {
-      //   this.$apollo.mutate({
-      //     mutation: searchFunctions,
-      //     variables: {
-      //       searchTerm: this.searchTerm
-      //     }
-      //   })
-      //   .then(result => {
-      //     this.functions = result.data.searchFunctions
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
-      // }
     },
   }
 </script>

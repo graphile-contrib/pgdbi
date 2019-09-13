@@ -54,7 +54,7 @@ export default {
     }
   },
   data () {
-    this.$store.commit('clearFocus')
+    // this.$store.commit('clearFocus')
     return {
       file: '',
       project: {

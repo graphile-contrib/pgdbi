@@ -4,27 +4,11 @@
     pa-0
   >
     <h1>Table Security Manager</h1>
-    <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">table grants and rls policies</a> are properly configured to support postgraphile</h2>
     <hr>
     <v-tabs
       v-model="activeTab"
       dark
     >
-      <v-tab
-        key="policy-manager"
-        ripple
-      >
-        Policy Templates
-      </v-tab>
-      <v-tab-item
-        key="policy-manager"
-        lazy
-      >
-        <v-card>
-          <policy-manager></policy-manager>
-        </v-card>
-      </v-tab-item>
-
       <v-tab
         key="policyAssignment"
         ripple
@@ -62,21 +46,20 @@
       </v-tab-item>
       
       <v-tab
-        key="cheatsheet"
-        lazy
+        key="policy-manager"
+        ripple
       >
-        Cheatsheet
+        Policy Templates
       </v-tab>
       <v-tab-item
-        key="cheatsheet"
+        key="policy-manager"
         lazy
       >
-        <v-container fluid>
-          <v-row no-gutters>
-            <pdf src="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf"></pdf>
-          </v-row>
-        </v-container>
+        <v-card>
+          <policy-manager></policy-manager>
+        </v-card>
       </v-tab-item>
+
     </v-tabs>
   </v-container>
 </template>
@@ -88,7 +71,6 @@
   import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SchemaSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
   import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
-  import pdf from 'vue-pdf'
 
 
   export default {
@@ -97,16 +79,15 @@
       SecurityPolicySettings,
       SchemaSecurityScripts,
       PolicyManager,
-      PolicyAssignment,
-      pdf
+      PolicyAssignment
     },
     props: {
     },
     computed: {
     },
     data: () => ({
-      activeTab: null
-    })
+      activeTab: 0
+    }),
   }
 </script>
 

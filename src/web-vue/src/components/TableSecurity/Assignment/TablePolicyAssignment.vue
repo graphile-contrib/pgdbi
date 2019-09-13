@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container>
       <v-tabs
         dark
         slider-color="yellow"
@@ -19,7 +19,7 @@
           <policy-assignment-schema :schema="schema"></policy-assignment-schema>
         </v-tab-item>
       </v-tabs>
-    </div>
+    </v-container>
 </template>
 
 <script>

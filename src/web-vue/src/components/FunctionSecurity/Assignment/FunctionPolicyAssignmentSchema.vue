@@ -28,6 +28,7 @@
             <policy-assignment-dialog 
               :currentPolicyDefinition="item.policyDefinition" 
               :functions="[item]"
+              @policyAssigned="expandItems"
             ></policy-assignment-dialog>
           </template>
 
@@ -40,35 +41,6 @@
           </td>
         </template>
 
-        <!-- <template slot="items" slot-scope="props">
-          <tr>
-            <td>
-              <v-checkbox 
-              :input-value="functionCheckValue(props.item)" 
-              @change="functionCheckChanged(props.item)"
-              ></v-checkbox>
-            </td>
-            <td @click="props.expanded = !props.expanded">
-              <v-btn icon @click.stop="props.expanded = !props.expanded">
-                <v-icon>{{ props.expanded ? 'expand_less' : 'expand_more' }}</v-icon>
-              </v-btn>
-            </td>
-            <td @click="props.expanded = !props.expanded">{{ props.item.id }}</td>
-            <td @click="props.expanded = !props.expanded">
-              <policy-assignment-dialog 
-                :currentPolicyDefinition="props.item.policyDefinition" 
-                :functions="[props.item]">
-              </policy-assignment-dialog>
-            </td>
-          </tr>
-        </template>
-
-        <template slot="expand" slot-scope="props">
-          <policy-definition
-            :policyId="props.item.policyDefinition.id"
-            :aFunction="props.item"
-          ></policy-definition>
-        </template> -->
       </v-data-table>
     </div>
 </template>
@@ -90,24 +62,9 @@
       }
     },
     methods: {
-      // functionCheckValue (item) {
-      //   return (this.selected.find(i => i.id === item.id)) !== undefined
-      // },
-      // functionCheckChanged (item) {
-      //   const existing = this.selected.find(i => i.id === item.id)
-      //   if (existing) {
-      //     this.selected = this.selected.filter(i => i.id !== item.id)
-      //   } else {
-      //     this.selected = this.selected.concat([item])
-      //   }
-      // },
-      // selectAllChanged (value) {
-      //   if (this.selectAllValue) {
-      //     this.selected = []
-      //   } else {
-      //     this.selected = [...this.schema.schemaFunctions]
-      //   }
-      // }
+      expandItems (items) {
+        this.expanded = items
+      }
     },
     watch: {
     },

@@ -92,6 +92,8 @@
             name: this.customName
           }
         })
+
+        this.$emit('policyAssigned', this.tables)
       }
     }
   }

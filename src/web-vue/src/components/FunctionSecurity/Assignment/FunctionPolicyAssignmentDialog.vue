@@ -57,6 +57,7 @@
     data () {
       return {
         dialog: false,
+        expanded: [],
         currentSelection: null
       }
     },
@@ -94,6 +95,8 @@
           functionIds: functionIds,
           policyDefinitionId: this.currentSelection.id
         })
+
+        this.$emit('policyAssigned', this.functions)
       }
     }
   }

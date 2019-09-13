@@ -30,7 +30,7 @@
     watch: {
       initializing () {
         if (this.initializing !== true) {
-          this.$router.push({name:'role-manager'})
+          this.$router.push({name:'security-manager'})
         }
       }
     },

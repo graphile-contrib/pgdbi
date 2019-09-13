@@ -1,4 +1,5 @@
 import Mustache from 'mustache'
+import storeEvaluations from './storeEvaluations'
 
 const NO_INDEX = 'NO_INDEX'
 const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
@@ -55,7 +56,7 @@ function evaluateSingleColumnUqIndexes(state) {
 
                         const uqIndexEvaluation = uqIndices.length == 0 ? NO_INDEX : (uqIndices.length > 1 ? MULTIPLE_INDICES : uqIndices[0].indexName)
                         const indexDisplayClass = uqIndexEvaluation === NO_INDEX || uqIndexEvaluation === MULTIPLE_INDICES ? 'red--text' : 'green--text'
-                        const defaultIndexName = `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`
+                        const defaultIndexName = `${kcu.tableSchema}_${kcu.tableName}_${kcu.columnName}`
                         const defaultRealization = {
                           create: `---- NEW SINGLE-COLUMN UNIQUE-INDEX FOR CONSTRAINT: ${kcu.constraintName}\n  ${ Mustache.render(createIndexTemplate, {
                             indexName: `idx_${defaultIndexName}`,
@@ -87,6 +88,7 @@ function evaluateSingleColumnUqIndexes(state) {
                         return {
                           id: uc.constraintName,
                           idxKey: defaultIndexName,
+                          idxType: 'unique',
                           constraintName: uc.constraintName,
                           tableSchema: table.tableSchema,
                           tableName: table.tableName,
@@ -129,6 +131,8 @@ function evaluateSingleColumnUqIndexes(state) {
     ...state.uqIndexEvaluations,
     singleColumn: evaluations
   }
+
+  storeEvaluations(state, evaluations)
 }
 
 function evaluateMultiColumnUqIndexes(state) {
@@ -193,6 +197,7 @@ function evaluateMultiColumnUqIndexes(state) {
                   return {
                     id: uc.constraintName,
                     idxKey: defaultIndexName,
+                    idxType: 'unique',
                     constraintName: uc.constraintName,
                     tableSchema: table.tableSchema,
                     tableName: table.tableName,
@@ -225,6 +230,8 @@ function evaluateMultiColumnUqIndexes(state) {
     ...state.uqIndexEvaluations,
     multiColumn: evaluations
   }
+
+  storeEvaluations(state, evaluations)
 }
 
 function evaluateUqIndexes(state){

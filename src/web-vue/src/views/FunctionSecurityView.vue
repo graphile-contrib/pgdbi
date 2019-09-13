@@ -4,26 +4,11 @@
     pa-0
   >
     <h1>Function Security Manager</h1>
-    <h2>A tool to ensure that all <a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">function grants</a> are properly configured to support postgraphile</h2>
     <hr>
     <v-tabs
       v-model="activeTab"
       dark
     >
-      <v-tab
-        key="policy-manager"
-        ripple
-      >
-        Policy Templates
-      </v-tab>
-      <v-tab-item
-        key="policy-manager"
-        lazy
-      >
-        <v-card>
-          <policy-manager></policy-manager>
-        </v-card>
-      </v-tab-item>
 
       <v-tab
         key="policyAssignment"
@@ -61,6 +46,20 @@
         </v-card>
       </v-tab-item>
 
+      <v-tab
+        key="policy-manager"
+        ripple
+      >
+        Policy Templates
+      </v-tab>
+      <v-tab-item
+        key="policy-manager"
+        lazy
+      >
+        <v-card>
+          <policy-manager></policy-manager>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
@@ -83,7 +82,7 @@
     },
     data: () => ({
       activeTab: null
-    })
+    }),
   }
 </script>
 

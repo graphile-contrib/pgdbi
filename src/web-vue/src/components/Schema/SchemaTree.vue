@@ -99,7 +99,6 @@
         const active = this.active[0] || ''
         const activeType = active.split(':')[0]
         const activeId = active.split(':')[1]
-        console.log('enum', activeType, activeId, this.active)
 
         switch (activeType) {
           case 'table':

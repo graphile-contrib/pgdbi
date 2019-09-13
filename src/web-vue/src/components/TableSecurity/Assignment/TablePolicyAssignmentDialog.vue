@@ -95,6 +95,8 @@
           tableIds: tableIds,
           policyDefinitionId: this.currentSelection.id
         })
+
+        this.$emit('policyAssigned', this.tables)
       }
     }
   }

@@ -5,7 +5,6 @@
     pa-0
   >
     <h1>Role Manager</h1>
-    <h2>Select roles to use with other tools</h2>
     <hr>
     <role-filter></role-filter>
   </v-container>

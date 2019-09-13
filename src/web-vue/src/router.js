@@ -4,9 +4,10 @@ import Home from './views/Home.vue';
 import Initialize from './views/Initialize.vue';
 import Table from './components/Table/Table.vue';
 import Function from './components/Function/Function.vue';
-import RoleManagerView from './views/RoleManagerView.vue';
-import TableSecurityView from './views/TableSecurityView.vue';
-import FunctionSecurityView from './views/FunctionSecurityView.vue';
+// import RoleManagerView from './views/RoleManagerView.vue';
+import SecurityView from './views/SecurityView.vue';
+// import TableSecurityView from './views/TableSecurityView.vue';
+// import FunctionSecurityView from './views/FunctionSecurityView.vue';
 import SearchView from './views/SearchView.vue';
 import Settings from './components/Settings/Settings.vue';
 import ForeignKeyIndexView from './views/ForeignKeyIndexView';
@@ -41,21 +42,26 @@ const router = new Router({
       name: 'initialize',
       component: Initialize,
     },
+    // {
+    //   path: '/role-manager',
+    //   name: 'role-manager',
+    //   component: RoleManagerView,
+    // },
     {
-      path: '/role-manager',
-      name: 'role-manager',
-      component: RoleManagerView,
+      path: '/security-manager',
+      name: 'security-manager',
+      component: SecurityView,
     },
-    {
-      path: '/table-security-manager',
-      name: 'table-security-manager',
-      component: TableSecurityView,
-    },
-    {
-      path: '/function-security-manager',
-      name: 'function-security-manager',
-      component: FunctionSecurityView,
-    },
+    // {
+    //   path: '/table-security-manager',
+    //   name: 'table-security-manager',
+    //   component: TableSecurityView,
+    // },
+    // {
+    //   path: '/function-security-manager',
+    //   name: 'function-security-manager',
+    //   component: FunctionSecurityView,
+    // },
     {
       path: '/search-view',
       name: 'search-view',

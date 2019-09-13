@@ -19,6 +19,7 @@
         hide-default-footer
         show-select
         show-expand
+        :expanded.sync="expanded"
       >
           <template v-slot:item.name="{ item }">
             {{ item.tableName }}
@@ -28,11 +29,13 @@
             <policy-assignment-dialog 
               :currentPolicyDefinition="item.policyDefinition" 
               :tables="[item]"
+              @policyAssigned="expandItems"
             ></policy-assignment-dialog>
             <table-policy-customize-dialog
               v-if="showCustomizeButton(item)"
               :currentPolicyDefinition="item.policyDefinition"
               :tables="[item]"
+              @policyAssigned="expandItems"
             ></table-policy-customize-dialog>
           </template>
 
@@ -87,8 +90,14 @@
           return false
         }
       },
+      expandItems (items) {
+        this.expanded = items
+      }
     },
     watch: {
+      // expanded () {
+      //   console.log(this.expanded)
+      // }
     },
     computed: {
       tablesToShow () {
@@ -96,7 +105,6 @@
           table => {
             const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId
             const policyDefinition = this.policies.find(p => p.id === policyDefinitionId)
-            // console.log(policyDefinitionId, policyDefinition)
 
             return {
               ...table
@@ -115,8 +123,8 @@
     },
     data: () => ({
       loading: false,
-      // tablesToShow: [],
       selected: [],
+      expanded: [],
       headers: [
         {
           text: '',

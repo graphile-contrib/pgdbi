@@ -1,4 +1,5 @@
 import Mustache from 'mustache'
+import storeEvaluations from './storeEvaluations'
 
 const NO_INDEX = 'NO_INDEX'
 const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
@@ -87,6 +88,8 @@ function evaluateSingleColumnForeignKeys(state){
                         const rcu = rc.referencedColumnUsage[0]
                         return {
                           id: rc.constraintName,
+                          idxKey: defaultIndexName,
+                          idxType: 'foreign-key',
                           constraintName: rc.constraintName,
                           tableSchema: table.tableSchema,
                           tableName: table.tableName,
@@ -130,6 +133,8 @@ function evaluateSingleColumnForeignKeys(state){
       ...state.fkIndexEvaluations,
       singleColumn: evaluations
     }
+
+    storeEvaluations(state, evaluations)
 }
 
 function evaluateMultiColumnForeignKeys(state){
@@ -199,6 +204,8 @@ function evaluateMultiColumnForeignKeys(state){
                   const rcu = rc.referencedColumnUsage[0]
                   return {
                     id: rc.constraintName,
+                    idxKey: defaultIndexName,
+                    idxType: 'foreign-key',
                     constraintName: rc.constraintName,
                     tableSchema: table.tableSchema,
                     tableName: table.tableName,
@@ -231,7 +238,9 @@ function evaluateMultiColumnForeignKeys(state){
       ...state.fkIndexEvaluations,
       multiColumn: evaluations
     }
-}
+  
+    storeEvaluations(state, evaluations)
+  }
 
 function evaluateFkIndexes(state) {
   evaluateSingleColumnForeignKeys(state)
