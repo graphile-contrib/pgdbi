@@ -257,15 +257,19 @@
           ,...multiColumnUqIndices
         ].flat()
 
-
+        const fkAndUniqueIdxKeys = fkAndUqIndices.map(i => i.idxKey)
+console.log('fkAndUniqueIdxKeys', fkAndUniqueIdxKeys, fkAndUniqueIdxKeys.indexOf('pgdbi_dev_sink_uq_single_column'))
+        
         const singleColumnGenericIndices = Object.values(this.$store.state.genericIndexEvaluations)
+          // .filter(e => fkAndUniqueIdxKeys.indexOf(e.idxKey) === -1)
           .filter(e => e.idxColumns.length === 1)
           // .filter(e => e.length > 0)
           .filter(e => fkAndUqIndices.filter(i => i.id === e.id).length === 0)
           .filter(e => this.tableName ? this.tableName === e.tableName : true)
           .filter(e => this.tableSchema ? this.tableSchema === e.tableSchema : true)
+          
 
-          console.log('singleColumnGenericIndices', singleColumnGenericIndices)
+console.log('singleColumnGenericIndicesKeys', singleColumnGenericIndices.map(i => i.idxKey))
 
         // const multiColumnFkIndices = Object.values(this.$store.state.fkIndexEvaluations.multiColumn)
         //   .filter(e => e.length > 0)
@@ -277,11 +281,27 @@
           ...fkAndUqIndices,
           ...singleColumnGenericIndices
         ].flat()
+        .reduce(
+          (all, e) => {
+            const existing = all.find(existing => existing.idxKey === e.idxKey)
+            if (existing) {
+              const others = all.filter(o => o.idxKey !== e.idxKey)
+              const existingIndexIds = existing.indices.map(i => i.id)
+              const newIndices = e.indices.filter(i => existingIndexIds.indexOf(i.id) === -1)
 
-        console.log(allIndices)
+              return [...others, {...existing, indices: [...existing.indices, ...newIndices]}]
+
+            } else {
+              return [...all, e]
+            }
+
+          }, []
+        )
+
+        console.log('allIndices', JSON.stringify(allIndices.map(i => i.idxKey),0,2), allIndices)
+
         const blah = allIndices.filter(i => i.desiredRealization.create.indexOf('sink_uq_single_column_key') > -1)
-
-        console.log(JSON.stringify(blah.map(i => Object.keys(i)), null,2))
+        console.log('sink_uq_single_column_key', JSON.stringify(blah.map(i => Object.keys(i)), null,2))
         console.log(JSON.stringify(blah
           .map(
             i => {
@@ -289,6 +309,7 @@
                 id: i.id
                 ,idxKey: i.idxKey
                 ,uqPath: i.uqPath
+                ,idxType: i.idxType
                 ,idxColumns: i.idxColumns
               }}
           ), null,2
@@ -311,25 +332,14 @@
         // )
       },
       dropIndicesScript () {
-        return Object.values(this.$store.state.fkIndexEvaluations.singleColumn).reduce(
-          (all, fkIndexEvaluation) => {
-            const e = fkIndexEvaluation[0]
+        return Object.values(this.$store.state.indicesToDrop).reduce(
+          (all, idx) => {
+            if (this.tableName && this.tableName !== idx.tableName) { return all }
+            if (this.schemaName && this.tableSchema !== idx.tableSchema) { return all }
 
-            if (this.tableName && this.tableName !== e.tableName) { return all }
-            if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
-
-            return e.desiredRealization.drop ? all.concat(e.desiredRealization.drop) : all
+            return all.concat(`---- DROP INDEX: ${idx.indexName}\n${idx.indexDrop}\n----------\n\n`)
           }, ''
         )
-
-        // return Object.values(this.$store.state.genericIndexEvaluations).reduce(
-        //   (all, e) => {
-        //     if (this.tableName && this.tableName !== e.tableName) { return all }
-        //     if (this.schemaName && this.tableSchema !== e.tableSchema) { return all }
-
-        //     return e.desiredRealization.drop ? all.concat(e.desiredRealization.drop) : all
-        //   }, ''
-        // )
       }
     },
     data: () => ({

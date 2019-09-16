@@ -12,12 +12,12 @@ function evaluateGenericIndexEvaluations(state) {
               const genericIndexEvaluations = table.indices.reduce(
                 (all, idx) => {
                   const idxColumns = idx.indkey.map(ik => idx.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
-                  const idxKey = `${idx.tableSchema}.${idx.tableName}.${idxColumns}`
+                  const idxKey = `${idx.tableSchema}_${idx.tableName}_${idxColumns}`
                   const existing = all[idxKey]
 
                   const isIgnored = Object.keys(state.indicesToDrop).indexOf(idx.id) > -1
 
-                  const currentRealization = isIgnored ? { drop: `${idx.indexDrop}\n\n`, create: '' } : { drop: '', create: `${idx.indexDefinition}\n\n` }
+                  const currentRealization = isIgnored ? { drop: `---- DROP EXISTING GENERAL INDEX: \n${idx.indexDrop}\n\n`, create: '' } : { drop: '', create: `---- EXISTING GENERAL INDEX: \n${idx.indexDefinition}\n\n` }
 
                   const desiredRealization = currentRealization
 
@@ -35,6 +35,7 @@ function evaluateGenericIndexEvaluations(state) {
                     {
                       id: idxKey,
                       idxKey: idxKey,
+                      idxType: 'generic',
                       idxColumns: idxColumns.split(', '),
                       tableKey: `${idx.tableSchema}.${idx.tableName}`,
                       tableSchema: `${idx.tableSchema}`,

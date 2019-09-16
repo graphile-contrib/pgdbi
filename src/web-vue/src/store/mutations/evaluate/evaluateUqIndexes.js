@@ -1,5 +1,6 @@
 import Mustache from 'mustache'
 import storeEvaluations from './storeEvaluations'
+import evaluateEnumScripts from './evaluateEnumScripts'
 
 const NO_INDEX = 'NO_INDEX'
 const MULTIPLE_INDICES = 'MULTIPLE_INDICES'
@@ -152,7 +153,7 @@ function evaluateMultiColumnUqIndexes(state) {
                     .map(kcu => kcu.columnName)
                     .join(', ')
 
-                  const defaultIndexName = uqSource.split(', ').join('_')
+                  const defaultIndexName = `${table.tableSchema}_${table.tableName}_${uqSource.split(', ').join('_')}`
 
                   const uqIndices = table.indices
                     .filter(i => i.indexColumns.length === uc.keyColumnUsage.length)
@@ -201,7 +202,7 @@ function evaluateMultiColumnUqIndexes(state) {
                     constraintName: uc.constraintName,
                     tableSchema: table.tableSchema,
                     tableName: table.tableName,
-                    uqPath: `${kcu.tableSchema}.${kcu.tableName}.${kcu.columnName}`,
+                    uqPath: `${kcu.tableSchema}_${kcu.tableName}_${kcu.columnName}`,
                     uqTableId: `${kcu.tableSchema}.${kcu.tableName}`,
                     uqSource: uqSource,
                     uqIndices: uqIndices,
@@ -231,7 +232,29 @@ function evaluateMultiColumnUqIndexes(state) {
     multiColumn: evaluations
   }
 
-  storeEvaluations(state, evaluations)
+  const xformed = Object.values(evaluations)
+    .reduce(
+      (all, tableEvaluations) => {
+        const keyed = tableEvaluations
+        .reduce(
+          (all, e) => {
+            return {
+              ...all
+              ,[e.idxKey]: [e]
+            }
+          }, {}
+        )
+
+        return {
+          ...all
+          ,...keyed
+        }
+
+      }, {}
+    )
+    // console.log('uq', evaluations)
+    // console.log('xformed', xformed)
+    storeEvaluations(state, xformed)
 }
 
 function evaluateUqIndexes(state){
