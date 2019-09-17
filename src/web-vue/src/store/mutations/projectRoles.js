@@ -19,8 +19,6 @@ function projectRoles(state, payload) {
         };
       }, {}),
       rlsQualifiers: projectRoles.reduce((all, projectRole) => {
-        // const existing = Object.keys(policy.rlsQualifiers).find(rn => rn === projectRole.roleName)
-
         return {
           ...all,
           [projectRole.roleName]:
@@ -35,8 +33,6 @@ function projectRoles(state, payload) {
     return {
       ...policy,
       roleFunctionGrants: projectRoles.reduce((all, projectRole) => {
-        // const existing = Object.keys(policy.roleFunctionGrants).find(rn => rn === projectRole.roleName)
-
         return {
           ...all,
           [projectRole.roleName]:
