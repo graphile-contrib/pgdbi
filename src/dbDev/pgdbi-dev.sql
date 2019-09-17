@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 drop schema if exists pgdbi_dev cascade;
 create schema pgdbi_dev;
 

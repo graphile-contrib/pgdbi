@@ -9,7 +9,7 @@ function evaluateGenericIndexEvaluations(state) {
           ...all
           ,...schema.schemaTables.reduce(
             (all, table) => {
-              const genericIndexEvaluations = table.indices.reduce(
+              const genericIndexEvaluations = (table.indices || []).reduce(
                 (all, idx) => {
                   const idxColumns = idx.indkey.map(ik => idx.indexColumns.find(ic => ic.indkey === ik).columnName).join(', ')
                   const idxKey = `${idx.tableSchema}_${idx.tableName}_${idxColumns}`

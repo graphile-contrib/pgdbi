@@ -258,7 +258,7 @@
         ].flat()
 
         const fkAndUniqueIdxKeys = fkAndUqIndices.map(i => i.idxKey)
-console.log('fkAndUniqueIdxKeys', fkAndUniqueIdxKeys, fkAndUniqueIdxKeys.indexOf('pgdbi_dev_sink_uq_single_column'))
+// console.log('fkAndUniqueIdxKeys', fkAndUniqueIdxKeys, fkAndUniqueIdxKeys.indexOf('pgdbi_dev_sink_uq_single_column'))
         
         const singleColumnGenericIndices = Object.values(this.$store.state.genericIndexEvaluations)
           // .filter(e => fkAndUniqueIdxKeys.indexOf(e.idxKey) === -1)
@@ -269,8 +269,8 @@ console.log('fkAndUniqueIdxKeys', fkAndUniqueIdxKeys, fkAndUniqueIdxKeys.indexOf
           .filter(e => this.tableSchema ? this.tableSchema === e.tableSchema : true)
           
 
-console.log('singleColumnGenericIndicesKeys', singleColumnGenericIndices.map(i => i.idxKey))
-
+// console.log('singleColumnGenericIndicesKeys', singleColumnGenericIndices.map(i => i.idxKey))
+// 
         // const multiColumnFkIndices = Object.values(this.$store.state.fkIndexEvaluations.multiColumn)
         //   .filter(e => e.length > 0)
         //   .filter(e => this.tableName ? this.tableName === e[0].tableName : true)
@@ -298,22 +298,22 @@ console.log('singleColumnGenericIndicesKeys', singleColumnGenericIndices.map(i =
           }, []
         )
 
-        console.log('allIndices', JSON.stringify(allIndices.map(i => i.idxKey),0,2), allIndices)
+        // console.log('allIndices', JSON.stringify(allIndices.map(i => i.idxKey),0,2), allIndices)
 
-        const blah = allIndices.filter(i => i.desiredRealization.create.indexOf('sink_uq_single_column_key') > -1)
-        console.log('sink_uq_single_column_key', JSON.stringify(blah.map(i => Object.keys(i)), null,2))
-        console.log(JSON.stringify(blah
-          .map(
-            i => {
-              return {
-                id: i.id
-                ,idxKey: i.idxKey
-                ,uqPath: i.uqPath
-                ,idxType: i.idxType
-                ,idxColumns: i.idxColumns
-              }}
-          ), null,2
-        ))
+        // const blah = allIndices.filter(i => i.desiredRealization.create.indexOf('sink_uq_single_column_key') > -1)
+        // console.log('sink_uq_single_column_key', JSON.stringify(blah.map(i => Object.keys(i)), null,2))
+        // console.log(JSON.stringify(blah
+        //   .map(
+        //     i => {
+        //       return {
+        //         id: i.id
+        //         ,idxKey: i.idxKey
+        //         ,uqPath: i.uqPath
+        //         ,idxType: i.idxType
+        //         ,idxColumns: i.idxColumns
+        //       }}
+        //   ), null,2
+        // ))
 
         return allIndices.reduce(
           (all, e) => {

@@ -63,7 +63,7 @@ import { undefinedVarMessage } from 'graphql/validation/rules/NoUndefinedVariabl
     computed: {
       tableDetail () {
         // console.log('table', this.tableInfo)
-        const pkColumns = this.tableInfo.primaryKeyConstraints.reduce(
+        const pkColumns = (this.tableInfo.primaryKeyConstraints || []).reduce(
           (pkCols, pkc) => {
             const cols = pkc.keyColumnUsage.reduce(
               (pkCols, kcu) => {

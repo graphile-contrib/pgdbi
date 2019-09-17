@@ -22,7 +22,7 @@ async function transformBuild(build, pgPool) {
         ) er
       ) enabled_roles
       ,(
-        select (array_to_json(array_agg(row_to_json(s))))::jsonb
+        select coalesce((array_to_json(array_agg(row_to_json(s))))::jsonb, '[]'::jsonb)
         FROM (
           select 
             s.*
@@ -48,7 +48,7 @@ async function transformBuild(build, pgPool) {
                     ) c
                   ) table_columns
                   ,(
-                    select (array_to_json(array_agg(row_to_json(c))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(c))))::jsonb, '[]'::jsonb)
                     from (
                       select
                         c.*
@@ -71,7 +71,7 @@ async function transformBuild(build, pgPool) {
                     ) c
                   ) primary_key_constraints
                   ,(
-                    select (array_to_json(array_agg(row_to_json(c))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(c))))::jsonb, '[]'::jsonb)
                       from (
                         select
                         c.*
@@ -96,7 +96,7 @@ async function transformBuild(build, pgPool) {
                     ) c
                   ) unique_constraints
                   ,(
-                    select (array_to_json(array_agg(row_to_json(i))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(i))))::jsonb, '[]'::jsonb)
                     from (
                       select 
                         i.relname id
@@ -123,7 +123,7 @@ async function transformBuild(build, pgPool) {
                         ,ix.indpred
                         ,i.relname index_name
                         ,(
-                          select (array_to_json(array_agg(row_to_json(c))))::jsonb
+                          select coalesce((array_to_json(array_agg(row_to_json(c))))::jsonb, '[]'::jsonb)
                           from (
                             select 
                               a.attname column_name,
@@ -175,7 +175,7 @@ async function transformBuild(build, pgPool) {
                     ) i
                   ) indices
                   ,(
-                    select (array_to_json(array_agg(row_to_json(p))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(p))))::jsonb, '[]'::jsonb)
                     from (
                       select
                         *
@@ -185,14 +185,14 @@ async function transformBuild(build, pgPool) {
                     ) p
                   ) policies
                   ,(
-                    select (array_to_json(array_agg(row_to_json(tr))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(tr))))::jsonb, '[]'::jsonb)
                     from (
                       select
                         tr.*
                         ,'trigger' __typename
                         ,s.schema_name || '.' || t.table_name || '.' || tr.trigger_name || '.' || tr.action_timing || '.' || tr.event_manipulation id
                         ,(
-                          select (array_to_json(array_agg(row_to_json(tf))))::jsonb
+                          select coalesce((array_to_json(array_agg(row_to_json(tf))))::jsonb, '[]'::jsonb)
                           from (
                             select
                               'trigger_function' __typename
@@ -214,7 +214,7 @@ async function transformBuild(build, pgPool) {
                     ) tr
                   ) triggers
                   ,(
-                    select (array_to_json(array_agg(row_to_json(rtg))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(rtg))))::jsonb, '[]'::jsonb)
                     from (
                       select
                         rtg.*
@@ -224,12 +224,12 @@ async function transformBuild(build, pgPool) {
                     ) rtg
                   ) role_table_grants
                   ,(
-                    select (array_to_json(array_agg(row_to_json(cc))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(cc))))::jsonb, '[]'::jsonb)
                     from (
                       select
                         cc.*
                         ,(
-                          select (array_to_json(array_agg(row_to_json(tc))))::jsonb
+                          select coalesce((array_to_json(array_agg(row_to_json(tc))))::jsonb, '[]'::jsonb)
                           from (
                             select
                               tc.*
@@ -248,12 +248,12 @@ async function transformBuild(build, pgPool) {
                     ) cc
                   ) check_constraints
                   ,(
-                    select (array_to_json(array_agg(row_to_json(rc))))::jsonb
+                    select coalesce((array_to_json(array_agg(row_to_json(rc))))::jsonb, '[]'::jsonb)
                     from (
                       select
                         rc.*
                         ,(
-                          select (array_to_json(array_agg(row_to_json(rcu))))::jsonb
+                          select coalesce((array_to_json(array_agg(row_to_json(rcu))))::jsonb, '[]'::jsonb)
                           from (
                             select
                               rcu.*
@@ -263,7 +263,7 @@ async function transformBuild(build, pgPool) {
                           ) rcu
                         ) referencing_column_usage
                         ,(
-                          select (array_to_json(array_agg(row_to_json(rcu))))::jsonb
+                          select coalesce((array_to_json(array_agg(row_to_json(rcu))))::jsonb, '[]'::jsonb)
                           from (
                             select
                               rcu.*
@@ -354,11 +354,11 @@ async function transformBuild(build, pgPool) {
               ) udts
             ) schema_udts
             ,(
-              select (array_to_json(array_agg(row_to_json(sf))))::jsonb
+              select coalesce((array_to_json(array_agg(row_to_json(sf))))::jsonb, '[]'::jsonb)
               from (
                 select
                   'function' __typename
-                  ,s.schema_name || '.' ||  p.proname id
+                  ,'public' || '.' ||  p.proname || '--' || replace(replace(coalesce(pg_catalog.pg_get_function_identity_arguments(p.oid), 'N/A'),', ','_'),' ',':') id
                   ,p.proname function_name
                   ,n.nspname function_schema
                   ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type
@@ -367,6 +367,7 @@ async function transformBuild(build, pgPool) {
                   from pg_catalog.pg_proc p
                   left join pg_catalog.pg_namespace n ON n.oid = p.pronamespace
                   where n.nspname = s.schema_name
+                  and p.proisagg = false
               ) sf
             ) schema_functions
           from information_schema.schemata s
@@ -380,6 +381,7 @@ async function transformBuild(build, pgPool) {
     return schemaTree
 
   } catch (e) {
+    console.log('CAUGHT ERROR', e.toString())
     throw e;
   }
 }
