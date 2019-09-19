@@ -38,11 +38,24 @@
                 {
                   id: `tables:${schema.schemaName}`,
                   name: 'tables',
-                  children: schema.schemaTables.sort((a,b)=>{return a.tableName < b.tableName ? -1 : 1})
+                  children: schema.schemaTables.filter(t => t.tableType === 'BASE TABLE').sort((a,b)=>{return a.tableName < b.tableName ? -1 : 1})
                     .map(
                       table => {
                         return {
                           id: `table:${table.id}`,
+                          name: table.tableName
+                        }
+                      }
+                    )
+                },
+                {
+                  id: `views:${schema.schemaName}`,
+                  name: 'views',
+                  children: schema.schemaTables.filter(t => t.tableType === 'VIEW').sort((a,b)=>{return a.tableName < b.tableName ? -1 : 1})
+                    .map(
+                      table => {
+                        return {
+                          id: `view:${table.id}`,
                           name: table.tableName
                         }
                       }
@@ -106,6 +119,12 @@
             this.$router.push({ name: 'table', params: { id: activeId }})
           break
           case 'tables':
+          break
+          case 'view':
+            // appBus.$emit('focus-route')
+            this.$router.push({ name: 'view', params: { id: activeId }})
+          break
+          case 'views':
           break
           case 'function':
             // appBus.$emit('focus-route')

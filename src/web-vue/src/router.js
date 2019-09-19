@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Initialize from './views/Initialize.vue';
 import Table from './components/Table/Table.vue';
+import View from './components/View/View.vue';
 import Function from './components/Function/Function.vue';
 // import RoleManagerView from './views/RoleManagerView.vue';
 import SecurityView from './views/SecurityView.vue';
@@ -106,6 +107,12 @@ const router = new Router({
       path: '/table/:id',
       name: 'table',
       component: Table,
+      props: true,
+    },
+    {
+      path: '/view/:id',
+      name: 'view',
+      component: View,
       props: true,
     },
     {
