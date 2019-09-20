@@ -76,7 +76,7 @@
       },
       setFn () {
         const schemaName = this.id.split('.')[0]
-        const functionName = this.id.split('.')[1]
+        const functionName = this.id.split('.')[1].split('--')[0]
         const schema = this.$store.state.managedSchemata.find(s => s.schemaName === schemaName)
         this.fn = schema.schemaFunctions.find(f => f.id === this.id)
       }
