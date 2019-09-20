@@ -122,7 +122,7 @@
           break
           case 'view':
             // appBus.$emit('focus-route')
-            this.$router.push({ name: 'view', params: { id: activeId }})
+            this.$router.push({ name: 'table', params: { id: activeId }})
           break
           case 'views':
           break

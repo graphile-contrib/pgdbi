@@ -16,13 +16,13 @@
 </template>
 
 <script>
-  import searchFunctions from '@/gql/mutation/searchFunctions.graphql'
-  import FunctionList from '@/components/Function/FunctionList'
+  import searchViews from '@/gql/mutation/searchViews.graphql'
+  import ViewList from '@/components/View/ViewList'
 
   export default {
-    name: 'FunctionSearch',
+    name: 'ViewSearch',
     components: {
-      FunctionList
+      ViewList
     },
     props: {
     },
@@ -30,18 +30,18 @@
       disabled () {
         return this.searchTerm === undefined || this.searchTerm === null || this.searchTerm === ''
       },
-      allFunctions () {
+      allViews () {
         return this.$store.state.managedSchemata.reduce(
           (all, schema) => {
             return [
               ...all,
-              ...schema.schemaFunctions
+              ...schema.schemaViews
             ]
           }, []
         )
       },
       functions () {
-        return this.allFunctions.filter(
+        return this.allViews.filter(
           f => {
             return f.functionSchema.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1 ||
             f.functionName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1 ||

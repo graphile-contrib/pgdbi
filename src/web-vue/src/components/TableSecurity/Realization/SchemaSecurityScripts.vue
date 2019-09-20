@@ -82,7 +82,7 @@
           .filter(s => !s.parked)
           .reduce(
             (all, schema) => {
-              const schemaTables = schema.schemaTables
+              const schemaTables = schema.schemaTables.filter(t => t.tableType === 'BASE TABLE')
               const schemaPolicy = {
                 name: `${schema.schemaName}`,
                 policy: this.calcOnePolicy(schemaTables)
