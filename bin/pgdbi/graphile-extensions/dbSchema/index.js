@@ -66,6 +66,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
         roleColumnGrants: [RoleColumnGrant]!
         policies: [PgPolicy]!
         triggers: [Trigger]!
+        psqlDescription: String!
       }
 
       extend type ReferentialConstraint {
@@ -118,6 +119,7 @@ const DbSchemaPlugin = makeExtendSchemaPlugin(build => {
         roleColumnGrants: require('./resolvers/table/roleColumnGrants')(build),
         policies: require('./resolvers/table/policies')(build),
         triggers: require('./resolvers/table/triggers')(build),
+        psqlDescription: require('./resolvers/table/psqlDescription')(build),
       },
       Trigger: {
         id: require('./resolvers/trigger/id')(build),

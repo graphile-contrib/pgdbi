@@ -358,7 +358,7 @@ async function transformBuild(build, pgPool) {
               from (
                 select
                   'function' __typename
-                  ,'public' || '.' ||  p.proname || '--' || replace(replace(coalesce(pg_catalog.pg_get_function_identity_arguments(p.oid), 'N/A'),', ','_'),' ',':') id
+                  ,n.nspname || '.' ||  p.proname || '_' || p.oid id
                   ,p.proname function_name
                   ,n.nspname function_schema
                   ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type
