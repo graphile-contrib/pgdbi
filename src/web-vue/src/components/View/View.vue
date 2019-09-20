@@ -17,7 +17,7 @@
       >
         <v-card flat>
           <view-columns
-            :viewInfo="viewInfo"
+            :viewInfo="tableInfo"
           ></view-columns>
         </v-card>
       </v-tab-item>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  // import viewById from '../../gql/query/viewById.graphql';
+  // import tableById from '../../gql/query/tableById.graphql';
   import ViewColumns from './ViewColumns.vue'
 
   export default {
@@ -43,31 +43,29 @@
       }
     },
     computed: {
-      viewInfo () {
-        console.log(this.viewName, this.viewSchema)
-        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === this.viewSchema)
-        console.log(schema)
-        const view = schema.schemaViews.find(t => t.tableName === this.viewName)
+      tableInfo () {
+        const schema = this.$store.state.managedSchemata.find(s => s.schemaName === this.tableSchema)
+        const table = schema.schemaTables.find(t => t.tableName === this.tableName)
 
         return {
-          ...view
+          ...table
         }
       },
-      viewName () {
+      tableName () {
         return this.id.split('.')[1]
       },
-      viewSchema () {
+      tableSchema () {
         return this.id.split('.')[0]
       },
-      viewColumns () {
-        return this.viewInfo.tableColumns || []
+      tableColumns () {
+        return this.tableInfo.tableColumns || []
       },
     },
     methods: {
     },
     data: () => ({
       activeTab: null,
-      // viewInfo: {},
+      // tableInfo: {},
     }),
     beforeRouteUpdate (to, from, next) {
       // called when the route that renders this component has changed,
