@@ -1,8 +1,3 @@
-try {
-  require('./.env');
-} catch (e) {
-  // No envvars 🤷
-}
 const express = require('express');
 
 const {
