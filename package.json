@@ -1,6 +1,6 @@
 {
   "name": "@graphile-contrib/pgdbi",
-  "version": "1.0.9-alpha.90",
+  "version": "1.0.9-alpha.91",
   "main": "index.js",
   "repository": {
     "type": "git",
