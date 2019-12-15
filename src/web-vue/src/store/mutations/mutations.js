@@ -23,6 +23,7 @@ import setEnabledRoles from './setEnabledRoles'
 import toggleIgnoreRole from './toggleIgnoreRole'
 import setPgdbiOptions from './setPgdbiOptions'
 import toggleIndexForDrop from './toggleIndexForDrop'
+import renameTablePolicy from './renameTablePolicy'
 
 export default {
   resetDefaultState,
@@ -50,4 +51,5 @@ export default {
   toggleIgnoreRole,
   setPgdbiOptions,
   toggleIndexForDrop,
+  renameTablePolicy
 };

@@ -18,6 +18,10 @@
       ></table-policy-delete-dialog>
       <v-spacer></v-spacer>
       <h4 class="text-no-wrap">{{ title }}</h4>
+      <v-spacer></v-spacer>
+      <table-policy-rename-dialog
+        :policyDefinition="policyDefinition"
+      ></table-policy-rename-dialog>
     </v-toolbar>
       <v-tabs
         v-model="activeTab"
@@ -111,6 +115,7 @@
   import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
   import TablePolicyMakeGlobalDialog from '@/components/TableSecurity/Dialogs/TablePolicyMakeGlobalDialog.vue'
   import TablePolicyDeleteDialog from '@/components/TableSecurity/Dialogs/TablePolicyDeleteDialog.vue'
+  import TablePolicyRenameDialog from '@/components/TableSecurity/Dialogs/TablePolicyRenameDialog.vue'
   import TablePolicyEvaluatorDetail from '@/components/TableSecurity/Evaluation/TablePolicyEvaluatorDetail.vue'
 
   export default {
@@ -122,7 +127,8 @@
       TablePolicyMakeGlobalDialog,
       TablePolicyDeleteDialog,
       TablePolicyEvaluatorDetail,
-      TablePolicyDefinitionGrants
+      TablePolicyDefinitionGrants,
+      TablePolicyRenameDialog
     },
     props: {
       policyId: {
