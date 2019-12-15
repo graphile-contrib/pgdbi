@@ -43,7 +43,7 @@
     props: {
     },
     computed: {
-      ...mapState(['policies', 'managedSchemata']),
+      ...mapState(['policies', 'managedSchemata'])
     },
     watch: {
       policyReadability () {
@@ -80,9 +80,12 @@
         const masterPolicyName = 'One Script To Rule Them All'
         const mostPolicies = this.managedSchemata
           .filter(s => !s.parked)
+          .filter(s => s.schemaTables.length > 0)
           .reduce(
             (all, schema) => {
               const schemaTables = schema.schemaTables.filter(t => t.tableType === 'BASE TABLE')
+              const schemaRemoveRls = this.computeRemoveRls(schema.schemaName)
+              
               const schemaPolicy = {
                 name: `${schema.schemaName}`,
                 policy: this.calcOnePolicy(schemaTables)
@@ -137,6 +140,7 @@
       this.calculateAllPolicies()
     }
   }
+
 </script>
 
 <style>

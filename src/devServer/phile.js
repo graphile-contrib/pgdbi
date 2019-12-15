@@ -25,7 +25,7 @@ if (!POSTGRES_CONNECTION) {
     "No 'POSTGRES_CONNECTION' envvar found, we don't know which database to connect to.",
   );
 }
-
+console.log('POSTGRES_CONNECTION', POSTGRES_CONNECTION)
 const identity = _ => _;
 
 const connection = POSTGRES_CONNECTION;

@@ -152,9 +152,41 @@
           templateVariables
         )
       },
+      computeRemoveRls (schemaName) {
+        return Mustache.render(
+          removeAllRlsScriptTemplate,
+          { schemaName: schemaName }
+        )
+      }
     },
   }
 
+  const removeAllRlsScriptTemplate = `
+----------
+----------  remove all rls policies for schema: {{schemaName}}
+----------
+DO
+$body$
+  DECLARE 
+    _pol pg_policies;
+    _drop_sql text;
+  BEGIN
+
+    for _pol in
+      select 
+        *
+      from pg_policies
+      where schemaname = '{{schemaName}}'
+    loop
+      _drop_sql := 'drop policy if exists ' || _pol.policyname || ' on ' || _pol.schemaname || '.' || _pol.tablename || ';';
+      execute _drop_sql;
+    end loop
+    ;
+  END
+$body$;
+
+
+`
 
   const tablePolicyTemplate = `
 ----------
@@ -174,6 +206,30 @@
 
 {{#enableRls}}
 ----------  ENABLE ROW LEVEL SECURITY
+
+  ----------
+  ----------  remove all rls policies for table
+  ----------
+  DO
+  $body$
+    DECLARE 
+      _pol pg_policies;
+      _drop_sql text;
+    BEGIN
+
+      for _pol in
+        select 
+          *
+        from pg_policies
+        where schemaname = '{{schemaName}}'
+        and tablename = '{{tableName}}'
+      loop
+        _drop_sql := 'drop policy if exists ' || _pol.policyname || ' on ' || _pol.schemaname || '.' || _pol.tablename || ';';
+        execute _drop_sql;
+      end loop
+      ;
+    END
+  $body$;
 
   alter table {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}} enable row level security;
 

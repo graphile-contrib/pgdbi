@@ -1,23 +1,9 @@
 <template>
   <v-app id="inspire">
-    <v-hover v-slot:default="{ hover }">
-      <v-navigation-drawer
-        v-model="drawer"
-        :clipped="true"
-        app
-        :width="hover ? 500 : 200"
-        disable-route-watcher
-      >
-        <project-navigator
-        ></project-navigator>
-      </v-navigation-drawer>
-    </v-hover>
-
     <v-app-bar
       app
       clipped-left
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
       <v-spacer></v-spacer>
       <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
@@ -39,7 +25,22 @@
       <v-btn icon @click.stop="settings">
         <v-icon>settings</v-icon>
       </v-btn>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
+
+    <v-hover v-slot:default="{ hover }">
+      <v-navigation-drawer
+        v-model="drawer"
+        :clipped="false"
+        app
+        right
+        :width="hover ? 500 : 200"
+        disable-route-watcher
+      >
+        <project-navigator
+        ></project-navigator>
+      </v-navigation-drawer>
+    </v-hover>
 
     <v-content>
       <v-container
