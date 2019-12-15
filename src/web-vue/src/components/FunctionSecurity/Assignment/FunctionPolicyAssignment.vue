@@ -46,6 +46,7 @@
       },
       managedSchemata () {
         return this.$store.state.managedSchemata
+          .filter(s => s.schemaFunctions.length > 0)
           .map(
             schema => {
               return {

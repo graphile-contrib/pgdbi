@@ -79,6 +79,7 @@
         const masterPolicyName = 'One Script To Rule Them All'
         const mostPolicies = this.managedSchemata
           .filter(s => !s.parked)
+          .filter(s => s.schemaFunctions.length > 0)
           .reduce(
             (all, schema) => {
               const schemaFunctions = schema.schemaFunctions
