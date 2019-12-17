@@ -224,7 +224,7 @@ $body$;
         where schemaname = '{{schemaName}}'
         and tablename = '{{tableName}}'
       loop
-        _drop_sql := 'drop policy if exists ' || _pol.policyname || ' on ' || _pol.schemaname || '.' || _pol.tablename || ';';
+        _drop_sql := 'drop policy if exists ' || quote_ident(_pol.policyname) || ' on ' || quote_ident(_pol.schemaname) || '.' || quote_ident(_pol.tablename) || ';';
         execute _drop_sql;
       end loop
       ;

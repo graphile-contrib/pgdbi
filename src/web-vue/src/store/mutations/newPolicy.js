@@ -11,7 +11,6 @@ function newPolicy(state, payload) {
       name: name,
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
-      roleTableGrantTemplate: state.roleTableGrantTemplate,
       enableRls: false,
       columnExclusionOverrides: {
         insert: [],

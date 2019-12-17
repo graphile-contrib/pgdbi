@@ -7,6 +7,7 @@ export default {
   functionPolicies: [],
   functionPolicyAssignments: {},
   defaultPolicy: null,
+  defaultPolicyPermissive: null,
   defaultFunctionPolicy: null,
   genericIndexEvaluations: {},
   fkIndexEvaluations: {
