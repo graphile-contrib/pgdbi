@@ -19,7 +19,6 @@
       </v-tab>
       <v-tab-item
         key="table-security"
-        lazy
       >
         <v-card>
           <table-security-view></table-security-view>
@@ -35,7 +34,6 @@
       </v-tab>
       <v-tab-item
         key="function-security"
-        lazy
       >
         <v-card>
           <function-security-view></function-security-view>
@@ -50,10 +48,10 @@
       </v-tab>
       <v-tab-item
         key="roles"
-        lazy
       >
         <v-card>
-          <role-filter></role-filter>
+          <roles></roles>
+          <!-- <role-filter></role-filter> -->
         </v-card>
       </v-tab-item>
 
@@ -65,7 +63,6 @@
       </v-tab>
       <v-tab-item
         key="help"
-        lazy
       >
         <v-container fluid>
           <h2><a href="https://learn.graphile.org/docs/PostgreSQL_Row_Level_Security_Infosheet.pdf" target="_blank">graphile.org rls infosheet</a></h2>
@@ -84,7 +81,8 @@
 <script>
   import rp from 'request-promise'
 
-  import RoleFilter from '@/components/Role/RoleFilter'
+  // import RoleFilter from '@/components/Role/RoleFilter'
+  import Roles from '@/components/Role/Roles'
   import TableSecurityView from './TableSecurityView'
   import FunctionSecurityView from './FunctionSecurityView'
   import pdf from 'vue-pdf'
@@ -94,7 +92,8 @@
     components: {
       FunctionSecurityView,
       TableSecurityView,
-      RoleFilter,
+      // RoleFilter,
+      Roles,
       pdf
     },
     props: {

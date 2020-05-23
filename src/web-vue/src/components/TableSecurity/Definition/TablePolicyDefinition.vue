@@ -35,7 +35,6 @@
         </v-tab>
         <v-tab-item
           key="grants"
-          lazy
         >
           <v-card flat>
           <table-policy-definition-grants
@@ -54,7 +53,6 @@
         </v-tab>
         <v-tab-item
           key="rls"
-          lazy
         >
           <v-card flat>
           <policy-rls-qualifier-grid
@@ -72,7 +70,6 @@
         </v-tab>
         <v-tab-item
           key="policy-template"
-          lazy
         >
           <v-card flat>
             <policy-realization
@@ -93,7 +90,6 @@
         <v-tab-item
           v-if="table"
           key="policy-evaluation"
-          lazy
         >
           <v-card flat>
             <table-policy-evaluator-detail

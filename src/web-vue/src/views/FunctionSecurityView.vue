@@ -18,7 +18,6 @@
       </v-tab>
       <v-tab-item
         key="policyAssignment"
-        lazy
       >
         <v-card>
           <v-layout row wrap>
@@ -39,7 +38,6 @@
       </v-tab>
       <v-tab-item
         key="policies"
-        lazy
       >
         <v-card>
           <schema-security-scripts></schema-security-scripts>
@@ -54,7 +52,6 @@
       </v-tab>
       <v-tab-item
         key="policy-manager"
-        lazy
       >
         <v-card>
           <policy-manager></policy-manager>

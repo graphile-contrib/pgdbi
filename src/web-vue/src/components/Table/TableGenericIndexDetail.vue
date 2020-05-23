@@ -21,7 +21,6 @@
             </v-tab>
             <v-tab-item
               key="create"
-              lazy
             >
               <script-viewer
                 :scriptText="props.item.indexDefinition"
@@ -37,7 +36,6 @@
             </v-tab>
             <v-tab-item
               key="drop"
-              lazy
             >
               <script-viewer
                 :scriptText="props.item.indexDrop"

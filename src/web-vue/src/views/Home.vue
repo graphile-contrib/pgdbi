@@ -13,7 +13,6 @@
       </v-tab>
       <v-tab-item
         key="home"
-        lazy
       >
         <v-card>
           <new-home></new-home>
@@ -28,7 +27,6 @@
       </v-tab>
       <v-tab-item
         key="help"
-        lazy
       >
         <v-card>
           TODO: Make help pages/videos

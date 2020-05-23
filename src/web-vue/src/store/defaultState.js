@@ -24,8 +24,49 @@ export default {
   parkedSchemata: [],
   rawSchemata: [],
   schemaFilter: [],
+  dbOwnerRole: {
+    roleName: 'app_owner',
+  },
+  dbAuthenticatorRole: {
+    roleName: 'app_authenticator',
+  },
+  dbUserRoles: [
+    {
+      roleName: 'app_super_admin',
+      applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_admin',
+      applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_user',
+      applicableRoles: [ {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_anoymous',
+      applicableRoles: []
+    }
+  ],
   enabledRoles: [],
-  projectRoles: [],
+  projectRoles: [
+    {
+      roleName: 'app_super_admin',
+      applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_admin',
+      applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_user',
+      applicableRoles: [ {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_anoymous',
+      applicableRoles: []
+    }
+  ],
   ignoredRoles: [],
   selectedRoleFamilies: [],
   defaultRlsUsing: '( owner_id = viewer_id() )',

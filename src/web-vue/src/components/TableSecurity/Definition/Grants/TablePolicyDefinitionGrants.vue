@@ -11,7 +11,6 @@
       </v-tab>
       <v-tab-item
         key="grants"
-        lazy
       >
         <v-card flat>
         <table-policy-definition-grant-grid
@@ -30,7 +29,6 @@
       </v-tab>
       <v-tab-item
         key="exclusions"
-        lazy
       >
         <v-card flat>
           <table-policy-definition-column-exclusions

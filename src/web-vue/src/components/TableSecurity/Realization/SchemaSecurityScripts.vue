@@ -14,7 +14,6 @@
       <v-tab-item
         v-for="schemaPolicy in allPolicies"
         :key="schemaPolicy.name"
-        lazy
       >
         <script-viewer
           :scriptText="schemaPolicy.policy"

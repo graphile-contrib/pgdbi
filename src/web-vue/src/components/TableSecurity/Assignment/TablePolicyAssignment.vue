@@ -14,7 +14,6 @@
         <v-tab-item
           v-for="schema in managedSchemata"
           :key="schema.schemaName"
-          lazy
         >
           <policy-assignment-schema :schema="schema"></policy-assignment-schema>
         </v-tab-item>

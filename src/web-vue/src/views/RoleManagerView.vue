@@ -6,16 +6,17 @@
   >
     <h1>Role Manager</h1>
     <hr>
-    <role-filter></role-filter>
+    <roles></roles>
   </v-container>
 </template>
 <script>
-  import RoleFilter from '@/components/Role/RoleFilter'
+  // import RoleFilter from '@/components/Role/RoleFilter'
+  import Roles from '@/components/Role/Roles'
 
   export default {
     name: 'RoleManagerView',
     components: {
-      RoleFilter,
+      Roles,
     },
     props: {
     },
