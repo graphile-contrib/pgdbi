@@ -69,7 +69,7 @@
     methods: {
       impliedPolicies(roleName, action) {
         // todo:  detect implied roles that are not in the same family - this should probably be a special family as it likely indicates a mistake
-        const impliedRoleNames = this.projectRoles
+        const impliedRoleNames = this.dbUserRoles
           .find(pr => pr.roleName === roleName)
           .applicableRoles
           .reduce((a,r)=>{ return a.concat(r.roleName)}, [])
@@ -144,8 +144,8 @@
       }
     },
     computed: {
-      projectRoles () {
-        return this.$store.state.projectRoles
+      dbUserRoles () {
+        return this.$store.state.dbUserRoles
       },
       // defaultRLSQual () {
       //   return this.$store.state.defaultRLSQual

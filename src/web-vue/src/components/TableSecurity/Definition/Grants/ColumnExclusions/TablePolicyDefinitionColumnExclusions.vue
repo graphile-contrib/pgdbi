@@ -81,8 +81,8 @@
       }
     },
     computed: {
-      projectRoles () {
-        return this.$store.state.projectRoles
+      dbUserRoles () {
+        return this.$store.state.dbUserRoles
       },
       dataTableItems () {
         return Object.keys(this.policyDefinition.roleGrants)

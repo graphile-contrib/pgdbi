@@ -110,17 +110,13 @@
           this.toggleCompleted = false
           return
         }
-        console.log('policy current', this.policyDefinition)
         const currentValue = this.policyDefinition.roleGrants[toggledRoleName][action]
-        console.log('currentValue', currentValue)
-        console.log('this.projectRoles', this.projectRoles)
 
-        const impliedRoleNames = this.projectRoles.filter(
+        const impliedRoleNames = this.dbUserRoles.filter(
           pr => {
             return (pr.applicableRoles || []).find(ar => ar.roleName === toggledRoleName) !== undefined
           }
         ).reduce((a,r)=>{ return a.concat(r.roleName)}, [])
-        console.log('implied', impliedRoleNames)
 
         const newPolicy = {
           ...this.policyDefinition,
@@ -174,8 +170,8 @@
       },
     },
     computed: {
-      projectRoles () {
-        return this.$store.state.projectRoles
+      dbUserRoles () {
+        return this.$store.state.dbUserRoles
       },
       grantMatrix () {
         return Object.keys(this.policyDefinition.roleGrants).map(

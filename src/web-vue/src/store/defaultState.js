@@ -30,6 +30,9 @@ export default {
   dbAuthenticatorRole: {
     roleName: 'app_authenticator',
   },
+  dbAnonymousRole: {
+    roleName: 'app_anonymous'
+  },
   dbUserRoles: [
     {
       roleName: 'app_super_admin',
@@ -44,31 +47,32 @@ export default {
       applicableRoles: [ {roleName: 'app_anonymous'} ]
     },
     {
-      roleName: 'app_anoymous',
-      applicableRoles: []
+      roleName: 'app_anonymous',
+      applicableRoles: [],
+      isAnonymous: true
     }
   ],
-  enabledRoles: [],
-  projectRoles: [
-    {
-      roleName: 'app_super_admin',
-      applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_admin',
-      applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_user',
-      applicableRoles: [ {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_anoymous',
-      applicableRoles: []
-    }
-  ],
-  ignoredRoles: [],
-  selectedRoleFamilies: [],
+  // enabledRoles: [],
+  // dbUserRoles: [
+  //   {
+  //     roleName: 'app_super_admin',
+  //     applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+  //   },
+  //   {
+  //     roleName: 'app_admin',
+  //     applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+  //   },
+  //   {
+  //     roleName: 'app_user',
+  //     applicableRoles: [ {roleName: 'app_anonymous'} ]
+  //   },
+  //   {
+  //     roleName: 'app_anoymous',
+  //     applicableRoles: []
+  //   }
+  // ],
+  // ignoredRoles: [],
+  // selectedRoleFamilies: [],
   defaultRlsUsing: '( owner_id = viewer_id() )',
   // defaultRlsUsing: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
   defaultRlsWithCheck: '',
@@ -94,6 +98,12 @@ export default {
     insert: 'DENIED',
     update: 'DENIED',
     delete: 'DENIED',
+  },
+  defaultPermissiveRoleGrants: {
+    select: 'ALLOWED',
+    insert: 'ALLOWED',
+    update: 'ALLOWED',
+    delete: 'ALLOWED',
   },
   functionPolicyHeaderTemplate: `
   ----------  BEGIN: {{schemaName}}.{{functionName}}

@@ -67,7 +67,7 @@
         }
 
         const currentValue = this.policy.roleFunctionGrants[toggledRoleName][action]
-        const impliedRoleNames = this.projectRoles.filter(
+        const impliedRoleNames = this.dbUserRoles.filter(
           pr => {
             return pr.applicableRoles.find(ar => ar.roleName === toggledRoleName) !== undefined
           }
@@ -126,8 +126,8 @@
       },
     },
     computed: {
-      projectRoles () {
-        return this.$store.state.projectRoles
+      dbUserRoles () {
+        return this.$store.state.dbUserRoles
       },
       grantMatrix () {
         return Object.keys(this.policy.roleFunctionGrants).map(

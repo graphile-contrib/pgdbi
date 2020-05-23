@@ -19,6 +19,15 @@
         >
         </v-data-table>
       </v-col>
+      <v-col>
+        <h2>Anonymous</h2>
+        <v-data-table
+          :items="dbAnonymouses"
+          :headers="headers"
+          hide-default-footer
+        >
+        </v-data-table>
+      </v-col>
     </v-row>
     <hr>
     <h2>Users</h2>
@@ -46,6 +55,9 @@
       },
       dbAuthenticators () {
         return [this.$store.state.dbAuthenticatorRole]
+      },
+      dbAnonymouses () {
+        return [this.$store.state.dbAnonymousRole]
       },
       dbUsers () {
         return this.$store.state.dbUserRoles

@@ -1,5 +1,5 @@
-function projectRoles(state, payload) {
-  const projectRoles = (state.projectRoles = payload.projectRoles.map(role => {
+function dbUserRoles(state, payload) {
+  const dbUserRoles = (state.dbUserRoles = payload.dbUserRoles.map(role => {
     return {
       ...role,
       applicableRoles: role.applicableRoles || [],
@@ -9,7 +9,7 @@ function projectRoles(state, payload) {
   state.policies = state.policies.map(policy => {
     return {
       ...policy,
-      roleGrants: projectRoles.reduce((all, projectRole) => {
+      roleGrants: dbUserRoles.reduce((all, projectRole) => {
         // const existing = policy.roleGrants[projectRole.name]
 
         return {
@@ -18,7 +18,7 @@ function projectRoles(state, payload) {
             policy.roleGrants[projectRole.name] || state.defaultRoleGrants,
         };
       }, {}),
-      rlsQualifiers: projectRoles.reduce((all, projectRole) => {
+      rlsQualifiers: dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]:
@@ -32,7 +32,7 @@ function projectRoles(state, payload) {
   state.functionPolicies = state.functionPolicies.map(policy => {
     return {
       ...policy,
-      roleFunctionGrants: projectRoles.reduce((all, projectRole) => {
+      roleFunctionGrants: dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]:
@@ -43,9 +43,9 @@ function projectRoles(state, payload) {
     };
   });
 
-  const projectRoleNames = projectRoles.map(pr => pr.roleName)
+  const projectRoleNames = dbUserRoles.map(pr => pr.roleName)
 
   state.ignoredRoles = state.ignoredRoles.filter(ir => projectRoleNames.indexOf(ir.roleName) === -1)
 }
 
-export default projectRoles;
+export default dbUserRoles;

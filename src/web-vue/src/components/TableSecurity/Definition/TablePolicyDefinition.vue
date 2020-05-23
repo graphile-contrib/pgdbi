@@ -170,7 +170,8 @@
     },
     computed: {
       showDeleteButton () {
-        return this.policyDefinition.id !== this.$store.state.defaultPolicy.id
+        this.policyDefinition.id === this.$store.state.defaultPolicy.id ||
+        this.policyDefinition.id === this.$store.state.defaultPolicyPermissive.id
       },
       showMakeGlobalButton () {
         return this.policyDefinition.customIdentifier !== undefined && this.policyDefinition.customIdentifier !== null
@@ -187,7 +188,10 @@
         }
       },
       disabled () {
-        const isDefaultPolicy = (this.policyDefinition.id === this.$store.state.defaultPolicy.id)
+        const isDefaultPolicy = (
+          this.policyDefinition.id === this.$store.state.defaultPolicy.id ||
+          this.policyDefinition.id === this.$store.state.defaultPolicyPermissive.id
+        )
         const hasTable = this.table !== null && this.table !== undefined
         const isCustomPolicy = this.policyDefinition.customIdentifier ? true : false
 

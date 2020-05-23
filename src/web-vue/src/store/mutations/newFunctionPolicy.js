@@ -4,14 +4,14 @@ function newFunctionPolicy(state, payload) {
     throw new Error('A policy with this name already exists');
   } else {
     const name = payload.name;
-    const projectRoles = state.projectRoles;
+    const dbUserRoles = state.dbUserRoles;
 
     const newPolicy = {
       id: new Date().getTime() * 10000 + 621355968000000000,
       name: name,
       functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
       functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
-      roleFunctionGrants: projectRoles.reduce((all, projectRole) => {
+      roleFunctionGrants: dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultFunctionRoleGrants,

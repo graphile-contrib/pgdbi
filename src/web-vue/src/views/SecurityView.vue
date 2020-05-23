@@ -9,6 +9,20 @@
       v-model="activeTab"
       dark
     >
+      <v-tab
+        key="roles"
+        ripple
+      >
+        Roles
+      </v-tab>
+      <v-tab-item
+        key="roles"
+      >
+        <v-card>
+          <roles></roles>
+          <!-- <role-filter></role-filter> -->
+        </v-card>
+      </v-tab-item>
       
       <v-tab
         key="table-security"
@@ -40,21 +54,6 @@
         </v-card>
       </v-tab-item>
       
-      <v-tab
-        key="roles"
-        ripple
-      >
-        Roles
-      </v-tab>
-      <v-tab-item
-        key="roles"
-      >
-        <v-card>
-          <roles></roles>
-          <!-- <role-filter></role-filter> -->
-        </v-card>
-      </v-tab-item>
-
       <v-tab
         key="help"
         ripple
@@ -100,7 +99,7 @@
     },
     computed: {
       initializing () {
-        return this.$store.state.initializing || this.$store.state.projectRoles.length === 0
+        return this.$store.state.initializing || this.$store.state.dbUserRoles.length === 0
       }
     },
     data: () => ({
@@ -111,7 +110,7 @@
     methods: {
     },
     mounted () {
-      this.activeTab = this.$store.state.projectRoles.length > 0 ? 0 : 2
+      this.activeTab = this.$store.state.dbUserRoles.length > 0 ? 0 : 2
     }
   }
 </script>

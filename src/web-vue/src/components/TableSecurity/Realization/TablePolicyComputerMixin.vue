@@ -13,8 +13,8 @@
   export default {
     name: 'PolicyComputerMixin',
     computed: {
-      projectRoles () {
-        return this.$store.state.projectRoles
+      dbUserRoles () {
+        return this.$store.state.dbUserRoles
       }
     },
     methods: {

@@ -4,7 +4,7 @@ function newPolicy(state, payload) {
     throw new Error('A policy with this name already exists');
   } else {
     const name = payload.name;
-    const projectRoles = state.projectRoles;
+    const dbUserRoles = state.dbUserRoles;
 
     const newPolicy = {
       id: new Date().getTime() * 10000 + 621355968000000000,
@@ -20,13 +20,13 @@ function newPolicy(state, payload) {
         insert: {},
         update: {},
       },
-      roleGrants: projectRoles.reduce((all, projectRole) => {
+      roleGrants: dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRoleGrants,
         };
       }, {}),
-      rlsQualifiers: projectRoles.reduce((all, projectRole) => {
+      rlsQualifiers: dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRlsQualifiers,

@@ -19,13 +19,13 @@ function ensureDefaultTablePolicy(state) {
         insert: {},
         update: {},
       },
-      roleGrants: state.projectRoles.reduce((all, projectRole) => {
+      roleGrants: state.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRoleGrants,
         };
       }, {}),
-      rlsQualifiers: state.projectRoles.reduce((all, projectRole) => {
+      rlsQualifiers: state.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRlsQualifiers,
@@ -39,8 +39,8 @@ function ensureDefaultTablePolicy(state) {
 
   if (!state.defaultPolicyPermissive) {
     const defaultPolicyPermissive = {
-      id: new Date().getTime() * 10000 + 621355968000000000,
-      name: 'Default Table Policy - TOTAL ACCESS',
+      id: new Date().getTime() * 10001 + 621355968000000000,
+      name: 'Default Table Policy - TOTAL EXPLICIT USER ACCESS',
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
       enableRls: false,
@@ -52,13 +52,21 @@ function ensureDefaultTablePolicy(state) {
         insert: {},
         update: {},
       },
-      roleGrants: state.projectRoles.reduce((all, projectRole) => {
-        return {
-          ...all,
-          [projectRole.roleName]: state.defaultRoleGrants,
-        };
+      roleGrants: state.dbUserRoles.reduce((all, projectRole) => {
+        if (projectRole.isAnonymous) {
+          return {
+            ...all,
+            [projectRole.roleName]: state.defaultRoleGrants
+          }
+
+        } else {
+          return {
+            ...all,
+            [projectRole.roleName]: state.defaultPermissiveRoleGrants,
+          };
+        }
       }, {}),
-      rlsQualifiers: state.projectRoles.reduce((all, projectRole) => {
+      rlsQualifiers: state.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRlsQualifiers,
@@ -78,7 +86,7 @@ function ensureDefaultFunctionPolicy(state) {
       name: 'Default Function Policy - NO ACCESS',
       functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
       functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
-      roleFunctionGrants: state.projectRoles.reduce((all, projectRole) => {
+      roleFunctionGrants: state.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultFunctionRoleGrants,
