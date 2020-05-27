@@ -9,6 +9,7 @@ export default {
   defaultPolicy: null,
   defaultPolicyPermissive: null,
   defaultFunctionPolicy: null,
+  defaultDbUserPolicies: [],
   genericIndexEvaluations: {},
   fkIndexEvaluations: {
     singleColumn: {},

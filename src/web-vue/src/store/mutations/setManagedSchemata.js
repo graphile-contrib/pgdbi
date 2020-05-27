@@ -3,10 +3,16 @@ import assignFunctionPolicy from './assignFunctionPolicy'
 import evaluateAll from './evaluate/evaluateAll'
 // import evaluateUdtScripts from './evaluate/evaluateUdtScripts';
 
+let idSeed = 1
+function makeId(){
+  idSeed = idSeed + 1
+  return ((new Date().getTime() * (10000+idSeed)) + 621355968000000000)
+}
+
 function ensureDefaultTablePolicy(state) {
   if (!state.defaultPolicy) {
     const defaultPolicy = {
-      id: new Date().getTime() * 10000 + 621355968000000000,
+      id: makeId(),
       name: 'Default Table Policy - NO ACCESS',
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
@@ -36,10 +42,12 @@ function ensureDefaultTablePolicy(state) {
     state.defaultPolicy = defaultPolicy;
     state.policies = state.policies.concat([defaultPolicy]);
   }
+}
 
-  if (!state.defaultPolicyPermissive) {
+function ensureDefaultTablePolicyPermissive(state) {
+    if (!state.defaultPolicyPermissive) {
     const defaultPolicyPermissive = {
-      id: new Date().getTime() * 10001 + 621355968000000000,
+      id: makeId(),
       name: 'Default Table Policy - TOTAL EXPLICIT USER ACCESS',
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
@@ -136,6 +144,7 @@ function assignMissingDefaultFunctionPolicies(state, schemata) {
 
 function setManagedSchemata(state, payload) {
   ensureDefaultTablePolicy(state)
+  ensureDefaultTablePolicyPermissive(state)
   ensureDefaultFunctionPolicy(state)
   assignMissingDefaultTablePolicies(state, payload)
   assignMissingDefaultFunctionPolicies(state, payload)
