@@ -9,14 +9,14 @@
 </template>
 
 <script>
-  import PolicyComputerMixin from './TablePolicyComputerMixin'
+  // import PolicyComputerMixin from './TablePolicyComputerMixin'
   import ScriptViewer from '@/components/_common/ScriptViewer'
   import VueClipboard from 'vue-clipboard2'
+  import computeTablePolicy from '@/scriptCompute/computeTablePolicy'
 
   export default {
     name: 'TablePolicyRealization',
     mixins: [
-      PolicyComputerMixin,
       VueClipboard
     ],
     components: {
@@ -75,7 +75,7 @@
           tableName: this.table.tableName,
         }
       }
-      this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables, this.table)
+      this.computedPolicy = computeTablePolicy(this.policyDefinition, this.policyReadability, variables, this.table)
     },
     onCopy: function (e) {
       alert('Copied!')
