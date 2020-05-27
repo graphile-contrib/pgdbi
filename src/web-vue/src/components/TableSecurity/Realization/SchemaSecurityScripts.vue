@@ -27,14 +27,14 @@
 </template>
 
 <script>
-  import PolicyComputerMixin from './TablePolicyComputerMixin'
   import ScriptViewer from '@/components/_common/ScriptViewer'
   import { mapState } from 'vuex'
-
+  import computeTablePolicy from '@/scriptCompute/computeTablePolicy'
+  import computeRemoveRls from '@/scriptCompute/computeRemoveRls'
+  
   export default {
     name: 'SchemaSecurityScripts',
     mixins: [
-      PolicyComputerMixin
     ],
     components: {
       ScriptViewer
@@ -70,7 +70,7 @@
               schemaName: table.tableSchema,
               tableName: table.tablename
             }
-            const tablePolicy = this.computePolicy(policyTemplate, this.policyReadability, variables, table)
+            const tablePolicy = computeTablePolicy(policyTemplate, this.policyReadability, variables, table)
             return policy.concat(tablePolicy)
           }, ''
         )
@@ -83,7 +83,7 @@
           .reduce(
             (all, schema) => {
               const schemaTables = schema.schemaTables.filter(t => t.tableType === 'BASE TABLE')
-              const schemaRemoveRls = this.computeRemoveRls(schema.schemaName)
+              const schemaRemoveRls = computeRemoveRls(schema.schemaName)
               
               const schemaPolicy = {
                 name: `${schema.schemaName}`,

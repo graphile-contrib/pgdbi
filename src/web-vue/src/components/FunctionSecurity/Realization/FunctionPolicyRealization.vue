@@ -9,14 +9,13 @@
 </template>
 
 <script>
-  import PolicyComputerMixin from '@/components/FunctionSecurity/Realization/FunctionPolicyComputerMixin'
   import ScriptViewer from '@/components/_common/ScriptViewer'
   import VueClipboard from 'vue-clipboard2'
+  import computeFunctionPolicy from '@/scriptCompute/computeFunctionPolicy'
 
   export default {
     name: 'FunctionDefinition',
     mixins: [
-      PolicyComputerMixin,
       VueClipboard
     ],
     components: {
@@ -63,7 +62,7 @@
       doComputePolicy () {
         const variables = this.aFunction ? {
         } : null
-        this.computedPolicy = this.computePolicy(this.policyDefinition, this.policyReadability, variables, this.aFunction)
+        this.computedPolicy = computeFunctionPolicy(this.policyDefinition, this.policyReadability, variables, this.aFunction)
       },
       onCopy: function (e) {
         alert('Copied!')

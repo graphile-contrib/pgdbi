@@ -27,14 +27,13 @@
 </template>
 
 <script>
-  import PolicyComputerMixin from '@/components/FunctionSecurity/Realization/FunctionPolicyComputerMixin'
   import ScriptViewer from '@/components/_common/ScriptViewer'
   import { mapState } from 'vuex'
+  import computeFunctionPolicy from '@/scriptCompute/computeFunctionPolicy'
 
   export default {
     name: 'SchemaSecurityScripts',
     mixins: [
-      PolicyComputerMixin
     ],
     components: {
       ScriptViewer
@@ -68,7 +67,7 @@
             const policyTemplate = this.functionPolicies.find(p => p.id === this.$store.state.functionPolicyAssignments[aFunction.id].policyDefinitionId)
             const variables = {
             }
-            const aFunctionPolicy = this.computePolicy(policyTemplate, this.policyReadability, variables, aFunction)
+            const aFunctionPolicy = computeFunctionPolicy(policyTemplate, this.policyReadability, variables, aFunction)
             return policy.concat(aFunctionPolicy)
           }, ''
         )
