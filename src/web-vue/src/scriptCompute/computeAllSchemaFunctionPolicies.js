@@ -13,7 +13,7 @@ function calcOnePolicy (state, policyReadability, someFunctions) {
   return retval
 }
 
-function computeFunctionPolicySet (state, policyReadability) {
+function computeAllSchemaFunctionPolicies (state, policyReadability) {
   const masterPolicyName = 'One Script To Rule Them All'
   const mostPolicies = state.managedSchemata
     .filter(s => !s.parked)
@@ -49,4 +49,4 @@ function computeFunctionPolicySet (state, policyReadability) {
   ]
 }
 
-export default computeFunctionPolicySet
+export default computeAllSchemaFunctionPolicies

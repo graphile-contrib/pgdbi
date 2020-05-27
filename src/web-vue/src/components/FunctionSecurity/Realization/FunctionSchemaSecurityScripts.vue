@@ -29,7 +29,7 @@
 <script>
   import { mapState } from 'vuex'
   import ScriptViewer from '@/components/_common/ScriptViewer'
-  import computeFunctionPolicySet from '@/scriptCompute/computeFunctionPolicySet'
+  import computeAllSchemaFunctionPolicies from '@/scriptCompute/computeAllSchemaFunctionPolicies'
 
   export default {
     name: 'SchemaSecurityScripts',
@@ -46,11 +46,11 @@
     watch: {
       functionPolicies () {
         // this.calculateAllPolicies()
-        this.allPolicies = computeFunctionPolicySet(this.$store.state)
+        this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state)
       },
       policyReadability () {
         // this.calculateAllPolicies()
-        this.allPolicies = computeFunctionPolicySet(this.$store.state)
+        this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state)
       },
     },
     methods: {
@@ -88,7 +88,7 @@
     }),
     mounted () {
       // this.calculateAllPolicies()
-      this.allPolicies = computeFunctionPolicySet(this.$store.state)
+      this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state)
     }
   }
 </script>
