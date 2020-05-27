@@ -3,7 +3,7 @@
     ma-0 
     pa-0
   >
-    <h1>Security Manager</h1>
+    <h1>Security Management</h1>
     <hr>
     <v-tabs
       v-model="activeTab"
@@ -13,13 +13,13 @@
         key="roles"
         ripple
       >
-        Roles
+        Role Manager
       </v-tab>
       <v-tab-item
         key="roles"
       >
         <v-card>
-          <roles></roles>
+          <role-manager-view></role-manager-view>
           <!-- <role-filter></role-filter> -->
         </v-card>
       </v-tab-item>
@@ -55,6 +55,21 @@
       </v-tab-item>
       
       <v-tab
+        key="scripts-summary"
+        ripple
+        :disabled="initializing"
+      >
+        Scripts Summary
+      </v-tab>
+      <v-tab-item
+        key="scripts-summary"
+      >
+        <v-card>
+          <security-scripts-summary-view></security-scripts-summary-view>
+        </v-card>
+      </v-tab-item>
+      
+      <v-tab
         key="help"
         ripple
       >
@@ -81,9 +96,11 @@
   import rp from 'request-promise'
 
   // import RoleFilter from '@/components/Role/RoleFilter'
-  import Roles from '@/components/Role/Roles'
+  import RoleManagerView from './RoleManagerView'
   import TableSecurityView from './TableSecurityView'
   import FunctionSecurityView from './FunctionSecurityView'
+  import SecurityScriptsSummaryView from './SecurityScriptsSummaryView'
+
   import pdf from 'vue-pdf'
 
   export default {
@@ -91,8 +108,8 @@
     components: {
       FunctionSecurityView,
       TableSecurityView,
-      // RoleFilter,
-      Roles,
+      SecurityScriptsSummaryView,
+      RoleManagerView,
       pdf
     },
     props: {

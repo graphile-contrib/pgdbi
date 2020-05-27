@@ -21,7 +21,7 @@
         <v-card>
           <v-layout row wrap>
             <v-flex xs12>
-              <v-card key="olicyAssignment">
+              <v-card key="policyAssignment">
                 <policy-assignment></policy-assignment>
               </v-card>
             </v-flex>

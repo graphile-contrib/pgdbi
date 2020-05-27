@@ -46,11 +46,6 @@ export default {
     {
       roleName: 'app_user',
       applicableRoles: [ {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_anonymous',
-      applicableRoles: [],
-      isAnonymous: true
     }
   ],
   // enabledRoles: [],

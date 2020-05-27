@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2>Owner</h2>
+        <h2>Owner - CREATEDB, LOGIN</h2>
         <v-data-table
           :items="dbOwners"
           :headers="headers"
@@ -11,7 +11,7 @@
         </v-data-table>
       </v-col>
       <v-col>
-        <h2>Authenticator</h2>
+        <h2>Authenticator - LOGIN, NOINHERIT, all user roles</h2>
         <v-data-table
           :items="dbAuthenticators"
           :headers="headers"
@@ -20,7 +20,7 @@
         </v-data-table>
       </v-col>
       <v-col>
-        <h2>Anonymous</h2>
+        <h2>Anonymous - Nothing</h2>
         <v-data-table
           :items="dbAnonymouses"
           :headers="headers"
@@ -30,7 +30,7 @@
       </v-col>
     </v-row>
     <hr>
-    <h2>Users</h2>
+    <h2>Users - inherit applicable roles</h2>
     <v-data-table
       :items="mappedDbUsers"
       :headers="userHeaders"

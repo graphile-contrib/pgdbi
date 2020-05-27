@@ -234,7 +234,17 @@ function setManagedSchemata(state, payload) {
   assignMissingDefaultFunctionPolicies(state, payload)
 
   state.managedSchemata = payload
-  
+  .sort((a,b)=>{
+    if ( a.schemaName < b.schemaName ){
+      return -1;
+    }
+    if ( a.schemaName > b.schemaName ){
+      return 1;
+    }
+    return 0;
+
+  })
+
   evaluateAll(state)
 
   state.initializing = false;
