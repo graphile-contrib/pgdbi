@@ -45,7 +45,7 @@ function ensureDefaultTablePolicy(state) {
 }
 
 function ensureDefaultTablePolicyPermissive(state) {
-    if (!state.defaultPolicyPermissive) {
+  if (!state.defaultPolicyPermissive) {
     const defaultPolicyPermissive = {
       id: makeId(),
       name: 'Default Table Policy - TOTAL EXPLICIT USER ACCESS',
@@ -87,10 +87,58 @@ function ensureDefaultTablePolicyPermissive(state) {
   }
 }
 
+function ensureDefaultDbUserTablePolicies(state) {
+  if (state.defaultDbUserPolicies.length === 0) {
+    const defaultDbUserTablePolicies = state.dbUserRoles.map(
+      dbUserRole => {
+        return {
+          id: makeId(),
+          name: `Default Table Policy - ${dbUserRole.roleName}`,
+          policyHeaderTemplate: state.policyHeaderTemplate,
+          policyFooterTemplate: state.policyFooterTemplate,
+          enableRls: false,
+          columnExclusionOverrides: {
+            insert: [],
+            update: [],
+          },
+          columnExclusions: {
+            insert: {},
+            update: {},
+          },
+          roleGrants: state.dbUserRoles.reduce((all, projectRole) => {
+            let roleGrants
+            if (projectRole.roleName === dbUserRole.roleName) {
+              roleGrants = state.defaultPermissiveRoleGrants
+            } else if (projectRole.applicableRoles.map(ar=>ar.roleName).indexOf(dbUserRole.roleName) > -1) {
+              roleGrants = state.defaultImpliedRoleGrants
+            } else {
+              roleGrants = state.defaultRoleGrants
+            }
+
+            return {
+              ...all,
+              [projectRole.roleName]: roleGrants,
+            };
+        }, {}),
+          rlsQualifiers: state.dbUserRoles.reduce((all, projectRole) => {
+            return {
+              ...all,
+              [projectRole.roleName]: state.defaultRlsQualifiers,
+            };
+          }, {}),
+        }
+      }
+    )
+
+    state.defaultDbUserTablePolicies = defaultDbUserTablePolicies;
+    state.policies = state.policies.concat(defaultDbUserTablePolicies);
+  }
+}
+
 function ensureDefaultFunctionPolicy(state) {
   if (!state.defaultFunctionPolicy) {
     const defaultFunctionPolicy = {
-      id: new Date().getTime() * 10000 + 621355968000000000,
+      id: makeId(),
       name: 'Default Function Policy - NO ACCESS',
       functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
       functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
@@ -106,6 +154,40 @@ function ensureDefaultFunctionPolicy(state) {
     state.functionPolicies = state.functionPolicies.concat([
       defaultFunctionPolicy,
     ]);
+  }
+}
+
+function ensureDefaultDbUserFunctionPolicies(state) {
+  if (state.defaultDbUserPolicies.length === 0) {
+    const defaultDbUserFunctionsPolicies = state.dbUserRoles.map(
+      dbUserRole => {
+        return {
+          id: makeId(),
+          name: `User Function Policy - ${dbUserRole.roleName}`,
+          functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
+          functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
+          roleFunctionGrants: state.dbUserRoles.reduce((all, projectRole) => {
+            let roleGrants
+            if (projectRole.roleName === dbUserRole.roleName) {
+              roleGrants = state.defaultFunctionRoleGrantsPermissive
+            } else if (projectRole.applicableRoles.map(ar=>ar.roleName).indexOf(dbUserRole.roleName) > -1) {
+              roleGrants = state.defaultFunctionRoleGrantsImplied
+            } else {
+              roleGrants = state.defaultFunctionRoleGrants
+            }
+
+            return {
+              ...all,
+              [projectRole.roleName]: roleGrants,
+            };
+          }, {}),
+        };
+      }
+    )
+
+    state.defaultDbUserFunctionsPolicies = defaultDbUserFunctionsPolicies;
+    state.functionPolicies = state.functionPolicies.concat(defaultDbUserFunctionsPolicies);
+
   }
 }
 
@@ -145,7 +227,9 @@ function assignMissingDefaultFunctionPolicies(state, schemata) {
 function setManagedSchemata(state, payload) {
   ensureDefaultTablePolicy(state)
   ensureDefaultTablePolicyPermissive(state)
+  ensureDefaultDbUserTablePolicies(state)
   ensureDefaultFunctionPolicy(state)
+  ensureDefaultDbUserFunctionPolicies(state)
   assignMissingDefaultTablePolicies(state, payload)
   assignMissingDefaultFunctionPolicies(state, payload)
 

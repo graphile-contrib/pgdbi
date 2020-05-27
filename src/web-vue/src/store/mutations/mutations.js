@@ -2,7 +2,7 @@ import resetDefaultState from './resetDefaultState';
 import filterSchemata from './filterSchemata';
 import setManagedSchemata from './setManagedSchemata';
 import assignTablePolicy from './assignTablePolicy';
-import dbUserRoles from './dbUserRoles';
+import projectRoles from './projectRoles';
 import selectedRoleFamilies from './selectedRoleFamilies';
 import defaultRlsUsing from './defaultRlsUsing';
 import defaultRlsWithCheck from './defaultRlsWithCheck';
@@ -30,7 +30,7 @@ export default {
   filterSchemata,
   setManagedSchemata,
   assignTablePolicy,
-  dbUserRoles,
+  projectRoles,
   selectedRoleFamilies,
   defaultRlsUsing,
   defaultRlsWithCheck,

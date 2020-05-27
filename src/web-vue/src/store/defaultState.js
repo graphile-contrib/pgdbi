@@ -106,6 +106,12 @@ export default {
     update: 'ALLOWED',
     delete: 'ALLOWED',
   },
+  defaultImpliedRoleGrants: {
+    select: 'IMPLIED',
+    insert: 'IMPLIED',
+    update: 'IMPLIED',
+    delete: 'IMPLIED',
+  },
   functionPolicyHeaderTemplate: `
   ----------  BEGIN: {{schemaName}}.{{functionName}}
   
@@ -115,5 +121,11 @@ export default {
   ----------  END: {{schemaName}}.{{functionName}}`,
   defaultFunctionRoleGrants: {
     execute: 'DENIED',
+  },
+  defaultFunctionRoleGrantsPermissive: {
+    execute: 'ALLOWED',
+  },
+  defaultFunctionRoleGrantsImplied: {
+    execute: 'IMPLIED',
   },
 };
