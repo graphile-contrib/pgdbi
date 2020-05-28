@@ -29,8 +29,8 @@
 <script>
   import ScriptViewer from '@/components/_common/ScriptViewer'
   import { mapState } from 'vuex'
-  import computeTablePolicy from '@/scriptCompute/computeTablePolicy'
-  import computeRemoveRls from '@/scriptCompute/computeRemoveRls'
+  import computeAllSchemaTablePolicies from '@/scriptCompute/computeAllSchemaTablePolicies'
+  // import computeRemoveRls from '@/scriptCompute/computeRemoveRls'
   
   export default {
     name: 'SchemaSecurityScripts',
@@ -46,10 +46,13 @@
     },
     watch: {
       policyReadability () {
-        this.calculateAllPolicies()
+        this.computeAllPolicies()
       },
     },
     methods: {
+      computeAllPolicies () {
+        this.allPolicies = computeAllSchemaTablePolicies(this.$store.state, this.policyReadability)
+      },
       policyReadabilityChanged (policyReadability) {
         this.policyReadability = policyReadability
       },
@@ -57,60 +60,10 @@
         alert(status)
       },
       refresh(schemaPolicy) {
-        this.calculateAllPolicies()
+        this.computeAllPolicies()
       },
       expand (schemaPolicy) {
         schemaPolicy.policy = `${schemaPolicy.policy} `
-      },
-      calcOnePolicy (tables) {
-        return tables.sort((a,b)=>{return a.tablename < b.tablename ? -1 : 1}).reduce(
-          (policy, table) => {
-            const policyTemplate = this.policies.find(p => p.id === this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId)
-            const variables = {
-              schemaName: table.tableSchema,
-              tableName: table.tablename
-            }
-            const tablePolicy = computeTablePolicy(policyTemplate, this.policyReadability, variables, table)
-            return policy.concat(tablePolicy)
-          }, ''
-        )
-      },
-      calculateAllPolicies () {
-        const masterPolicyName = 'One Script To Rule Them All'
-        const mostPolicies = this.managedSchemata
-          .filter(s => !s.parked)
-          .filter(s => s.schemaTables.length > 0)
-          .reduce(
-            (all, schema) => {
-              const schemaTables = schema.schemaTables.filter(t => t.tableType === 'BASE TABLE')
-              const schemaRemoveRls = computeRemoveRls(schema.schemaName)
-              
-              const schemaPolicy = {
-                name: `${schema.schemaName}`,
-                policy: this.calcOnePolicy(schemaTables)
-              }
-              return all.concat([schemaPolicy])
-            }, []
-          )
-          .sort(
-            (a,b)=>{ 
-              return a.name < b.name ? -1 : 1
-            }
-          )
-
-        const masterPolicy = mostPolicies.reduce(
-          (m, p) => {
-            return m.concat(p.policy)
-          }, ''
-        )
-
-        this.allPolicies = [
-          ...mostPolicies,
-          {
-            name: masterPolicyName,
-            policy: masterPolicy
-          }
-        ]
       },
       policyText (schemaPolicy) {
         return schemaPolicy.policy
@@ -136,7 +89,7 @@
 
     }),
     mounted () {
-      this.calculateAllPolicies()
+      this.computeAllPolicies()
     }
   }
 

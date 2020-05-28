@@ -45,15 +45,16 @@
     },
     watch: {
       functionPolicies () {
-        // this.calculateAllPolicies()
-        this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state)
+        this.computeAllPolicies()
       },
       policyReadability () {
-        // this.calculateAllPolicies()
-        this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state)
+        this.computeAllPolicies()
       },
     },
     methods: {
+      computeAllPolicies () {
+        this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state, this.policyReadability)
+      },
       readabilityChanged (readability) {
         this.policyReadability = readability
       },
@@ -87,8 +88,7 @@
       policyReadability: 'terse'
     }),
     mounted () {
-      // this.calculateAllPolicies()
-      this.allPolicies = computeAllSchemaFunctionPolicies(this.$store.state)
+      this.computeAllPolicies()
     }
   }
 </script>
