@@ -12,6 +12,9 @@ const ownershipPolicyTemplate = `
   {{#schemaTables}}
     ALTER TABLE {{schemaName}}.{{tableName}} OWNER TO {{dbOwnerRole}};
   {{/schemaTables}}
+  {{#schemaFunctions}}
+    ALTER TABLE {{schemaName}}.{{functionName}}({{argumentDataTypes}}) OWNER TO {{dbOwnerRole}};
+  {{/schemaFunctions}}
 ----------  END SCHEMA: {{schemaName}}
 
 {{/schemata}}
@@ -33,6 +36,17 @@ const computeOwnershipPolicy = (state) => {
     }
     return 0;
   })
+  .map(s=>{
+    return {
+      ...s,
+      schemaFunctions: s.schemaFunctions.map(f=>{
+        return {
+          ...f,
+          // argumentDataTypes: f.argumentDataTypes.split("'").join("")
+        }
+      })
+    }
+  })
 
   return Mustache.render(
     ownershipPolicyTemplate,
@@ -40,7 +54,7 @@ const computeOwnershipPolicy = (state) => {
       schemata: sortedSchemata,
       dbOwnerRole: state.dbOwnerRole.roleName
     }
-  )
+  ).split("&#39;").join("'")
 }
 
 export default computeOwnershipPolicy
