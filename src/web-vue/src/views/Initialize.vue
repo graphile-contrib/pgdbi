@@ -3,20 +3,53 @@
     ma-5
     pa-5
   >
-    <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
-    <h2>or...</h2>
-    <project-import></project-import>
+    <v-tabs
+      v-model="activeTab"
+      dark
+    >      
+      <v-tab
+        key="initialize"
+        ripple
+      >
+        Initialize Project
+      </v-tab>
+      <v-tab-item
+        key="initialize"
+      >
+        <v-card>
+          <roles></roles>
+          <v-card-actions>
+            <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-tab-item>
+      <v-tab
+        key="import"
+        ripple
+      >
+        Import Project
+      </v-tab>
+      <v-tab-item
+        key="import"
+      >
+        <v-card>
+          <project-import></project-import>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
   </v-container>
 </template>
 
 <script>
   import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
   import ProjectImport from '@/components/Project/ProjectImport'
+  import Roles from '@/components/Role/Roles'
 
   export default {
     name: 'Initialize',
     components: {
-      ProjectImport
+      ProjectImport,
+      Roles
     },
     props: {
     },
@@ -39,7 +72,7 @@
         })
         .then(result => {
           this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
-          this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
+          // this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
           this.$store.commit('setPgdbiOptions', {pgdbiOptions: result.data.pgdbiOptions})
           this.$loading(false)
         })

@@ -8,22 +8,7 @@
     <v-tabs
       v-model="activeTab"
       dark
-    >
-      <v-tab
-        key="roles"
-        ripple
-      >
-        Role Manager
-      </v-tab>
-      <v-tab-item
-        key="roles"
-      >
-        <v-card>
-          <role-manager-view></role-manager-view>
-          <!-- <role-filter></role-filter> -->
-        </v-card>
-      </v-tab-item>
-      
+    >      
       <v-tab
         key="table-security"
         ripple
@@ -96,7 +81,7 @@
   import rp from 'request-promise'
 
   // import RoleFilter from '@/components/Role/RoleFilter'
-  import RoleManagerView from './RoleManagerView'
+  // import RoleManagerView from './RoleManagerView'
   import TableSecurityView from './TableSecurityView'
   import FunctionSecurityView from './FunctionSecurityView'
   import SecurityScriptsSummaryView from './SecurityScriptsSummaryView'
@@ -109,7 +94,7 @@
       FunctionSecurityView,
       TableSecurityView,
       SecurityScriptsSummaryView,
-      RoleManagerView,
+      // RoleManagerView,
       pdf
     },
     props: {

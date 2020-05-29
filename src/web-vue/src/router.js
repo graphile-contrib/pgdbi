@@ -5,7 +5,7 @@ import Initialize from './views/Initialize.vue';
 import Table from './components/Table/Table.vue';
 import View from './components/View/View.vue';
 import Function from './components/Function/Function.vue';
-// import RoleManagerView from './views/RoleManagerView.vue';
+import RoleManagerView from './views/RoleManagerView.vue';
 import SecurityView from './views/SecurityView.vue';
 // import TableSecurityView from './views/TableSecurityView.vue';
 // import FunctionSecurityView from './views/FunctionSecurityView.vue';
@@ -43,11 +43,11 @@ const router = new Router({
       name: 'initialize',
       component: Initialize,
     },
-    // {
-    //   path: '/role-manager',
-    //   name: 'role-manager',
-    //   component: RoleManagerView,
-    // },
+    {
+      path: '/role-manager',
+      name: 'role-manager',
+      component: RoleManagerView,
+    },
     {
       path: '/security-manager',
       name: 'security-manager',

@@ -1,7 +1,10 @@
 import Mustache from "mustache"
 
 const schemaUsageSqlTemplate = `
----  schema usage
+----------
+----------  BEGIN SCHEMA USAGE SQL
+----------
+
 REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 
 GRANT USAGE ON SCHEMA public TO {{appAuthenticator}};
@@ -14,9 +17,13 @@ GRANT USAGE ON SCHEMA public TO {{appAuthenticator}};
   {{/rolesToRevoke}}
 
   {{#rolesToGrant}}
-  GRANT USAGE ON SCHEMA {{schemaName}} FROM {{roleName}}
+  GRANT USAGE ON SCHEMA {{schemaName}} TO {{.}};
   {{/rolesToGrant}}
 {{/schemata}}
+----------
+----------  END SCHEMA USAGE SQL
+----------
+--==
 `
 
 function mergeArrays(...arrays) {
@@ -96,7 +103,8 @@ const computeSchemaUsageSql = (state) => {
   return Mustache.render(
     schemaUsageSqlTemplate,
     {
-      schemata: schemata
+      schemata: schemata,
+      appAuthenticator: state.dbAuthenticatorRole.roleName
     }
   )
 }

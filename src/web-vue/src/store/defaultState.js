@@ -1,61 +1,62 @@
-const roleSetOptions = [
-  {
-    name: 'graphile',
-    roles: {
-      dbOwnerRole: {
-        roleName: 'app_owner',
-        applicableRoles: []
-      },
-      dbAuthenticatorRole: {
-        roleName: 'app_authenticator',
-        applicableRoles: [ {roleName: 'app_visitor'}, {roleName: 'app_anonymous'} ]
-      },
-      dbUserRoles: [
-        {
-          roleName: 'app_visitor',
-          applicableRoles: [ {roleName: 'app_anonymous'} ]
-        },
-        {
-          roleName: 'app_anonymous',
-          applicableRoles: []
-        }    
-        ],    
-    }
-  },
-  {
-    name: 'multi-level',
-    roles: {
-      dbOwnerRole: {
-        roleName: 'app_owner',
-        applicableRoles: []
-      },
-      dbAuthenticatorRole: {
-        roleName: 'app_authenticator',
-        applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-      },
-      dbUserRoles: [
-        {
-          roleName: 'app_super_admin',
-          applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-        },
-        {
-          roleName: 'app_admin',
-          applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-        },
-        {
-          roleName: 'app_user',
-          applicableRoles: [ {roleName: 'app_anonymous'} ]
-        },
-        {
-          roleName: 'app_anonymous',
-          applicableRoles: []
-        }
-      ]    
-    }
-  }
-]
+// const roleSetOptions = [
+//   {
+//     name: 'graphile',
+//     roles: {
+//       dbOwnerRole: {
+//         roleName: 'app_owner',
+//         applicableRoles: []
+//       },
+//       dbAuthenticatorRole: {
+//         roleName: 'app_authenticator',
+//         applicableRoles: [ {roleName: 'app_visitor'}, {roleName: 'app_anonymous'} ]
+//       },
+//       dbUserRoles: [
+//         {
+//           roleName: 'app_visitor',
+//           applicableRoles: [ {roleName: 'app_anonymous'} ]
+//         },
+//         {
+//           roleName: 'app_anonymous',
+//           applicableRoles: []
+//         }    
+//         ],    
+//     }
+//   },
+//   {
+//     name: 'multi-user',
+//     roles: {
+//       dbOwnerRole: {
+//         roleName: 'app_owner',
+//         applicableRoles: []
+//       },
+//       dbAuthenticatorRole: {
+//         roleName: 'app_authenticator',
+//         applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+//       },
+//       dbUserRoles: [
+//         {
+//           roleName: 'app_super_admin',
+//           applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+//         },
+//         {
+//           roleName: 'app_admin',
+//           applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+//         },
+//         {
+//           roleName: 'app_user',
+//           applicableRoles: [ {roleName: 'app_anonymous'} ]
+//         },
+//         {
+//           roleName: 'app_anonymous',
+//           applicableRoles: []
+//         }
+//       ]    
+//     }
+//   }
+// ]
 
-
+import roleSets from './roleSets'
+const defaultRoleSet = roleSets[0]
 
 export default {
   pgdbiOtions: {},
@@ -84,35 +85,9 @@ export default {
   parkedSchemata: [],
   rawSchemata: [],
   schemaFilter: [],
-  dbOwnerRole: roleSetOptions.find(rs=>rs.name==='graphile').roles.dbOwnerRole,
-  dbAuthenticatorRole: roleSetOptions.find(rs=>rs.name==='graphile').roles.dbAuthenticatorRole,
-  dbUserRoles: roleSetOptions.find(rs=>rs.name==='graphile').roles.dbUserRoles,
-  // dbOwnerRole: {
-  //   roleName: 'app_owner',
-  //   applicableRoles: []
-  // },
-  // dbAuthenticatorRole: {
-  //   roleName: 'app_authenticator',
-  //   applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-  // },
-  // dbUserRoles: [
-  //   {
-  //     roleName: 'app_super_admin',
-  //     applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-  //   },
-  //   {
-  //     roleName: 'app_admin',
-  //     applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-  //   },
-  //   {
-  //     roleName: 'app_user',
-  //     applicableRoles: [ {roleName: 'app_anonymous'} ]
-  //   },
-  //   {
-  //     roleName: 'app_anonymous',
-  //     applicableRoles: []
-  //   }
-  // ],
+  dbOwnerRole: defaultRoleSet.roles.dbOwnerRole,
+  dbAuthenticatorRole: defaultRoleSet.roles.dbAuthenticatorRole,
+  dbUserRoles: defaultRoleSet.roles.dbUserRoles,
   defaultRlsUsing: '( owner_id = viewer_id() )',
   defaultRlsWithCheck: '',
   defaultRlsQualifiers: {

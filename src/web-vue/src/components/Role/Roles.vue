@@ -1,5 +1,18 @@
 <template>
   <v-container>
+    <v-radio-group v-model="roleSet" row :disabled="!initializing">
+      <v-radio
+        key="graphile"
+        label="graphile"
+        value="graphile"
+      ></v-radio>
+      <v-radio
+        key="multi-user"
+        label="multi-user"
+        value="multi-user"
+      ></v-radio>
+    </v-radio-group>
+
     <v-data-table
       :items="mappedDbUsers"
       :headers="userHeaders"
@@ -18,7 +31,15 @@
     mixins: [],
     components: {
     },
+    watch: {
+      roleSet () {
+        this.$store.commit('setProjectRoleSet', this.roleSet)
+      }
+    },
     computed: {
+      initializing () {
+        return this.$store.state.initializing
+      },
       dbOwner () {
         return this.$store.state.dbOwnerRole
       },
@@ -78,7 +99,8 @@
     },
     data () {
       return {
-          headers: [
+        roleSet: 'graphile',
+        headers: [
           {
             text: 'name',
             value: 'roleName'

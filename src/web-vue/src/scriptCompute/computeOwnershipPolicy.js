@@ -2,27 +2,26 @@ import Mustache from 'mustache'
 
 const ownershipPolicyTemplate = `
 ----------
-----------  BEGIN OWNERSHIP POLICY
-----------  POLICY NAME
+----------  BEGIN OWNERSHIP SQL
 ----------
 
 {{#schemata}}
 ----------  SCHEMA: {{schemaName}}
   ALTER SCHEMA {{schemaName}} OWNER TO {{dbOwnerRole}};
+  -- tables
   {{#schemaTables}}
     ALTER TABLE {{schemaName}}.{{tableName}} OWNER TO {{dbOwnerRole}};
   {{/schemaTables}}
+  -- functions
   {{#schemaFunctions}}
     ALTER FUNCTION {{schemaName}}.{{functionName}}({{argumentDataTypes}}) OWNER TO {{dbOwnerRole}};
   {{/schemaFunctions}}
 ----------  END SCHEMA: {{schemaName}}
-
 {{/schemata}}
-
-
-----------  END OWNERSHIP POLICY
+----------
+----------  END OWNERSHIP SQL
+----------
 --==
-
 `
 
 const computeOwnershipPolicy = (state) => {

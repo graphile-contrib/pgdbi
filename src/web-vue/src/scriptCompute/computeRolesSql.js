@@ -115,11 +115,20 @@ return `
 
 function computeRolesSql (state) {
   return [
-    '---=======  BEGIN POSTGRES ROLES -======',
+    `
+----------
+----------  BEGIN POSTGRES ROLES SQL
+----------
+    `,
     computeDbOwnerRoleSql(state),
     computeDbUserRolesSql(state),
     computeDbAuthenticatorRoleSql(state),
-    '---=====  END POSTGRES ROLES -======'
+    `
+----------
+----------  END POSTGRES ROLES SQL
+----------
+--==
+`
   ].join('\n')
 }
 

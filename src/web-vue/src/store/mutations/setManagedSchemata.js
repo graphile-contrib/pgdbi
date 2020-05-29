@@ -222,7 +222,7 @@ function assignMissingDefaultFunctionPolicies(state, schemata) {
     ,policyDefinitionId: state.defaultFunctionPolicy.id
   })
 
-}
+} 
 
 function setManagedSchemata(state, payload) {
   ensureDefaultTablePolicy(state)

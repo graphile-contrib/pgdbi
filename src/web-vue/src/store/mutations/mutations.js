@@ -2,8 +2,6 @@ import resetDefaultState from './resetDefaultState';
 import filterSchemata from './filterSchemata';
 import setManagedSchemata from './setManagedSchemata';
 import assignTablePolicy from './assignTablePolicy';
-import projectRoles from './projectRoles';
-import selectedRoleFamilies from './selectedRoleFamilies';
 import defaultRlsUsing from './defaultRlsUsing';
 import defaultRlsWithCheck from './defaultRlsWithCheck';
 import newPolicy from './newPolicy';
@@ -19,19 +17,22 @@ import makeGlobalTablePolicy from './makeGlobalTablePolicy';
 import deleteTablePolicy from './deleteTablePolicy';
 import updateTablePolicyTemplate from './updateTablePolicyTemplate';
 import updateDefaultRlsUsing from './updateDefaultRlsUsing';
-import setEnabledRoles from './setEnabledRoles'
-import toggleIgnoreRole from './toggleIgnoreRole'
 import setPgdbiOptions from './setPgdbiOptions'
-import toggleIndexForDrop from './toggleIndexForDrop'
 import renameTablePolicy from './renameTablePolicy'
+import setProjectRoleSet from './setProjectRoleSet'
+// import projectRoles from './projectRoles';
+// import selectedRoleFamilies from './selectedRoleFamilies';
+// import setEnabledRoles from './setEnabledRoles'
+// import toggleIgnoreRole from './toggleIgnoreRole'
+// import toggleIndexForDrop from './toggleIndexForDrop'
 
 export default {
   resetDefaultState,
   filterSchemata,
   setManagedSchemata,
   assignTablePolicy,
-  projectRoles,
-  selectedRoleFamilies,
+  // projectRoles,
+  // selectedRoleFamilies,
   defaultRlsUsing,
   defaultRlsWithCheck,
   newPolicy,
@@ -47,9 +48,10 @@ export default {
   deleteTablePolicy,
   updateTablePolicyTemplate,
   updateDefaultRlsUsing,
-  setEnabledRoles,
-  toggleIgnoreRole,
+  // setEnabledRoles,
+  // toggleIgnoreRole,
   setPgdbiOptions,
-  toggleIndexForDrop,
-  renameTablePolicy
+  // toggleIndexForDrop,
+  renameTablePolicy,
+  setProjectRoleSet
 };
