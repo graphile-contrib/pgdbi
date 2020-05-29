@@ -1,39 +1,20 @@
 <template>
   <v-container>
-    <v-tabs
-      dark
-      slider-color="yellow"
-    >
-      <v-tab
-        v-for="schemaPolicy in allPolicies"
-        :key="schemaPolicy.name"
-        ripple
-      >
-        {{ schemaPolicy.name }}
-      </v-tab>
-      <v-tab-item
-        v-for="schemaPolicy in allPolicies"
-        :key="schemaPolicy.name"
-      >
-        <script-viewer
-          :scriptText="schemaPolicy.policy"
-          @readability-changed="readabilityChanged"
-          skipFormat
-        ></script-viewer>
-      </v-tab-item>
-    </v-tabs>
-
+    <script-viewer
+      :scriptText="masterPolicy"
+      @readability-changed="readabilityChanged"
+      skipFormat
+    ></script-viewer>
   </v-container>
 </template>
 
 <script>
   import { mapState } from 'vuex'
   import ScriptViewer from '@/components/_common/ScriptViewer'
-  import computeAllSchemaFunctionPolicies from '@/scriptCompute/computeAllSchemaFunctionPolicies'
-  import computeMasterFunctionPolicy from '@/scriptCompute/computeMasterFunctionPolicy'
+  import computeMasterSecurityPolicy from '@/scriptCompute/computeMasterSecurityPolicy'
 
   export default {
-    name: 'SchemaSecurityScripts',
+    name: 'MasterSecurityPolicyRealization',
     mixins: [
     ],
     components: {
@@ -46,23 +27,22 @@
     },
     watch: {
       functionPolicies () {
-        this.computeAllPolicies()
+        this.computePolicy()
       },
       policyReadability () {
-        this.computeAllPolicies()
+        this.computePolicy()
       },
     },
     methods: {
-      computeAllPolicies () {
-        const mostPolicies = computeAllSchemaFunctionPolicies(this.$store.state, this.policyReadability)
-        const masterPolicy = computeMasterFunctionPolicy(this.$store.state, this.policyReadability)
-        this.allPolicies = [...mostPolicies, masterPolicy]
+      computePolicy () {
+        this.masterPolicy = computeMasterSecurityPolicy(this.$store.state, this.policyReadability)
+        console.log('master', this.masterPolicy)
       },
       readabilityChanged (readability) {
         this.policyReadability = readability
       },
       refresh () {
-        this.doComputePolicy()
+        this.computePolicy()
       },
       expand () {
         this.computedPolicy = `${this.computedPolicy} `
@@ -83,7 +63,7 @@
       }
     },
     data: () => ({
-      allPolicies: [],
+      masterPolicy: 'N/A',
       schemaPolicy: 'NOT CALCULATED',
       defaultRlsPolicies: 'NOT CALCULATED',
       defaultNoRlsPolicies: 'NOT CALCULATED',
@@ -91,7 +71,7 @@
       policyReadability: 'terse'
     }),
     mounted () {
-      this.computeAllPolicies()
+      this.computePolicy()
     }
   }
 </script>

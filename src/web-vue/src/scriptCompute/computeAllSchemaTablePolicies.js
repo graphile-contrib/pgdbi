@@ -1,23 +1,8 @@
-import computeTablePolicy from './computeTablePolicy'
 import computeRemoveRls from './computeRemoveRls'
-
-function calcOnePolicy (state, policyReadability, tables) {
-  return tables.sort((a,b)=>{return a.tablename < b.tablename ? -1 : 1}).reduce(
-    (policy, table) => {
-      const policyTemplate = state.policies.find(p => p.id === state.tablePolicyAssignments[table.id].policyDefinitionId)
-      const variables = {
-        schemaName: table.tableSchema,
-        tableName: table.tablename
-      }
-      const tablePolicy = computeTablePolicy(policyTemplate, policyReadability, variables, table)
-      return policy.concat(tablePolicy)
-    }, ''
-  )
-}
+import computeSchemaTablePolicy from './computeSchemaTablePolicy'
 
 function computeAllSchemaTablePolicies (state, policyReadability) {
-  const masterPolicyName = 'One Script To Rule Them All'
-  const mostPolicies = state.managedSchemata
+  return state.managedSchemata
     .filter(s => !s.parked)
     .filter(s => s.schemaTables.length > 0)
     .reduce(
@@ -27,7 +12,7 @@ function computeAllSchemaTablePolicies (state, policyReadability) {
         
         const schemaPolicy = {
           name: `${schema.schemaName}`,
-          policy: calcOnePolicy(state, policyReadability, schemaTables)
+          policy: computeSchemaTablePolicy(state, policyReadability, schemaTables)
         }
         return all.concat([schemaPolicy])
       }, []
@@ -37,20 +22,6 @@ function computeAllSchemaTablePolicies (state, policyReadability) {
         return a.name < b.name ? -1 : 1
       }
     )
-
-  const masterPolicy = mostPolicies.reduce(
-    (m, p) => {
-      return m.concat(p.policy)
-    }, ''
-  )
-
-  return [
-    ...mostPolicies,
-    {
-      name: masterPolicyName,
-      policy: masterPolicy
-    }
-  ]
 }
 
 export default computeAllSchemaTablePolicies

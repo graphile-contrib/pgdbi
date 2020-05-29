@@ -30,7 +30,7 @@
   import ScriptViewer from '@/components/_common/ScriptViewer'
   import { mapState } from 'vuex'
   import computeAllSchemaTablePolicies from '@/scriptCompute/computeAllSchemaTablePolicies'
-  // import computeRemoveRls from '@/scriptCompute/computeRemoveRls'
+  import computeMasterTablePolicy from '@/scriptCompute/computeMasterTablePolicy'
   
   export default {
     name: 'SchemaSecurityScripts',
@@ -51,7 +51,9 @@
     },
     methods: {
       computeAllPolicies () {
-        this.allPolicies = computeAllSchemaTablePolicies(this.$store.state, this.policyReadability)
+        const mostPolicies = computeAllSchemaTablePolicies(this.$store.state, this.policyReadability)
+        const masterPolicy = computeMasterTablePolicy(this.$store.state, this.policyReadability)
+        this.allPolicies = [...mostPolicies, masterPolicy]
       },
       policyReadabilityChanged (policyReadability) {
         this.policyReadability = policyReadability

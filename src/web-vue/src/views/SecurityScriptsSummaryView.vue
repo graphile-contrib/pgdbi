@@ -29,6 +29,19 @@
         </v-card>
       </v-tab-item>
       <v-tab
+        key="ownership-policy"
+        ripple
+      >
+        Ownership Policy
+      </v-tab>
+      <v-tab-item
+        key="ownership-policy"
+      >
+        <v-card>
+          <ownership-security-policy-realization></ownership-security-policy-realization>
+        </v-card>
+      </v-tab-item>
+      <v-tab
         key="schema-usage"
         ripple
       >
@@ -73,6 +86,20 @@
           <function-security-scripts></function-security-scripts>
         </v-card>
       </v-tab-item>
+      <v-tab
+        key="master-security-policy"
+        ripple
+        class="light-green"
+      >
+        Complete Security Policy
+      </v-tab>
+      <v-tab-item
+        key="master-security-policy"
+      >
+        <v-card>
+          <master-security-policy-realization></master-security-policy-realization>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
@@ -81,6 +108,8 @@
   import SchemaUsageRealization from '@/components/Schema/SchemaUsageRealization'
   import TableSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
   import FunctionSecurityScripts from '@/components/FunctionSecurity/Realization/FunctionSchemaSecurityScripts'
+  import MasterSecurityPolicyRealization from '@/components/Security/MasterSecurityPolicyRealization'
+  import OwnershipPolicyRealization from '@/components/Security/OwnershipPolicyRealization'
 
   export default {
     name: 'SecurityScriptsSummaryView',
@@ -88,7 +117,9 @@
       CreateRolesRealization,
       SchemaUsageRealization,
       TableSecurityScripts,
-      FunctionSecurityScripts
+      FunctionSecurityScripts,
+      MasterSecurityPolicyRealization,
+      OwnershipPolicyRealization
     },
     props: {
     },
