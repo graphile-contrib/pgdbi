@@ -1,3 +1,12 @@
+import Mustache from "mustache"
+
+const schemaUsageSqlTemplate = `
+---  schema usage
+{{#schemata}}
+------- {}
+{{/schemata}}
+`
+
 function mergeArrays(...arrays) {
   let jointArray = []
 
@@ -64,7 +73,7 @@ const computeSchemaUsageSql = (state) => {
       }, []
     )
     const rolesToGrant = mergeArrays(rolesToGrantTable, rolesToGrantFunction).join(', ')
-
+        
     return `
 -----   ${s.schemaName}
   REVOKE 

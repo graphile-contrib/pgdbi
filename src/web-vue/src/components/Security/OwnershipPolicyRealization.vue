@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <script-viewer
-      :scriptText="ownerhipSecurityPolicy"
+      :scriptText="computeOwnershipPolicy"
       @readability-changed="readabilityChanged"
       skipFormat
     ></script-viewer>
@@ -11,7 +11,7 @@
 <script>
   import { mapState } from 'vuex'
   import ScriptViewer from '@/components/_common/ScriptViewer'
-  import computeOwnerhipSecurityPolicy from '@/scriptCompute/computeOwnerhipSecurityPolicy'
+  import computeOwnershipPolicy from '@/scriptCompute/computeOwnershipPolicy'
 
   export default {
     name: 'OwnershipPolicyRealization',
@@ -35,8 +35,7 @@
     },
     methods: {
       computePolicy () {
-        this.ownerhipSecurityPolicy = computeOwnerhipSecurityPolicy(this.$store.state, this.policyReadability)
-        console.log('master', this.ownerhipSecurityPolicy)
+        this.computeOwnershipPolicy = computeOwnershipPolicy(this.$store.state, this.policyReadability)
       },
       readabilityChanged (readability) {
         this.policyReadability = readability
@@ -63,7 +62,7 @@
       }
     },
     data: () => ({
-      ownerhipSecurityPolicy: 'N/A',
+      computeOwnershipPolicy: 'N/A',
       schemaPolicy: 'NOT CALCULATED',
       defaultRlsPolicies: 'NOT CALCULATED',
       defaultNoRlsPolicies: 'NOT CALCULATED',

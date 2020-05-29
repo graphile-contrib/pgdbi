@@ -38,7 +38,7 @@
         key="ownership-policy"
       >
         <v-card>
-          <ownership-security-policy-realization></ownership-security-policy-realization>
+          <ownership-policy-realization></ownership-policy-realization>
         </v-card>
       </v-tab-item>
       <v-tab
@@ -89,7 +89,8 @@
       <v-tab
         key="master-security-policy"
         ripple
-        class="light-green"
+        active-class="yellow red--text"
+        class="purple black--text"
       >
         Complete Security Policy
       </v-tab>

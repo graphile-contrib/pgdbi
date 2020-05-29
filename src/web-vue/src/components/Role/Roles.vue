@@ -1,36 +1,5 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <h2>Owner - CREATEDB, LOGIN</h2>
-        <v-data-table
-          :items="dbOwners"
-          :headers="headers"
-          hide-default-footer
-        >
-        </v-data-table>
-      </v-col>
-      <v-col>
-        <h2>Authenticator - LOGIN, NOINHERIT, all user roles</h2>
-        <v-data-table
-          :items="dbAuthenticators"
-          :headers="headers"
-          hide-default-footer
-        >
-        </v-data-table>
-      </v-col>
-      <v-col>
-        <h2>Anonymous - Nothing</h2>
-        <v-data-table
-          :items="dbAnonymouses"
-          :headers="headers"
-          hide-default-footer
-        >
-        </v-data-table>
-      </v-col>
-    </v-row>
-    <hr>
-    <h2>Users - inherit applicable roles</h2>
     <v-data-table
       :items="mappedDbUsers"
       :headers="userHeaders"
@@ -50,25 +19,26 @@
     components: {
     },
     computed: {
-      dbOwners () {
-        return [this.$store.state.dbOwnerRole]
+      dbOwner () {
+        return this.$store.state.dbOwnerRole
       },
-      dbAuthenticators () {
-        return [this.$store.state.dbAuthenticatorRole]
-      },
-      dbAnonymouses () {
-        return [this.$store.state.dbAnonymousRole]
+      dbAuthenticator () {
+        return this.$store.state.dbAuthenticatorRole
       },
       dbUsers () {
-        return this.$store.state.dbUserRoles
+        return [
+          this.dbOwner,
+          this.dbAuthenticator,
+          ...this.$store.state.dbUserRoles
+            .sort((a,b)=>{
+              return b.applicableRoles.length - a.applicableRoles.length
+            }),
+        ]
       },
       userHeaders () {
         return [
           { text: 'name', value: 'name'},
           ... this.dbUsers
-            .sort((a,b)=>{
-              return b.applicableRoles.length - a.applicableRoles.length
-            })
             .map(
               r => {
                 return { text: r.roleName, value: r.roleName }
@@ -86,12 +56,11 @@
                     ...a,
                     [thatRole.roleName]: thisRole.roleName
                   }
-                } else if (thisRole.applicableRoles.indexOf(thatRole.roleName) > -1) {
+                } else if (thisRole.applicableRoles.map(ar=>ar.roleName).indexOf(thatRole.roleName) > -1) {
                   return {
                     ...a,
                     [thatRole.roleName]: INHERITS_ROLE
                   }
-
                 } else {
                   return {
                     ...a,
@@ -115,30 +84,6 @@
             value: 'roleName'
           }
         ],
-        // dbOwnerRole: {
-        //   name: 'app_owner',
-        // },
-        // dbAuthenticatorRole: {
-        //   name: 'app_authenticator',
-        // },
-        // dbUserRoles: [
-        //   {
-        //     name: 'app_super_admin',
-        //     applicableRoles: [ 'app_admin', 'app_user', 'app_anonymous' ]
-        //   },
-        //   {
-        //     name: 'app_admin',
-        //     applicableRoles: [ 'app_user', 'app_anonymous' ]
-        //   },
-        //   {
-        //     name: 'app_user',
-        //     applicableRoles: [ 'app_anonymous' ]
-        //   },
-        //   {
-        //     name: 'app_anoymous',
-        //     applicableRoles: []
-        //   }
-        // ],
       }
     },
     methods: {

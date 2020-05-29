@@ -36,7 +36,6 @@
     methods: {
       computePolicy () {
         this.masterPolicy = computeMasterSecurityPolicy(this.$store.state, this.policyReadability)
-        console.log('master', this.masterPolicy)
       },
       readabilityChanged (readability) {
         this.policyReadability = readability

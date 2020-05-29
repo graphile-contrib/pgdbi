@@ -27,12 +27,11 @@ export default {
   schemaFilter: [],
   dbOwnerRole: {
     roleName: 'app_owner',
+    applicableRoles: []
   },
   dbAuthenticatorRole: {
     roleName: 'app_authenticator',
-  },
-  dbAnonymousRole: {
-    roleName: 'app_anonymous'
+    applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
   },
   dbUserRoles: [
     {
@@ -46,6 +45,10 @@ export default {
     {
       roleName: 'app_user',
       applicableRoles: [ {roleName: 'app_anonymous'} ]
+    },
+    {
+      roleName: 'app_anonymous',
+      applicableRoles: []
     }
   ],
   // enabledRoles: [],
