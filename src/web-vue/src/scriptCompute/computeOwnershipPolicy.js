@@ -13,7 +13,7 @@ const ownershipPolicyTemplate = `
     ALTER TABLE {{schemaName}}.{{tableName}} OWNER TO {{dbOwnerRole}};
   {{/schemaTables}}
   {{#schemaFunctions}}
-    ALTER TABLE {{schemaName}}.{{functionName}}({{argumentDataTypes}}) OWNER TO {{dbOwnerRole}};
+    ALTER FUNCTION {{schemaName}}.{{functionName}}({{argumentDataTypes}}) OWNER TO {{dbOwnerRole}};
   {{/schemaFunctions}}
 ----------  END SCHEMA: {{schemaName}}
 

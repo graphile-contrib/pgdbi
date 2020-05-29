@@ -3,7 +3,8 @@ const pg10IntrospectionQuery = require('./pg10IntrospectionQuery')
 
 const queryBuilderMap = {
   "10": require('./pg10IntrospectionQuery'),
-  "11": require('./pg11IntrospectionQuery')
+  "11": require('./pg11IntrospectionQuery'),
+  "12": require('./pg11IntrospectionQuery')
 }
 
 async function transformBuild(build, pgPool) {

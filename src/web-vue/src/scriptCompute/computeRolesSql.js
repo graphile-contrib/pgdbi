@@ -5,16 +5,16 @@ function computeDbOwnerRoleSql (state) {
 DO
 $body$
 BEGIN
-IF NOT EXISTS (
-SELECT    *
-FROM   pg_catalog.pg_roles
-WHERE  rolname = '${dbOwnerRole.roleName}'
-) THEN
-CREATE ROLE ${dbOwnerRole.roleName};
-END IF;
+  IF NOT EXISTS (
+    SELECT    *
+    FROM   pg_catalog.pg_roles
+    WHERE  rolname = '${dbOwnerRole.roleName}')
+  THEN
+    CREATE ROLE ${dbOwnerRole.roleName};
+  END IF;
 
-ALTER ROLE ${dbOwnerRole.roleName} with LOGIN;
-ALTER ROLE ${dbOwnerRole.roleName} with CREATEDB;
+  ALTER ROLE ${dbOwnerRole.roleName} with LOGIN;
+  ALTER ROLE ${dbOwnerRole.roleName} with CREATEDB;
 
 END
 $body$;
@@ -32,13 +32,13 @@ function computeDbAuthenticatorRoleSql (state) {
 DO
 $body$
 BEGIN
-IF NOT EXISTS (
-SELECT    *
-FROM   pg_catalog.pg_roles
-WHERE  rolname = '${dbAuthenticatorRole.roleName}'
-) THEN
-CREATE ROLE ${dbAuthenticatorRole.roleName};
-END IF;
+  IF NOT EXISTS (
+    SELECT    *
+    FROM   pg_catalog.pg_roles
+    WHERE  rolname = '${dbAuthenticatorRole.roleName}')
+  THEN
+    CREATE ROLE ${dbAuthenticatorRole.roleName};
+  END IF;
 
 ALTER ROLE ${dbAuthenticatorRole.roleName} with LOGIN;
 ALTER ROLE ${dbAuthenticatorRole.roleName} with NOINHERIT;
@@ -59,13 +59,13 @@ function computeDbAnonymousRoleSql (state) {
 DO
 $body$
 BEGIN
-IF NOT EXISTS (
-SELECT    *
-FROM   pg_catalog.pg_roles
-WHERE  rolname = '${dbAnonymousRole.roleName}'
-) THEN
-CREATE ROLE ${dbAnonymousRole.roleName};
-END IF;
+  IF NOT EXISTS (
+    SELECT    *
+    FROM   pg_catalog.pg_roles
+    WHERE  rolname = '${dbAnonymousRole.roleName}')
+  THEN
+    CREATE ROLE ${dbAnonymousRole.roleName};
+  END IF;
 
 ALTER ROLE ${dbAnonymousRole.roleName} with NOLOGIN;
 
@@ -110,7 +110,6 @@ return `
 }).join('\n')}
 ---------- END USER ROLES ----------
 
-
 `
 }
 
@@ -118,7 +117,6 @@ function computeRolesSql (state) {
   return [
     '---=======  BEGIN POSTGRES ROLES -======',
     computeDbOwnerRoleSql(state),
-    computeDbAnonymousRoleSql(state),
     computeDbUserRolesSql(state),
     computeDbAuthenticatorRoleSql(state),
     '---=====  END POSTGRES ROLES -======'

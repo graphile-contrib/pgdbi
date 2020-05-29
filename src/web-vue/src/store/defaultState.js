@@ -1,3 +1,62 @@
+const roleSetOptions = [
+  {
+    name: 'graphile',
+    roles: {
+      dbOwnerRole: {
+        roleName: 'app_owner',
+        applicableRoles: []
+      },
+      dbAuthenticatorRole: {
+        roleName: 'app_authenticator',
+        applicableRoles: [ {roleName: 'app_visitor'}, {roleName: 'app_anonymous'} ]
+      },
+      dbUserRoles: [
+        {
+          roleName: 'app_visitor',
+          applicableRoles: [ {roleName: 'app_anonymous'} ]
+        },
+        {
+          roleName: 'app_anonymous',
+          applicableRoles: []
+        }    
+        ],    
+    }
+  },
+  {
+    name: 'multi-level',
+    roles: {
+      dbOwnerRole: {
+        roleName: 'app_owner',
+        applicableRoles: []
+      },
+      dbAuthenticatorRole: {
+        roleName: 'app_authenticator',
+        applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+      },
+      dbUserRoles: [
+        {
+          roleName: 'app_super_admin',
+          applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+        },
+        {
+          roleName: 'app_admin',
+          applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+        },
+        {
+          roleName: 'app_user',
+          applicableRoles: [ {roleName: 'app_anonymous'} ]
+        },
+        {
+          roleName: 'app_anonymous',
+          applicableRoles: []
+        }
+      ]    
+    }
+  }
+]
+
+
+
 export default {
   pgdbiOtions: {},
   initializing: true,
@@ -25,33 +84,17 @@ export default {
   parkedSchemata: [],
   rawSchemata: [],
   schemaFilter: [],
-  dbOwnerRole: {
-    roleName: 'app_owner',
-    applicableRoles: []
-  },
-  dbAuthenticatorRole: {
-    roleName: 'app_authenticator',
-    applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-  },
-  dbUserRoles: [
-    {
-      roleName: 'app_super_admin',
-      applicableRoles: [ {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_admin',
-      applicableRoles: [ {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_user',
-      applicableRoles: [ {roleName: 'app_anonymous'} ]
-    },
-    {
-      roleName: 'app_anonymous',
-      applicableRoles: []
-    }
-  ],
-  // enabledRoles: [],
+  dbOwnerRole: roleSetOptions.find(rs=>rs.name==='graphile').roles.dbOwnerRole,
+  dbAuthenticatorRole: roleSetOptions.find(rs=>rs.name==='graphile').roles.dbAuthenticatorRole,
+  dbUserRoles: roleSetOptions.find(rs=>rs.name==='graphile').roles.dbUserRoles,
+  // dbOwnerRole: {
+  //   roleName: 'app_owner',
+  //   applicableRoles: []
+  // },
+  // dbAuthenticatorRole: {
+  //   roleName: 'app_authenticator',
+  //   applicableRoles: [ {roleName: 'app_super_admin'}, {roleName: 'app_admin'}, {roleName: 'app_user'}, {roleName: 'app_anonymous'} ]
+  // },
   // dbUserRoles: [
   //   {
   //     roleName: 'app_super_admin',
@@ -66,14 +109,11 @@ export default {
   //     applicableRoles: [ {roleName: 'app_anonymous'} ]
   //   },
   //   {
-  //     roleName: 'app_anoymous',
+  //     roleName: 'app_anonymous',
   //     applicableRoles: []
   //   }
   // ],
-  // ignoredRoles: [],
-  // selectedRoleFamilies: [],
   defaultRlsUsing: '( owner_id = viewer_id() )',
-  // defaultRlsUsing: '(auth_fn.app_user_has_access(app_tenant_id) = true)',
   defaultRlsWithCheck: '',
   defaultRlsQualifiers: {
     all: {
@@ -127,3 +167,5 @@ export default {
     execute: 'IMPLIED',
   },
 };
+
+
