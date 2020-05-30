@@ -7,7 +7,7 @@
             dark v-on="on"
             class="text-none"
           >
-            Reset PGDBI
+            RESET PGDBI
           </v-btn>
         </template>
         <v-card>
@@ -16,7 +16,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn @click="dialog=false">Cancel</v-btn>
-            <v-btn @click="resetPgdbi">Turn your key sir!</v-btn>
+            <v-btn @click="navToExport">Save Project</v-btn>
+            <v-btn @click="resetPgdbi">Exterminate!</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
@@ -42,7 +43,11 @@
     },
     methods: {
       resetPgdbi () {
-
+        this.$store.dispatch('resetDefaultState')
+        this.$router.push('initialize')
+      },
+      navToExport () {
+        this.$router.push('project-export')
       }
     },
     mounted () {

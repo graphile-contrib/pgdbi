@@ -20,6 +20,7 @@ import updateDefaultRlsUsing from './updateDefaultRlsUsing';
 import setPgdbiOptions from './setPgdbiOptions'
 import renameTablePolicy from './renameTablePolicy'
 import setProjectRoleSet from './setProjectRoleSet'
+import setAllRoleSets from './setAllRoleSets'
 // import projectRoles from './projectRoles';
 // import selectedRoleFamilies from './selectedRoleFamilies';
 // import setEnabledRoles from './setEnabledRoles'
@@ -53,5 +54,6 @@ export default {
   setPgdbiOptions,
   // toggleIndexForDrop,
   renameTablePolicy,
-  setProjectRoleSet
+  setProjectRoleSet,
+  setAllRoleSets
 };

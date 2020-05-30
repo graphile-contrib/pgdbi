@@ -19,7 +19,7 @@
               <v-card key="choose-role-set">
                 <choose-role-set></choose-role-set>
                 <v-card-actions>
-                  <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
+                  <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" :hidden="!initializing">Refresh Schemata</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -66,6 +66,9 @@
     watch: {
     },
     computed: {
+      initializing () {
+        return this.$store.state.initializing
+      }
     },
     data () {
       return {

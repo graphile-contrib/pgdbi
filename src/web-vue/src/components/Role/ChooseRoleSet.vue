@@ -13,6 +13,7 @@
       :items="mappedDbUsers"
       :headers="userHeaders"
       hide-default-footer
+      disable-sort
     >
     </v-data-table>
   </v-container>

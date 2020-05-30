@@ -7,10 +7,8 @@
     <h1>PGDBI</h1>
     <h2>postgraphile-db-inspector</h2>
     <v-toolbar>
-      <v-btn @click="resetStore">Reset PGDBI</v-btn>
       <project-reset-dialog></project-reset-dialog>
       <v-btn @click="$router.push('project-export')">Export Project</v-btn>
-      <v-btn @click="$router.push('project-import')">Import Project</v-btn>
     </v-toolbar>
     <roles></roles>
   </v-container>
@@ -34,10 +32,6 @@
       activeTab: null
     }),
     methods: {
-      resetStore () {
-        this.$store.dispatch('resetDefaultState')
-        this.$router.push('initialize')
-      }
     }
   }
 </script>

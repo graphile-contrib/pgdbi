@@ -1,6 +1,7 @@
 import defaultRoleSets from './defaultRoleSets'
 
 export default {
+  allRoleSets: defaultRoleSets,
   pgdbiOptions: {},
   initializing: true,
   schemaFilterOn: true,
@@ -27,7 +28,6 @@ export default {
   parkedSchemata: [],
   rawSchemata: [],
   schemaFilter: [],
-  allRoleSets: defaultRoleSets,
   roleSet: {
     dbOwnerRole: {},
     dbAuthenticatorRole: {},

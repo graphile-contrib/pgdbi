@@ -1,11 +1,14 @@
 <template>
   <v-container>
-    <script-viewer
-      :scriptText="availableRoleSets"
-      :showReadability="false"
-      skipFormat
-      canEdit
-    ></script-viewer>
+    <v-toolbar>
+      <v-btn @click="saveAllRoleSets">Save</v-btn>
+    </v-toolbar>
+    <v-textarea
+      v-model="allRolesJsonText"
+      auto-grow
+      spellcheck="false"
+      background-color="black"
+    ></v-textarea>
   </v-container>
 </template>
 
@@ -23,19 +26,32 @@
     },
     data () {
       return {
+        allRolesJsonText: ''
       }
     },
     mounted () {
     },
     watch: {
+      allRoleSets () {
+        this.computeContent()
+      }
     },
     methods: {
+      computeContent () {
+        this.allRolesJsonText = JSON.stringify(this.allRoleSets,0,2)
+      },
+      saveAllRoleSets () {
+        const allRoleSets = JSON.parse(this.allRolesJsonText)
+        this.$store.commit('setAllRoleSets', allRoleSets)
+      }
     },
     computed: {
-      availableRoleSets () {
-        const roleSets = this.$store.state.allRoleSets
-        return JSON.stringify(roleSets,0,2)
+      allRoleSets () {
+        return this.$store.state.allRoleSets
       }
+    },
+    mounted () {
+      this.computeContent()
     }
   }
 </script>
