@@ -13,8 +13,8 @@
       <v-btn @click="navigate('security-manager')" :color="btnColor('security-manager')" :disabled="initializing">Security Scripts</v-btn>
       <!-- <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')" :disabled="initializing">Constraints And Indices</v-btn> -->
       <v-btn @click="navigate('search-view')" :color="btnColor('search-view')" :disabled="initializing">Function Search</v-btn>
-      <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
-      <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn>
+      <!-- <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
+      <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn> -->
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
@@ -101,9 +101,12 @@ export default {
           fetchPolicy: 'network-only'
         })
         .then(result => {
-          this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
-          // this.$store.commit('setEnabledRoles', {enabledRoles: result.data.dbIntrospection.enabledRoles})
-          this.$store.commit('setPgdbiOptions', {pgdbiOptions: result.data.pgdbiOptions})
+          this.$store.dispatch('setManagedSchemata', {
+            schemaTree: result.data.dbIntrospection.schemaTree,
+            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
+          })
+          // this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
+          // this.$store.commit('setPgdbiOptions', {pgdbiOptions: result.data.pgdbiOptions})
           this.$loading(false)
         })
         .catch(error => {

@@ -50,7 +50,7 @@
     }),
     methods: {
       resetStore () {
-        this.$store.commit('resetDefaultState')
+        this.$store.dispatch('resetDefaultState')
         this.$router.push('initialize')
       }
     }

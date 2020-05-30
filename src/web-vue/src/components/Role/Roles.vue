@@ -33,7 +33,7 @@
     },
     watch: {
       roleSet () {
-        this.$store.commit('setProjectRoleSet', this.roleSet)
+        this.$store.dispatch('setProjectRoleSet', this.roleSet)
       }
     },
     computed: {

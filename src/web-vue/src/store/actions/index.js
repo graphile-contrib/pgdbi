@@ -1,5 +1,9 @@
-import toggleRoleGrant from './toggleRoleGrant'
+import setProjectRoleSet from './setProjectRoleSet'
+import setManagedSchemata from './setManagedSchemata'
+import resetDefaultState from './resetDefaultState'
 
 export default {
-  toggleRoleGrant
+  setProjectRoleSet,
+  setManagedSchemata,
+  resetDefaultState
 }
