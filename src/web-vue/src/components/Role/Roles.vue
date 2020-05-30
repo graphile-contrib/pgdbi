@@ -99,13 +99,7 @@
     },
     data () {
       return {
-        roleSet: 'graphile',
-        headers: [
-          {
-            text: 'name',
-            value: 'roleName'
-          }
-        ],
+        roleSet: null,
       }
     },
     methods: {

@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-app-bar
       app
       clipped-left
@@ -147,6 +147,8 @@ export default {
     this.setRefreshBtnClass()
   },
   created () {
+    // console.log('owjei', this.$vuetify.theme.themes.dark)
+    // this.$vuetify.theme.primary = true
     this.$vuetify.theme.dark = true
     // bus.$on('focus-route', this.focusToRoute)
   },
