@@ -3,7 +3,6 @@
     ma-0 
     pa-0
   >
-    <h1>Function Security Manager</h1>
     <hr>
     <v-tabs
       v-model="activeTab"

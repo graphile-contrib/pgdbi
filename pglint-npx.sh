@@ -1,0 +1,1 @@
+npx pglint --token "0dc056d563216b428314add7" --project "stlbucket/pgdbi-try" --connection "postgres://postgres:1234@0.0.0.0/lcb"

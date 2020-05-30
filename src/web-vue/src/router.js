@@ -7,6 +7,7 @@ import View from './components/View/View.vue';
 import Function from './components/Function/Function.vue';
 import RoleManagerView from './views/RoleManagerView.vue';
 import SecurityView from './views/SecurityView.vue';
+import PgLintView from './views/PgLintView.vue';
 // import TableSecurityView from './views/TableSecurityView.vue';
 // import FunctionSecurityView from './views/FunctionSecurityView.vue';
 import SearchView from './views/SearchView.vue';
@@ -52,6 +53,11 @@ const router = new Router({
       path: '/security-manager',
       name: 'security-manager',
       component: SecurityView,
+    },
+    {
+      path: '/pg-lint',
+      name: 'pg-lint',
+      component: PgLintView
     },
     // {
     //   path: '/table-security-manager',

@@ -4,7 +4,6 @@
     ma-0 
     pa-0
   >
-    <h1>Security Scripts Summary</h1>
     <v-tabs
       v-model="activeTab"
       dark
