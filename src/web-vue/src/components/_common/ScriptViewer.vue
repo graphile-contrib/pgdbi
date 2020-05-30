@@ -46,7 +46,7 @@
       </v-container>
     </v-toolbar>
     <v-textarea
-      :disabled="true"
+      :disabled="!canEdit"
       :value="formatScript(scriptText)"
       auto-grow
       spellcheck="false"
@@ -78,6 +78,10 @@
         default: true
       },
       skipFormat: {
+        type: Boolean,
+        default: false
+      },
+      canEdit: {
         type: Boolean,
         default: false
       }

@@ -1,5 +1,4 @@
-import roleSets from './roleSets'
-const defaultRoleSet = roleSets[0]
+import defaultRoleSets from './defaultRoleSets'
 
 export default {
   pgdbiOptions: {},
@@ -28,17 +27,12 @@ export default {
   parkedSchemata: [],
   rawSchemata: [],
   schemaFilter: [],
+  allRoleSets: defaultRoleSets,
   roleSet: {
     dbOwnerRole: {},
     dbAuthenticatorRole: {},
     dbUserRoles: [],
   },
-  // dbOwnerRole: defaultRoleSet.roles.dbOwnerRole,
-  // dbAuthenticatorRole: defaultRoleSet.roles.dbAuthenticatorRole,
-  // dbUserRoles: defaultRoleSet.roles.dbUserRoles,
-  // dbOwnerRole: {},
-  // dbAuthenticatorRole: {},
-  // dbUserRoles: [],
   defaultRlsUsing: '( owner_id = viewer_id() )',
   defaultRlsWithCheck: '',
   defaultRlsQualifiers: {

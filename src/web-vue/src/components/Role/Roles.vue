@@ -1,121 +1,101 @@
 <template>
   <v-container>
-    <v-radio-group :value='roleSetId' @change="changeRoleSet" row :disabled="!initializing">
-      <v-radio
-        key="graphile"
-        label="graphile"
-        value="graphile"
-      ></v-radio>
-      <v-radio
-        key="multi-user"
-        label="multi-user"
-        value="multi-user"
-      ></v-radio>
-    </v-radio-group>
-
-    <v-data-table
-      :items="mappedDbUsers"
-      :headers="userHeaders"
-      hide-default-footer
+    <v-tabs
+      v-model="activeTab"
+      dark
     >
-    </v-data-table>
+      <v-tab
+        key="choose-role-set"
+        ripple
+      >
+        Choose Role Set
+      </v-tab>
+      <v-tab-item
+        key="choose-role-set"
+      >
+        <v-card>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card key="choose-role-set">
+                <choose-role-set></choose-role-set>
+                <v-card-actions>
+                  <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-tab-item>
+      <v-tab
+        key="customize-role-set"
+        ripple
+      >
+        Customize Available Role Sets
+      </v-tab>
+      <v-tab-item
+        key="customize-role-set"
+      >
+        <v-card>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card key="customize-role-set">
+                <customize-available-role-sets></customize-available-role-sets>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
   </v-container>
 </template>
 
 <script>
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
+  import ChooseRoleSet from './ChooseRoleSet'
+  import CustomizeAvailableRoleSets from './CustomizeAvailableRoleSets'
+  import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
 
   export default {
     name: 'Roles',
     mixins: [],
     components: {
+      ChooseRoleSet,
+      CustomizeAvailableRoleSets
     },
     watch: {
     },
     computed: {
-      roleSetId () {
-        return this.$store.state.roleSet.name
-      },
-      initializing () {
-        return this.$store.state.initializing
-      },
-      dbOwner () {
-        return this.$store.state.roleSet.dbOwnerRole
-      },
-      dbAuthenticator () {
-        return this.$store.state.roleSet.dbAuthenticatorRole
-      },
-      dbUsers () {
-        return [
-          this.dbOwner,
-          this.dbAuthenticator,
-          ...this.$store.state.roleSet.dbUserRoles
-            .sort((a,b)=>{
-              return b.applicableRoles.length - a.applicableRoles.length
-            }),
-        ]
-      },
-      userHeaders () {
-        return [
-          { text: 'name', value: 'name'},
-          ... this.dbUsers
-            .map(
-              r => {
-                return { text: r.roleName, value: r.roleName }
-              }
-            )
-        ]        
-      },
-      mappedDbUsers () {
-        return this.dbUsers.map(
-          thisRole => {
-            return this.dbUsers.reduce(
-              (a, thatRole) => {
-                if (thisRole.roleName === thatRole.roleName) {
-                  return {
-                    ...a,
-                    [thatRole.roleName]: thisRole.roleName
-                  }
-                } else if (thisRole.applicableRoles.map(ar=>ar.roleName).indexOf(thatRole.roleName) > -1) {
-                  return {
-                    ...a,
-                    [thatRole.roleName]: INHERITS_ROLE
-                  }
-                } else {
-                  return {
-                    ...a,
-                    [thatRole.roleName]: NOT_ROLE
-                  }
-
-                }
-              }, {
-                name: thisRole.roleName
-              }
-            )
-          }
-        )
-      }
     },
     data () {
       return {
-        // roleSetId: null,
+        activeTab: null,
+          refreshBtnClass: 'refreshBtnInitializing',
+          refreshBtnColor: 'yellow darken-3'
       }
     },
     methods: {
-      changeRoleSet (roleSetId) {
-        this.$loading = true
-        this.$store.dispatch('setProjectRoleSet', roleSetId)
+      refreshSchemata () {
+        this.$loading(true)
+        this.$apollo.query({
+          query: dbIntrospection,
+          fetchPolicy: 'network-only'
+        })
         .then(result => {
-          this.$loading = false
+          this.$store.dispatch('setManagedSchemata', {
+            schemaTree: result.data.dbIntrospection.schemaTree,
+            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
+          })
+          this.$loading(false)
         })
         .catch(error => {
-          this.$loading = false
+          this.$loading(false)
+          console.error(error)
+          alert(error.toString())
         })
-      }
+      },
     },
     mounted () {
-      // this.roleSetId = this.projectRoleSetId
     }
   }
 </script>

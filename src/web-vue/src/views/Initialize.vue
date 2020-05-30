@@ -18,9 +18,6 @@
       >
         <v-card>
           <roles></roles>
-          <v-card-actions>
-            <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" >Refresh Schemata</v-btn>
-          </v-card-actions>
         </v-card>
       </v-tab-item>
       <v-tab
@@ -41,7 +38,6 @@
 </template>
 
 <script>
-  import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
   import ProjectImport from '@/components/Project/ProjectImport'
   import Roles from '@/components/Role/Roles'
 
@@ -60,29 +56,8 @@
     },
     data: () => ({
       activeTab: null,
-      refreshBtnClass: 'refreshBtnInitializing',
-      refreshBtnColor: 'yellow darken-3'
     }),
     methods: {
-      refreshSchemata () {
-        this.$loading(true)
-        this.$apollo.query({
-          query: dbIntrospection,
-          fetchPolicy: 'network-only'
-        })
-        .then(result => {
-          this.$store.dispatch('setManagedSchemata', {
-            schemaTree: result.data.dbIntrospection.schemaTree,
-            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
-          })
-          this.$loading(false)
-        })
-        .catch(error => {
-          this.$loading(false)
-          console.error(error)
-          alert(error.toString())
-        })
-      },
     },
     watch: {
       initializing () {
