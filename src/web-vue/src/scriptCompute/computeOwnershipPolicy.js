@@ -51,7 +51,7 @@ const computeOwnershipPolicy = (state) => {
     ownershipPolicyTemplate,
     {
       schemata: sortedSchemata,
-      dbOwnerRole: state.dbOwnerRole.roleName
+      dbOwnerRole: state.roleSet.dbOwnerRole.roleName
     }
   ).split("&#39;").join("'")
 }

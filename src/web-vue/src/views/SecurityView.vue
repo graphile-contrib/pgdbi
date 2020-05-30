@@ -101,7 +101,7 @@
     },
     computed: {
       initializing () {
-        return this.$store.state.initializing || this.$store.state.dbUserRoles.length === 0
+        return this.$store.state.initializing || this.$store.state.roleSet.dbUserRoles.length === 0
       }
     },
     data: () => ({
@@ -112,7 +112,7 @@
     methods: {
     },
     mounted () {
-      this.activeTab = this.$store.state.dbUserRoles.length > 0 ? 0 : 2
+      this.activeTab = this.$store.state.roleSet.dbUserRoles.length > 0 ? 0 : 2
     }
   }
 </script>

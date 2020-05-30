@@ -6,7 +6,6 @@
           <v-btn 
             dark v-on="on"
             class="text-none"
-            :disabled="disabled"
           >
             Reset PGDBI
           </v-btn>
@@ -42,6 +41,9 @@
     watch: {
     },
     methods: {
+      resetPgdbi () {
+
+      }
     },
     mounted () {
     }

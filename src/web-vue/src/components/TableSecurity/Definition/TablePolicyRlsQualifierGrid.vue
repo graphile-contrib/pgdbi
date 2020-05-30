@@ -305,7 +305,7 @@
     },
     computed: {
       dbUserRoles () {
-        return this.$store.state.dbUserRoles
+        return this.$store.state.roleSet.dbUserRoles
       },
       defaultRLSQual () {
         return this.$store.state.defaultRLSQual

@@ -90,11 +90,11 @@ const computeSchemaUsageSql = (state) => {
         return roles.length > 0 ? mergeArrays(all, roles) : all
       }, []
     )
-    const rolesToRevoke = [state.dbAuthenticatorRole, ...state.dbUserRoles]
+    const rolesToRevoke = [state.roleSet.dbAuthenticatorRole, ...state.roleSet.dbUserRoles]
     const rolesToGrant = mergeArrays(rolesToGrantTable, rolesToGrantFunction).join(', ')
     return {
       ...s,
-      appAuthenticator: state.dbAuthenticatorRole.roleName,
+      appAuthenticator: state.roleSet.dbAuthenticatorRole.roleName,
       rolesToRevoke: rolesToRevoke,
       rolesToGrant: rolesToGrant
     }
@@ -104,7 +104,7 @@ const computeSchemaUsageSql = (state) => {
     schemaUsageSqlTemplate,
     {
       schemata: schemata,
-      appAuthenticator: state.dbAuthenticatorRole.roleName
+      appAuthenticator: state.roleSet.dbAuthenticatorRole.roleName
     }
   )
 }

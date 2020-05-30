@@ -104,12 +104,12 @@
         return this.schema.schemaTables.filter(t => t.tableType === 'BASE TABLE').map(
           table => {
             const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId
-            const policyDefinition = this.policies.find(p => p.id === policyDefinitionId)
+            const policyDefinition = this.policies.find(p => p.id === policyDefinitionId) || this.defaultPolicy
 
             return {
               ...table
               ,policyDefinition: policyDefinition
-              ,policyDefinitionId: policyDefinitionId
+              ,policyDefinitionId: policyDefinition.id
             }
           }
         )

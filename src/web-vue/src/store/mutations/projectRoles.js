@@ -1,5 +1,5 @@
 function dbUserRoles(state, payload) {
-  const dbUserRoles = (state.dbUserRoles = payload.dbUserRoles.map(role => {
+  const dbUserRoles = (state.roleSet.dbUserRoles = payload.dbUserRoles.map(role => {
     return {
       ...role,
       applicableRoles: role.applicableRoles || [],

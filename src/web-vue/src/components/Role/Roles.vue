@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-radio-group v-model="roleSet" row :disabled="!initializing">
+    <v-radio-group :value='roleSetId' @change="changeRoleSet" row :disabled="!initializing">
       <v-radio
         key="graphile"
         label="graphile"
@@ -32,25 +32,25 @@
     components: {
     },
     watch: {
-      roleSet () {
-        this.$store.dispatch('setProjectRoleSet', this.roleSet)
-      }
     },
     computed: {
+      roleSetId () {
+        return this.$store.state.roleSet.name
+      },
       initializing () {
         return this.$store.state.initializing
       },
       dbOwner () {
-        return this.$store.state.dbOwnerRole
+        return this.$store.state.roleSet.dbOwnerRole
       },
       dbAuthenticator () {
-        return this.$store.state.dbAuthenticatorRole
+        return this.$store.state.roleSet.dbAuthenticatorRole
       },
       dbUsers () {
         return [
           this.dbOwner,
           this.dbAuthenticator,
-          ...this.$store.state.dbUserRoles
+          ...this.$store.state.roleSet.dbUserRoles
             .sort((a,b)=>{
               return b.applicableRoles.length - a.applicableRoles.length
             }),
@@ -99,10 +99,23 @@
     },
     data () {
       return {
-        roleSet: null,
+        // roleSetId: null,
       }
     },
     methods: {
+      changeRoleSet (roleSetId) {
+        this.$loading = true
+        this.$store.dispatch('setProjectRoleSet', roleSetId)
+        .then(result => {
+          this.$loading = false
+        })
+        .catch(error => {
+          this.$loading = false
+        })
+      }
+    },
+    mounted () {
+      // this.roleSetId = this.projectRoleSetId
     }
   }
 </script>

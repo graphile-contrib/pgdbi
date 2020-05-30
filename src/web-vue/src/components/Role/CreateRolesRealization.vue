@@ -54,7 +54,7 @@
       this.computedPolicy = `${this.computedPolicy} `
     },
 //     computeDbOwnerRoleSql () {
-//       const dbOwnerRole = this.$store.state.dbOwnerRole
+//       const dbOwnerRole = this.$store.state.roleSet.dbOwnerRole
 //       return `
 // ------------  DB OWNER ROLE ------------
 // DO
@@ -79,8 +79,8 @@
 
 //     },
 //     computeDbAuthenticatorRoleSql () {
-//       const dbAuthenticatorRole = this.$store.state.dbAuthenticatorRole
-//       const dbUserRoles = this.$store.state.dbUserRoles
+//       const dbAuthenticatorRole = this.$store.state.roleSet.dbAuthenticatorRole
+//       const dbUserRoles = this.$store.state.roleSet.dbUserRoles
 //       return `
 // ------------  DB AUTHENTICATOR ROLE ------------
 // DO
@@ -106,7 +106,7 @@
 //       `
 //     },
 //     computeDbAnonymousRoleSql () {
-//       const dbAnonymousRole = this.$store.state.dbAnonymousRole
+//       const dbAnonymousRole = this.$store.state.roleSet.dbAnonymousRole
 //       return `
 // ------------  DB ANONYMOUS ROLE ------------
 // DO
@@ -129,7 +129,7 @@
 //       `
 //     },
 //     computeDbUserRolesSql () {
-//       const dbUserRoles = this.$store.state.dbUserRoles.sort((a,b)=>{
+//       const dbUserRoles = this.$store.state.roleSet.dbUserRoles.sort((a,b)=>{
 //         return a.applicableRoles.length - b.applicableRoles.length  
 //       })
 //       return `

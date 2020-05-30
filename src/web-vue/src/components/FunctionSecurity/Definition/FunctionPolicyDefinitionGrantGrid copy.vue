@@ -120,7 +120,7 @@
     },
     computed: {
       dbUserRoles () {
-        return this.$store.state.dbUserRoles
+        return this.$store.state.roleSet.dbUserRoles
       },
       grantMatrix () {
         return Object.keys(this.policy.roleFunctionGrants).map(

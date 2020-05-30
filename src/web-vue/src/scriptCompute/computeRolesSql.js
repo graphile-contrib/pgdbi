@@ -1,5 +1,5 @@
 function computeDbOwnerRoleSql (state) {
-  const dbOwnerRole = state.dbOwnerRole
+  const dbOwnerRole = state.roleSet.dbOwnerRole
   return `
 ------------  DB OWNER ROLE ------------
 DO
@@ -25,8 +25,8 @@ $body$;
 }
 
 function computeDbAuthenticatorRoleSql (state) {
-  const dbAuthenticatorRole = state.dbAuthenticatorRole
-  const dbUserRoles = state.dbUserRoles
+  const dbAuthenticatorRole = state.roleSet.dbAuthenticatorRole
+  const dbUserRoles = state.roleSet.dbUserRoles
   return `
 ------------  DB AUTHENTICATOR ROLE ------------
 DO
@@ -53,7 +53,7 @@ $body$;
 }
 
 function computeDbAnonymousRoleSql (state) {
-  const dbAnonymousRole = state.dbAnonymousRole
+  const dbAnonymousRole = state.roleSet.dbAnonymousRole
   return `
 ------------  DB ANONYMOUS ROLE ------------
 DO
@@ -77,7 +77,7 @@ $body$;
 }
 
 function computeDbUserRolesSql (state) {
-  const dbUserRoles = state.dbUserRoles.sort((a,b)=>{
+  const dbUserRoles = state.roleSet.dbUserRoles.sort((a,b)=>{
     return a.applicableRoles.length - b.applicableRoles.length  
   })
   return `

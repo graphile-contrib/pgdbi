@@ -82,7 +82,7 @@
     },
     computed: {
       dbUserRoles () {
-        return this.$store.state.dbUserRoles
+        return this.$store.state.roleSet.dbUserRoles
       },
       dataTableItems () {
         return Object.keys(this.policyDefinition.roleGrants)

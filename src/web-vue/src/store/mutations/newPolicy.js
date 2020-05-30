@@ -4,7 +4,7 @@ function newPolicy(state, payload) {
     throw new Error('A policy with this name already exists');
   } else {
     const name = payload.name;
-    const dbUserRoles = state.dbUserRoles;
+    const dbUserRoles = state.roleSet.dbUserRoles;
 
     const newPolicy = {
       id: new Date().getTime() * 10000 + 621355968000000000,

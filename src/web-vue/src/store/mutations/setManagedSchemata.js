@@ -25,13 +25,13 @@ function ensureDefaultTablePolicy(state) {
         insert: {},
         update: {},
       },
-      roleGrants: state.dbUserRoles.reduce((all, projectRole) => {
+      roleGrants: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRoleGrants,
         };
       }, {}),
-      rlsQualifiers: state.dbUserRoles.reduce((all, projectRole) => {
+      rlsQualifiers: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRlsQualifiers,
@@ -60,7 +60,7 @@ function ensureDefaultTablePolicyPermissive(state) {
         insert: {},
         update: {},
       },
-      roleGrants: state.dbUserRoles.reduce((all, projectRole) => {
+      roleGrants: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
         if (projectRole.isAnonymous) {
           return {
             ...all,
@@ -74,7 +74,7 @@ function ensureDefaultTablePolicyPermissive(state) {
           };
         }
       }, {}),
-      rlsQualifiers: state.dbUserRoles.reduce((all, projectRole) => {
+      rlsQualifiers: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultRlsQualifiers,
@@ -89,7 +89,7 @@ function ensureDefaultTablePolicyPermissive(state) {
 
 function ensureDefaultDbUserTablePolicies(state) {
   if (state.defaultDbUserPolicies.length === 0) {
-    const defaultDbUserTablePolicies = state.dbUserRoles.map(
+    const defaultDbUserTablePolicies = state.roleSet.dbUserRoles.map(
       dbUserRole => {
         return {
           id: makeId(),
@@ -105,7 +105,7 @@ function ensureDefaultDbUserTablePolicies(state) {
             insert: {},
             update: {},
           },
-          roleGrants: state.dbUserRoles.reduce((all, projectRole) => {
+          roleGrants: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
             let roleGrants
             if (projectRole.roleName === dbUserRole.roleName) {
               roleGrants = state.defaultPermissiveRoleGrants
@@ -120,7 +120,7 @@ function ensureDefaultDbUserTablePolicies(state) {
               [projectRole.roleName]: roleGrants,
             };
         }, {}),
-          rlsQualifiers: state.dbUserRoles.reduce((all, projectRole) => {
+          rlsQualifiers: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
             return {
               ...all,
               [projectRole.roleName]: state.defaultRlsQualifiers,
@@ -142,7 +142,7 @@ function ensureDefaultFunctionPolicy(state) {
       name: 'Default Function Policy - NO ACCESS',
       functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
       functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
-      roleFunctionGrants: state.dbUserRoles.reduce((all, projectRole) => {
+      roleFunctionGrants: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
         return {
           ...all,
           [projectRole.roleName]: state.defaultFunctionRoleGrants,
@@ -159,14 +159,14 @@ function ensureDefaultFunctionPolicy(state) {
 
 function ensureDefaultDbUserFunctionPolicies(state) {
   if (state.defaultDbUserPolicies.length === 0) {
-    const defaultDbUserFunctionsPolicies = state.dbUserRoles.map(
+    const defaultDbUserFunctionsPolicies = state.roleSet.dbUserRoles.map(
       dbUserRole => {
         return {
           id: makeId(),
           name: `User Function Policy - ${dbUserRole.roleName}`,
           functionPolicyHeaderTemplate: state.functionPolicyHeaderTemplate,
           functionPolicyFooterTemplate: state.functionPolicyFooterTemplate,
-          roleFunctionGrants: state.dbUserRoles.reduce((all, projectRole) => {
+          roleFunctionGrants: state.roleSet.dbUserRoles.reduce((all, projectRole) => {
             let roleGrants
             if (projectRole.roleName === dbUserRole.roleName) {
               roleGrants = state.defaultFunctionRoleGrantsPermissive
