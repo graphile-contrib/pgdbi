@@ -4,7 +4,7 @@
       :scriptText="computedPolicy"
       @readability-changed="policyReadabilityChanged"
       skipFormat
-      :canExecute="true"
+      canExecute
     ></script-viewer>
   </v-container>
 </template>
