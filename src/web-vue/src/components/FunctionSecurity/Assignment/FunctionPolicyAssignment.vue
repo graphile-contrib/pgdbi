@@ -1,89 +1,52 @@
 <template>
-    <div>
+    <v-container>
       <v-tabs
         dark
         slider-color="yellow"
       >
         <v-tab
-          v-for="schema in managedSchemata"
-          :key="schema.schemaName"
+          key="by-schema"
           ripple
         >
-          {{ schema.schemaName }}
+          By Schema
         </v-tab>
         <v-tab-item
-          v-for="schema in managedSchemata"
-          :key="schema.schemaName"
+          key="by-schema"
         >
-          <function-policy-assignment-schema
-            :schema="schema"
-          >
-          </function-policy-assignment-schema>
+          <function-policy-assignment-by-schema></function-policy-assignment-by-schema>
+        </v-tab-item>
+        <v-tab
+          key="by-policy"
+          ripple
+        >
+          By Policy
+        </v-tab>
+        <v-tab-item
+          key="by-policy"
+        >
+          <function-policy-assignment-by-policy></function-policy-assignment-by-policy>
         </v-tab-item>
       </v-tabs>
-    </div>
+    </v-container>
 </template>
 
 <script>
-  import PolicyDefinition from '@/components/FunctionSecurity/Definition/FunctionPolicyDefinition'
-  import PolicyAssignmentDialog from '@/components/FunctionSecurity/Assignment/FunctionPolicyAssignmentDialog'
-  import FunctionPolicyAssignmentSchema from '@/components/FunctionSecurity/Assignment/FunctionPolicyAssignmentSchema'
+  import FunctionPolicyAssignmentBySchema from './FunctionPolicyAssignmentBySchema.vue'
+  import FunctionPolicyAssignmentByPolicy from './FunctionPolicyAssignmentByPolicy.vue'
 
   export default {
-    name: 'FunctionAssignment',
+    name: 'FunctionPolicyAssignment',
     components: {
-      PolicyDefinition,
-      PolicyAssignmentDialog,
-      FunctionPolicyAssignmentSchema
+      FunctionPolicyAssignmentBySchema,
+      FunctionPolicyAssignmentByPolicy
     },
     methods: {
     },
     watch: {
     },
     computed: {
-      functionPolicies () {
-        return this.$store.state.functionPolicies
-      },
-      managedSchemata () {
-        return this.$store.state.managedSchemata
-          .filter(s => s.schemaFunctions.length > 0)
-          .map(
-            schema => {
-              return {
-                ...schema,
-                schemaFunctions: schema.schemaFunctions.map(
-                  aFunction => {
-                    const policyDefinition = this.functionPolicies.find(p => p.id === aFunction.functionPolicyDefinitionId)
-                    if (!policyDefinition) {
-                    }
-                    return {
-                      ...aFunction,
-                      policyDefinition: policyDefinition
-                    }
-                  }
-                ).sort((a,b)=>{ return a.functionname < b.functionname ? -1 : 1})
-              }
-            }
-          ).sort((a,b)=>{ return a.schemaName < b.schemaName ? -1 : 1})
-        
-      },
     },
     data: () => ({
-      mappedSchemata: [],
-      headers: [
-        {
-          text: '',
-          sortable: false,
-        },
-        {
-          text: 'Function Name',
-          sortable: false,
-        },
-        {
-          text: 'Policy Name',
-          sortable: false,
-        },
-      ]
     })
   }
 </script>

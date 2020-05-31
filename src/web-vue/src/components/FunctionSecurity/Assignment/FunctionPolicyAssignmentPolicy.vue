@@ -3,15 +3,15 @@
       <v-toolbar>
         <policy-assignment-dialog 
           :currentPolicyDefinition="defaultPolicy" 
-          :tables="selected"
+          :functions="selected"
           :bulkAssign="true"
-          :disabled="selected.length < 1"
+          :disabled="selected.length === 0"
         ></policy-assignment-dialog>
       </v-toolbar>
       <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="tablesToShow"
+        :items="functionsToShow"
         item-key="id"
         dense
         disable-pagination
@@ -19,56 +19,41 @@
         hide-default-footer
         show-select
         show-expand
-        :expanded.sync="expanded"
       >
-          <template v-slot:item.schemaName="{ item }">
-            {{ item.tableSchema }}
-          </template>
-
           <template v-slot:item.name="{ item }">
-            {{ item.tableName }}
+            {{ item.functionName }}
           </template>
 
           <template v-slot:item.assignedPolicy="{ item }">
             <policy-assignment-dialog 
               :currentPolicyDefinition="item.policyDefinition" 
-              :tables="[item]"
+              :functions="[item]"
               @policyAssigned="expandItems"
             ></policy-assignment-dialog>
-            <table-policy-customize-dialog
-              v-if="showCustomizeButton(item)"
-              :currentPolicyDefinition="item.policyDefinition"
-              :tables="[item]"
-              @policyAssigned="expandItems"
-            ></table-policy-customize-dialog>
           </template>
 
         <template slot="expanded-item" slot-scope="props">
           <td :colspan="headers.length + 2">
             <policy-definition
-              :key="props.item.id"
               :policyId="props.item.policyDefinition.id"
-              :table="props.item"
+              :aFunction="props.item"
             ></policy-definition>
           </td>
         </template>
+
       </v-data-table>
     </div>
 </template>
 
 <script>
-  import PolicyDefinition from '@/components/TableSecurity/Definition/TablePolicyDefinition'
-  import PolicyAssignmentDialog from '@/components/TableSecurity/Assignment/TablePolicyAssignmentDialog'
-  // import TablePolicyEvaluatorSummary from '@/components/TableSecurity/Evaluation/TablePolicyEvaluatorSummary'
-  import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
+  import PolicyDefinition from '@/components/FunctionSecurity/Definition/FunctionPolicyDefinition'
+  import PolicyAssignmentDialog from '@/components/FunctionSecurity/Assignment/FunctionPolicyAssignmentDialog'
 
   export default {
-    name: 'PolicyAssignment',
+    name: 'FunctionPolicyAssignmentPolicy',
     components: {
       PolicyDefinition,
-      PolicyAssignmentDialog,
-      // TablePolicyEvaluatorSummary,
-      TablePolicyCustomizeDialog
+      PolicyAssignmentDialog
     },
     props: {
       policyDefinitionId: {
@@ -77,50 +62,49 @@
       }
     },
     methods: {
-      showCustomizeButton (table) {
-        if (table) {
-          if (table.policyDefinition && table.policyDefinition.customIdentifier) {
-            return false
-          } else {
-            return true
-          }
-        } else {
-          return false
-        }
-      },
       expandItems (items) {
         this.expanded = items
       }
     },
     watch: {
-      // expanded () {
-      //   console.log(this.expanded)
-      // }
     },
     computed: {
-      tablesToShow () {
-        const tableIds = Object.keys(this.$store.state.tablePolicyAssignments)
-        .filter(tableId => {
-          return this.$store.state.tablePolicyAssignments[tableId].policyDefinitionId === this.policyDefinitionId
+      functionsToShow () {
+        const functionIds = Object.keys(this.$store.state.functionPolicyAssignments)
+        .filter(functionId => {
+          return this.$store.state.functionPolicyAssignments[functionId].policyDefinitionId === this.policyDefinitionId
         })
 
         return this.managedSchemata.reduce(
           (all, s) => {
-            const tablesToAdd = s.schemaTables.filter(t => tableIds.indexOf(t.id) !== -1)
+            const functionsToAdd = s.schemaFunctions.filter(t => functionIds.indexOf(t.id) !== -1)
             return [
               ...all,
-              ...tablesToAdd
+              ...functionsToAdd
             ]
           }, []
         )
         .map(t =>{
-          console.log('t', t)
           return {
             ...t
             ,policyDefinition: this.policyDefinition
             ,policyDefinitionId: this.policyDefinition.id
           }
         })
+
+
+        // return this.schema.schemaFunctions.map(
+        //   aFunction => {
+        //     const policyDefinitionId = this.$store.state.functionPolicyAssignments[aFunction.id].policyDefinitionId
+        //     const policyDefinition = this.$store.state.functionPolicies.find(p => p.id === policyDefinitionId)
+
+        //     return {
+        //       ...aFunction
+        //       ,policyDefinition: policyDefinition
+        //       ,policyDefinitionId: policyDefinitionId
+        //     }
+        //   }
+        // )
       },
       policyDefinition () {
         return this.policies.find(p => p.id === this.policyDefinitionId) || this.defaultPolicy
@@ -129,17 +113,19 @@
         return this.$store.state.managedSchemata
       },
       defaultPolicy () {
-        return this.$store.state.defaultPolicy
+        return this.$store.state.defaultFunctionPolicy
       },
       policies () {
         return this.$store.state.policies
       },
     },
     data: () => ({
-      loading: false,
       selected: [],
-      expanded: [],
       headers: [
+        {
+          text: '',
+          sortable: false,
+        },
         {
           text: '',
           sortable: false,
@@ -150,22 +136,16 @@
           value: 'tableSchema'
         },
         {
-          text: 'Table Name',
+          text: 'Function Name',
           sortable: false,
-          value: 'name'
+          value: 'functionName'
         },
         {
-          text: 'Assigned Policy',
+          text: 'Policy Name',
           sortable: false,
           value: 'assignedPolicy'
-        },
+        }
       ]
     })
   }
 </script>
-
-<style>
-.blah {
-  color: red
-}
-</style>
