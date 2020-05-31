@@ -87,11 +87,8 @@ function computeFunctionPolicy (policyDefinition, policyReadability, variables, 
 
   const signatureArgumentDataTypes = aFunction ? aFunction.argumentDataTypes
     .split(',')
-    .map(
-      arg => {
-        return arg.trim().split(' ')[1]
-      }
-    )
+    .map(adt => adt.replace('timestamp with time zone', 'timestamptz'))
+    .map(adt => adt.trim().split(' ')[1])
     .join(',') : undefined
 
   const regularVariables = {
