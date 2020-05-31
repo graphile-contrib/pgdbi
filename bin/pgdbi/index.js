@@ -5,6 +5,7 @@ const transformBuild = require('./transformBuild')
 
 const plugins = [
   require('./graphile-extensions/dbSchema'),
+  require('./graphile-extensions/execSql'),
   require('postgraphile-plugin-connection-filter'),
 ];
 
