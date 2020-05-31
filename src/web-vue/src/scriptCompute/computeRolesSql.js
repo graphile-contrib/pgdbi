@@ -43,7 +43,7 @@ BEGIN
 ALTER ROLE ${dbAuthenticatorRole.roleName} with LOGIN;
 ALTER ROLE ${dbAuthenticatorRole.roleName} with NOINHERIT;
 
-${dbUserRoles.map(ur => `GRANT ${ur.roleName} TO ${dbAuthenticatorRole.roleName};`).join('\n  ')};
+${dbUserRoles.map(ur => `GRANT ${ur.roleName} TO ${dbAuthenticatorRole.roleName};`).join('\n')}
 
 END
 $body$;

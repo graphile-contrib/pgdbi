@@ -39,9 +39,15 @@ const computeOwnershipPolicy = (state) => {
     return {
       ...s,
       schemaFunctions: s.schemaFunctions.map(f=>{
+        const argumentDataTypes = f.argumentDataTypes
+          .split(',')
+          .map(adt => adt.replace('timestamp with time zone', 'timestamptz'))
+          .map(adt => adt.trim().split(' ')[1])
+          .join(', ')
+
         return {
           ...f,
-          // argumentDataTypes: f.argumentDataTypes.split("'").join("")
+          argumentDataTypes: argumentDataTypes
         }
       })
     }

@@ -15,7 +15,7 @@
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn v-on="on" @click="executeSql" disabled><v-icon>arrow_forward</v-icon>Execute</v-btn>
+          <v-btn v-on="on" @click="executeSql" :disabled="!canExecute"><v-icon>arrow_forward</v-icon>Execute</v-btn>
         </template>
         <span>Execute</span>
       </v-tooltip>
@@ -45,17 +45,53 @@
       </v-row>
       </v-container>
     </v-toolbar>
-    <v-textarea
-      :disabled="!canEdit"
-      :value="formatScript(scriptText)"
-      auto-grow
-      spellcheck="false"
-      background-color="black"
-    ></v-textarea>
+    <v-tabs
+      v-model="activeTab"
+      dark
+    >
+      <v-tab
+        key="the-script"
+        ripple
+      >
+        Script
+      </v-tab>
+      <v-tab-item
+        key="the-script"
+      >
+        <v-textarea
+          :disabled="!canEdit"
+          :value="formatScript(scriptText)"
+          auto-grow
+          spellcheck="false"
+          background-color="black"
+        ></v-textarea>
+      </v-tab-item>
+      <v-tab
+        key="exec-result"
+        ripple
+        v-if="results"
+      >
+        Execute Result
+      </v-tab>
+      <v-tab-item
+        key="exec-result"
+        v-if="results"
+      >
+        <v-textarea
+          :disabled="!canEdit"
+          :value="results"
+          auto-grow
+          spellcheck="false"
+          background-color="black"
+        ></v-textarea>
+      </v-tab-item>
+    </v-tabs>
   </v-container>
 </template>
 
 <script>
+  import execSql from '@/gql/mutation/execSql.graphql'
+
   export default {
     name: 'ScriptViewer',
     components: {
@@ -82,6 +118,10 @@
         default: false
       },
       canEdit: {
+        type: Boolean,
+        default: false
+      },
+      canExecute: {
         type: Boolean,
         default: false
       }
@@ -118,11 +158,28 @@
         console.error(e)
       },
       executeSql () {
-        alert ('not implemented:  server config value will expose graphile extension to execute generated script')
+        this.$apollo.mutate({
+          mutation: execSql,
+          variables: {
+            sql: this.scriptText
+          }
+        })
+        .then(result => {
+          console.log('result', result)
+          this.activeTab = 1
+          this.results = JSON.stringify(result.data.ExecSql.result,null,2)
+          // this.results = result.data.ExecSql.result.rows
+        })
+        .catch(error => {
+          this.activeTab = 1
+          this.results = error.toString()
+        })
       }
     },
     data: () => ({
+      activeTab: 0,
       allPolicies: [],
+      results: null,
       schemaPolicy: 'NOT CALCULATED',
       defaultRlsPolicies: 'NOT CALCULATED',
       defaultNoRlsPolicies: 'NOT CALCULATED',

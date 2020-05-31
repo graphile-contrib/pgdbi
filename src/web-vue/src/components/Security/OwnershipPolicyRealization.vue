@@ -4,6 +4,7 @@
       :scriptText="computeOwnershipPolicy"
       @readability-changed="readabilityChanged"
       skipFormat
+      canExecute
     ></script-viewer>
   </v-container>
 </template>
@@ -56,9 +57,6 @@
       onError: function (e) {
         alert('Failed to copy scripts to clipboard')
         console.error(e)
-      },
-      executeSql () {
-        alert ('not implemented:  server config value will expose graphile extension to execute generated script')
       }
     },
     data: () => ({

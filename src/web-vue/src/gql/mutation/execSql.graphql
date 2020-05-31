@@ -1,0 +1,9 @@
+mutation ExecSql(
+  $sql: String!
+){
+  ExecSql(input: {
+    sql: $sql
+  }) {
+    result
+  }
+}
