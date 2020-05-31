@@ -21,6 +21,10 @@
         show-expand
         :expanded.sync="expanded"
       >
+          <template v-slot:item.schemaName="{ item }">
+            {{ item.tableSchema }}
+          </template>
+
           <template v-slot:item.name="{ item }">
             {{ item.tableName }}
           </template>
@@ -110,6 +114,7 @@
           }, []
         )
         .map(t =>{
+          console.log('t', t)
           return {
             ...t
             ,policyDefinition: this.policyDefinition
@@ -151,6 +156,11 @@
         {
           text: '',
           sortable: false,
+        },
+        {
+          text: 'Schema Name',
+          sortable: false,
+          value: 'tableSchema'
         },
         {
           text: 'Table Name',
