@@ -13,7 +13,7 @@ GRANT USAGE ON SCHEMA public TO {{appAuthenticator}};
 ------- {{schemaName}}
   REVOKE USAGE ON SCHEMA {{schemaName}} FROM PUBLIC;
   {{#rolesToRevoke}}
-  REVOKE USAGE ON SCHEMA {{schemaName}} FROM {{roleName}}
+  REVOKE USAGE ON SCHEMA {{schemaName}} FROM {{roleName}};
   {{/rolesToRevoke}}
 
   {{#rolesToGrant}}
