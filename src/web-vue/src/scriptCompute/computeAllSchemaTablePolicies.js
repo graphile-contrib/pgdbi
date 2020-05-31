@@ -1,4 +1,4 @@
-import computeRemoveRls from './computeRemoveRls'
+// import computeRemoveRls from './computeRemoveRls'
 import computeSchemaTablePolicy from './computeSchemaTablePolicy'
 
 function computeAllSchemaTablePolicies (state, policyReadability) {
@@ -8,7 +8,7 @@ function computeAllSchemaTablePolicies (state, policyReadability) {
     .reduce(
       (all, schema) => {
         const schemaTables = schema.schemaTables.filter(t => t.tableType === 'BASE TABLE')
-        const schemaRemoveRls = computeRemoveRls(schema.schemaName)
+        // const schemaRemoveRls = computeRemoveRls(schema.schemaName)
         
         const schemaPolicy = {
           name: `${schema.schemaName}`,

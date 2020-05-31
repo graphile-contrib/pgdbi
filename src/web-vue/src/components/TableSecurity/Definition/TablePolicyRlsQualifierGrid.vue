@@ -60,123 +60,6 @@
       >
       </table-policy-rls-action>
     </template>
-
-    <!-- <template v-slot:item.select="{ item }">
-      <v-btn
-        @click="addRlsPolicy(item.roleName, 'select')"
-        :hidden="disabled"
-      >Add Policy</v-btn>
-      <rls-policy-dialog
-        v-for="(policy) in item['select'].policies"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'select'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'ENABLED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-      <rls-policy-dialog
-        v-for="(policy) in impliedPolicies(item.roleName, 'select')"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'select'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'IMPLIED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-    </template>
-
-    <template v-slot:item.insert="{ item }">
-      <v-btn
-        @click="addRlsPolicy(item.roleName, 'insert')"
-        :hidden="disabled"
-      >Add Policy</v-btn>
-      <rls-policy-dialog
-        v-for="(policy) in item['insert'].policies"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'insert'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'ENABLED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-      <rls-policy-dialog
-        v-for="(policy) in impliedPolicies(item.roleName, 'insert')"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'insert'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'IMPLIED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-    </template>
-
-    <template v-slot:item.update="{ item }">
-      <v-btn
-        @click="addRlsPolicy(item.roleName, 'update')"
-        :hidden="disabled"
-      >Add Policy</v-btn>
-      <rls-policy-dialog
-        v-for="(policy) in item['update'].policies"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'update'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'ENABLED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-      <rls-policy-dialog
-        v-for="(policy) in impliedPolicies(item.roleName, 'update')"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'update'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'IMPLIED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-    </template>
-
-    <template v-slot:item.delete="{ item }">
-      <v-btn
-        @click="addRlsPolicy(item.roleName, 'delete')"
-        :hidden="disabled"
-      >Add Policy</v-btn>
-      <rls-policy-dialog
-        v-for="(policy) in item['delete'].policies"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'delete'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'ENABLED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-      <rls-policy-dialog
-        v-for="(policy) in impliedPolicies(item.roleName, 'delete')"
-        :key="`${policy.roleName}-${policy.id}`"
-        :action="'delete'"
-        :roleName="item.roleName"
-        :rlsPolicy="policy"
-        :status="'IMPLIED'"
-        :disableRlsPolicy="disableRlsPolicy"
-        :updateRlsPolicy="updateRlsPolicy"
-        :disabled="disabled"
-      ></rls-policy-dialog>
-    </template> -->
-
   </v-data-table>
 </template>
 
@@ -184,13 +67,13 @@
   const ENABLED = 'ENABLED'
   const DISABLED = 'DISABLED'
   const IMPLIED = 'IMPLIED'
-  import RlsPolicyDialog from '@/components/TableSecurity/Dialogs/RlsPolicyDialog.vue'
+  // import RlsPolicyDialog from '@/components/TableSecurity/Dialogs/RlsPolicyDialog.vue'
   import TablePolicyRlsAction from '@/components/TableSecurity/Definition/TablePolicyRlsAction.vue'
 
   export default {
     name: 'PolicyRlsQualifierGrid',
     components: {
-      RlsPolicyDialog,
+      // RlsPolicyDialog,
       TablePolicyRlsAction
     },
     props: {
@@ -293,13 +176,10 @@
         switch(rlsPolicy[action].status) {
           case ENABLED:
             return 'Add Policy'
-            break;
           case DISABLED:
             return 'Enable'
-            break;
           case IMPLIED:
             return 'Add Policy'
-            break;
         }
       },
     },

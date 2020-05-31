@@ -78,10 +78,6 @@
 </template>
 
 <script>
-  import rp from 'request-promise'
-
-  // import RoleFilter from '@/components/Role/RoleFilter'
-  // import RoleManagerView from './RoleManagerView'
   import TableSecurityView from './TableSecurityView'
   import FunctionSecurityView from './FunctionSecurityView'
   import SecurityScriptsSummaryView from './SecurityScriptsSummaryView'

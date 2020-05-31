@@ -102,7 +102,6 @@
         return [ALLOWED, IMPLIED].indexOf(roleGrant[action]) > -1
       },
       roleGrantDisabled(roleGrant, action) {
-        // return false;
         return (roleGrant[action] === IMPLIED) || this.disabled
       },
       toggleRoleGrant(toggledRoleName, action) {
@@ -129,7 +128,6 @@
                 ...newGrants,
                 [newRoleName]: Object.keys(this.policyDefinition.roleGrants[newRoleName]).reduce(
                   (newRow, newAction) => {
-                    const oldValue = this.policyDefinition.roleGrants[newRoleName][newAction]
                     let newValue
                     if (newAction === action) {
                       if (newRoleIsToggledRole) {

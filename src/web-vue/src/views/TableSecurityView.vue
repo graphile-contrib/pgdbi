@@ -61,10 +61,8 @@
 </template>
 
 <script>
-  import rp from 'request-promise'
-
   import PolicyAssignment from '@/components/TableSecurity/Assignment/TablePolicyAssignment'
-  import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
+  // import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SchemaSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
   import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
 
@@ -72,7 +70,7 @@
   export default {
     name: 'TableSecurityView',
     components: {
-      SecurityPolicySettings,
+      // SecurityPolicySettings,
       SchemaSecurityScripts,
       PolicyManager,
       PolicyAssignment

@@ -47,10 +47,11 @@
         return this.$store.state.roleSet.dbAuthenticatorRole
       },
       dbUsers () {
+        const dbUserRoles = this.$store.state.roleSet.dbUserRoles
         return [
           this.dbOwner,
           this.dbAuthenticator,
-          ...this.$store.state.roleSet.dbUserRoles
+          ...dbUserRoles
             .sort((a,b)=>{
               return b.applicableRoles.length - a.applicableRoles.length
             }),
@@ -106,10 +107,11 @@
       changeRoleSet (roleSetId) {
         this.$loading = true
         this.$store.dispatch('setProjectRoleSet', roleSetId)
-        .then(result => {
+        .then(() => {
           this.$loading = false
         })
         .catch(error => {
+          console.error(error)
           this.$loading = false
         })
       }

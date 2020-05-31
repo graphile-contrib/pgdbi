@@ -1,6 +1,6 @@
 import assignTablePolicy from './assignTablePolicy'
 import assignFunctionPolicy from './assignFunctionPolicy'
-import evaluateAll from './evaluate/evaluateAll'
+// import evaluateAll from './evaluate/evaluateAll'
 // import evaluateUdtScripts from './evaluate/evaluateUdtScripts';
 
 let idSeed = 1
@@ -245,7 +245,7 @@ function setManagedSchemata(state, payload) {
 
   })
 
-  evaluateAll(state)
+  // evaluateAll(state)
 
   state.initializing = false;
   state.schemaFilterOn = false;

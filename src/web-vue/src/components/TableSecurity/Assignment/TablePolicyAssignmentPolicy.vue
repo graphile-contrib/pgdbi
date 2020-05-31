@@ -49,10 +49,6 @@
           </td>
         </template>
       </v-data-table>
-
-      <!-- <mugen-scroll :handler="fetchData" :should-handle="!loa    ding">
-        loading...
-      </mugen-scroll> -->
     </div>
 </template>
 
@@ -71,8 +67,8 @@
       TablePolicyCustomizeDialog
     },
     props: {
-      schema: {
-        type: Object,
+      policyDefinitionId: {
+        type: Number,
         required: true
       }
     },
@@ -98,19 +94,47 @@
       // }
     },
     computed: {
-      tablesToShow () {        
-        return this.schema.schemaTables.filter(t => t.tableType === 'BASE TABLE').map(
-          table => {
-            const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId
-            const policyDefinition = this.policies.find(p => p.id === policyDefinitionId) || this.defaultPolicy
+      tablesToShow () {
+        const tableIds = Object.keys(this.$store.state.tablePolicyAssignments)
+        .filter(tableId => {
+          return this.$store.state.tablePolicyAssignments[tableId].policyDefinitionId === this.policyDefinitionId
+        })
 
-            return {
-              ...table
-              ,policyDefinition: policyDefinition
-              ,policyDefinitionId: policyDefinition.id
-            }
-          }
+        return this.managedSchemata.reduce(
+          (all, s) => {
+            const tablesToAdd = s.schemaTables.filter(t => tableIds.indexOf(t.id) !== -1)
+            return [
+              ...all,
+              ...tablesToAdd
+            ]
+          }, []
         )
+        .map(t =>{
+          return {
+            ...t
+            ,policyDefinition: this.policyDefinition
+            ,policyDefinitionId: this.policyDefinition.id
+          }
+        })
+        
+        // this.schema.schemaTables.filter(t => t.tableType === 'BASE TABLE').map(
+        //   table => {
+        //     const policyDefinitionId = this.$store.state.tablePolicyAssignments[table.id].policyDefinitionId
+        //     const policyDefinition = this.policies.find(p => p.id === policyDefinitionId) || this.defaultPolicy
+
+        //     return {
+        //       ...table
+        //       ,policyDefinition: policyDefinition
+        //       ,policyDefinitionId: policyDefinition.id
+        //     }
+        //   }
+        // )
+      },
+      policyDefinition () {
+        return this.policies.find(p => p.id === this.policyDefinitionId) || this.defaultPolicy
+      },
+      managedSchemata () {
+        return this.$store.state.managedSchemata
       },
       defaultPolicy () {
         return this.$store.state.defaultPolicy

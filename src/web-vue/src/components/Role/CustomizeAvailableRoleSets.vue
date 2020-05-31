@@ -13,14 +13,11 @@
 </template>
 
 <script>
-  import ScriptViewer from '@/components/_common/ScriptViewer'
-
   export default {
     name: 'CustomizeAvailableRoleSets',
     mixins: [
     ],
     components: {
-      ScriptViewer
     },
     props: {
     },
@@ -28,8 +25,6 @@
       return {
         allRolesJsonText: ''
       }
-    },
-    mounted () {
     },
     watch: {
       allRoleSets () {

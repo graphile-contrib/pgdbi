@@ -58,7 +58,7 @@ const computeSchemaUsageSql = (state) => {
     const rolesToGrantTable = Object.keys(state.tablePolicyAssignments)
     .filter(k => k.split('.')[0] === s.schemaName)
     .reduce(
-      (all, tableName, i) => {
+      (all, tableName) => {
         const tpa = state.tablePolicyAssignments[tableName]
         const policy = state.policies.find(p => p.id === tpa.policyDefinitionId)
         const roles = Object.keys(policy.roleGrants)
@@ -76,7 +76,7 @@ const computeSchemaUsageSql = (state) => {
     const rolesToGrantFunction = Object.keys(state.functionPolicyAssignments)
     .filter(k => k.split('.')[0] === s.schemaName)
     .reduce(
-      (all, functionName, i) => {
+      (all, functionName) => {
         const fpa = state.functionPolicyAssignments[functionName]
         const policy = state.functionPolicies.find(p => p.id === fpa.policyDefinitionId)
         const roles = Object.keys(policy.roleFunctionGrants)
