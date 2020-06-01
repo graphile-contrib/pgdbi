@@ -1,4 +1,5 @@
 {
+  "defaultRlsUsing": "( owner_id = viewer_id() )",
   "allRoleSets": [
     {
       "name": "graphile-visitor",
@@ -95,6 +96,5 @@
         }
       ]
     }
-  ],
-  "defaultRlsUsing": "( owner_id = viewer_id() )"
+  ]
 }

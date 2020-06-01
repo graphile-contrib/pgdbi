@@ -5,6 +5,8 @@ mutation WriteArtifacts(
   $schemaUsageSql: String!
   $masterTablePolicy: String!
   $masterFunctionPolicy: String!
+  $allSchemaTablePolicies: JSON!
+  $allSchemaFunctionPolicies: JSON!
 ){
   WriteArtifacts(input: {
     projectState: $projectState
@@ -13,6 +15,8 @@ mutation WriteArtifacts(
     schemaUsageSql: $schemaUsageSql
     masterTablePolicy: $masterTablePolicy
     masterFunctionPolicy: $masterFunctionPolicy
+    allSchemaTablePolicies: $allSchemaTablePolicies
+    allSchemaFunctionPolicies: $allSchemaFunctionPolicies
   }) {
     result
   }

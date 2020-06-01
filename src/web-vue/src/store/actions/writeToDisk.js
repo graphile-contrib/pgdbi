@@ -5,6 +5,8 @@ import computeOwnershipPolicy from '@/scriptCompute/computeOwnershipPolicy'
 import computeSchemaUsageSql from '@/scriptCompute/computeSchemaUsageSql'
 import computeMasterTablePolicy from '@/scriptCompute/computeMasterTablePolicy'
 import computeMasterFunctionPolicy from '@/scriptCompute/computeMasterFunctionPolicy'
+import computeAllSchemaTablePolicies from '@/scriptCompute/computeAllSchemaTablePolicies'
+import computeAllSchemaFunctionPolicies from '@/scriptCompute/computeAllSchemaFunctionPolicies'
 // import {
 //   computeAllSchemaFunctionPolicies,
 //   computeAllSchemaTablePolicies,
@@ -29,6 +31,8 @@ async function writeToDisk({state}) {
   const schemaUsageSql = computeSchemaUsageSql(state)
   const masterTablePolicy = computeMasterTablePolicy(state)
   const masterFunctionPolicy = computeMasterFunctionPolicy(state)
+  const allSchemaTablePolicies = computeAllSchemaTablePolicies(state)
+  const allSchemaFunctionPolicies = computeAllSchemaFunctionPolicies(state)
 
   const result = await apolloClient.mutate({
     mutation: writeArtifacts,
@@ -38,7 +42,9 @@ async function writeToDisk({state}) {
       ownershipPolicy: ownershipPolicy,
       schemaUsageSql: schemaUsageSql,
       masterTablePolicy: masterTablePolicy.policy,
-      masterFunctionPolicy: masterFunctionPolicy.policy
+      masterFunctionPolicy: masterFunctionPolicy.policy,
+      allSchemaTablePolicies: allSchemaTablePolicies,
+      allSchemaFunctionPolicies: allSchemaFunctionPolicies
     }
   })
   state.isDirty = false

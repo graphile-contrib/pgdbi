@@ -14,6 +14,8 @@ const WriteArtifactsPlugin = makeExtendSchemaPlugin(build => {
       schemaUsageSql: String!
       masterTablePolicy: String!
       masterFunctionPolicy: String!
+      allSchemaTablePolicies: JSON!
+      allSchemaFunctionPolicies: JSON!
     }
 
     type WriteArtifactsPayload {
@@ -44,11 +46,21 @@ const WriteArtifactsPlugin = makeExtendSchemaPlugin(build => {
             await rimraf.sync(artifactsPath)
             await fs.mkdirSync(artifactsPath)
 
-            fs.writeFileSync(`${artifactsPath}/masterSecurityPolicy.sql`, args.input.masterSecurityPolicy)
-            fs.writeFileSync(`${artifactsPath}/ownershipPolicy.sql`, args.input.ownershipPolicy)
-            fs.writeFileSync(`${artifactsPath}/schemaUsageSql.sql`, args.input.schemaUsageSql)
-            fs.writeFileSync(`${artifactsPath}/masterTablePolicy.sql`, args.input.masterTablePolicy)
-            fs.writeFileSync(`${artifactsPath}/masterFunctionPolicy.sql`, args.input.masterFunctionPolicy)
+            fs.writeFileSync(`${artifactsPath}/__complete-security-policy.sql`, args.input.masterSecurityPolicy)
+            fs.writeFileSync(`${artifactsPath}/ownership-policy.sql`, args.input.ownershipPolicy)
+            fs.writeFileSync(`${artifactsPath}/schema-usage-sql.sql`, args.input.schemaUsageSql)
+            fs.writeFileSync(`${artifactsPath}/master-table-policy.sql`, args.input.masterTablePolicy)
+            fs.writeFileSync(`${artifactsPath}/master-function-policy.sql`, args.input.masterFunctionPolicy)
+
+            await fs.mkdirSync(`${artifactsPath}/schemaTablePolicies`)            
+            args.input.allSchemaTablePolicies.forEach(policy => {
+              fs.writeFileSync(`${artifactsPath}/schemaTablePolicies/${policy.name}.sql`, policy.policy)
+            });
+
+            await fs.mkdirSync(`${artifactsPath}/schemaFunctionPolicies`)            
+            args.input.allSchemaFunctionPolicies.forEach(policy => {
+              fs.writeFileSync(`${artifactsPath}/schemaFunctionPolicies/${policy.name}.sql`, policy.policy)
+            });
 
             return {
               result: `artifacts written to ${artifactsPath}`

@@ -12,15 +12,13 @@
 
   revoke all privileges 
   on function app.fn_timestamp_update_application () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_super_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_user;
+  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_visitor;
   --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_application ()
 --==
@@ -39,15 +37,13 @@
 
   revoke all privileges 
   on function app.fn_timestamp_update_license () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_super_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_user;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_visitor;
   --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license ()
 --==
@@ -66,15 +62,13 @@
 
   revoke all privileges 
   on function app.fn_timestamp_update_license_permission () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_super_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_user;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_visitor;
   --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license_permission ()
 --==
@@ -93,15 +87,13 @@
 
   revoke all privileges 
   on function app.fn_timestamp_update_license_type () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_super_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_user;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_visitor;
   --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license_type ()
 --==
@@ -120,15 +112,13 @@
 
   revoke all privileges 
   on function app.fn_timestamp_update_license_type_permission () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_super_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_admin;
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_user;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_visitor;
   --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license_type_permission ()
 --==
@@ -147,15 +137,13 @@
 
   revoke all privileges 
   on function auth.fn_timestamp_update_app_tenant () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_super_admin;
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_admin;
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_user;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_visitor;
   --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_anonymous;
 ----------  END FUNCTION POLICY: auth.fn_timestamp_update_app_tenant ()
 --==
@@ -174,15 +162,13 @@
 
   revoke all privileges 
   on function auth.fn_timestamp_update_app_user () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_super_admin;
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_admin;
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_user;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_visitor;
   --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_anonymous;
 ----------  END FUNCTION POLICY: auth.fn_timestamp_update_app_user ()
 --==
@@ -201,15 +187,13 @@
 
   revoke all privileges 
   on function auth.fn_timestamp_update_permission () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_super_admin;
-  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_admin;
-  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_user;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_visitor;
   --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_anonymous;
 ----------  END FUNCTION POLICY: auth.fn_timestamp_update_permission ()
 --==
@@ -228,15 +212,13 @@
 
   revoke all privileges 
   on function auth_fn.app_user_has_access (text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_admin;
-  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_user;
+  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_visitor;
   --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.app_user_has_access (text,text)
 --==
@@ -255,15 +237,13 @@
 
   revoke all privileges 
   on function auth_fn.authenticate (text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_admin;
-  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_user;
+  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_visitor;
   --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.authenticate (text,text)
 --==
@@ -282,15 +262,13 @@
 
   revoke all privileges 
   on function auth_fn.build_app_tenant (text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_admin;
-  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_user;
+  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_visitor;
   --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.build_app_tenant (text,text)
 --==
@@ -309,15 +287,13 @@
 
   revoke all privileges 
   on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_admin;
-  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_user;
+  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_visitor;
   --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.build_app_user (text,text,text,text,auth.permission_key)
 --==
@@ -336,15 +312,13 @@
 
   revoke all privileges 
   on function auth_fn.current_app_tenant_id () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_admin;
-  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_user;
+  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_visitor;
   --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.current_app_tenant_id ()
 --==
@@ -363,15 +337,13 @@
 
   revoke all privileges 
   on function auth_fn.current_app_user () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.current_app_user () to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.current_app_user () to app_admin;
-  --DENIED:   grant execute on function auth_fn.current_app_user () to app_user;
+  --DENIED:   grant execute on function auth_fn.current_app_user () to app_visitor;
   --DENIED:   grant execute on function auth_fn.current_app_user () to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.current_app_user ()
 --==
@@ -390,15 +362,13 @@
 
   revoke all privileges 
   on function auth_fn.current_app_user_id () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_super_admin;
-  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_admin;
-  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_user;
+  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_visitor;
   --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.current_app_user_id ()
 --==
@@ -417,15 +387,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_conversion () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_conversion ()
 --==
@@ -444,15 +412,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_conversion_source () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_conversion_source ()
 --==
@@ -471,15 +437,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_inventory_lot () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_inventory_lot ()
 --==
@@ -498,15 +462,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_lcb_license () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_lcb_license ()
 --==
@@ -525,15 +487,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_lcb_license_holder () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_lcb_license_holder ()
 --==
@@ -552,15 +512,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_manifest () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_manifest ()
 --==
@@ -579,15 +537,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_manifest_item () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_manifest_item ()
 --==
@@ -606,15 +562,13 @@
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_recipe () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_super_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_admin;
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_user;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_visitor;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_recipe ()
 --==
@@ -633,15 +587,13 @@
 
   revoke all privileges 
   on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[])
 --==
@@ -660,15 +612,13 @@
 
   revoke all privileges 
   on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.create_xfer_manifest (text,timestamptz,text[])
 --==
@@ -687,15 +637,13 @@
 
   revoke all privileges 
   on function lcb_fn.deplete_inventory_lot_ids (text[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.deplete_inventory_lot_ids (text[])
 --==
@@ -714,15 +662,13 @@
 
   revoke all privileges 
   on function lcb_fn.destroy_inventory_lot_ids (text[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.destroy_inventory_lot_ids (text[])
 --==
@@ -741,15 +687,13 @@
 
   revoke all privileges 
   on function lcb_fn.get_currrent_lcb_license_holder_id () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_admin;
-  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_user;
+  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_visitor;
   --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.get_currrent_lcb_license_holder_id ()
 --==
@@ -768,15 +712,13 @@
 
   revoke all privileges 
   on function lcb_fn.invalidate_inventory_lot_ids (text[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.invalidate_inventory_lot_ids (text[])
 --==
@@ -795,15 +737,13 @@
 
   revoke all privileges 
   on function lcb_fn.provision_inventory_lot_ids (text,integer) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_user;
+  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.provision_inventory_lot_ids (text,integer)
 --==
@@ -822,15 +762,13 @@
 
   revoke all privileges 
   on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[])
 --==
@@ -849,15 +787,13 @@
 
   revoke all privileges 
   on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[])
 --==
@@ -876,15 +812,13 @@
 
   revoke all privileges 
   on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[])
 --==
@@ -903,15 +837,13 @@
 
   revoke all privileges 
   on function lcb_fn.strain_inventory_type_lot_counts () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_admin;
-  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_user;
+  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_visitor;
   --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.strain_inventory_type_lot_counts ()
 --==
@@ -930,15 +862,13 @@
 
   revoke all privileges 
   on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_super_admin;
-  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_admin;
-  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_user;
+  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_visitor;
   --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[])
 --==
@@ -957,15 +887,13 @@
 
   revoke all privileges 
   on function lcb_hist.fn_capture_hist_inventory_lot () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_super_admin;
-  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_admin;
-  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_user;
+  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_visitor;
   --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_hist.fn_capture_hist_inventory_lot ()
 --==
@@ -984,15 +912,13 @@
 
   revoke all privileges 
   on function org.fn_timestamp_update_contact () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_super_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_user;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_visitor;
   --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_contact ()
 --==
@@ -1011,15 +937,13 @@
 
   revoke all privileges 
   on function org.fn_timestamp_update_contact_app_user () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_super_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_user;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_visitor;
   --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_contact_app_user ()
 --==
@@ -1038,15 +962,13 @@
 
   revoke all privileges 
   on function org.fn_timestamp_update_facility () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_super_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_user;
+  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_visitor;
   --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_facility ()
 --==
@@ -1065,15 +987,13 @@
 
   revoke all privileges 
   on function org.fn_timestamp_update_location () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_super_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_user;
+  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_visitor;
   --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_location ()
 --==
@@ -1092,15 +1012,13 @@
 
   revoke all privileges 
   on function org.fn_timestamp_update_organization () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_super_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_admin;
-  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_user;
+  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_visitor;
   --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_organization ()
 --==
@@ -1119,15 +1037,13 @@
 
   revoke all privileges 
   on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_contact (text,text,text,text,text,text,text,text,text)
 --==
@@ -1146,15 +1062,13 @@
 
   revoke all privileges 
   on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_contact_location (text,text,text,text,text,text,text,text,text)
 --==
@@ -1173,15 +1087,13 @@
 
   revoke all privileges 
   on function org_fn.build_facility (text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_facility (text,text,text)
 --==
@@ -1200,15 +1112,13 @@
 
   revoke all privileges 
   on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_facility_location (text,text,text,text,text,text,text,text,text)
 --==
@@ -1227,15 +1137,13 @@
 
   revoke all privileges 
   on function org_fn.build_location (text,text,text,text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_location (text,text,text,text,text,text,text,text)
 --==
@@ -1254,15 +1162,13 @@
 
   revoke all privileges 
   on function org_fn.build_organization (text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_organization (text,text)
 --==
@@ -1281,15 +1187,13 @@
 
   revoke all privileges 
   on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_organization_location (text,text,text,text,text,text,text,text,text)
 --==
@@ -1308,15 +1212,13 @@
 
   revoke all privileges 
   on function org_fn.build_tenant_organization (text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_tenant_organization (text,text,text,text,text)
 --==
@@ -1335,15 +1237,13 @@
 
   revoke all privileges 
   on function org_fn.current_app_user_contact () 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_super_admin;
-  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_admin;
-  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_user;
+  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_visitor;
   --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.current_app_user_contact ()
 --==
@@ -1362,15 +1262,13 @@
 
   revoke all privileges 
   on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) 
-  from app_super_admin, app_admin, app_user, app_anonymous;
+  from app_visitor, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
-  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_admin;
-  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_user;
+  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_visitor;
   --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.modify_location (text,text,text,text,text,text,text,text,text)
 --==

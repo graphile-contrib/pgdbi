@@ -57,12 +57,14 @@
       },
       "dbUserRoles": [
         {
-          "roleName": "app_anonymous",
-          "applicableRoles": []
-        },
-        {
-          "roleName": "app_user",
+          "roleName": "app_super_admin",
           "applicableRoles": [
+            {
+              "roleName": "app_admin"
+            },
+            {
+              "roleName": "app_user"
+            },
             {
               "roleName": "app_anonymous"
             }
@@ -80,18 +82,16 @@
           ]
         },
         {
-          "roleName": "app_super_admin",
+          "roleName": "app_user",
           "applicableRoles": [
-            {
-              "roleName": "app_admin"
-            },
-            {
-              "roleName": "app_user"
-            },
             {
               "roleName": "app_anonymous"
             }
           ]
+        },
+        {
+          "roleName": "app_anonymous",
+          "applicableRoles": []
         }
       ]
     }
@@ -104,7 +104,7 @@
   "schemaFilterOn": false,
   "policies": [
     {
-      "id": 637268964849457300,
+      "id": 637268979306798200,
       "name": "Default Table Policy - NO ACCESS",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -116,19 +116,7 @@
         "update": {}
       },
       "roleGrants": {
-        "app_super_admin": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        },
-        "app_admin": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "select": "DENIED",
           "insert": "DENIED",
           "update": "DENIED",
@@ -142,41 +130,7 @@
         }
       },
       "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
+        "app_visitor": {
           "all": {
             "policies": []
           },
@@ -213,7 +167,7 @@
       }
     },
     {
-      "id": 637270555830945900,
+      "id": 637270570289732200,
       "name": "Default Table Policy - TOTAL EXPLICIT USER ACCESS",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -225,19 +179,7 @@
         "update": {}
       },
       "roleGrants": {
-        "app_super_admin": {
-          "select": "ALLOWED",
-          "insert": "ALLOWED",
-          "update": "ALLOWED",
-          "delete": "ALLOWED"
-        },
-        "app_admin": {
-          "select": "ALLOWED",
-          "insert": "ALLOWED",
-          "update": "ALLOWED",
-          "delete": "ALLOWED"
-        },
-        "app_user": {
+        "app_visitor": {
           "select": "ALLOWED",
           "insert": "ALLOWED",
           "update": "ALLOWED",
@@ -251,41 +193,7 @@
         }
       },
       "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
+        "app_visitor": {
           "all": {
             "policies": []
           },
@@ -322,8 +230,8 @@
       }
     },
     {
-      "id": 637272146812444500,
-      "name": "Default Table Policy - app_super_admin",
+      "id": 637272161272666400,
+      "name": "Default Table Policy - app_visitor",
       "enableRls": false,
       "columnExclusionOverrides": {
         "insert": [],
@@ -334,23 +242,11 @@
         "update": {}
       },
       "roleGrants": {
-        "app_super_admin": {
+        "app_visitor": {
           "select": "ALLOWED",
           "insert": "ALLOWED",
           "update": "ALLOWED",
           "delete": "ALLOWED"
-        },
-        "app_admin": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        },
-        "app_user": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
         },
         "app_anonymous": {
           "select": "DENIED",
@@ -360,41 +256,7 @@
         }
       },
       "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
+        "app_visitor": {
           "all": {
             "policies": []
           },
@@ -431,225 +293,7 @@
       }
     },
     {
-      "id": 637273737793933200,
-      "name": "Default Table Policy - app_admin",
-      "enableRls": false,
-      "columnExclusionOverrides": {
-        "insert": [],
-        "update": []
-      },
-      "columnExclusions": {
-        "insert": {},
-        "update": {}
-      },
-      "roleGrants": {
-        "app_super_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_admin": {
-          "select": "ALLOWED",
-          "insert": "ALLOWED",
-          "update": "ALLOWED",
-          "delete": "ALLOWED"
-        },
-        "app_user": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        },
-        "app_anonymous": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        }
-      },
-      "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_anonymous": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        }
-      }
-    },
-    {
-      "id": 637275328775422000,
-      "name": "Default Table Policy - app_user",
-      "enableRls": false,
-      "columnExclusionOverrides": {
-        "insert": [],
-        "update": []
-      },
-      "columnExclusions": {
-        "insert": {},
-        "update": {}
-      },
-      "roleGrants": {
-        "app_super_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_user": {
-          "select": "ALLOWED",
-          "insert": "ALLOWED",
-          "update": "ALLOWED",
-          "delete": "ALLOWED"
-        },
-        "app_anonymous": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        }
-      },
-      "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_anonymous": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        }
-      }
-    },
-    {
-      "id": 637276919756910600,
+      "id": 637273752255610500,
       "name": "Default Table Policy - app_anonymous",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -661,19 +305,7 @@
         "update": {}
       },
       "roleGrants": {
-        "app_super_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "select": "IMPLIED",
           "insert": "IMPLIED",
           "update": "IMPLIED",
@@ -687,41 +319,7 @@
         }
       },
       "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
+        "app_visitor": {
           "all": {
             "policies": []
           },
@@ -761,7 +359,7 @@
   "tablePolicyAssignments": {
     "app.license": {
       "tableId": "app.license",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -769,7 +367,7 @@
     },
     "app.license_type": {
       "tableId": "app.license_type",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -777,7 +375,7 @@
     },
     "app.license_permission": {
       "tableId": "app.license_permission",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -785,7 +383,7 @@
     },
     "app.license_type_permission": {
       "tableId": "app.license_type_permission",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -793,7 +391,7 @@
     },
     "app.application": {
       "tableId": "app.application",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -801,7 +399,7 @@
     },
     "auth.config_auth": {
       "tableId": "auth.config_auth",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -809,7 +407,7 @@
     },
     "auth.token": {
       "tableId": "auth.token",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -817,7 +415,7 @@
     },
     "auth.permission": {
       "tableId": "auth.permission",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -825,7 +423,7 @@
     },
     "auth.app_user": {
       "tableId": "auth.app_user",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -833,7 +431,7 @@
     },
     "auth.app_tenant": {
       "tableId": "auth.app_tenant",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -841,7 +439,7 @@
     },
     "lcb.inventory_lot": {
       "tableId": "lcb.inventory_lot",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -849,7 +447,7 @@
     },
     "lcb.batch": {
       "tableId": "lcb.batch",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -857,7 +455,7 @@
     },
     "lcb.strain": {
       "tableId": "lcb.strain",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -865,7 +463,7 @@
     },
     "lcb.lcb_license": {
       "tableId": "lcb.lcb_license",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -873,7 +471,7 @@
     },
     "lcb.conversion": {
       "tableId": "lcb.conversion",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -881,7 +479,7 @@
     },
     "lcb.recipe": {
       "tableId": "lcb.recipe",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -889,7 +487,7 @@
     },
     "lcb.conversion_source": {
       "tableId": "lcb.conversion_source",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -897,7 +495,7 @@
     },
     "lcb.lcb_license_holder": {
       "tableId": "lcb.lcb_license_holder",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -905,7 +503,7 @@
     },
     "lcb.area": {
       "tableId": "lcb.area",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -913,7 +511,7 @@
     },
     "lcb.manifest_item": {
       "tableId": "lcb.manifest_item",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -921,7 +519,7 @@
     },
     "lcb.manifest": {
       "tableId": "lcb.manifest",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -929,7 +527,7 @@
     },
     "lcb.qa_result": {
       "tableId": "lcb.qa_result",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -937,7 +535,7 @@
     },
     "lcb_hist.hist_inventory_lot": {
       "tableId": "lcb_hist.hist_inventory_lot",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -945,7 +543,7 @@
     },
     "lcb_ref.lcb_license_type": {
       "tableId": "lcb_ref.lcb_license_type",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -953,7 +551,7 @@
     },
     "lcb_ref.conversion_rule": {
       "tableId": "lcb_ref.conversion_rule",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -961,7 +559,7 @@
     },
     "lcb_ref.conversion_rule_source": {
       "tableId": "lcb_ref.conversion_rule_source",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -969,7 +567,7 @@
     },
     "lcb_ref.manifest_status": {
       "tableId": "lcb_ref.manifest_status",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -977,7 +575,7 @@
     },
     "lcb_ref.inventory_lot_reporting_status": {
       "tableId": "lcb_ref.inventory_lot_reporting_status",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -985,7 +583,7 @@
     },
     "lcb_ref.inventory_type": {
       "tableId": "lcb_ref.inventory_type",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -993,7 +591,7 @@
     },
     "lcb_ref.lcb_license_holder_status": {
       "tableId": "lcb_ref.lcb_license_holder_status",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1001,7 +599,7 @@
     },
     "lcb_ref.inventory_lot_type": {
       "tableId": "lcb_ref.inventory_lot_type",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1009,7 +607,7 @@
     },
     "org.organization": {
       "tableId": "org.organization",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1017,7 +615,7 @@
     },
     "org.facility": {
       "tableId": "org.facility",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1025,7 +623,7 @@
     },
     "org.config_org": {
       "tableId": "org.config_org",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1033,7 +631,7 @@
     },
     "org.contact": {
       "tableId": "org.contact",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1041,7 +639,7 @@
     },
     "org.contact_app_user": {
       "tableId": "org.contact_app_user",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1049,7 +647,7 @@
     },
     "org.location": {
       "tableId": "org.location",
-      "policyDefinitionId": 637268964849457300,
+      "policyDefinitionId": 637268979306798200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1058,18 +656,12 @@
   },
   "functionPolicies": [
     {
-      "id": 637278510738399200,
+      "id": 637275343238544500,
       "name": "Default Function Policy - NO ACCESS",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
       "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "DENIED"
-        },
-        "app_admin": {
-          "execute": "DENIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "execute": "DENIED"
         },
         "app_anonymous": {
@@ -1078,58 +670,12 @@
       }
     },
     {
-      "id": 637280101719887900,
-      "name": "User Function Policy - app_super_admin",
+      "id": 637276934221478700,
+      "name": "User Function Policy - app_visitor",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
       "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "ALLOWED"
-        },
-        "app_admin": {
-          "execute": "DENIED"
-        },
-        "app_user": {
-          "execute": "DENIED"
-        },
-        "app_anonymous": {
-          "execute": "DENIED"
-        }
-      }
-    },
-    {
-      "id": 637281692701376500,
-      "name": "User Function Policy - app_admin",
-      "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
-      "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
-      "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_admin": {
-          "execute": "ALLOWED"
-        },
-        "app_user": {
-          "execute": "DENIED"
-        },
-        "app_anonymous": {
-          "execute": "DENIED"
-        }
-      }
-    },
-    {
-      "id": 637283283682865200,
-      "name": "User Function Policy - app_user",
-      "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
-      "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
-      "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "execute": "ALLOWED"
         },
         "app_anonymous": {
@@ -1138,18 +684,12 @@
       }
     },
     {
-      "id": 637284874664353800,
+      "id": 637278525204412800,
       "name": "User Function Policy - app_anonymous",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
       "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "execute": "IMPLIED"
         },
         "app_anonymous": {
@@ -1161,7 +701,7 @@
   "functionPolicyAssignments": {
     "app.fn_timestamp_update_application_22819": {
       "functionId": "app.fn_timestamp_update_application_22819",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1169,7 +709,7 @@
     },
     "app.fn_timestamp_update_license_22820": {
       "functionId": "app.fn_timestamp_update_license_22820",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1177,7 +717,7 @@
     },
     "app.fn_timestamp_update_license_permission_22821": {
       "functionId": "app.fn_timestamp_update_license_permission_22821",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1185,7 +725,7 @@
     },
     "app.fn_timestamp_update_license_type_22822": {
       "functionId": "app.fn_timestamp_update_license_type_22822",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1193,7 +733,7 @@
     },
     "app.fn_timestamp_update_license_type_permission_22823": {
       "functionId": "app.fn_timestamp_update_license_type_permission_22823",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1201,7 +741,7 @@
     },
     "auth.fn_timestamp_update_app_user_22825": {
       "functionId": "auth.fn_timestamp_update_app_user_22825",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1209,7 +749,7 @@
     },
     "auth.fn_timestamp_update_permission_22826": {
       "functionId": "auth.fn_timestamp_update_permission_22826",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1217,7 +757,7 @@
     },
     "auth.fn_timestamp_update_app_tenant_22824": {
       "functionId": "auth.fn_timestamp_update_app_tenant_22824",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1225,7 +765,7 @@
     },
     "auth_fn.build_app_user_22850": {
       "functionId": "auth_fn.build_app_user_22850",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1233,7 +773,7 @@
     },
     "auth_fn.current_app_user_22852": {
       "functionId": "auth_fn.current_app_user_22852",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1241,7 +781,7 @@
     },
     "auth_fn.authenticate_22828": {
       "functionId": "auth_fn.authenticate_22828",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1249,7 +789,7 @@
     },
     "auth_fn.app_user_has_access_22827": {
       "functionId": "auth_fn.app_user_has_access_22827",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1257,7 +797,7 @@
     },
     "auth_fn.build_app_tenant_22839": {
       "functionId": "auth_fn.build_app_tenant_22839",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1265,7 +805,7 @@
     },
     "auth_fn.current_app_tenant_id_22851": {
       "functionId": "auth_fn.current_app_tenant_id_22851",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1273,7 +813,7 @@
     },
     "auth_fn.current_app_user_id_22853": {
       "functionId": "auth_fn.current_app_user_id_22853",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1281,7 +821,7 @@
     },
     "lcb.fn_timestamp_update_conversion_23540": {
       "functionId": "lcb.fn_timestamp_update_conversion_23540",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1289,7 +829,7 @@
     },
     "lcb.fn_timestamp_update_conversion_source_23584": {
       "functionId": "lcb.fn_timestamp_update_conversion_source_23584",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1297,7 +837,7 @@
     },
     "lcb.fn_timestamp_update_inventory_lot_23497": {
       "functionId": "lcb.fn_timestamp_update_inventory_lot_23497",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1305,7 +845,7 @@
     },
     "lcb.fn_timestamp_update_lcb_license_23493": {
       "functionId": "lcb.fn_timestamp_update_lcb_license_23493",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1313,7 +853,7 @@
     },
     "lcb.fn_timestamp_update_lcb_license_holder_23495": {
       "functionId": "lcb.fn_timestamp_update_lcb_license_holder_23495",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1321,7 +861,7 @@
     },
     "lcb.fn_timestamp_update_manifest_23637": {
       "functionId": "lcb.fn_timestamp_update_manifest_23637",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1329,7 +869,7 @@
     },
     "lcb.fn_timestamp_update_manifest_item_23669": {
       "functionId": "lcb.fn_timestamp_update_manifest_item_23669",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1337,7 +877,7 @@
     },
     "lcb.fn_timestamp_update_recipe_23521": {
       "functionId": "lcb.fn_timestamp_update_recipe_23521",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1345,7 +885,7 @@
     },
     "lcb_fn.report_inventory_lot_23738": {
       "functionId": "lcb_fn.report_inventory_lot_23738",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1353,7 +893,7 @@
     },
     "lcb_fn.provision_inventory_lot_ids_23734": {
       "functionId": "lcb_fn.provision_inventory_lot_ids_23734",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1361,7 +901,7 @@
     },
     "lcb_fn.get_currrent_lcb_license_holder_id_23733": {
       "functionId": "lcb_fn.get_currrent_lcb_license_holder_id_23733",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1369,7 +909,7 @@
     },
     "lcb_fn.create_xfer_manifest_23764": {
       "functionId": "lcb_fn.create_xfer_manifest_23764",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1377,7 +917,7 @@
     },
     "lcb_fn.convert_inventory_23750": {
       "functionId": "lcb_fn.convert_inventory_23750",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1385,7 +925,7 @@
     },
     "lcb_fn.deplete_inventory_lot_ids_23766": {
       "functionId": "lcb_fn.deplete_inventory_lot_ids_23766",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1393,7 +933,7 @@
     },
     "lcb_fn.destroy_inventory_lot_ids_23767": {
       "functionId": "lcb_fn.destroy_inventory_lot_ids_23767",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1401,7 +941,7 @@
     },
     "lcb_fn.invalidate_inventory_lot_ids_23765": {
       "functionId": "lcb_fn.invalidate_inventory_lot_ids_23765",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1409,7 +949,7 @@
     },
     "lcb_fn.strain_inventory_type_lot_counts_23763": {
       "functionId": "lcb_fn.strain_inventory_type_lot_counts_23763",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1417,7 +957,7 @@
     },
     "lcb_fn.qa_sample_inventory_23755": {
       "functionId": "lcb_fn.qa_sample_inventory_23755",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1425,7 +965,7 @@
     },
     "lcb_fn.rt_sample_inventory_23759": {
       "functionId": "lcb_fn.rt_sample_inventory_23759",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1433,7 +973,7 @@
     },
     "lcb_fn.sublot_inventory_23743": {
       "functionId": "lcb_fn.sublot_inventory_23743",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1441,7 +981,7 @@
     },
     "lcb_hist.fn_capture_hist_inventory_lot_23605": {
       "functionId": "lcb_hist.fn_capture_hist_inventory_lot_23605",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1449,7 +989,7 @@
     },
     "org.fn_timestamp_update_contact_22854": {
       "functionId": "org.fn_timestamp_update_contact_22854",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1457,7 +997,7 @@
     },
     "org.fn_timestamp_update_contact_app_user_22855": {
       "functionId": "org.fn_timestamp_update_contact_app_user_22855",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1465,7 +1005,7 @@
     },
     "org.fn_timestamp_update_facility_22856": {
       "functionId": "org.fn_timestamp_update_facility_22856",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1473,7 +1013,7 @@
     },
     "org.fn_timestamp_update_location_22857": {
       "functionId": "org.fn_timestamp_update_location_22857",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1481,7 +1021,7 @@
     },
     "org.fn_timestamp_update_organization_22858": {
       "functionId": "org.fn_timestamp_update_organization_22858",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1489,7 +1029,7 @@
     },
     "org_fn.build_facility_location_22878": {
       "functionId": "org_fn.build_facility_location_22878",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1497,7 +1037,7 @@
     },
     "org_fn.build_organization_location_22898": {
       "functionId": "org_fn.build_organization_location_22898",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1505,7 +1045,7 @@
     },
     "org_fn.build_contact_22867": {
       "functionId": "org_fn.build_contact_22867",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1513,7 +1053,7 @@
     },
     "org_fn.build_contact_location_22868": {
       "functionId": "org_fn.build_contact_location_22868",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1521,7 +1061,7 @@
     },
     "org_fn.build_facility_22877": {
       "functionId": "org_fn.build_facility_22877",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1529,7 +1069,7 @@
     },
     "org_fn.build_location_22887": {
       "functionId": "org_fn.build_location_22887",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1537,7 +1077,7 @@
     },
     "org_fn.build_organization_22897": {
       "functionId": "org_fn.build_organization_22897",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1545,7 +1085,7 @@
     },
     "org_fn.build_tenant_organization_22899": {
       "functionId": "org_fn.build_tenant_organization_22899",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1553,7 +1093,7 @@
     },
     "org_fn.current_app_user_contact_22900": {
       "functionId": "org_fn.current_app_user_contact_22900",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1561,7 +1101,7 @@
     },
     "org_fn.modify_location_22901": {
       "functionId": "org_fn.modify_location_22901",
-      "policyDefinitionId": 637278510738399200,
+      "policyDefinitionId": 637275343238544500,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1569,7 +1109,7 @@
     }
   },
   "defaultPolicy": {
-    "id": 637268964849457300,
+    "id": 637268979306798200,
     "name": "Default Table Policy - NO ACCESS",
     "enableRls": false,
     "columnExclusionOverrides": {
@@ -1581,19 +1121,7 @@
       "update": {}
     },
     "roleGrants": {
-      "app_super_admin": {
-        "select": "DENIED",
-        "insert": "DENIED",
-        "update": "DENIED",
-        "delete": "DENIED"
-      },
-      "app_admin": {
-        "select": "DENIED",
-        "insert": "DENIED",
-        "update": "DENIED",
-        "delete": "DENIED"
-      },
-      "app_user": {
+      "app_visitor": {
         "select": "DENIED",
         "insert": "DENIED",
         "update": "DENIED",
@@ -1607,41 +1135,7 @@
       }
     },
     "rlsQualifiers": {
-      "app_super_admin": {
-        "all": {
-          "policies": []
-        },
-        "select": {
-          "policies": []
-        },
-        "insert": {
-          "policies": []
-        },
-        "update": {
-          "policies": []
-        },
-        "delete": {
-          "policies": []
-        }
-      },
-      "app_admin": {
-        "all": {
-          "policies": []
-        },
-        "select": {
-          "policies": []
-        },
-        "insert": {
-          "policies": []
-        },
-        "update": {
-          "policies": []
-        },
-        "delete": {
-          "policies": []
-        }
-      },
-      "app_user": {
+      "app_visitor": {
         "all": {
           "policies": []
         },
@@ -1678,7 +1172,7 @@
     }
   },
   "defaultPolicyPermissive": {
-    "id": 637270555830945900,
+    "id": 637270570289732200,
     "name": "Default Table Policy - TOTAL EXPLICIT USER ACCESS",
     "enableRls": false,
     "columnExclusionOverrides": {
@@ -1690,19 +1184,7 @@
       "update": {}
     },
     "roleGrants": {
-      "app_super_admin": {
-        "select": "ALLOWED",
-        "insert": "ALLOWED",
-        "update": "ALLOWED",
-        "delete": "ALLOWED"
-      },
-      "app_admin": {
-        "select": "ALLOWED",
-        "insert": "ALLOWED",
-        "update": "ALLOWED",
-        "delete": "ALLOWED"
-      },
-      "app_user": {
+      "app_visitor": {
         "select": "ALLOWED",
         "insert": "ALLOWED",
         "update": "ALLOWED",
@@ -1716,41 +1198,7 @@
       }
     },
     "rlsQualifiers": {
-      "app_super_admin": {
-        "all": {
-          "policies": []
-        },
-        "select": {
-          "policies": []
-        },
-        "insert": {
-          "policies": []
-        },
-        "update": {
-          "policies": []
-        },
-        "delete": {
-          "policies": []
-        }
-      },
-      "app_admin": {
-        "all": {
-          "policies": []
-        },
-        "select": {
-          "policies": []
-        },
-        "insert": {
-          "policies": []
-        },
-        "update": {
-          "policies": []
-        },
-        "delete": {
-          "policies": []
-        }
-      },
-      "app_user": {
+      "app_visitor": {
         "all": {
           "policies": []
         },
@@ -1787,18 +1235,12 @@
     }
   },
   "defaultFunctionPolicy": {
-    "id": 637278510738399200,
+    "id": 637275343238544500,
     "name": "Default Function Policy - NO ACCESS",
     "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
     "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
     "roleFunctionGrants": {
-      "app_super_admin": {
-        "execute": "DENIED"
-      },
-      "app_admin": {
-        "execute": "DENIED"
-      },
-      "app_user": {
+      "app_visitor": {
         "execute": "DENIED"
       },
       "app_anonymous": {
@@ -33715,7 +33157,6 @@
   "rawSchemata": [],
   "schemaFilter": [],
   "roleSet": {
-    "name": "multi-user",
     "dbOwnerRole": {
       "roleName": "app_owner",
       "applicableRoles": []
@@ -33724,13 +33165,7 @@
       "roleName": "app_authenticator",
       "applicableRoles": [
         {
-          "roleName": "app_super_admin"
-        },
-        {
-          "roleName": "app_admin"
-        },
-        {
-          "roleName": "app_user"
+          "roleName": "app_visitor"
         },
         {
           "roleName": "app_anonymous"
@@ -33743,39 +33178,15 @@
         "applicableRoles": []
       },
       {
-        "roleName": "app_user",
+        "roleName": "app_visitor",
         "applicableRoles": [
-          {
-            "roleName": "app_anonymous"
-          }
-        ]
-      },
-      {
-        "roleName": "app_admin",
-        "applicableRoles": [
-          {
-            "roleName": "app_user"
-          },
-          {
-            "roleName": "app_anonymous"
-          }
-        ]
-      },
-      {
-        "roleName": "app_super_admin",
-        "applicableRoles": [
-          {
-            "roleName": "app_admin"
-          },
-          {
-            "roleName": "app_user"
-          },
           {
             "roleName": "app_anonymous"
           }
         ]
       }
-    ]
+    ],
+    "name": "graphile-visitor"
   },
   "defaultRlsUsing": "( owner_id = viewer_id() )",
   "defaultRlsWithCheck": "",
@@ -33827,8 +33238,8 @@
   },
   "defaultDbUserTablePolicies": [
     {
-      "id": 637272146812444500,
-      "name": "Default Table Policy - app_super_admin",
+      "id": 637272161272666400,
+      "name": "Default Table Policy - app_visitor",
       "enableRls": false,
       "columnExclusionOverrides": {
         "insert": [],
@@ -33839,23 +33250,11 @@
         "update": {}
       },
       "roleGrants": {
-        "app_super_admin": {
+        "app_visitor": {
           "select": "ALLOWED",
           "insert": "ALLOWED",
           "update": "ALLOWED",
           "delete": "ALLOWED"
-        },
-        "app_admin": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        },
-        "app_user": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
         },
         "app_anonymous": {
           "select": "DENIED",
@@ -33865,41 +33264,7 @@
         }
       },
       "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
+        "app_visitor": {
           "all": {
             "policies": []
           },
@@ -33936,225 +33301,7 @@
       }
     },
     {
-      "id": 637273737793933200,
-      "name": "Default Table Policy - app_admin",
-      "enableRls": false,
-      "columnExclusionOverrides": {
-        "insert": [],
-        "update": []
-      },
-      "columnExclusions": {
-        "insert": {},
-        "update": {}
-      },
-      "roleGrants": {
-        "app_super_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_admin": {
-          "select": "ALLOWED",
-          "insert": "ALLOWED",
-          "update": "ALLOWED",
-          "delete": "ALLOWED"
-        },
-        "app_user": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        },
-        "app_anonymous": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        }
-      },
-      "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_anonymous": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        }
-      }
-    },
-    {
-      "id": 637275328775422000,
-      "name": "Default Table Policy - app_user",
-      "enableRls": false,
-      "columnExclusionOverrides": {
-        "insert": [],
-        "update": []
-      },
-      "columnExclusions": {
-        "insert": {},
-        "update": {}
-      },
-      "roleGrants": {
-        "app_super_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_user": {
-          "select": "ALLOWED",
-          "insert": "ALLOWED",
-          "update": "ALLOWED",
-          "delete": "ALLOWED"
-        },
-        "app_anonymous": {
-          "select": "DENIED",
-          "insert": "DENIED",
-          "update": "DENIED",
-          "delete": "DENIED"
-        }
-      },
-      "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_anonymous": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        }
-      }
-    },
-    {
-      "id": 637276919756910600,
+      "id": 637273752255610500,
       "name": "Default Table Policy - app_anonymous",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -34166,19 +33313,7 @@
         "update": {}
       },
       "roleGrants": {
-        "app_super_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_admin": {
-          "select": "IMPLIED",
-          "insert": "IMPLIED",
-          "update": "IMPLIED",
-          "delete": "IMPLIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "select": "IMPLIED",
           "insert": "IMPLIED",
           "update": "IMPLIED",
@@ -34192,41 +33327,7 @@
         }
       },
       "rlsQualifiers": {
-        "app_super_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_admin": {
-          "all": {
-            "policies": []
-          },
-          "select": {
-            "policies": []
-          },
-          "insert": {
-            "policies": []
-          },
-          "update": {
-            "policies": []
-          },
-          "delete": {
-            "policies": []
-          }
-        },
-        "app_user": {
+        "app_visitor": {
           "all": {
             "policies": []
           },
@@ -34265,58 +33366,12 @@
   ],
   "defaultDbUserFunctionsPolicies": [
     {
-      "id": 637280101719887900,
-      "name": "User Function Policy - app_super_admin",
+      "id": 637276934221478700,
+      "name": "User Function Policy - app_visitor",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
       "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "ALLOWED"
-        },
-        "app_admin": {
-          "execute": "DENIED"
-        },
-        "app_user": {
-          "execute": "DENIED"
-        },
-        "app_anonymous": {
-          "execute": "DENIED"
-        }
-      }
-    },
-    {
-      "id": 637281692701376500,
-      "name": "User Function Policy - app_admin",
-      "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
-      "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
-      "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_admin": {
-          "execute": "ALLOWED"
-        },
-        "app_user": {
-          "execute": "DENIED"
-        },
-        "app_anonymous": {
-          "execute": "DENIED"
-        }
-      }
-    },
-    {
-      "id": 637283283682865200,
-      "name": "User Function Policy - app_user",
-      "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
-      "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
-      "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "execute": "ALLOWED"
         },
         "app_anonymous": {
@@ -34325,18 +33380,12 @@
       }
     },
     {
-      "id": 637284874664353800,
+      "id": 637278525204412800,
       "name": "User Function Policy - app_anonymous",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
       "roleFunctionGrants": {
-        "app_super_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_admin": {
-          "execute": "IMPLIED"
-        },
-        "app_user": {
+        "app_visitor": {
           "execute": "IMPLIED"
         },
         "app_anonymous": {
@@ -34345,5 +33394,5 @@
       }
     }
   ],
-  "isDirty": true
+  "isDirty": false
 }
