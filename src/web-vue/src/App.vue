@@ -9,25 +9,18 @@
       <v-toolbar-title selectable v-text="title" @click="home"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn @click="navigate('home')" :color="btnColor('home')">Project</v-btn>
-      <!-- <v-btn @click="navigate('role-manager')" :color="btnColor('role-manager')">Role Manager</v-btn> -->
       <v-btn @click="navigate('security-manager')" :color="btnColor('security-manager')" :disabled="initializing">Security Scripts</v-btn>
-      <!-- <v-btn @click="navigate('fk-index-manager')" :color="btnColor('fk-index-manager')" :disabled="initializing">Constraints And Indices</v-btn> -->
       <v-btn @click="navigate('search-view')" :color="btnColor('search-view')" :disabled="initializing">Function Search</v-btn>
       <v-btn @click="navigate('pg-lint')" :color="btnColor('pg-lint')" :disabled="initializing">PG-Lint</v-btn>
-      <!-- <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
-      <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn> -->
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-btn @click="writeToDisk" :color="btnColor('writeToDisk')" :disabled="initializing">Write to Disk</v-btn>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.stop="settings">
-        <v-icon>settings</v-icon>
-      </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
 

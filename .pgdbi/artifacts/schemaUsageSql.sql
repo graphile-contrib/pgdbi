@@ -13,7 +13,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
   REVOKE USAGE ON SCHEMA app FROM app_anonymous;
   REVOKE USAGE ON SCHEMA app FROM app_visitor;
 
-  GRANT USAGE ON SCHEMA app TO app_anonymous;
+  GRANT USAGE ON SCHEMA app TO app_visitor, app_anonymous;
 ------- auth
   REVOKE USAGE ON SCHEMA auth FROM PUBLIC;
   REVOKE USAGE ON SCHEMA auth FROM app_authenticator;

@@ -4,8 +4,11 @@ const { postgraphile } = require('postgraphile');
 const transformBuild = require('./transformBuild')
 
 const plugins = [
+  require('./graphile-extensions/pgdbirc'),
+  require('./graphile-extensions/project'),
   require('./graphile-extensions/dbSchema'),
   require('./graphile-extensions/execSql'),
+  require('./graphile-extensions/writeArtifacts'),
   require('postgraphile-plugin-connection-filter'),
 ];
 
@@ -39,6 +42,7 @@ function PostgraphileDE(options, pgPool) {
       graphiqlRoute: '/pgdbi/graphiql',
       dynamicJson: true,
       showErrorStack: true,
+      bodySizeLimit: '5MB',
       extendedErrors: [
         'severity',
         'code',

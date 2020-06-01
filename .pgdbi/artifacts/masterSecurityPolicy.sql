@@ -268,7 +268,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
   REVOKE USAGE ON SCHEMA app FROM app_anonymous;
   REVOKE USAGE ON SCHEMA app FROM app_visitor;
 
-  GRANT USAGE ON SCHEMA app TO app_anonymous;
+  GRANT USAGE ON SCHEMA app TO app_visitor, app_anonymous;
 ------- auth
   REVOKE USAGE ON SCHEMA auth FROM PUBLIC;
   REVOKE USAGE ON SCHEMA auth FROM app_authenticator;
@@ -329,7 +329,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
 ----------
 ----------  BEGIN TABLE POLICY: app.license
-----------  POLICY NAME:  Default Table Policy - NO ACCESS
+----------  POLICY NAME:  Default Table Policy - TOTAL EXPLICIT USER ACCESS
 ----------
 
 ----------  REMOVE EXISTING TABLE GRANTS
@@ -348,27 +348,39 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
 ----------  CREATE NEW TABLE GRANTS
 
+----------  app_visitor
+  grant 
+    select , 
+    insert ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
+        -- no excluded columns
+    update ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
+        -- no excluded columns
+    delete  
+  on table app.license 
+  to app_visitor;
+
+
+----------  app_anonymous
+  grant 
+    select , 
+    insert ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
+        -- no excluded columns
+    update ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
+        -- no excluded columns
+    delete  
+  on table app.license 
+  to app_anonymous;
+
+
 ----------  IMPLIED TABLE GRANTS
 
   ----------  DENIED TABLE GRANTS
-
-  ----------  app_visitor
-  --DENIED:   grant select on table app.license to app_visitor;
-  --DENIED:   grant insert on table app.license to app_visitor;
-  --DENIED:   grant update on table app.license to app_visitor;
-  --DENIED:   grant delete on table app.license to app_visitor;
-
-  ----------  app_anonymous
-  --DENIED:   grant select on table app.license to app_anonymous;
-  --DENIED:   grant insert on table app.license to app_anonymous;
-  --DENIED:   grant update on table app.license to app_anonymous;
-  --DENIED:   grant delete on table app.license to app_anonymous;
 
 ----------  END TABLE POLICY: app.license
 --==
 ----------
 ----------  BEGIN TABLE POLICY: app.license_type
-----------  POLICY NAME:  Custom Policy: app.license_type
+----------  POLICY NAME:  Default Table Policy - TOTAL EXPLICIT USER ACCESS
 ----------
 
 ----------  REMOVE EXISTING TABLE GRANTS
@@ -387,30 +399,33 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
 ----------  CREATE NEW TABLE GRANTS
 
+----------  app_visitor
+  grant 
+    select , 
+    insert ( id, created_at, updated_at, external_id, name, key, application_id ), 
+        -- no excluded columns
+    update ( id, created_at, updated_at, external_id, name, key, application_id ), 
+        -- no excluded columns
+    delete  
+  on table app.license_type 
+  to app_visitor;
+
+
 ----------  app_anonymous
   grant 
     select , 
-    insert ( id, created_at, updated_at, external_id, name, key, application_id ) 
+    insert ( id, created_at, updated_at, external_id, name, key, application_id ), 
         -- no excluded columns
+    update ( id, created_at, updated_at, external_id, name, key, application_id ), 
+        -- no excluded columns
+    delete  
   on table app.license_type 
   to app_anonymous;
 
 
 ----------  IMPLIED TABLE GRANTS
 
-  ----------  app_visitor
-  --IMPLIED:   grant select on table app.license_type to app_visitor;
-  --IMPLIED:   grant insert on table app.license_type to app_visitor;
-
   ----------  DENIED TABLE GRANTS
-
-  ----------  app_visitor
-  --DENIED:   grant update on table app.license_type to app_visitor;
-  --DENIED:   grant delete on table app.license_type to app_visitor;
-
-  ----------  app_anonymous
-  --DENIED:   grant update on table app.license_type to app_anonymous;
-  --DENIED:   grant delete on table app.license_type to app_anonymous;
 
 ----------  END TABLE POLICY: app.license_type
 --==
