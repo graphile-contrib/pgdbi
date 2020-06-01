@@ -49,26 +49,73 @@ $body$;
     -------- END app_anonymous
 
 
-    ------------ app_visitor
+    ------------ app_user
       DO
       $body$
       BEGIN
         IF NOT EXISTS (
           SELECT    *
           FROM   pg_catalog.pg_roles
-          WHERE  rolname = 'app_visitor'
+          WHERE  rolname = 'app_user'
         ) THEN
-          CREATE ROLE app_visitor;
+          CREATE ROLE app_user;
         END IF;
 
-        ALTER ROLE app_visitor with NOLOGIN;
+        ALTER ROLE app_user with NOLOGIN;
         
-        GRANT app_anonymous TO app_visitor;
+        GRANT app_anonymous TO app_user;
 
       END
       $body$;
       --||--
-    -------- END app_visitor
+    -------- END app_user
+
+
+    ------------ app_admin
+      DO
+      $body$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT    *
+          FROM   pg_catalog.pg_roles
+          WHERE  rolname = 'app_admin'
+        ) THEN
+          CREATE ROLE app_admin;
+        END IF;
+
+        ALTER ROLE app_admin with NOLOGIN;
+        
+        GRANT app_user TO app_admin;
+        GRANT app_anonymous TO app_admin;
+
+      END
+      $body$;
+      --||--
+    -------- END app_admin
+
+
+    ------------ app_super_admin
+      DO
+      $body$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT    *
+          FROM   pg_catalog.pg_roles
+          WHERE  rolname = 'app_super_admin'
+        ) THEN
+          CREATE ROLE app_super_admin;
+        END IF;
+
+        ALTER ROLE app_super_admin with NOLOGIN;
+        
+        GRANT app_admin TO app_super_admin;
+        GRANT app_user TO app_super_admin;
+        GRANT app_anonymous TO app_super_admin;
+
+      END
+      $body$;
+      --||--
+    -------- END app_super_admin
 
 ---------- END USER ROLES ----------
 
@@ -90,7 +137,9 @@ ALTER ROLE app_authenticator with LOGIN;
 ALTER ROLE app_authenticator with NOINHERIT;
 
 GRANT app_anonymous TO app_authenticator;
-GRANT app_visitor TO app_authenticator;
+GRANT app_user TO app_authenticator;
+GRANT app_admin TO app_authenticator;
+GRANT app_super_admin TO app_authenticator;
 
 END
 $body$;
@@ -266,56 +315,73 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
   REVOKE USAGE ON SCHEMA app FROM PUBLIC;
   REVOKE USAGE ON SCHEMA app FROM app_authenticator;
   REVOKE USAGE ON SCHEMA app FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA app FROM app_visitor;
+  REVOKE USAGE ON SCHEMA app FROM app_user;
+  REVOKE USAGE ON SCHEMA app FROM app_admin;
+  REVOKE USAGE ON SCHEMA app FROM app_super_admin;
 
-  GRANT USAGE ON SCHEMA app TO app_visitor, app_anonymous;
 ------- auth
   REVOKE USAGE ON SCHEMA auth FROM PUBLIC;
   REVOKE USAGE ON SCHEMA auth FROM app_authenticator;
   REVOKE USAGE ON SCHEMA auth FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA auth FROM app_visitor;
+  REVOKE USAGE ON SCHEMA auth FROM app_user;
+  REVOKE USAGE ON SCHEMA auth FROM app_admin;
+  REVOKE USAGE ON SCHEMA auth FROM app_super_admin;
 
 ------- auth_fn
   REVOKE USAGE ON SCHEMA auth_fn FROM PUBLIC;
   REVOKE USAGE ON SCHEMA auth_fn FROM app_authenticator;
   REVOKE USAGE ON SCHEMA auth_fn FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA auth_fn FROM app_visitor;
+  REVOKE USAGE ON SCHEMA auth_fn FROM app_user;
+  REVOKE USAGE ON SCHEMA auth_fn FROM app_admin;
+  REVOKE USAGE ON SCHEMA auth_fn FROM app_super_admin;
 
 ------- lcb
   REVOKE USAGE ON SCHEMA lcb FROM PUBLIC;
   REVOKE USAGE ON SCHEMA lcb FROM app_authenticator;
   REVOKE USAGE ON SCHEMA lcb FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA lcb FROM app_visitor;
+  REVOKE USAGE ON SCHEMA lcb FROM app_user;
+  REVOKE USAGE ON SCHEMA lcb FROM app_admin;
+  REVOKE USAGE ON SCHEMA lcb FROM app_super_admin;
 
 ------- lcb_fn
   REVOKE USAGE ON SCHEMA lcb_fn FROM PUBLIC;
   REVOKE USAGE ON SCHEMA lcb_fn FROM app_authenticator;
   REVOKE USAGE ON SCHEMA lcb_fn FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA lcb_fn FROM app_visitor;
+  REVOKE USAGE ON SCHEMA lcb_fn FROM app_user;
+  REVOKE USAGE ON SCHEMA lcb_fn FROM app_admin;
+  REVOKE USAGE ON SCHEMA lcb_fn FROM app_super_admin;
 
 ------- lcb_hist
   REVOKE USAGE ON SCHEMA lcb_hist FROM PUBLIC;
   REVOKE USAGE ON SCHEMA lcb_hist FROM app_authenticator;
   REVOKE USAGE ON SCHEMA lcb_hist FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA lcb_hist FROM app_visitor;
+  REVOKE USAGE ON SCHEMA lcb_hist FROM app_user;
+  REVOKE USAGE ON SCHEMA lcb_hist FROM app_admin;
+  REVOKE USAGE ON SCHEMA lcb_hist FROM app_super_admin;
 
 ------- lcb_ref
   REVOKE USAGE ON SCHEMA lcb_ref FROM PUBLIC;
   REVOKE USAGE ON SCHEMA lcb_ref FROM app_authenticator;
   REVOKE USAGE ON SCHEMA lcb_ref FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA lcb_ref FROM app_visitor;
+  REVOKE USAGE ON SCHEMA lcb_ref FROM app_user;
+  REVOKE USAGE ON SCHEMA lcb_ref FROM app_admin;
+  REVOKE USAGE ON SCHEMA lcb_ref FROM app_super_admin;
 
 ------- org
   REVOKE USAGE ON SCHEMA org FROM PUBLIC;
   REVOKE USAGE ON SCHEMA org FROM app_authenticator;
   REVOKE USAGE ON SCHEMA org FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA org FROM app_visitor;
+  REVOKE USAGE ON SCHEMA org FROM app_user;
+  REVOKE USAGE ON SCHEMA org FROM app_admin;
+  REVOKE USAGE ON SCHEMA org FROM app_super_admin;
 
 ------- org_fn
   REVOKE USAGE ON SCHEMA org_fn FROM PUBLIC;
   REVOKE USAGE ON SCHEMA org_fn FROM app_authenticator;
   REVOKE USAGE ON SCHEMA org_fn FROM app_anonymous;
-  REVOKE USAGE ON SCHEMA org_fn FROM app_visitor;
+  REVOKE USAGE ON SCHEMA org_fn FROM app_user;
+  REVOKE USAGE ON SCHEMA org_fn FROM app_admin;
+  REVOKE USAGE ON SCHEMA org_fn FROM app_super_admin;
 
 ----------
 ----------  END SCHEMA USAGE SQL
@@ -329,7 +395,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
 ----------
 ----------  BEGIN TABLE POLICY: app.license
-----------  POLICY NAME:  Default Table Policy - TOTAL EXPLICIT USER ACCESS
+----------  POLICY NAME:  Default Table Policy - NO ACCESS
 ----------
 
 ----------  REMOVE EXISTING TABLE GRANTS
@@ -340,7 +406,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table app.license 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -348,39 +414,39 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
 ----------  CREATE NEW TABLE GRANTS
 
-----------  app_visitor
-  grant 
-    select , 
-    insert ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    update ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license 
-  to app_visitor;
-
-
-----------  app_anonymous
-  grant 
-    select , 
-    insert ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    update ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license 
-  to app_anonymous;
-
-
 ----------  IMPLIED TABLE GRANTS
 
   ----------  DENIED TABLE GRANTS
+
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license to app_super_admin;
+  --DENIED:   grant insert on table app.license to app_super_admin;
+  --DENIED:   grant update on table app.license to app_super_admin;
+  --DENIED:   grant delete on table app.license to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license to app_admin;
+  --DENIED:   grant insert on table app.license to app_admin;
+  --DENIED:   grant update on table app.license to app_admin;
+  --DENIED:   grant delete on table app.license to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license to app_user;
+  --DENIED:   grant insert on table app.license to app_user;
+  --DENIED:   grant update on table app.license to app_user;
+  --DENIED:   grant delete on table app.license to app_user;
+
+  ----------  app_anonymous
+  --DENIED:   grant select on table app.license to app_anonymous;
+  --DENIED:   grant insert on table app.license to app_anonymous;
+  --DENIED:   grant update on table app.license to app_anonymous;
+  --DENIED:   grant delete on table app.license to app_anonymous;
 
 ----------  END TABLE POLICY: app.license
 --==
 ----------
 ----------  BEGIN TABLE POLICY: app.license_type
-----------  POLICY NAME:  Default Table Policy - TOTAL EXPLICIT USER ACCESS
+----------  POLICY NAME:  Default Table Policy - NO ACCESS
 ----------
 
 ----------  REMOVE EXISTING TABLE GRANTS
@@ -391,7 +457,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table app.license_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -399,33 +465,33 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
 ----------  CREATE NEW TABLE GRANTS
 
-----------  app_visitor
-  grant 
-    select , 
-    insert ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    update ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license_type 
-  to app_visitor;
-
-
-----------  app_anonymous
-  grant 
-    select , 
-    insert ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    update ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license_type 
-  to app_anonymous;
-
-
 ----------  IMPLIED TABLE GRANTS
 
   ----------  DENIED TABLE GRANTS
+
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license_type to app_super_admin;
+  --DENIED:   grant insert on table app.license_type to app_super_admin;
+  --DENIED:   grant update on table app.license_type to app_super_admin;
+  --DENIED:   grant delete on table app.license_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license_type to app_admin;
+  --DENIED:   grant insert on table app.license_type to app_admin;
+  --DENIED:   grant update on table app.license_type to app_admin;
+  --DENIED:   grant delete on table app.license_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license_type to app_user;
+  --DENIED:   grant insert on table app.license_type to app_user;
+  --DENIED:   grant update on table app.license_type to app_user;
+  --DENIED:   grant delete on table app.license_type to app_user;
+
+  ----------  app_anonymous
+  --DENIED:   grant select on table app.license_type to app_anonymous;
+  --DENIED:   grant insert on table app.license_type to app_anonymous;
+  --DENIED:   grant update on table app.license_type to app_anonymous;
+  --DENIED:   grant delete on table app.license_type to app_anonymous;
 
 ----------  END TABLE POLICY: app.license_type
 --==
@@ -442,7 +508,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table app.license_permission 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -454,11 +520,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table app.license_permission to app_visitor;
-  --DENIED:   grant insert on table app.license_permission to app_visitor;
-  --DENIED:   grant update on table app.license_permission to app_visitor;
-  --DENIED:   grant delete on table app.license_permission to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license_permission to app_super_admin;
+  --DENIED:   grant insert on table app.license_permission to app_super_admin;
+  --DENIED:   grant update on table app.license_permission to app_super_admin;
+  --DENIED:   grant delete on table app.license_permission to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license_permission to app_admin;
+  --DENIED:   grant insert on table app.license_permission to app_admin;
+  --DENIED:   grant update on table app.license_permission to app_admin;
+  --DENIED:   grant delete on table app.license_permission to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license_permission to app_user;
+  --DENIED:   grant insert on table app.license_permission to app_user;
+  --DENIED:   grant update on table app.license_permission to app_user;
+  --DENIED:   grant delete on table app.license_permission to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table app.license_permission to app_anonymous;
@@ -481,7 +559,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table app.license_type_permission 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -493,11 +571,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table app.license_type_permission to app_visitor;
-  --DENIED:   grant insert on table app.license_type_permission to app_visitor;
-  --DENIED:   grant update on table app.license_type_permission to app_visitor;
-  --DENIED:   grant delete on table app.license_type_permission to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license_type_permission to app_super_admin;
+  --DENIED:   grant insert on table app.license_type_permission to app_super_admin;
+  --DENIED:   grant update on table app.license_type_permission to app_super_admin;
+  --DENIED:   grant delete on table app.license_type_permission to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license_type_permission to app_admin;
+  --DENIED:   grant insert on table app.license_type_permission to app_admin;
+  --DENIED:   grant update on table app.license_type_permission to app_admin;
+  --DENIED:   grant delete on table app.license_type_permission to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license_type_permission to app_user;
+  --DENIED:   grant insert on table app.license_type_permission to app_user;
+  --DENIED:   grant update on table app.license_type_permission to app_user;
+  --DENIED:   grant delete on table app.license_type_permission to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table app.license_type_permission to app_anonymous;
@@ -520,7 +610,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table app.application 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -532,11 +622,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table app.application to app_visitor;
-  --DENIED:   grant insert on table app.application to app_visitor;
-  --DENIED:   grant update on table app.application to app_visitor;
-  --DENIED:   grant delete on table app.application to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.application to app_super_admin;
+  --DENIED:   grant insert on table app.application to app_super_admin;
+  --DENIED:   grant update on table app.application to app_super_admin;
+  --DENIED:   grant delete on table app.application to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.application to app_admin;
+  --DENIED:   grant insert on table app.application to app_admin;
+  --DENIED:   grant update on table app.application to app_admin;
+  --DENIED:   grant delete on table app.application to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.application to app_user;
+  --DENIED:   grant insert on table app.application to app_user;
+  --DENIED:   grant update on table app.application to app_user;
+  --DENIED:   grant delete on table app.application to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table app.application to app_anonymous;
@@ -559,7 +661,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table auth.config_auth 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -571,11 +673,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.config_auth to app_visitor;
-  --DENIED:   grant insert on table auth.config_auth to app_visitor;
-  --DENIED:   grant update on table auth.config_auth to app_visitor;
-  --DENIED:   grant delete on table auth.config_auth to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.config_auth to app_super_admin;
+  --DENIED:   grant insert on table auth.config_auth to app_super_admin;
+  --DENIED:   grant update on table auth.config_auth to app_super_admin;
+  --DENIED:   grant delete on table auth.config_auth to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.config_auth to app_admin;
+  --DENIED:   grant insert on table auth.config_auth to app_admin;
+  --DENIED:   grant update on table auth.config_auth to app_admin;
+  --DENIED:   grant delete on table auth.config_auth to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.config_auth to app_user;
+  --DENIED:   grant insert on table auth.config_auth to app_user;
+  --DENIED:   grant update on table auth.config_auth to app_user;
+  --DENIED:   grant delete on table auth.config_auth to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.config_auth to app_anonymous;
@@ -598,7 +712,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table auth.token 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -610,11 +724,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.token to app_visitor;
-  --DENIED:   grant insert on table auth.token to app_visitor;
-  --DENIED:   grant update on table auth.token to app_visitor;
-  --DENIED:   grant delete on table auth.token to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.token to app_super_admin;
+  --DENIED:   grant insert on table auth.token to app_super_admin;
+  --DENIED:   grant update on table auth.token to app_super_admin;
+  --DENIED:   grant delete on table auth.token to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.token to app_admin;
+  --DENIED:   grant insert on table auth.token to app_admin;
+  --DENIED:   grant update on table auth.token to app_admin;
+  --DENIED:   grant delete on table auth.token to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.token to app_user;
+  --DENIED:   grant insert on table auth.token to app_user;
+  --DENIED:   grant update on table auth.token to app_user;
+  --DENIED:   grant delete on table auth.token to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.token to app_anonymous;
@@ -637,7 +763,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table auth.permission 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -649,11 +775,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.permission to app_visitor;
-  --DENIED:   grant insert on table auth.permission to app_visitor;
-  --DENIED:   grant update on table auth.permission to app_visitor;
-  --DENIED:   grant delete on table auth.permission to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.permission to app_super_admin;
+  --DENIED:   grant insert on table auth.permission to app_super_admin;
+  --DENIED:   grant update on table auth.permission to app_super_admin;
+  --DENIED:   grant delete on table auth.permission to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.permission to app_admin;
+  --DENIED:   grant insert on table auth.permission to app_admin;
+  --DENIED:   grant update on table auth.permission to app_admin;
+  --DENIED:   grant delete on table auth.permission to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.permission to app_user;
+  --DENIED:   grant insert on table auth.permission to app_user;
+  --DENIED:   grant update on table auth.permission to app_user;
+  --DENIED:   grant delete on table auth.permission to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.permission to app_anonymous;
@@ -676,7 +814,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table auth.app_user 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -688,11 +826,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.app_user to app_visitor;
-  --DENIED:   grant insert on table auth.app_user to app_visitor;
-  --DENIED:   grant update on table auth.app_user to app_visitor;
-  --DENIED:   grant delete on table auth.app_user to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.app_user to app_super_admin;
+  --DENIED:   grant insert on table auth.app_user to app_super_admin;
+  --DENIED:   grant update on table auth.app_user to app_super_admin;
+  --DENIED:   grant delete on table auth.app_user to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.app_user to app_admin;
+  --DENIED:   grant insert on table auth.app_user to app_admin;
+  --DENIED:   grant update on table auth.app_user to app_admin;
+  --DENIED:   grant delete on table auth.app_user to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.app_user to app_user;
+  --DENIED:   grant insert on table auth.app_user to app_user;
+  --DENIED:   grant update on table auth.app_user to app_user;
+  --DENIED:   grant delete on table auth.app_user to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.app_user to app_anonymous;
@@ -715,7 +865,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table auth.app_tenant 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -727,11 +877,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.app_tenant to app_visitor;
-  --DENIED:   grant insert on table auth.app_tenant to app_visitor;
-  --DENIED:   grant update on table auth.app_tenant to app_visitor;
-  --DENIED:   grant delete on table auth.app_tenant to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.app_tenant to app_super_admin;
+  --DENIED:   grant insert on table auth.app_tenant to app_super_admin;
+  --DENIED:   grant update on table auth.app_tenant to app_super_admin;
+  --DENIED:   grant delete on table auth.app_tenant to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.app_tenant to app_admin;
+  --DENIED:   grant insert on table auth.app_tenant to app_admin;
+  --DENIED:   grant update on table auth.app_tenant to app_admin;
+  --DENIED:   grant delete on table auth.app_tenant to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.app_tenant to app_user;
+  --DENIED:   grant insert on table auth.app_tenant to app_user;
+  --DENIED:   grant update on table auth.app_tenant to app_user;
+  --DENIED:   grant delete on table auth.app_tenant to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.app_tenant to app_anonymous;
@@ -754,7 +916,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.inventory_lot 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -766,11 +928,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.inventory_lot to app_visitor;
-  --DENIED:   grant insert on table lcb.inventory_lot to app_visitor;
-  --DENIED:   grant update on table lcb.inventory_lot to app_visitor;
-  --DENIED:   grant delete on table lcb.inventory_lot to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.inventory_lot to app_super_admin;
+  --DENIED:   grant insert on table lcb.inventory_lot to app_super_admin;
+  --DENIED:   grant update on table lcb.inventory_lot to app_super_admin;
+  --DENIED:   grant delete on table lcb.inventory_lot to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.inventory_lot to app_admin;
+  --DENIED:   grant insert on table lcb.inventory_lot to app_admin;
+  --DENIED:   grant update on table lcb.inventory_lot to app_admin;
+  --DENIED:   grant delete on table lcb.inventory_lot to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.inventory_lot to app_user;
+  --DENIED:   grant insert on table lcb.inventory_lot to app_user;
+  --DENIED:   grant update on table lcb.inventory_lot to app_user;
+  --DENIED:   grant delete on table lcb.inventory_lot to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.inventory_lot to app_anonymous;
@@ -793,7 +967,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.batch 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -805,11 +979,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.batch to app_visitor;
-  --DENIED:   grant insert on table lcb.batch to app_visitor;
-  --DENIED:   grant update on table lcb.batch to app_visitor;
-  --DENIED:   grant delete on table lcb.batch to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.batch to app_super_admin;
+  --DENIED:   grant insert on table lcb.batch to app_super_admin;
+  --DENIED:   grant update on table lcb.batch to app_super_admin;
+  --DENIED:   grant delete on table lcb.batch to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.batch to app_admin;
+  --DENIED:   grant insert on table lcb.batch to app_admin;
+  --DENIED:   grant update on table lcb.batch to app_admin;
+  --DENIED:   grant delete on table lcb.batch to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.batch to app_user;
+  --DENIED:   grant insert on table lcb.batch to app_user;
+  --DENIED:   grant update on table lcb.batch to app_user;
+  --DENIED:   grant delete on table lcb.batch to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.batch to app_anonymous;
@@ -832,7 +1018,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.strain 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -844,11 +1030,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.strain to app_visitor;
-  --DENIED:   grant insert on table lcb.strain to app_visitor;
-  --DENIED:   grant update on table lcb.strain to app_visitor;
-  --DENIED:   grant delete on table lcb.strain to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.strain to app_super_admin;
+  --DENIED:   grant insert on table lcb.strain to app_super_admin;
+  --DENIED:   grant update on table lcb.strain to app_super_admin;
+  --DENIED:   grant delete on table lcb.strain to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.strain to app_admin;
+  --DENIED:   grant insert on table lcb.strain to app_admin;
+  --DENIED:   grant update on table lcb.strain to app_admin;
+  --DENIED:   grant delete on table lcb.strain to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.strain to app_user;
+  --DENIED:   grant insert on table lcb.strain to app_user;
+  --DENIED:   grant update on table lcb.strain to app_user;
+  --DENIED:   grant delete on table lcb.strain to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.strain to app_anonymous;
@@ -871,7 +1069,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.lcb_license 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -883,11 +1081,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.lcb_license to app_visitor;
-  --DENIED:   grant insert on table lcb.lcb_license to app_visitor;
-  --DENIED:   grant update on table lcb.lcb_license to app_visitor;
-  --DENIED:   grant delete on table lcb.lcb_license to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.lcb_license to app_super_admin;
+  --DENIED:   grant insert on table lcb.lcb_license to app_super_admin;
+  --DENIED:   grant update on table lcb.lcb_license to app_super_admin;
+  --DENIED:   grant delete on table lcb.lcb_license to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.lcb_license to app_admin;
+  --DENIED:   grant insert on table lcb.lcb_license to app_admin;
+  --DENIED:   grant update on table lcb.lcb_license to app_admin;
+  --DENIED:   grant delete on table lcb.lcb_license to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.lcb_license to app_user;
+  --DENIED:   grant insert on table lcb.lcb_license to app_user;
+  --DENIED:   grant update on table lcb.lcb_license to app_user;
+  --DENIED:   grant delete on table lcb.lcb_license to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.lcb_license to app_anonymous;
@@ -910,7 +1120,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.conversion 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -922,11 +1132,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.conversion to app_visitor;
-  --DENIED:   grant insert on table lcb.conversion to app_visitor;
-  --DENIED:   grant update on table lcb.conversion to app_visitor;
-  --DENIED:   grant delete on table lcb.conversion to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.conversion to app_super_admin;
+  --DENIED:   grant insert on table lcb.conversion to app_super_admin;
+  --DENIED:   grant update on table lcb.conversion to app_super_admin;
+  --DENIED:   grant delete on table lcb.conversion to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.conversion to app_admin;
+  --DENIED:   grant insert on table lcb.conversion to app_admin;
+  --DENIED:   grant update on table lcb.conversion to app_admin;
+  --DENIED:   grant delete on table lcb.conversion to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.conversion to app_user;
+  --DENIED:   grant insert on table lcb.conversion to app_user;
+  --DENIED:   grant update on table lcb.conversion to app_user;
+  --DENIED:   grant delete on table lcb.conversion to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.conversion to app_anonymous;
@@ -949,7 +1171,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.recipe 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -961,11 +1183,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.recipe to app_visitor;
-  --DENIED:   grant insert on table lcb.recipe to app_visitor;
-  --DENIED:   grant update on table lcb.recipe to app_visitor;
-  --DENIED:   grant delete on table lcb.recipe to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.recipe to app_super_admin;
+  --DENIED:   grant insert on table lcb.recipe to app_super_admin;
+  --DENIED:   grant update on table lcb.recipe to app_super_admin;
+  --DENIED:   grant delete on table lcb.recipe to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.recipe to app_admin;
+  --DENIED:   grant insert on table lcb.recipe to app_admin;
+  --DENIED:   grant update on table lcb.recipe to app_admin;
+  --DENIED:   grant delete on table lcb.recipe to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.recipe to app_user;
+  --DENIED:   grant insert on table lcb.recipe to app_user;
+  --DENIED:   grant update on table lcb.recipe to app_user;
+  --DENIED:   grant delete on table lcb.recipe to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.recipe to app_anonymous;
@@ -988,7 +1222,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.conversion_source 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1000,11 +1234,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.conversion_source to app_visitor;
-  --DENIED:   grant insert on table lcb.conversion_source to app_visitor;
-  --DENIED:   grant update on table lcb.conversion_source to app_visitor;
-  --DENIED:   grant delete on table lcb.conversion_source to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.conversion_source to app_super_admin;
+  --DENIED:   grant insert on table lcb.conversion_source to app_super_admin;
+  --DENIED:   grant update on table lcb.conversion_source to app_super_admin;
+  --DENIED:   grant delete on table lcb.conversion_source to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.conversion_source to app_admin;
+  --DENIED:   grant insert on table lcb.conversion_source to app_admin;
+  --DENIED:   grant update on table lcb.conversion_source to app_admin;
+  --DENIED:   grant delete on table lcb.conversion_source to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.conversion_source to app_user;
+  --DENIED:   grant insert on table lcb.conversion_source to app_user;
+  --DENIED:   grant update on table lcb.conversion_source to app_user;
+  --DENIED:   grant delete on table lcb.conversion_source to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.conversion_source to app_anonymous;
@@ -1027,7 +1273,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.lcb_license_holder 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1039,11 +1285,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.lcb_license_holder to app_visitor;
-  --DENIED:   grant insert on table lcb.lcb_license_holder to app_visitor;
-  --DENIED:   grant update on table lcb.lcb_license_holder to app_visitor;
-  --DENIED:   grant delete on table lcb.lcb_license_holder to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.lcb_license_holder to app_super_admin;
+  --DENIED:   grant insert on table lcb.lcb_license_holder to app_super_admin;
+  --DENIED:   grant update on table lcb.lcb_license_holder to app_super_admin;
+  --DENIED:   grant delete on table lcb.lcb_license_holder to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.lcb_license_holder to app_admin;
+  --DENIED:   grant insert on table lcb.lcb_license_holder to app_admin;
+  --DENIED:   grant update on table lcb.lcb_license_holder to app_admin;
+  --DENIED:   grant delete on table lcb.lcb_license_holder to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.lcb_license_holder to app_user;
+  --DENIED:   grant insert on table lcb.lcb_license_holder to app_user;
+  --DENIED:   grant update on table lcb.lcb_license_holder to app_user;
+  --DENIED:   grant delete on table lcb.lcb_license_holder to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.lcb_license_holder to app_anonymous;
@@ -1066,7 +1324,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.area 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1078,11 +1336,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.area to app_visitor;
-  --DENIED:   grant insert on table lcb.area to app_visitor;
-  --DENIED:   grant update on table lcb.area to app_visitor;
-  --DENIED:   grant delete on table lcb.area to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.area to app_super_admin;
+  --DENIED:   grant insert on table lcb.area to app_super_admin;
+  --DENIED:   grant update on table lcb.area to app_super_admin;
+  --DENIED:   grant delete on table lcb.area to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.area to app_admin;
+  --DENIED:   grant insert on table lcb.area to app_admin;
+  --DENIED:   grant update on table lcb.area to app_admin;
+  --DENIED:   grant delete on table lcb.area to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.area to app_user;
+  --DENIED:   grant insert on table lcb.area to app_user;
+  --DENIED:   grant update on table lcb.area to app_user;
+  --DENIED:   grant delete on table lcb.area to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.area to app_anonymous;
@@ -1105,7 +1375,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.manifest_item 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1117,11 +1387,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.manifest_item to app_visitor;
-  --DENIED:   grant insert on table lcb.manifest_item to app_visitor;
-  --DENIED:   grant update on table lcb.manifest_item to app_visitor;
-  --DENIED:   grant delete on table lcb.manifest_item to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.manifest_item to app_super_admin;
+  --DENIED:   grant insert on table lcb.manifest_item to app_super_admin;
+  --DENIED:   grant update on table lcb.manifest_item to app_super_admin;
+  --DENIED:   grant delete on table lcb.manifest_item to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.manifest_item to app_admin;
+  --DENIED:   grant insert on table lcb.manifest_item to app_admin;
+  --DENIED:   grant update on table lcb.manifest_item to app_admin;
+  --DENIED:   grant delete on table lcb.manifest_item to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.manifest_item to app_user;
+  --DENIED:   grant insert on table lcb.manifest_item to app_user;
+  --DENIED:   grant update on table lcb.manifest_item to app_user;
+  --DENIED:   grant delete on table lcb.manifest_item to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.manifest_item to app_anonymous;
@@ -1144,7 +1426,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.manifest 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1156,11 +1438,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.manifest to app_visitor;
-  --DENIED:   grant insert on table lcb.manifest to app_visitor;
-  --DENIED:   grant update on table lcb.manifest to app_visitor;
-  --DENIED:   grant delete on table lcb.manifest to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.manifest to app_super_admin;
+  --DENIED:   grant insert on table lcb.manifest to app_super_admin;
+  --DENIED:   grant update on table lcb.manifest to app_super_admin;
+  --DENIED:   grant delete on table lcb.manifest to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.manifest to app_admin;
+  --DENIED:   grant insert on table lcb.manifest to app_admin;
+  --DENIED:   grant update on table lcb.manifest to app_admin;
+  --DENIED:   grant delete on table lcb.manifest to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.manifest to app_user;
+  --DENIED:   grant insert on table lcb.manifest to app_user;
+  --DENIED:   grant update on table lcb.manifest to app_user;
+  --DENIED:   grant delete on table lcb.manifest to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.manifest to app_anonymous;
@@ -1183,7 +1477,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb.qa_result 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1195,11 +1489,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.qa_result to app_visitor;
-  --DENIED:   grant insert on table lcb.qa_result to app_visitor;
-  --DENIED:   grant update on table lcb.qa_result to app_visitor;
-  --DENIED:   grant delete on table lcb.qa_result to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.qa_result to app_super_admin;
+  --DENIED:   grant insert on table lcb.qa_result to app_super_admin;
+  --DENIED:   grant update on table lcb.qa_result to app_super_admin;
+  --DENIED:   grant delete on table lcb.qa_result to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.qa_result to app_admin;
+  --DENIED:   grant insert on table lcb.qa_result to app_admin;
+  --DENIED:   grant update on table lcb.qa_result to app_admin;
+  --DENIED:   grant delete on table lcb.qa_result to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.qa_result to app_user;
+  --DENIED:   grant insert on table lcb.qa_result to app_user;
+  --DENIED:   grant update on table lcb.qa_result to app_user;
+  --DENIED:   grant delete on table lcb.qa_result to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.qa_result to app_anonymous;
@@ -1222,7 +1528,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_hist.hist_inventory_lot 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1234,11 +1540,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_visitor;
-  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_visitor;
-  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_visitor;
-  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_super_admin;
+  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_super_admin;
+  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_super_admin;
+  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_admin;
+  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_admin;
+  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_admin;
+  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_user;
+  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_user;
+  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_user;
+  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_anonymous;
@@ -1261,7 +1579,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.lcb_license_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1273,11 +1591,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_visitor;
-  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_user;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_user;
+  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_user;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.lcb_license_type to app_anonymous;
@@ -1300,7 +1630,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.conversion_rule 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1312,11 +1642,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.conversion_rule to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_visitor;
-  --DENIED:   grant update on table lcb_ref.conversion_rule to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule to app_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule to app_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.conversion_rule to app_user;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_user;
+  --DENIED:   grant update on table lcb_ref.conversion_rule to app_user;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.conversion_rule to app_anonymous;
@@ -1339,7 +1681,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.conversion_rule_source 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1351,11 +1693,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_visitor;
-  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_user;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_user;
+  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_user;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_anonymous;
@@ -1378,7 +1732,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.manifest_status 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1390,11 +1744,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.manifest_status to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.manifest_status to app_visitor;
-  --DENIED:   grant update on table lcb_ref.manifest_status to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.manifest_status to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.manifest_status to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.manifest_status to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.manifest_status to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.manifest_status to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.manifest_status to app_admin;
+  --DENIED:   grant insert on table lcb_ref.manifest_status to app_admin;
+  --DENIED:   grant update on table lcb_ref.manifest_status to app_admin;
+  --DENIED:   grant delete on table lcb_ref.manifest_status to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.manifest_status to app_user;
+  --DENIED:   grant insert on table lcb_ref.manifest_status to app_user;
+  --DENIED:   grant update on table lcb_ref.manifest_status to app_user;
+  --DENIED:   grant delete on table lcb_ref.manifest_status to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.manifest_status to app_anonymous;
@@ -1417,7 +1783,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.inventory_lot_reporting_status 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1429,11 +1795,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_visitor;
-  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_user;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_user;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_user;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_anonymous;
@@ -1456,7 +1834,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.inventory_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1468,11 +1846,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.inventory_type to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.inventory_type to app_visitor;
-  --DENIED:   grant update on table lcb_ref.inventory_type to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.inventory_type to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.inventory_type to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_type to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_type to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.inventory_type to app_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_type to app_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_type to app_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.inventory_type to app_user;
+  --DENIED:   grant insert on table lcb_ref.inventory_type to app_user;
+  --DENIED:   grant update on table lcb_ref.inventory_type to app_user;
+  --DENIED:   grant delete on table lcb_ref.inventory_type to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.inventory_type to app_anonymous;
@@ -1495,7 +1885,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.lcb_license_holder_status 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1507,11 +1897,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_visitor;
-  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_user;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_user;
+  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_user;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_anonymous;
@@ -1534,7 +1936,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table lcb_ref.inventory_lot_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1546,11 +1948,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_visitor;
-  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_user;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_user;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_user;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_anonymous;
@@ -1573,7 +1987,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table org.organization 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1585,11 +1999,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.organization to app_visitor;
-  --DENIED:   grant insert on table org.organization to app_visitor;
-  --DENIED:   grant update on table org.organization to app_visitor;
-  --DENIED:   grant delete on table org.organization to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.organization to app_super_admin;
+  --DENIED:   grant insert on table org.organization to app_super_admin;
+  --DENIED:   grant update on table org.organization to app_super_admin;
+  --DENIED:   grant delete on table org.organization to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.organization to app_admin;
+  --DENIED:   grant insert on table org.organization to app_admin;
+  --DENIED:   grant update on table org.organization to app_admin;
+  --DENIED:   grant delete on table org.organization to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.organization to app_user;
+  --DENIED:   grant insert on table org.organization to app_user;
+  --DENIED:   grant update on table org.organization to app_user;
+  --DENIED:   grant delete on table org.organization to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.organization to app_anonymous;
@@ -1612,7 +2038,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table org.facility 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1624,11 +2050,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.facility to app_visitor;
-  --DENIED:   grant insert on table org.facility to app_visitor;
-  --DENIED:   grant update on table org.facility to app_visitor;
-  --DENIED:   grant delete on table org.facility to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.facility to app_super_admin;
+  --DENIED:   grant insert on table org.facility to app_super_admin;
+  --DENIED:   grant update on table org.facility to app_super_admin;
+  --DENIED:   grant delete on table org.facility to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.facility to app_admin;
+  --DENIED:   grant insert on table org.facility to app_admin;
+  --DENIED:   grant update on table org.facility to app_admin;
+  --DENIED:   grant delete on table org.facility to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.facility to app_user;
+  --DENIED:   grant insert on table org.facility to app_user;
+  --DENIED:   grant update on table org.facility to app_user;
+  --DENIED:   grant delete on table org.facility to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.facility to app_anonymous;
@@ -1651,7 +2089,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table org.config_org 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1663,11 +2101,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.config_org to app_visitor;
-  --DENIED:   grant insert on table org.config_org to app_visitor;
-  --DENIED:   grant update on table org.config_org to app_visitor;
-  --DENIED:   grant delete on table org.config_org to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.config_org to app_super_admin;
+  --DENIED:   grant insert on table org.config_org to app_super_admin;
+  --DENIED:   grant update on table org.config_org to app_super_admin;
+  --DENIED:   grant delete on table org.config_org to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.config_org to app_admin;
+  --DENIED:   grant insert on table org.config_org to app_admin;
+  --DENIED:   grant update on table org.config_org to app_admin;
+  --DENIED:   grant delete on table org.config_org to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.config_org to app_user;
+  --DENIED:   grant insert on table org.config_org to app_user;
+  --DENIED:   grant update on table org.config_org to app_user;
+  --DENIED:   grant delete on table org.config_org to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.config_org to app_anonymous;
@@ -1690,7 +2140,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table org.contact 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1702,11 +2152,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.contact to app_visitor;
-  --DENIED:   grant insert on table org.contact to app_visitor;
-  --DENIED:   grant update on table org.contact to app_visitor;
-  --DENIED:   grant delete on table org.contact to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.contact to app_super_admin;
+  --DENIED:   grant insert on table org.contact to app_super_admin;
+  --DENIED:   grant update on table org.contact to app_super_admin;
+  --DENIED:   grant delete on table org.contact to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.contact to app_admin;
+  --DENIED:   grant insert on table org.contact to app_admin;
+  --DENIED:   grant update on table org.contact to app_admin;
+  --DENIED:   grant delete on table org.contact to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.contact to app_user;
+  --DENIED:   grant insert on table org.contact to app_user;
+  --DENIED:   grant update on table org.contact to app_user;
+  --DENIED:   grant delete on table org.contact to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.contact to app_anonymous;
@@ -1729,7 +2191,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table org.contact_app_user 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1741,11 +2203,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.contact_app_user to app_visitor;
-  --DENIED:   grant insert on table org.contact_app_user to app_visitor;
-  --DENIED:   grant update on table org.contact_app_user to app_visitor;
-  --DENIED:   grant delete on table org.contact_app_user to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.contact_app_user to app_super_admin;
+  --DENIED:   grant insert on table org.contact_app_user to app_super_admin;
+  --DENIED:   grant update on table org.contact_app_user to app_super_admin;
+  --DENIED:   grant delete on table org.contact_app_user to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.contact_app_user to app_admin;
+  --DENIED:   grant insert on table org.contact_app_user to app_admin;
+  --DENIED:   grant update on table org.contact_app_user to app_admin;
+  --DENIED:   grant delete on table org.contact_app_user to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.contact_app_user to app_user;
+  --DENIED:   grant insert on table org.contact_app_user to app_user;
+  --DENIED:   grant update on table org.contact_app_user to app_user;
+  --DENIED:   grant delete on table org.contact_app_user to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.contact_app_user to app_anonymous;
@@ -1768,7 +2242,7 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on table org.location 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1780,11 +2254,23 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.location to app_visitor;
-  --DENIED:   grant insert on table org.location to app_visitor;
-  --DENIED:   grant update on table org.location to app_visitor;
-  --DENIED:   grant delete on table org.location to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.location to app_super_admin;
+  --DENIED:   grant insert on table org.location to app_super_admin;
+  --DENIED:   grant update on table org.location to app_super_admin;
+  --DENIED:   grant delete on table org.location to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.location to app_admin;
+  --DENIED:   grant insert on table org.location to app_admin;
+  --DENIED:   grant update on table org.location to app_admin;
+  --DENIED:   grant delete on table org.location to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.location to app_user;
+  --DENIED:   grant insert on table org.location to app_user;
+  --DENIED:   grant update on table org.location to app_user;
+  --DENIED:   grant delete on table org.location to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.location to app_anonymous;
@@ -1812,13 +2298,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function app.fn_timestamp_update_application () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_visitor;
+  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_super_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_user;
   --DENIED:   grant execute on function app.fn_timestamp_update_application () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_application ()
 --==
@@ -1837,13 +2325,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function app.fn_timestamp_update_license () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_visitor;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_super_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_user;
   --DENIED:   grant execute on function app.fn_timestamp_update_license () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license ()
 --==
@@ -1862,13 +2352,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function app.fn_timestamp_update_license_permission () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_visitor;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_super_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_user;
   --DENIED:   grant execute on function app.fn_timestamp_update_license_permission () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license_permission ()
 --==
@@ -1887,13 +2379,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function app.fn_timestamp_update_license_type () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_visitor;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_super_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_user;
   --DENIED:   grant execute on function app.fn_timestamp_update_license_type () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license_type ()
 --==
@@ -1912,13 +2406,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function app.fn_timestamp_update_license_type_permission () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_visitor;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_super_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_admin;
+  --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_user;
   --DENIED:   grant execute on function app.fn_timestamp_update_license_type_permission () to app_anonymous;
 ----------  END FUNCTION POLICY: app.fn_timestamp_update_license_type_permission ()
 --==
@@ -1937,13 +2433,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth.fn_timestamp_update_app_tenant () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_visitor;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_super_admin;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_admin;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_user;
   --DENIED:   grant execute on function auth.fn_timestamp_update_app_tenant () to app_anonymous;
 ----------  END FUNCTION POLICY: auth.fn_timestamp_update_app_tenant ()
 --==
@@ -1962,13 +2460,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth.fn_timestamp_update_app_user () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_visitor;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_super_admin;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_admin;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_user;
   --DENIED:   grant execute on function auth.fn_timestamp_update_app_user () to app_anonymous;
 ----------  END FUNCTION POLICY: auth.fn_timestamp_update_app_user ()
 --==
@@ -1987,13 +2487,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth.fn_timestamp_update_permission () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_visitor;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_super_admin;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_admin;
+  --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_user;
   --DENIED:   grant execute on function auth.fn_timestamp_update_permission () to app_anonymous;
 ----------  END FUNCTION POLICY: auth.fn_timestamp_update_permission ()
 --==
@@ -2012,13 +2514,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.app_user_has_access (text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_visitor;
+  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_admin;
+  --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_user;
   --DENIED:   grant execute on function auth_fn.app_user_has_access (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.app_user_has_access (text,text)
 --==
@@ -2037,13 +2541,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.authenticate (text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_visitor;
+  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_admin;
+  --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_user;
   --DENIED:   grant execute on function auth_fn.authenticate (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.authenticate (text,text)
 --==
@@ -2062,13 +2568,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.build_app_tenant (text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_visitor;
+  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_admin;
+  --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_user;
   --DENIED:   grant execute on function auth_fn.build_app_tenant (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.build_app_tenant (text,text)
 --==
@@ -2087,13 +2595,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_visitor;
+  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_admin;
+  --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_user;
   --DENIED:   grant execute on function auth_fn.build_app_user (text,text,text,text,auth.permission_key) to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.build_app_user (text,text,text,text,auth.permission_key)
 --==
@@ -2112,13 +2622,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.current_app_tenant_id () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_visitor;
+  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_admin;
+  --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_user;
   --DENIED:   grant execute on function auth_fn.current_app_tenant_id () to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.current_app_tenant_id ()
 --==
@@ -2137,13 +2649,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.current_app_user () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.current_app_user () to app_visitor;
+  --DENIED:   grant execute on function auth_fn.current_app_user () to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.current_app_user () to app_admin;
+  --DENIED:   grant execute on function auth_fn.current_app_user () to app_user;
   --DENIED:   grant execute on function auth_fn.current_app_user () to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.current_app_user ()
 --==
@@ -2162,13 +2676,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function auth_fn.current_app_user_id () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_visitor;
+  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_super_admin;
+  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_admin;
+  --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_user;
   --DENIED:   grant execute on function auth_fn.current_app_user_id () to app_anonymous;
 ----------  END FUNCTION POLICY: auth_fn.current_app_user_id ()
 --==
@@ -2187,13 +2703,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_conversion () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_conversion ()
 --==
@@ -2212,13 +2730,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_conversion_source () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_conversion_source () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_conversion_source ()
 --==
@@ -2237,13 +2757,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_inventory_lot () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_inventory_lot () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_inventory_lot ()
 --==
@@ -2262,13 +2784,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_lcb_license () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_lcb_license ()
 --==
@@ -2287,13 +2811,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_lcb_license_holder () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_lcb_license_holder () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_lcb_license_holder ()
 --==
@@ -2312,13 +2838,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_manifest () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_manifest ()
 --==
@@ -2337,13 +2865,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_manifest_item () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_manifest_item () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_manifest_item ()
 --==
@@ -2362,13 +2892,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb.fn_timestamp_update_recipe () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_visitor;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_super_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_admin;
+  --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_user;
   --DENIED:   grant execute on function lcb.fn_timestamp_update_recipe () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb.fn_timestamp_update_recipe ()
 --==
@@ -2387,13 +2919,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.convert_inventory (text,lcb_fn.convert_inventory_source_input[],lcb_fn.convert_inventory_result_input[])
 --==
@@ -2412,13 +2946,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.create_xfer_manifest (text,timestamptz,text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.create_xfer_manifest (text,timestamptz,text[])
 --==
@@ -2437,13 +2973,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.deplete_inventory_lot_ids (text[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.deplete_inventory_lot_ids (text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.deplete_inventory_lot_ids (text[])
 --==
@@ -2462,13 +3000,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.destroy_inventory_lot_ids (text[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.destroy_inventory_lot_ids (text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.destroy_inventory_lot_ids (text[])
 --==
@@ -2487,13 +3027,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.get_currrent_lcb_license_holder_id () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_admin;
+  --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_user;
   --DENIED:   grant execute on function lcb_fn.get_currrent_lcb_license_holder_id () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.get_currrent_lcb_license_holder_id ()
 --==
@@ -2512,13 +3054,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.invalidate_inventory_lot_ids (text[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.invalidate_inventory_lot_ids (text[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.invalidate_inventory_lot_ids (text[])
 --==
@@ -2537,13 +3081,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.provision_inventory_lot_ids (text,integer) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_user;
   --DENIED:   grant execute on function lcb_fn.provision_inventory_lot_ids (text,integer) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.provision_inventory_lot_ids (text,integer)
 --==
@@ -2562,13 +3108,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.qa_sample_inventory (text,lcb_fn.qa_sample_inventory_input[])
 --==
@@ -2587,13 +3135,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.report_inventory_lot (lcb_fn.report_inventory_lot_input[])
 --==
@@ -2612,13 +3162,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.rt_sample_inventory (text,lcb_fn.rt_sample_inventory_input[])
 --==
@@ -2637,13 +3189,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.strain_inventory_type_lot_counts () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_admin;
+  --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_user;
   --DENIED:   grant execute on function lcb_fn.strain_inventory_type_lot_counts () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.strain_inventory_type_lot_counts ()
 --==
@@ -2662,13 +3216,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_visitor;
+  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_super_admin;
+  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_admin;
+  --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_user;
   --DENIED:   grant execute on function lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[]) to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_fn.sublot_inventory (text,lcb_fn.sublot_inventory_input[])
 --==
@@ -2687,13 +3243,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function lcb_hist.fn_capture_hist_inventory_lot () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_visitor;
+  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_super_admin;
+  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_admin;
+  --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_user;
   --DENIED:   grant execute on function lcb_hist.fn_capture_hist_inventory_lot () to app_anonymous;
 ----------  END FUNCTION POLICY: lcb_hist.fn_capture_hist_inventory_lot ()
 --==
@@ -2712,13 +3270,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org.fn_timestamp_update_contact () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_visitor;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_super_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_user;
   --DENIED:   grant execute on function org.fn_timestamp_update_contact () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_contact ()
 --==
@@ -2737,13 +3297,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org.fn_timestamp_update_contact_app_user () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_visitor;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_super_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_user;
   --DENIED:   grant execute on function org.fn_timestamp_update_contact_app_user () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_contact_app_user ()
 --==
@@ -2762,13 +3324,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org.fn_timestamp_update_facility () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_visitor;
+  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_super_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_user;
   --DENIED:   grant execute on function org.fn_timestamp_update_facility () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_facility ()
 --==
@@ -2787,13 +3351,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org.fn_timestamp_update_location () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_visitor;
+  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_super_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_user;
   --DENIED:   grant execute on function org.fn_timestamp_update_location () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_location ()
 --==
@@ -2812,13 +3378,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org.fn_timestamp_update_organization () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_visitor;
+  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_super_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_admin;
+  --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_user;
   --DENIED:   grant execute on function org.fn_timestamp_update_organization () to app_anonymous;
 ----------  END FUNCTION POLICY: org.fn_timestamp_update_organization ()
 --==
@@ -2837,13 +3405,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_contact (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_contact (text,text,text,text,text,text,text,text,text)
 --==
@@ -2862,13 +3432,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_contact_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_contact_location (text,text,text,text,text,text,text,text,text)
 --==
@@ -2887,13 +3459,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_facility (text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_facility (text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_facility (text,text,text)
 --==
@@ -2912,13 +3486,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_facility_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_facility_location (text,text,text,text,text,text,text,text,text)
 --==
@@ -2937,13 +3513,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_location (text,text,text,text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_location (text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_location (text,text,text,text,text,text,text,text)
 --==
@@ -2962,13 +3540,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_organization (text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_organization (text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_organization (text,text)
 --==
@@ -2987,13 +3567,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_organization_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_organization_location (text,text,text,text,text,text,text,text,text)
 --==
@@ -3012,13 +3594,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.build_tenant_organization (text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.build_tenant_organization (text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.build_tenant_organization (text,text,text,text,text)
 --==
@@ -3037,13 +3621,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.current_app_user_contact () 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_visitor;
+  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_super_admin;
+  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_admin;
+  --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_user;
   --DENIED:   grant execute on function org_fn.current_app_user_contact () to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.current_app_user_contact ()
 --==
@@ -3062,13 +3648,15 @@ GRANT USAGE ON SCHEMA public TO app_authenticator;
 
   revoke all privileges 
   on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  IMPLIED FUNCTION GRANTS
 
   ----------  DENIED TABLE GRANTS
-  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_visitor;
+  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_super_admin;
+  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_admin;
+  --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_user;
   --DENIED:   grant execute on function org_fn.modify_location (text,text,text,text,text,text,text,text,text) to app_anonymous;
 ----------  END FUNCTION POLICY: org_fn.modify_location (text,text,text,text,text,text,text,text,text)
 --==

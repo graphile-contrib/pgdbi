@@ -1,7 +1,7 @@
 
 ----------
 ----------  BEGIN TABLE POLICY: app.license
-----------  POLICY NAME:  Default Table Policy - TOTAL EXPLICIT USER ACCESS
+----------  POLICY NAME:  Default Table Policy - NO ACCESS
 ----------
 
 ----------  REMOVE EXISTING TABLE GRANTS
@@ -12,7 +12,7 @@
 
   revoke all privileges 
   on table app.license 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -20,39 +20,39 @@
 
 ----------  CREATE NEW TABLE GRANTS
 
-----------  app_visitor
-  grant 
-    select , 
-    insert ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    update ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license 
-  to app_visitor;
-
-
-----------  app_anonymous
-  grant 
-    select , 
-    insert ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    update ( id, app_tenant_id, created_at, updated_at, external_id, name, license_type_id, assigned_to_app_user_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license 
-  to app_anonymous;
-
-
 ----------  IMPLIED TABLE GRANTS
 
   ----------  DENIED TABLE GRANTS
+
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license to app_super_admin;
+  --DENIED:   grant insert on table app.license to app_super_admin;
+  --DENIED:   grant update on table app.license to app_super_admin;
+  --DENIED:   grant delete on table app.license to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license to app_admin;
+  --DENIED:   grant insert on table app.license to app_admin;
+  --DENIED:   grant update on table app.license to app_admin;
+  --DENIED:   grant delete on table app.license to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license to app_user;
+  --DENIED:   grant insert on table app.license to app_user;
+  --DENIED:   grant update on table app.license to app_user;
+  --DENIED:   grant delete on table app.license to app_user;
+
+  ----------  app_anonymous
+  --DENIED:   grant select on table app.license to app_anonymous;
+  --DENIED:   grant insert on table app.license to app_anonymous;
+  --DENIED:   grant update on table app.license to app_anonymous;
+  --DENIED:   grant delete on table app.license to app_anonymous;
 
 ----------  END TABLE POLICY: app.license
 --==
 ----------
 ----------  BEGIN TABLE POLICY: app.license_type
-----------  POLICY NAME:  Default Table Policy - TOTAL EXPLICIT USER ACCESS
+----------  POLICY NAME:  Default Table Policy - NO ACCESS
 ----------
 
 ----------  REMOVE EXISTING TABLE GRANTS
@@ -63,7 +63,7 @@
 
   revoke all privileges 
   on table app.license_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -71,33 +71,33 @@
 
 ----------  CREATE NEW TABLE GRANTS
 
-----------  app_visitor
-  grant 
-    select , 
-    insert ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    update ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license_type 
-  to app_visitor;
-
-
-----------  app_anonymous
-  grant 
-    select , 
-    insert ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    update ( id, created_at, updated_at, external_id, name, key, application_id ), 
-        -- no excluded columns
-    delete  
-  on table app.license_type 
-  to app_anonymous;
-
-
 ----------  IMPLIED TABLE GRANTS
 
   ----------  DENIED TABLE GRANTS
+
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license_type to app_super_admin;
+  --DENIED:   grant insert on table app.license_type to app_super_admin;
+  --DENIED:   grant update on table app.license_type to app_super_admin;
+  --DENIED:   grant delete on table app.license_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license_type to app_admin;
+  --DENIED:   grant insert on table app.license_type to app_admin;
+  --DENIED:   grant update on table app.license_type to app_admin;
+  --DENIED:   grant delete on table app.license_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license_type to app_user;
+  --DENIED:   grant insert on table app.license_type to app_user;
+  --DENIED:   grant update on table app.license_type to app_user;
+  --DENIED:   grant delete on table app.license_type to app_user;
+
+  ----------  app_anonymous
+  --DENIED:   grant select on table app.license_type to app_anonymous;
+  --DENIED:   grant insert on table app.license_type to app_anonymous;
+  --DENIED:   grant update on table app.license_type to app_anonymous;
+  --DENIED:   grant delete on table app.license_type to app_anonymous;
 
 ----------  END TABLE POLICY: app.license_type
 --==
@@ -114,7 +114,7 @@
 
   revoke all privileges 
   on table app.license_permission 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -126,11 +126,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table app.license_permission to app_visitor;
-  --DENIED:   grant insert on table app.license_permission to app_visitor;
-  --DENIED:   grant update on table app.license_permission to app_visitor;
-  --DENIED:   grant delete on table app.license_permission to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license_permission to app_super_admin;
+  --DENIED:   grant insert on table app.license_permission to app_super_admin;
+  --DENIED:   grant update on table app.license_permission to app_super_admin;
+  --DENIED:   grant delete on table app.license_permission to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license_permission to app_admin;
+  --DENIED:   grant insert on table app.license_permission to app_admin;
+  --DENIED:   grant update on table app.license_permission to app_admin;
+  --DENIED:   grant delete on table app.license_permission to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license_permission to app_user;
+  --DENIED:   grant insert on table app.license_permission to app_user;
+  --DENIED:   grant update on table app.license_permission to app_user;
+  --DENIED:   grant delete on table app.license_permission to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table app.license_permission to app_anonymous;
@@ -153,7 +165,7 @@
 
   revoke all privileges 
   on table app.license_type_permission 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -165,11 +177,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table app.license_type_permission to app_visitor;
-  --DENIED:   grant insert on table app.license_type_permission to app_visitor;
-  --DENIED:   grant update on table app.license_type_permission to app_visitor;
-  --DENIED:   grant delete on table app.license_type_permission to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.license_type_permission to app_super_admin;
+  --DENIED:   grant insert on table app.license_type_permission to app_super_admin;
+  --DENIED:   grant update on table app.license_type_permission to app_super_admin;
+  --DENIED:   grant delete on table app.license_type_permission to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.license_type_permission to app_admin;
+  --DENIED:   grant insert on table app.license_type_permission to app_admin;
+  --DENIED:   grant update on table app.license_type_permission to app_admin;
+  --DENIED:   grant delete on table app.license_type_permission to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.license_type_permission to app_user;
+  --DENIED:   grant insert on table app.license_type_permission to app_user;
+  --DENIED:   grant update on table app.license_type_permission to app_user;
+  --DENIED:   grant delete on table app.license_type_permission to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table app.license_type_permission to app_anonymous;
@@ -192,7 +216,7 @@
 
   revoke all privileges 
   on table app.application 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -204,11 +228,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table app.application to app_visitor;
-  --DENIED:   grant insert on table app.application to app_visitor;
-  --DENIED:   grant update on table app.application to app_visitor;
-  --DENIED:   grant delete on table app.application to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table app.application to app_super_admin;
+  --DENIED:   grant insert on table app.application to app_super_admin;
+  --DENIED:   grant update on table app.application to app_super_admin;
+  --DENIED:   grant delete on table app.application to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table app.application to app_admin;
+  --DENIED:   grant insert on table app.application to app_admin;
+  --DENIED:   grant update on table app.application to app_admin;
+  --DENIED:   grant delete on table app.application to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table app.application to app_user;
+  --DENIED:   grant insert on table app.application to app_user;
+  --DENIED:   grant update on table app.application to app_user;
+  --DENIED:   grant delete on table app.application to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table app.application to app_anonymous;
@@ -231,7 +267,7 @@
 
   revoke all privileges 
   on table auth.config_auth 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -243,11 +279,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.config_auth to app_visitor;
-  --DENIED:   grant insert on table auth.config_auth to app_visitor;
-  --DENIED:   grant update on table auth.config_auth to app_visitor;
-  --DENIED:   grant delete on table auth.config_auth to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.config_auth to app_super_admin;
+  --DENIED:   grant insert on table auth.config_auth to app_super_admin;
+  --DENIED:   grant update on table auth.config_auth to app_super_admin;
+  --DENIED:   grant delete on table auth.config_auth to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.config_auth to app_admin;
+  --DENIED:   grant insert on table auth.config_auth to app_admin;
+  --DENIED:   grant update on table auth.config_auth to app_admin;
+  --DENIED:   grant delete on table auth.config_auth to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.config_auth to app_user;
+  --DENIED:   grant insert on table auth.config_auth to app_user;
+  --DENIED:   grant update on table auth.config_auth to app_user;
+  --DENIED:   grant delete on table auth.config_auth to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.config_auth to app_anonymous;
@@ -270,7 +318,7 @@
 
   revoke all privileges 
   on table auth.token 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -282,11 +330,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.token to app_visitor;
-  --DENIED:   grant insert on table auth.token to app_visitor;
-  --DENIED:   grant update on table auth.token to app_visitor;
-  --DENIED:   grant delete on table auth.token to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.token to app_super_admin;
+  --DENIED:   grant insert on table auth.token to app_super_admin;
+  --DENIED:   grant update on table auth.token to app_super_admin;
+  --DENIED:   grant delete on table auth.token to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.token to app_admin;
+  --DENIED:   grant insert on table auth.token to app_admin;
+  --DENIED:   grant update on table auth.token to app_admin;
+  --DENIED:   grant delete on table auth.token to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.token to app_user;
+  --DENIED:   grant insert on table auth.token to app_user;
+  --DENIED:   grant update on table auth.token to app_user;
+  --DENIED:   grant delete on table auth.token to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.token to app_anonymous;
@@ -309,7 +369,7 @@
 
   revoke all privileges 
   on table auth.permission 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -321,11 +381,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.permission to app_visitor;
-  --DENIED:   grant insert on table auth.permission to app_visitor;
-  --DENIED:   grant update on table auth.permission to app_visitor;
-  --DENIED:   grant delete on table auth.permission to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.permission to app_super_admin;
+  --DENIED:   grant insert on table auth.permission to app_super_admin;
+  --DENIED:   grant update on table auth.permission to app_super_admin;
+  --DENIED:   grant delete on table auth.permission to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.permission to app_admin;
+  --DENIED:   grant insert on table auth.permission to app_admin;
+  --DENIED:   grant update on table auth.permission to app_admin;
+  --DENIED:   grant delete on table auth.permission to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.permission to app_user;
+  --DENIED:   grant insert on table auth.permission to app_user;
+  --DENIED:   grant update on table auth.permission to app_user;
+  --DENIED:   grant delete on table auth.permission to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.permission to app_anonymous;
@@ -348,7 +420,7 @@
 
   revoke all privileges 
   on table auth.app_user 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -360,11 +432,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.app_user to app_visitor;
-  --DENIED:   grant insert on table auth.app_user to app_visitor;
-  --DENIED:   grant update on table auth.app_user to app_visitor;
-  --DENIED:   grant delete on table auth.app_user to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.app_user to app_super_admin;
+  --DENIED:   grant insert on table auth.app_user to app_super_admin;
+  --DENIED:   grant update on table auth.app_user to app_super_admin;
+  --DENIED:   grant delete on table auth.app_user to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.app_user to app_admin;
+  --DENIED:   grant insert on table auth.app_user to app_admin;
+  --DENIED:   grant update on table auth.app_user to app_admin;
+  --DENIED:   grant delete on table auth.app_user to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.app_user to app_user;
+  --DENIED:   grant insert on table auth.app_user to app_user;
+  --DENIED:   grant update on table auth.app_user to app_user;
+  --DENIED:   grant delete on table auth.app_user to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.app_user to app_anonymous;
@@ -387,7 +471,7 @@
 
   revoke all privileges 
   on table auth.app_tenant 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -399,11 +483,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table auth.app_tenant to app_visitor;
-  --DENIED:   grant insert on table auth.app_tenant to app_visitor;
-  --DENIED:   grant update on table auth.app_tenant to app_visitor;
-  --DENIED:   grant delete on table auth.app_tenant to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table auth.app_tenant to app_super_admin;
+  --DENIED:   grant insert on table auth.app_tenant to app_super_admin;
+  --DENIED:   grant update on table auth.app_tenant to app_super_admin;
+  --DENIED:   grant delete on table auth.app_tenant to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table auth.app_tenant to app_admin;
+  --DENIED:   grant insert on table auth.app_tenant to app_admin;
+  --DENIED:   grant update on table auth.app_tenant to app_admin;
+  --DENIED:   grant delete on table auth.app_tenant to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table auth.app_tenant to app_user;
+  --DENIED:   grant insert on table auth.app_tenant to app_user;
+  --DENIED:   grant update on table auth.app_tenant to app_user;
+  --DENIED:   grant delete on table auth.app_tenant to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table auth.app_tenant to app_anonymous;
@@ -426,7 +522,7 @@
 
   revoke all privileges 
   on table lcb.inventory_lot 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -438,11 +534,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.inventory_lot to app_visitor;
-  --DENIED:   grant insert on table lcb.inventory_lot to app_visitor;
-  --DENIED:   grant update on table lcb.inventory_lot to app_visitor;
-  --DENIED:   grant delete on table lcb.inventory_lot to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.inventory_lot to app_super_admin;
+  --DENIED:   grant insert on table lcb.inventory_lot to app_super_admin;
+  --DENIED:   grant update on table lcb.inventory_lot to app_super_admin;
+  --DENIED:   grant delete on table lcb.inventory_lot to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.inventory_lot to app_admin;
+  --DENIED:   grant insert on table lcb.inventory_lot to app_admin;
+  --DENIED:   grant update on table lcb.inventory_lot to app_admin;
+  --DENIED:   grant delete on table lcb.inventory_lot to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.inventory_lot to app_user;
+  --DENIED:   grant insert on table lcb.inventory_lot to app_user;
+  --DENIED:   grant update on table lcb.inventory_lot to app_user;
+  --DENIED:   grant delete on table lcb.inventory_lot to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.inventory_lot to app_anonymous;
@@ -465,7 +573,7 @@
 
   revoke all privileges 
   on table lcb.batch 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -477,11 +585,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.batch to app_visitor;
-  --DENIED:   grant insert on table lcb.batch to app_visitor;
-  --DENIED:   grant update on table lcb.batch to app_visitor;
-  --DENIED:   grant delete on table lcb.batch to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.batch to app_super_admin;
+  --DENIED:   grant insert on table lcb.batch to app_super_admin;
+  --DENIED:   grant update on table lcb.batch to app_super_admin;
+  --DENIED:   grant delete on table lcb.batch to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.batch to app_admin;
+  --DENIED:   grant insert on table lcb.batch to app_admin;
+  --DENIED:   grant update on table lcb.batch to app_admin;
+  --DENIED:   grant delete on table lcb.batch to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.batch to app_user;
+  --DENIED:   grant insert on table lcb.batch to app_user;
+  --DENIED:   grant update on table lcb.batch to app_user;
+  --DENIED:   grant delete on table lcb.batch to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.batch to app_anonymous;
@@ -504,7 +624,7 @@
 
   revoke all privileges 
   on table lcb.strain 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -516,11 +636,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.strain to app_visitor;
-  --DENIED:   grant insert on table lcb.strain to app_visitor;
-  --DENIED:   grant update on table lcb.strain to app_visitor;
-  --DENIED:   grant delete on table lcb.strain to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.strain to app_super_admin;
+  --DENIED:   grant insert on table lcb.strain to app_super_admin;
+  --DENIED:   grant update on table lcb.strain to app_super_admin;
+  --DENIED:   grant delete on table lcb.strain to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.strain to app_admin;
+  --DENIED:   grant insert on table lcb.strain to app_admin;
+  --DENIED:   grant update on table lcb.strain to app_admin;
+  --DENIED:   grant delete on table lcb.strain to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.strain to app_user;
+  --DENIED:   grant insert on table lcb.strain to app_user;
+  --DENIED:   grant update on table lcb.strain to app_user;
+  --DENIED:   grant delete on table lcb.strain to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.strain to app_anonymous;
@@ -543,7 +675,7 @@
 
   revoke all privileges 
   on table lcb.lcb_license 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -555,11 +687,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.lcb_license to app_visitor;
-  --DENIED:   grant insert on table lcb.lcb_license to app_visitor;
-  --DENIED:   grant update on table lcb.lcb_license to app_visitor;
-  --DENIED:   grant delete on table lcb.lcb_license to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.lcb_license to app_super_admin;
+  --DENIED:   grant insert on table lcb.lcb_license to app_super_admin;
+  --DENIED:   grant update on table lcb.lcb_license to app_super_admin;
+  --DENIED:   grant delete on table lcb.lcb_license to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.lcb_license to app_admin;
+  --DENIED:   grant insert on table lcb.lcb_license to app_admin;
+  --DENIED:   grant update on table lcb.lcb_license to app_admin;
+  --DENIED:   grant delete on table lcb.lcb_license to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.lcb_license to app_user;
+  --DENIED:   grant insert on table lcb.lcb_license to app_user;
+  --DENIED:   grant update on table lcb.lcb_license to app_user;
+  --DENIED:   grant delete on table lcb.lcb_license to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.lcb_license to app_anonymous;
@@ -582,7 +726,7 @@
 
   revoke all privileges 
   on table lcb.conversion 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -594,11 +738,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.conversion to app_visitor;
-  --DENIED:   grant insert on table lcb.conversion to app_visitor;
-  --DENIED:   grant update on table lcb.conversion to app_visitor;
-  --DENIED:   grant delete on table lcb.conversion to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.conversion to app_super_admin;
+  --DENIED:   grant insert on table lcb.conversion to app_super_admin;
+  --DENIED:   grant update on table lcb.conversion to app_super_admin;
+  --DENIED:   grant delete on table lcb.conversion to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.conversion to app_admin;
+  --DENIED:   grant insert on table lcb.conversion to app_admin;
+  --DENIED:   grant update on table lcb.conversion to app_admin;
+  --DENIED:   grant delete on table lcb.conversion to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.conversion to app_user;
+  --DENIED:   grant insert on table lcb.conversion to app_user;
+  --DENIED:   grant update on table lcb.conversion to app_user;
+  --DENIED:   grant delete on table lcb.conversion to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.conversion to app_anonymous;
@@ -621,7 +777,7 @@
 
   revoke all privileges 
   on table lcb.recipe 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -633,11 +789,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.recipe to app_visitor;
-  --DENIED:   grant insert on table lcb.recipe to app_visitor;
-  --DENIED:   grant update on table lcb.recipe to app_visitor;
-  --DENIED:   grant delete on table lcb.recipe to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.recipe to app_super_admin;
+  --DENIED:   grant insert on table lcb.recipe to app_super_admin;
+  --DENIED:   grant update on table lcb.recipe to app_super_admin;
+  --DENIED:   grant delete on table lcb.recipe to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.recipe to app_admin;
+  --DENIED:   grant insert on table lcb.recipe to app_admin;
+  --DENIED:   grant update on table lcb.recipe to app_admin;
+  --DENIED:   grant delete on table lcb.recipe to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.recipe to app_user;
+  --DENIED:   grant insert on table lcb.recipe to app_user;
+  --DENIED:   grant update on table lcb.recipe to app_user;
+  --DENIED:   grant delete on table lcb.recipe to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.recipe to app_anonymous;
@@ -660,7 +828,7 @@
 
   revoke all privileges 
   on table lcb.conversion_source 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -672,11 +840,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.conversion_source to app_visitor;
-  --DENIED:   grant insert on table lcb.conversion_source to app_visitor;
-  --DENIED:   grant update on table lcb.conversion_source to app_visitor;
-  --DENIED:   grant delete on table lcb.conversion_source to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.conversion_source to app_super_admin;
+  --DENIED:   grant insert on table lcb.conversion_source to app_super_admin;
+  --DENIED:   grant update on table lcb.conversion_source to app_super_admin;
+  --DENIED:   grant delete on table lcb.conversion_source to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.conversion_source to app_admin;
+  --DENIED:   grant insert on table lcb.conversion_source to app_admin;
+  --DENIED:   grant update on table lcb.conversion_source to app_admin;
+  --DENIED:   grant delete on table lcb.conversion_source to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.conversion_source to app_user;
+  --DENIED:   grant insert on table lcb.conversion_source to app_user;
+  --DENIED:   grant update on table lcb.conversion_source to app_user;
+  --DENIED:   grant delete on table lcb.conversion_source to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.conversion_source to app_anonymous;
@@ -699,7 +879,7 @@
 
   revoke all privileges 
   on table lcb.lcb_license_holder 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -711,11 +891,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.lcb_license_holder to app_visitor;
-  --DENIED:   grant insert on table lcb.lcb_license_holder to app_visitor;
-  --DENIED:   grant update on table lcb.lcb_license_holder to app_visitor;
-  --DENIED:   grant delete on table lcb.lcb_license_holder to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.lcb_license_holder to app_super_admin;
+  --DENIED:   grant insert on table lcb.lcb_license_holder to app_super_admin;
+  --DENIED:   grant update on table lcb.lcb_license_holder to app_super_admin;
+  --DENIED:   grant delete on table lcb.lcb_license_holder to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.lcb_license_holder to app_admin;
+  --DENIED:   grant insert on table lcb.lcb_license_holder to app_admin;
+  --DENIED:   grant update on table lcb.lcb_license_holder to app_admin;
+  --DENIED:   grant delete on table lcb.lcb_license_holder to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.lcb_license_holder to app_user;
+  --DENIED:   grant insert on table lcb.lcb_license_holder to app_user;
+  --DENIED:   grant update on table lcb.lcb_license_holder to app_user;
+  --DENIED:   grant delete on table lcb.lcb_license_holder to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.lcb_license_holder to app_anonymous;
@@ -738,7 +930,7 @@
 
   revoke all privileges 
   on table lcb.area 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -750,11 +942,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.area to app_visitor;
-  --DENIED:   grant insert on table lcb.area to app_visitor;
-  --DENIED:   grant update on table lcb.area to app_visitor;
-  --DENIED:   grant delete on table lcb.area to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.area to app_super_admin;
+  --DENIED:   grant insert on table lcb.area to app_super_admin;
+  --DENIED:   grant update on table lcb.area to app_super_admin;
+  --DENIED:   grant delete on table lcb.area to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.area to app_admin;
+  --DENIED:   grant insert on table lcb.area to app_admin;
+  --DENIED:   grant update on table lcb.area to app_admin;
+  --DENIED:   grant delete on table lcb.area to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.area to app_user;
+  --DENIED:   grant insert on table lcb.area to app_user;
+  --DENIED:   grant update on table lcb.area to app_user;
+  --DENIED:   grant delete on table lcb.area to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.area to app_anonymous;
@@ -777,7 +981,7 @@
 
   revoke all privileges 
   on table lcb.manifest_item 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -789,11 +993,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.manifest_item to app_visitor;
-  --DENIED:   grant insert on table lcb.manifest_item to app_visitor;
-  --DENIED:   grant update on table lcb.manifest_item to app_visitor;
-  --DENIED:   grant delete on table lcb.manifest_item to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.manifest_item to app_super_admin;
+  --DENIED:   grant insert on table lcb.manifest_item to app_super_admin;
+  --DENIED:   grant update on table lcb.manifest_item to app_super_admin;
+  --DENIED:   grant delete on table lcb.manifest_item to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.manifest_item to app_admin;
+  --DENIED:   grant insert on table lcb.manifest_item to app_admin;
+  --DENIED:   grant update on table lcb.manifest_item to app_admin;
+  --DENIED:   grant delete on table lcb.manifest_item to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.manifest_item to app_user;
+  --DENIED:   grant insert on table lcb.manifest_item to app_user;
+  --DENIED:   grant update on table lcb.manifest_item to app_user;
+  --DENIED:   grant delete on table lcb.manifest_item to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.manifest_item to app_anonymous;
@@ -816,7 +1032,7 @@
 
   revoke all privileges 
   on table lcb.manifest 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -828,11 +1044,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.manifest to app_visitor;
-  --DENIED:   grant insert on table lcb.manifest to app_visitor;
-  --DENIED:   grant update on table lcb.manifest to app_visitor;
-  --DENIED:   grant delete on table lcb.manifest to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.manifest to app_super_admin;
+  --DENIED:   grant insert on table lcb.manifest to app_super_admin;
+  --DENIED:   grant update on table lcb.manifest to app_super_admin;
+  --DENIED:   grant delete on table lcb.manifest to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.manifest to app_admin;
+  --DENIED:   grant insert on table lcb.manifest to app_admin;
+  --DENIED:   grant update on table lcb.manifest to app_admin;
+  --DENIED:   grant delete on table lcb.manifest to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.manifest to app_user;
+  --DENIED:   grant insert on table lcb.manifest to app_user;
+  --DENIED:   grant update on table lcb.manifest to app_user;
+  --DENIED:   grant delete on table lcb.manifest to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.manifest to app_anonymous;
@@ -855,7 +1083,7 @@
 
   revoke all privileges 
   on table lcb.qa_result 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -867,11 +1095,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb.qa_result to app_visitor;
-  --DENIED:   grant insert on table lcb.qa_result to app_visitor;
-  --DENIED:   grant update on table lcb.qa_result to app_visitor;
-  --DENIED:   grant delete on table lcb.qa_result to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb.qa_result to app_super_admin;
+  --DENIED:   grant insert on table lcb.qa_result to app_super_admin;
+  --DENIED:   grant update on table lcb.qa_result to app_super_admin;
+  --DENIED:   grant delete on table lcb.qa_result to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb.qa_result to app_admin;
+  --DENIED:   grant insert on table lcb.qa_result to app_admin;
+  --DENIED:   grant update on table lcb.qa_result to app_admin;
+  --DENIED:   grant delete on table lcb.qa_result to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb.qa_result to app_user;
+  --DENIED:   grant insert on table lcb.qa_result to app_user;
+  --DENIED:   grant update on table lcb.qa_result to app_user;
+  --DENIED:   grant delete on table lcb.qa_result to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb.qa_result to app_anonymous;
@@ -894,7 +1134,7 @@
 
   revoke all privileges 
   on table lcb_hist.hist_inventory_lot 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -906,11 +1146,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_visitor;
-  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_visitor;
-  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_visitor;
-  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_super_admin;
+  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_super_admin;
+  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_super_admin;
+  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_admin;
+  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_admin;
+  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_admin;
+  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_user;
+  --DENIED:   grant insert on table lcb_hist.hist_inventory_lot to app_user;
+  --DENIED:   grant update on table lcb_hist.hist_inventory_lot to app_user;
+  --DENIED:   grant delete on table lcb_hist.hist_inventory_lot to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_hist.hist_inventory_lot to app_anonymous;
@@ -933,7 +1185,7 @@
 
   revoke all privileges 
   on table lcb_ref.lcb_license_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -945,11 +1197,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_visitor;
-  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.lcb_license_type to app_user;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_type to app_user;
+  --DENIED:   grant update on table lcb_ref.lcb_license_type to app_user;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_type to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.lcb_license_type to app_anonymous;
@@ -972,7 +1236,7 @@
 
   revoke all privileges 
   on table lcb_ref.conversion_rule 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -984,11 +1248,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.conversion_rule to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_visitor;
-  --DENIED:   grant update on table lcb_ref.conversion_rule to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule to app_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule to app_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.conversion_rule to app_user;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule to app_user;
+  --DENIED:   grant update on table lcb_ref.conversion_rule to app_user;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.conversion_rule to app_anonymous;
@@ -1011,7 +1287,7 @@
 
   revoke all privileges 
   on table lcb_ref.conversion_rule_source 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1023,11 +1299,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_visitor;
-  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_admin;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_admin;
+  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_admin;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_user;
+  --DENIED:   grant insert on table lcb_ref.conversion_rule_source to app_user;
+  --DENIED:   grant update on table lcb_ref.conversion_rule_source to app_user;
+  --DENIED:   grant delete on table lcb_ref.conversion_rule_source to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.conversion_rule_source to app_anonymous;
@@ -1050,7 +1338,7 @@
 
   revoke all privileges 
   on table lcb_ref.manifest_status 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1062,11 +1350,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.manifest_status to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.manifest_status to app_visitor;
-  --DENIED:   grant update on table lcb_ref.manifest_status to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.manifest_status to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.manifest_status to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.manifest_status to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.manifest_status to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.manifest_status to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.manifest_status to app_admin;
+  --DENIED:   grant insert on table lcb_ref.manifest_status to app_admin;
+  --DENIED:   grant update on table lcb_ref.manifest_status to app_admin;
+  --DENIED:   grant delete on table lcb_ref.manifest_status to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.manifest_status to app_user;
+  --DENIED:   grant insert on table lcb_ref.manifest_status to app_user;
+  --DENIED:   grant update on table lcb_ref.manifest_status to app_user;
+  --DENIED:   grant delete on table lcb_ref.manifest_status to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.manifest_status to app_anonymous;
@@ -1089,7 +1389,7 @@
 
   revoke all privileges 
   on table lcb_ref.inventory_lot_reporting_status 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1101,11 +1401,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_visitor;
-  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_user;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_reporting_status to app_user;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_reporting_status to app_user;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_reporting_status to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.inventory_lot_reporting_status to app_anonymous;
@@ -1128,7 +1440,7 @@
 
   revoke all privileges 
   on table lcb_ref.inventory_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1140,11 +1452,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.inventory_type to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.inventory_type to app_visitor;
-  --DENIED:   grant update on table lcb_ref.inventory_type to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.inventory_type to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.inventory_type to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_type to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_type to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.inventory_type to app_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_type to app_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_type to app_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.inventory_type to app_user;
+  --DENIED:   grant insert on table lcb_ref.inventory_type to app_user;
+  --DENIED:   grant update on table lcb_ref.inventory_type to app_user;
+  --DENIED:   grant delete on table lcb_ref.inventory_type to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.inventory_type to app_anonymous;
@@ -1167,7 +1491,7 @@
 
   revoke all privileges 
   on table lcb_ref.lcb_license_holder_status 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1179,11 +1503,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_visitor;
-  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_admin;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_admin;
+  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_admin;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_user;
+  --DENIED:   grant insert on table lcb_ref.lcb_license_holder_status to app_user;
+  --DENIED:   grant update on table lcb_ref.lcb_license_holder_status to app_user;
+  --DENIED:   grant delete on table lcb_ref.lcb_license_holder_status to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.lcb_license_holder_status to app_anonymous;
@@ -1206,7 +1542,7 @@
 
   revoke all privileges 
   on table lcb_ref.inventory_lot_type 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1218,11 +1554,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_visitor;
-  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_visitor;
-  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_visitor;
-  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_super_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_super_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_super_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_admin;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_admin;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_admin;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_user;
+  --DENIED:   grant insert on table lcb_ref.inventory_lot_type to app_user;
+  --DENIED:   grant update on table lcb_ref.inventory_lot_type to app_user;
+  --DENIED:   grant delete on table lcb_ref.inventory_lot_type to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table lcb_ref.inventory_lot_type to app_anonymous;
@@ -1245,7 +1593,7 @@
 
   revoke all privileges 
   on table org.organization 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1257,11 +1605,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.organization to app_visitor;
-  --DENIED:   grant insert on table org.organization to app_visitor;
-  --DENIED:   grant update on table org.organization to app_visitor;
-  --DENIED:   grant delete on table org.organization to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.organization to app_super_admin;
+  --DENIED:   grant insert on table org.organization to app_super_admin;
+  --DENIED:   grant update on table org.organization to app_super_admin;
+  --DENIED:   grant delete on table org.organization to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.organization to app_admin;
+  --DENIED:   grant insert on table org.organization to app_admin;
+  --DENIED:   grant update on table org.organization to app_admin;
+  --DENIED:   grant delete on table org.organization to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.organization to app_user;
+  --DENIED:   grant insert on table org.organization to app_user;
+  --DENIED:   grant update on table org.organization to app_user;
+  --DENIED:   grant delete on table org.organization to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.organization to app_anonymous;
@@ -1284,7 +1644,7 @@
 
   revoke all privileges 
   on table org.facility 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1296,11 +1656,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.facility to app_visitor;
-  --DENIED:   grant insert on table org.facility to app_visitor;
-  --DENIED:   grant update on table org.facility to app_visitor;
-  --DENIED:   grant delete on table org.facility to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.facility to app_super_admin;
+  --DENIED:   grant insert on table org.facility to app_super_admin;
+  --DENIED:   grant update on table org.facility to app_super_admin;
+  --DENIED:   grant delete on table org.facility to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.facility to app_admin;
+  --DENIED:   grant insert on table org.facility to app_admin;
+  --DENIED:   grant update on table org.facility to app_admin;
+  --DENIED:   grant delete on table org.facility to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.facility to app_user;
+  --DENIED:   grant insert on table org.facility to app_user;
+  --DENIED:   grant update on table org.facility to app_user;
+  --DENIED:   grant delete on table org.facility to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.facility to app_anonymous;
@@ -1323,7 +1695,7 @@
 
   revoke all privileges 
   on table org.config_org 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1335,11 +1707,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.config_org to app_visitor;
-  --DENIED:   grant insert on table org.config_org to app_visitor;
-  --DENIED:   grant update on table org.config_org to app_visitor;
-  --DENIED:   grant delete on table org.config_org to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.config_org to app_super_admin;
+  --DENIED:   grant insert on table org.config_org to app_super_admin;
+  --DENIED:   grant update on table org.config_org to app_super_admin;
+  --DENIED:   grant delete on table org.config_org to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.config_org to app_admin;
+  --DENIED:   grant insert on table org.config_org to app_admin;
+  --DENIED:   grant update on table org.config_org to app_admin;
+  --DENIED:   grant delete on table org.config_org to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.config_org to app_user;
+  --DENIED:   grant insert on table org.config_org to app_user;
+  --DENIED:   grant update on table org.config_org to app_user;
+  --DENIED:   grant delete on table org.config_org to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.config_org to app_anonymous;
@@ -1362,7 +1746,7 @@
 
   revoke all privileges 
   on table org.contact 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1374,11 +1758,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.contact to app_visitor;
-  --DENIED:   grant insert on table org.contact to app_visitor;
-  --DENIED:   grant update on table org.contact to app_visitor;
-  --DENIED:   grant delete on table org.contact to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.contact to app_super_admin;
+  --DENIED:   grant insert on table org.contact to app_super_admin;
+  --DENIED:   grant update on table org.contact to app_super_admin;
+  --DENIED:   grant delete on table org.contact to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.contact to app_admin;
+  --DENIED:   grant insert on table org.contact to app_admin;
+  --DENIED:   grant update on table org.contact to app_admin;
+  --DENIED:   grant delete on table org.contact to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.contact to app_user;
+  --DENIED:   grant insert on table org.contact to app_user;
+  --DENIED:   grant update on table org.contact to app_user;
+  --DENIED:   grant delete on table org.contact to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.contact to app_anonymous;
@@ -1401,7 +1797,7 @@
 
   revoke all privileges 
   on table org.contact_app_user 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1413,11 +1809,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.contact_app_user to app_visitor;
-  --DENIED:   grant insert on table org.contact_app_user to app_visitor;
-  --DENIED:   grant update on table org.contact_app_user to app_visitor;
-  --DENIED:   grant delete on table org.contact_app_user to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.contact_app_user to app_super_admin;
+  --DENIED:   grant insert on table org.contact_app_user to app_super_admin;
+  --DENIED:   grant update on table org.contact_app_user to app_super_admin;
+  --DENIED:   grant delete on table org.contact_app_user to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.contact_app_user to app_admin;
+  --DENIED:   grant insert on table org.contact_app_user to app_admin;
+  --DENIED:   grant update on table org.contact_app_user to app_admin;
+  --DENIED:   grant delete on table org.contact_app_user to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.contact_app_user to app_user;
+  --DENIED:   grant insert on table org.contact_app_user to app_user;
+  --DENIED:   grant update on table org.contact_app_user to app_user;
+  --DENIED:   grant delete on table org.contact_app_user to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.contact_app_user to app_anonymous;
@@ -1440,7 +1848,7 @@
 
   revoke all privileges 
   on table org.location 
-  from app_visitor, app_anonymous;
+  from app_super_admin, app_admin, app_user, app_anonymous;
 
 ----------  DISABLE ROW LEVEL SECURITY
 
@@ -1452,11 +1860,23 @@
 
   ----------  DENIED TABLE GRANTS
 
-  ----------  app_visitor
-  --DENIED:   grant select on table org.location to app_visitor;
-  --DENIED:   grant insert on table org.location to app_visitor;
-  --DENIED:   grant update on table org.location to app_visitor;
-  --DENIED:   grant delete on table org.location to app_visitor;
+  ----------  app_super_admin
+  --DENIED:   grant select on table org.location to app_super_admin;
+  --DENIED:   grant insert on table org.location to app_super_admin;
+  --DENIED:   grant update on table org.location to app_super_admin;
+  --DENIED:   grant delete on table org.location to app_super_admin;
+
+  ----------  app_admin
+  --DENIED:   grant select on table org.location to app_admin;
+  --DENIED:   grant insert on table org.location to app_admin;
+  --DENIED:   grant update on table org.location to app_admin;
+  --DENIED:   grant delete on table org.location to app_admin;
+
+  ----------  app_user
+  --DENIED:   grant select on table org.location to app_user;
+  --DENIED:   grant insert on table org.location to app_user;
+  --DENIED:   grant update on table org.location to app_user;
+  --DENIED:   grant delete on table org.location to app_user;
 
   ----------  app_anonymous
   --DENIED:   grant select on table org.location to app_anonymous;

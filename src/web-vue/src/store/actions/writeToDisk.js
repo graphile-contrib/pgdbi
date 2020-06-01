@@ -42,7 +42,6 @@ async function writeToDisk({state}) {
     }
   })
   state.isDirty = false
-  console.log(result)
   return result.data.WriteArtifacts.result
 }
 
