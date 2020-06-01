@@ -48,17 +48,19 @@ const defaultOptions = {
 };
 
 // Call this in the Vue app file
+let theApolloClient
+export function getApolloClient() {
+  return theApolloClient
+}
+
 export function createProvider(options = {}) {
   // Create apollo client
-  // const { apolloClient, wsClient } = createApolloClient({
-  //   ...defaultOptions,
-  //   ...options,
-  // })
-  // apolloClient.wsClient = wsClient
   const { apolloClient } = createApolloClient({
     ...defaultOptions,
     ...options,
   });
+
+  theApolloClient = apolloClient
 
   // Create vue apollo provider
   const apolloProvider = new VueApollo({

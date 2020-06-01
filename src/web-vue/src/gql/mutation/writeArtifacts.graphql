@@ -1,0 +1,19 @@
+mutation WriteArtifacts(
+  $projectState: JSON!
+  $masterSecurityPolicy: String!
+  $ownershipPolicy: String!
+  $schemaUsageSql: String!
+  $masterTablePolicy: String!
+  $masterFunctionPolicy: String!
+){
+  WriteArtifacts(input: {
+    projectState: $projectState
+    masterSecurityPolicy: $masterSecurityPolicy
+    ownershipPolicy: $ownershipPolicy
+    schemaUsageSql: $schemaUsageSql
+    masterTablePolicy: $masterTablePolicy
+    masterFunctionPolicy: $masterFunctionPolicy
+  }) {
+    result
+  }
+}

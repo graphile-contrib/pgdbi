@@ -10,6 +10,7 @@ function evaluateTablePolicy(tableId, policyDefinitionId) {
 }
 
 function assignAll(state, payload) {
+  state.isDirty = true
   const tableIds = payload.tableIds;
   const policyDefinitionId = payload.policyDefinitionId;
 

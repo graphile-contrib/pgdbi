@@ -1,4 +1,5 @@
 function saveFunctionPolicy(state, payload) {
+  state.isDirty = true
   const functionPolicies = state.functionPolicies.filter(
     p => p.id !== payload.policy.id,
   );

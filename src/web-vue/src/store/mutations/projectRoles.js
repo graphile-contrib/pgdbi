@@ -1,4 +1,5 @@
 function dbUserRoles(state, payload) {
+  state.isDirty = true
   const dbUserRoles = (state.roleSet.dbUserRoles = payload.dbUserRoles.map(role => {
     return {
       ...role,

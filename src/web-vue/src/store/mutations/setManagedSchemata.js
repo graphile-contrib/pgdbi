@@ -247,6 +247,7 @@ function setManagedSchemata(state, payload) {
 
   // evaluateAll(state)
 
+  state.isDirty = true
   state.initializing = false;
   state.schemaFilterOn = false;
 }

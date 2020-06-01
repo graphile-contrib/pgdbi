@@ -1,7 +1,5 @@
-import defaultRoleSets from './defaultRoleSets'
-
 export default {
-  allRoleSets: defaultRoleSets,
+  allRoleSets: [],
   pgdbiOptions: {},
   initializing: true,
   schemaFilterOn: true,

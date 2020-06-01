@@ -1,4 +1,5 @@
 function makeGlobalTablePolicy(state, payload) {
+  state.isDirty = true
   const policyDefinitionId = payload.policyDefinitionId;
   const newFields = payload.newFields;
 

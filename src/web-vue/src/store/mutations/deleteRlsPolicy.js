@@ -1,4 +1,5 @@
 function deleteRlsPolicy(state, payload) {
+  state.isDirty = true
   const policy = state.policies.find(p => p.id === payload.policyId);
   const otherPolicies = state.policies.filter(p => p.id !== payload.policyId);
   const roleName = payload.roleName;

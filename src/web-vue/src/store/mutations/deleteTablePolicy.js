@@ -1,4 +1,5 @@
 function deleteTablePolicy(state, payload) {
+  state.isDirty = true
   const policyDefinitionId = payload.policyDefinitionId;
 
   const otherPolicies = state.policies.filter(p => p.id !== policyDefinitionId);

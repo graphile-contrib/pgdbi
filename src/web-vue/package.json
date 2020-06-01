@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "compressed-json": "^1.0.15",
     "mustache": "^3.0.1",
     "ramda": "^0.26.1",
     "request": "^2.88.0",

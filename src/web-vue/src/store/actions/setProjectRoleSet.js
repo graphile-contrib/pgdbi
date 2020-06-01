@@ -1,5 +1,6 @@
-async function setProjectRoleSet({commit}, roleSet) {
-  await commit('resetDefaultState')
+
+async function setProjectRoleSet({commit, dispatch}, roleSet) {
+  await dispatch('resetDefaultState')
   await commit('setProjectRoleSet', roleSet)
   return `role set set - ${roleSet}`
 }

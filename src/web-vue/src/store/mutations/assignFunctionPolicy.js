@@ -10,6 +10,7 @@ function evaluateFunctionPolicy(functionId, policyDefinitionId) {
 }
 
 function assignAll(state, payload) {
+  state.isDirty = true
   const functionIds = payload.functionIds;
   const policyDefinitionId = payload.policyDefinitionId;
 

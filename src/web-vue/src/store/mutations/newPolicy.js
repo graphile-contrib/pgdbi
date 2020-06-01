@@ -3,6 +3,7 @@ function newPolicy(state, payload) {
   if (existing) {
     throw new Error('A policy with this name already exists');
   } else {
+    state.isDirty = true
     const name = payload.name;
     const dbUserRoles = state.roleSet.dbUserRoles;
 

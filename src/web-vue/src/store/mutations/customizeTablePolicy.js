@@ -1,6 +1,7 @@
 import assignTablePolicy from './assignTablePolicy'
 
 function customizeTablePolicy(state, payload) {
+  state.isDirty = true
   const sourcePolicyDefinitionId = payload.sourcePolicyDefinitionId;
   const newFields = payload.newFields;
   const tableIds = payload.tableIds || [];

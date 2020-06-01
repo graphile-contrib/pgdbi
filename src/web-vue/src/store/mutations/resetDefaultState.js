@@ -1,11 +1,11 @@
 import defaultState from '../defaultState';
 
-function resetDefaultState(state) {
+function resetDefaultState(state, pgdbirc) {
   Object.keys(defaultState)
-  .filter(k => ['allRoleSets'].indexOf(k) === -1)
   .forEach(key => {
-    state[key] = defaultState[key];
+    state[key] = (pgdbirc[key] || defaultState[key]);
   });
+  state.isDirty = false
 }
 
 export default resetDefaultState;

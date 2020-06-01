@@ -1,4 +1,5 @@
 function newFunctionPolicy(state, payload) {
+  state.isDirty = true
   const existing = state.policies.find(p => p.name === payload.name);
   if (existing) {
     throw new Error('A policy with this name already exists');

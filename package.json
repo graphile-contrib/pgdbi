@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/jest": "^24.0.16",
     "camelcase-keys": "^6.0.1",
+    "compressed-json": "^1.0.15",
     "dotenv": "^8.1.0",
     "express": "^4.16.4",
     "fbkt-clog": "^1.0.5",

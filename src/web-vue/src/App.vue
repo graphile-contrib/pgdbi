@@ -17,6 +17,7 @@
       <!-- <v-btn @click="navigate('worker')" :color="btnColor('worker')" :hidden="disableGraphileWorker">Worker</v-btn>
       <v-btn @click="navigate('sqitch')" :color="btnColor('sqitch')" :hidden="disableSqitch">Sqitch</v-btn> -->
       <v-spacer></v-spacer>
+      <v-btn @click="writeToDisk" :color="btnColor('writeToDisk')" :disabled="initializing">Write to Disk</v-btn>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
@@ -62,6 +63,7 @@
 <script>
 import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
 import ProjectNavigator from '@/components/Project/ProjectNavigator'
+import writeArtifacts from '@/gql/mutation/writeArtifacts.graphql'
 
 export default {
   name: 'App',
@@ -91,42 +93,58 @@ export default {
     }
   },
   methods: {
-      setRefreshBtnClass () {
-        this.refreshBtnClass = this.initializing ? 'refreshBtnInitializing' : 'refreshBtn' 
-        this.refreshBtnColor = this.initializing ? 'yellow darken-3' : 'blue-grey' 
-      },
-      refreshSchemata () {
-        this.$loading(true)
-        this.$apollo.query({
-          query: dbIntrospection,
-          fetchPolicy: 'network-only'
+    writeToDisk () {
+      this.$store.dispatch('writeToDisk')
+      .then(result => {
+        alert(result)
+      })
+      .catch(e => {
+        alert('ERROR')
+        console.error(e)
+      })
+    },
+    setRefreshBtnClass () {
+      this.refreshBtnClass = this.initializing ? 'refreshBtnInitializing' : 'refreshBtn' 
+      this.refreshBtnColor = this.initializing ? 'yellow darken-3' : 'blue-grey' 
+    },
+    refreshSchemata () {
+      this.$loading(true)
+      this.$apollo.query({
+        query: dbIntrospection,
+        fetchPolicy: 'network-only'
+      })
+      .then(result => {
+        this.$store.dispatch('setManagedSchemata', {
+          schemaTree: result.data.dbIntrospection.schemaTree,
+          pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
         })
-        .then(result => {
-          this.$store.dispatch('setManagedSchemata', {
-            schemaTree: result.data.dbIntrospection.schemaTree,
-            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
-          })
-          // this.$store.commit('setManagedSchemata', result.data.dbIntrospection.schemaTree)
-          // this.$store.commit('setPgdbiOptions', {pgdbiOptions: result.data.pgdbiOptions})
-          this.$loading(false)
-        })
-        .catch(error => {
-          this.$loading(false)
-          console.error(error)
-          alert(error.toString())
-        })
-      },
+        this.$store.commit('setIsDirty', false)
+        this.$loading(false)
+      })
+      .catch(error => {
+        this.$loading(false)
+        console.error(error)
+        alert(error.toString())
+      })
+    },
     btnColor (routeName) {
-      return this.$router.currentRoute.name === routeName ? 'blue' : 'blue-grey'
+      if (routeName === 'writeToDisk') {
+        return this.$store.state.isDirty ? 'red' : 'blue-grey'
+      } else {
+        return this.$router.currentRoute.name === routeName ? 'blue' : 'blue-grey'
+      }
     },
     home () {
       this.$router.push({ name: 'home' })
+      .catch(err => {})
     },
     settings () {
       this.$router.push({ name: 'settings' })
+      .catch(err => {})
     },
     navigate (routeName) {
       this.$router.push({name: routeName})
+      .catch(err => {})
     }
  },
   data () {
