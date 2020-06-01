@@ -19,16 +19,16 @@
       },
       "dbUserRoles": [
         {
+          "roleName": "app_anonymous",
+          "applicableRoles": []
+        },
+        {
           "roleName": "app_visitor",
           "applicableRoles": [
             {
               "roleName": "app_anonymous"
             }
           ]
-        },
-        {
-          "roleName": "app_anonymous",
-          "applicableRoles": []
         }
       ]
     },
@@ -104,7 +104,7 @@
   "schemaFilterOn": false,
   "policies": [
     {
-      "id": 637268979306798200,
+      "id": 637269037923249200,
       "name": "Default Table Policy - NO ACCESS",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -167,7 +167,7 @@
       }
     },
     {
-      "id": 637270570289732200,
+      "id": 637270628912043600,
       "name": "Default Table Policy - TOTAL EXPLICIT USER ACCESS",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -230,7 +230,7 @@
       }
     },
     {
-      "id": 637272161272666400,
+      "id": 637272219900838300,
       "name": "Default Table Policy - app_visitor",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -293,7 +293,7 @@
       }
     },
     {
-      "id": 637273752255610500,
+      "id": 637273810889632800,
       "name": "Default Table Policy - app_anonymous",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -359,7 +359,7 @@
   "tablePolicyAssignments": {
     "app.license": {
       "tableId": "app.license",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -367,7 +367,7 @@
     },
     "app.license_type": {
       "tableId": "app.license_type",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -375,7 +375,7 @@
     },
     "app.license_permission": {
       "tableId": "app.license_permission",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -383,7 +383,7 @@
     },
     "app.license_type_permission": {
       "tableId": "app.license_type_permission",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -391,7 +391,7 @@
     },
     "app.application": {
       "tableId": "app.application",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -399,7 +399,7 @@
     },
     "auth.config_auth": {
       "tableId": "auth.config_auth",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -407,7 +407,7 @@
     },
     "auth.token": {
       "tableId": "auth.token",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -415,7 +415,7 @@
     },
     "auth.permission": {
       "tableId": "auth.permission",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -423,7 +423,7 @@
     },
     "auth.app_user": {
       "tableId": "auth.app_user",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -431,7 +431,7 @@
     },
     "auth.app_tenant": {
       "tableId": "auth.app_tenant",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -439,7 +439,7 @@
     },
     "lcb.inventory_lot": {
       "tableId": "lcb.inventory_lot",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -447,7 +447,7 @@
     },
     "lcb.batch": {
       "tableId": "lcb.batch",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -455,7 +455,7 @@
     },
     "lcb.strain": {
       "tableId": "lcb.strain",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -463,7 +463,7 @@
     },
     "lcb.lcb_license": {
       "tableId": "lcb.lcb_license",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -471,7 +471,7 @@
     },
     "lcb.conversion": {
       "tableId": "lcb.conversion",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -479,7 +479,7 @@
     },
     "lcb.recipe": {
       "tableId": "lcb.recipe",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -487,7 +487,7 @@
     },
     "lcb.conversion_source": {
       "tableId": "lcb.conversion_source",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -495,7 +495,7 @@
     },
     "lcb.lcb_license_holder": {
       "tableId": "lcb.lcb_license_holder",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -503,7 +503,7 @@
     },
     "lcb.area": {
       "tableId": "lcb.area",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -511,7 +511,7 @@
     },
     "lcb.manifest_item": {
       "tableId": "lcb.manifest_item",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -519,7 +519,7 @@
     },
     "lcb.manifest": {
       "tableId": "lcb.manifest",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -527,7 +527,7 @@
     },
     "lcb.qa_result": {
       "tableId": "lcb.qa_result",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -535,7 +535,7 @@
     },
     "lcb_hist.hist_inventory_lot": {
       "tableId": "lcb_hist.hist_inventory_lot",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -543,7 +543,7 @@
     },
     "lcb_ref.lcb_license_type": {
       "tableId": "lcb_ref.lcb_license_type",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -551,7 +551,7 @@
     },
     "lcb_ref.conversion_rule": {
       "tableId": "lcb_ref.conversion_rule",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -559,7 +559,7 @@
     },
     "lcb_ref.conversion_rule_source": {
       "tableId": "lcb_ref.conversion_rule_source",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -567,7 +567,7 @@
     },
     "lcb_ref.manifest_status": {
       "tableId": "lcb_ref.manifest_status",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -575,7 +575,7 @@
     },
     "lcb_ref.inventory_lot_reporting_status": {
       "tableId": "lcb_ref.inventory_lot_reporting_status",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -583,7 +583,7 @@
     },
     "lcb_ref.inventory_type": {
       "tableId": "lcb_ref.inventory_type",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -591,7 +591,7 @@
     },
     "lcb_ref.lcb_license_holder_status": {
       "tableId": "lcb_ref.lcb_license_holder_status",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -599,7 +599,7 @@
     },
     "lcb_ref.inventory_lot_type": {
       "tableId": "lcb_ref.inventory_lot_type",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -607,7 +607,7 @@
     },
     "org.organization": {
       "tableId": "org.organization",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -615,7 +615,7 @@
     },
     "org.facility": {
       "tableId": "org.facility",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -623,7 +623,7 @@
     },
     "org.config_org": {
       "tableId": "org.config_org",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -631,7 +631,7 @@
     },
     "org.contact": {
       "tableId": "org.contact",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -639,7 +639,7 @@
     },
     "org.contact_app_user": {
       "tableId": "org.contact_app_user",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -647,7 +647,7 @@
     },
     "org.location": {
       "tableId": "org.location",
-      "policyDefinitionId": 637268979306798200,
+      "policyDefinitionId": 637269037923249200,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -656,7 +656,7 @@
   },
   "functionPolicies": [
     {
-      "id": 637275343238544500,
+      "id": 637275401878427400,
       "name": "Default Function Policy - NO ACCESS",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
@@ -670,7 +670,7 @@
       }
     },
     {
-      "id": 637276934221478700,
+      "id": 637276992867232000,
       "name": "User Function Policy - app_visitor",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": 637278525204412800,
+      "id": 637278583856026500,
       "name": "User Function Policy - app_anonymous",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
@@ -701,7 +701,7 @@
   "functionPolicyAssignments": {
     "app.fn_timestamp_update_application_22819": {
       "functionId": "app.fn_timestamp_update_application_22819",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -709,7 +709,7 @@
     },
     "app.fn_timestamp_update_license_22820": {
       "functionId": "app.fn_timestamp_update_license_22820",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -717,7 +717,7 @@
     },
     "app.fn_timestamp_update_license_permission_22821": {
       "functionId": "app.fn_timestamp_update_license_permission_22821",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -725,7 +725,7 @@
     },
     "app.fn_timestamp_update_license_type_22822": {
       "functionId": "app.fn_timestamp_update_license_type_22822",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -733,7 +733,7 @@
     },
     "app.fn_timestamp_update_license_type_permission_22823": {
       "functionId": "app.fn_timestamp_update_license_type_permission_22823",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -741,7 +741,7 @@
     },
     "auth.fn_timestamp_update_app_user_22825": {
       "functionId": "auth.fn_timestamp_update_app_user_22825",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -749,7 +749,7 @@
     },
     "auth.fn_timestamp_update_permission_22826": {
       "functionId": "auth.fn_timestamp_update_permission_22826",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -757,7 +757,7 @@
     },
     "auth.fn_timestamp_update_app_tenant_22824": {
       "functionId": "auth.fn_timestamp_update_app_tenant_22824",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -765,7 +765,7 @@
     },
     "auth_fn.build_app_user_22850": {
       "functionId": "auth_fn.build_app_user_22850",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -773,7 +773,7 @@
     },
     "auth_fn.current_app_user_22852": {
       "functionId": "auth_fn.current_app_user_22852",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -781,7 +781,7 @@
     },
     "auth_fn.authenticate_22828": {
       "functionId": "auth_fn.authenticate_22828",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -789,7 +789,7 @@
     },
     "auth_fn.app_user_has_access_22827": {
       "functionId": "auth_fn.app_user_has_access_22827",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -797,7 +797,7 @@
     },
     "auth_fn.build_app_tenant_22839": {
       "functionId": "auth_fn.build_app_tenant_22839",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -805,7 +805,7 @@
     },
     "auth_fn.current_app_tenant_id_22851": {
       "functionId": "auth_fn.current_app_tenant_id_22851",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -813,7 +813,7 @@
     },
     "auth_fn.current_app_user_id_22853": {
       "functionId": "auth_fn.current_app_user_id_22853",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -821,7 +821,7 @@
     },
     "lcb.fn_timestamp_update_conversion_23540": {
       "functionId": "lcb.fn_timestamp_update_conversion_23540",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -829,7 +829,7 @@
     },
     "lcb.fn_timestamp_update_conversion_source_23584": {
       "functionId": "lcb.fn_timestamp_update_conversion_source_23584",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -837,7 +837,7 @@
     },
     "lcb.fn_timestamp_update_inventory_lot_23497": {
       "functionId": "lcb.fn_timestamp_update_inventory_lot_23497",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -845,7 +845,7 @@
     },
     "lcb.fn_timestamp_update_lcb_license_23493": {
       "functionId": "lcb.fn_timestamp_update_lcb_license_23493",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -853,7 +853,7 @@
     },
     "lcb.fn_timestamp_update_lcb_license_holder_23495": {
       "functionId": "lcb.fn_timestamp_update_lcb_license_holder_23495",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -861,7 +861,7 @@
     },
     "lcb.fn_timestamp_update_manifest_23637": {
       "functionId": "lcb.fn_timestamp_update_manifest_23637",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -869,7 +869,7 @@
     },
     "lcb.fn_timestamp_update_manifest_item_23669": {
       "functionId": "lcb.fn_timestamp_update_manifest_item_23669",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -877,7 +877,7 @@
     },
     "lcb.fn_timestamp_update_recipe_23521": {
       "functionId": "lcb.fn_timestamp_update_recipe_23521",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -885,7 +885,7 @@
     },
     "lcb_fn.report_inventory_lot_23738": {
       "functionId": "lcb_fn.report_inventory_lot_23738",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -893,7 +893,7 @@
     },
     "lcb_fn.provision_inventory_lot_ids_23734": {
       "functionId": "lcb_fn.provision_inventory_lot_ids_23734",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -901,7 +901,7 @@
     },
     "lcb_fn.get_currrent_lcb_license_holder_id_23733": {
       "functionId": "lcb_fn.get_currrent_lcb_license_holder_id_23733",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -909,7 +909,7 @@
     },
     "lcb_fn.create_xfer_manifest_23764": {
       "functionId": "lcb_fn.create_xfer_manifest_23764",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -917,7 +917,7 @@
     },
     "lcb_fn.convert_inventory_23750": {
       "functionId": "lcb_fn.convert_inventory_23750",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -925,7 +925,7 @@
     },
     "lcb_fn.deplete_inventory_lot_ids_23766": {
       "functionId": "lcb_fn.deplete_inventory_lot_ids_23766",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -933,7 +933,7 @@
     },
     "lcb_fn.destroy_inventory_lot_ids_23767": {
       "functionId": "lcb_fn.destroy_inventory_lot_ids_23767",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -941,7 +941,7 @@
     },
     "lcb_fn.invalidate_inventory_lot_ids_23765": {
       "functionId": "lcb_fn.invalidate_inventory_lot_ids_23765",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -949,7 +949,7 @@
     },
     "lcb_fn.strain_inventory_type_lot_counts_23763": {
       "functionId": "lcb_fn.strain_inventory_type_lot_counts_23763",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -957,7 +957,7 @@
     },
     "lcb_fn.qa_sample_inventory_23755": {
       "functionId": "lcb_fn.qa_sample_inventory_23755",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -965,7 +965,7 @@
     },
     "lcb_fn.rt_sample_inventory_23759": {
       "functionId": "lcb_fn.rt_sample_inventory_23759",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -973,7 +973,7 @@
     },
     "lcb_fn.sublot_inventory_23743": {
       "functionId": "lcb_fn.sublot_inventory_23743",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -981,7 +981,7 @@
     },
     "lcb_hist.fn_capture_hist_inventory_lot_23605": {
       "functionId": "lcb_hist.fn_capture_hist_inventory_lot_23605",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -989,7 +989,7 @@
     },
     "org.fn_timestamp_update_contact_22854": {
       "functionId": "org.fn_timestamp_update_contact_22854",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -997,7 +997,7 @@
     },
     "org.fn_timestamp_update_contact_app_user_22855": {
       "functionId": "org.fn_timestamp_update_contact_app_user_22855",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1005,7 +1005,7 @@
     },
     "org.fn_timestamp_update_facility_22856": {
       "functionId": "org.fn_timestamp_update_facility_22856",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1013,7 +1013,7 @@
     },
     "org.fn_timestamp_update_location_22857": {
       "functionId": "org.fn_timestamp_update_location_22857",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1021,7 +1021,7 @@
     },
     "org.fn_timestamp_update_organization_22858": {
       "functionId": "org.fn_timestamp_update_organization_22858",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1029,7 +1029,7 @@
     },
     "org_fn.build_facility_location_22878": {
       "functionId": "org_fn.build_facility_location_22878",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1037,7 +1037,7 @@
     },
     "org_fn.build_organization_location_22898": {
       "functionId": "org_fn.build_organization_location_22898",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1045,7 +1045,7 @@
     },
     "org_fn.build_contact_22867": {
       "functionId": "org_fn.build_contact_22867",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1053,7 +1053,7 @@
     },
     "org_fn.build_contact_location_22868": {
       "functionId": "org_fn.build_contact_location_22868",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1061,7 +1061,7 @@
     },
     "org_fn.build_facility_22877": {
       "functionId": "org_fn.build_facility_22877",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1069,7 +1069,7 @@
     },
     "org_fn.build_location_22887": {
       "functionId": "org_fn.build_location_22887",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1077,7 +1077,7 @@
     },
     "org_fn.build_organization_22897": {
       "functionId": "org_fn.build_organization_22897",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1085,7 +1085,7 @@
     },
     "org_fn.build_tenant_organization_22899": {
       "functionId": "org_fn.build_tenant_organization_22899",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1093,7 +1093,7 @@
     },
     "org_fn.current_app_user_contact_22900": {
       "functionId": "org_fn.current_app_user_contact_22900",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1101,7 +1101,7 @@
     },
     "org_fn.modify_location_22901": {
       "functionId": "org_fn.modify_location_22901",
-      "policyDefinitionId": 637275343238544500,
+      "policyDefinitionId": 637275401878427400,
       "evaluation": {
         "status": "PASS",
         "errors": []
@@ -1109,7 +1109,7 @@
     }
   },
   "defaultPolicy": {
-    "id": 637268979306798200,
+    "id": 637269037923249200,
     "name": "Default Table Policy - NO ACCESS",
     "enableRls": false,
     "columnExclusionOverrides": {
@@ -1172,7 +1172,7 @@
     }
   },
   "defaultPolicyPermissive": {
-    "id": 637270570289732200,
+    "id": 637270628912043600,
     "name": "Default Table Policy - TOTAL EXPLICIT USER ACCESS",
     "enableRls": false,
     "columnExclusionOverrides": {
@@ -1235,7 +1235,7 @@
     }
   },
   "defaultFunctionPolicy": {
-    "id": 637275343238544500,
+    "id": 637275401878427400,
     "name": "Default Function Policy - NO ACCESS",
     "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
     "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
@@ -33157,6 +33157,7 @@
   "rawSchemata": [],
   "schemaFilter": [],
   "roleSet": {
+    "name": "graphile-visitor",
     "dbOwnerRole": {
       "roleName": "app_owner",
       "applicableRoles": []
@@ -33185,8 +33186,7 @@
           }
         ]
       }
-    ],
-    "name": "graphile-visitor"
+    ]
   },
   "defaultRlsUsing": "( owner_id = viewer_id() )",
   "defaultRlsWithCheck": "",
@@ -33236,9 +33236,10 @@
   "defaultFunctionRoleGrantsImplied": {
     "execute": "IMPLIED"
   },
+  "isDirty": true,
   "defaultDbUserTablePolicies": [
     {
-      "id": 637272161272666400,
+      "id": 637272219900838300,
       "name": "Default Table Policy - app_visitor",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -33301,7 +33302,7 @@
       }
     },
     {
-      "id": 637273752255610500,
+      "id": 637273810889632800,
       "name": "Default Table Policy - app_anonymous",
       "enableRls": false,
       "columnExclusionOverrides": {
@@ -33366,7 +33367,7 @@
   ],
   "defaultDbUserFunctionsPolicies": [
     {
-      "id": 637276934221478700,
+      "id": 637276992867232000,
       "name": "User Function Policy - app_visitor",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
@@ -33380,7 +33381,7 @@
       }
     },
     {
-      "id": 637278525204412800,
+      "id": 637278583856026500,
       "name": "User Function Policy - app_anonymous",
       "functionPolicyHeaderTemplate": "\n  ----------  BEGIN: {{schemaName}}.{{functionName}}\n  \n  ",
       "functionPolicyFooterTemplate": "\n\n  ----------  END: {{schemaName}}.{{functionName}}",
@@ -33393,6 +33394,5 @@
         }
       }
     }
-  ],
-  "isDirty": false
+  ]
 }

@@ -16,7 +16,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn @click="dialog=false">Cancel</v-btn>
-            <v-btn @click="navToExport">Save Project</v-btn>
+            <v-btn @click="saveFirst" :hidden="saveFirstHidden" class="red">Save Project First</v-btn>
             <v-btn @click="resetPgdbi">Exterminate!</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -38,16 +38,27 @@
       }
     },
     computed: {
+      saveFirstHidden () {
+        return !this.$store.state.isDirty
+      }
     },
     watch: {
     },
     methods: {
       resetPgdbi () {
         this.$store.dispatch('resetDefaultState')
-        this.$router.push('initialize')
+        this.$router.push('initialize').catch(err => {})
+        this.dialog = false
       },
-      navToExport () {
-        this.$router.push('project-export')
+      saveFirst () {
+        this.$store.dispatch('writeToDisk')
+        .then(result => {
+          this.resetPgdbi()
+        })
+        .catch(e => {
+          alert('ERROR')
+          console.error(e)
+        })
       }
     },
     mounted () {

@@ -3,6 +3,9 @@
     ma-5
     pa-5
   >
+    <v-toolbar>
+      <project-reset-dialog></project-reset-dialog>
+    </v-toolbar>
     <v-tabs
       v-model="activeTab"
       dark
@@ -38,15 +41,14 @@
 </template>
 
 <script>
-  import ProjectImport from '@/components/Project/ProjectImport'
   import Roles from '@/components/Role/Roles'
-  
+  import ProjectResetDialog from '@/components/Project/ProjectResetDialog'
 
   export default {
     name: 'Initialize',
     components: {
-      ProjectImport,
-      Roles
+      Roles,
+      ProjectResetDialog
     },
     props: {
     },

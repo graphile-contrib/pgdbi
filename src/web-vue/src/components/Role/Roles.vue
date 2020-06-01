@@ -19,7 +19,12 @@
               <v-card key="choose-role-set">
                 <choose-role-set></choose-role-set>
                 <v-card-actions>
-                  <v-btn :class="refreshBtnClass" :color="refreshBtnColor" @click="refreshSchemata" :hidden="!initializing">Refresh Schemata</v-btn>
+                  <v-btn 
+                    :class="refreshBtnClass" 
+                    :color="refreshBtnColor" 
+                    @click="refreshSchemata" 
+                    :hidden="refreshHidden"
+                  >Refresh Schemata</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -45,15 +50,19 @@
     watch: {
     },
     computed: {
-      initializing () {
-        return this.$store.state.initializing
+      rolesSet () {
+        this.$store.state.roleSet
+        return this.$store.state.roleSet
+      },
+      refreshHidden () {
+        return !this.$store.state.initializing || !(this.rolesSet.name)
       }
     },
     data () {
       return {
         activeTab: null,
-          refreshBtnClass: 'refreshBtnInitializing',
-          refreshBtnColor: 'yellow darken-3'
+        refreshBtnClass: 'refreshBtnInitializing',
+        refreshBtnColor: 'yellow darken-3'
       }
     },
     methods: {
