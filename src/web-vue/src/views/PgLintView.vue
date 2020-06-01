@@ -1,16 +1,26 @@
 <template>
   <v-container>
-    <v-text-field 
-      label="token"
-      v-model="token"
-      placeholder="enter your pglint token"
-    ></v-text-field>
-    <v-text-field 
-      label="project"
-      v-model="project"
-      placeholder="enter your pglint project"
-    ></v-text-field>
-    <v-btn @click="doPgLint" :disabled="pgLintDisabled">pg-lint!</v-btn>
+    <v-row>
+      <v-col cols="3">
+        <v-text-field 
+          label="token"
+          v-model="token"
+          placeholder="enter your pglint token"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="2"></v-col>
+      <v-col cols="3">
+        <v-text-field 
+          label="project"
+          v-model="project"
+          placeholder="enter your pglint project"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="2"></v-col>
+      <v-col cols="2">
+        <v-btn @click="doPgLint" :disabled="pgLintDisabled" class="grey">SUBMIT TO PGLINT</v-btn>
+      </v-col>
+    </v-row>
     <v-data-table
       :headers="headers"
       :items="pgLintResults"
@@ -77,6 +87,7 @@ export default {
   },
   methods: {
     doPgLint () {
+      this.$loading(true)
       this.$apollo.mutate({
         mutation: pgLint,
         variables: {
@@ -85,9 +96,11 @@ export default {
         }
       })
       .then(result => {
+        this.$loading(false)
         this.$store.commit('savePgLintResult', result.data.PgLint.result)
       })
       .catch(e => {
+        this.$loading(false)
         alert('ERROR')
         console.error(e)
       })

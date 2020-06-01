@@ -106,14 +106,11 @@
     },
     methods: {
       changeRoleSet (roleSetId) {
-        this.$loading = true
         this.$store.dispatch('setProjectRoleSet', roleSetId)
         .then(() => {
-          this.$loading = false
         })
         .catch(error => {
           console.error(error)
-          this.$loading = false
         })
       }
     },
