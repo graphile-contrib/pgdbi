@@ -24,13 +24,13 @@
         key="import"
         ripple
       >
-        Import Project
+        Load From Disk
       </v-tab>
       <v-tab-item
         key="import"
       >
         <v-card>
-          <project-import></project-import>
+          <v-btn @click="loadFromDisk">Load From Disk</v-btn>
         </v-card>
       </v-tab-item>
     </v-tabs>
@@ -40,6 +40,7 @@
 <script>
   import ProjectImport from '@/components/Project/ProjectImport'
   import Roles from '@/components/Role/Roles'
+  
 
   export default {
     name: 'Initialize',
@@ -58,6 +59,9 @@
       activeTab: null,
     }),
     methods: {
+      loadFromDisk () {
+        this.$store.dispatch('loadFromDisk')
+      }
     },
     watch: {
       initializing () {

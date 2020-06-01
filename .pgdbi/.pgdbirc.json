@@ -1,7 +1,7 @@
 {
   "allRoleSets": [
     {
-      "name": "reno",
+      "name": "graphile-visitor",
       "dbOwnerRole": {
         "roleName": "app_owner",
         "applicableRoles": []

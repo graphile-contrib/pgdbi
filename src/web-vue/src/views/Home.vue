@@ -8,7 +8,6 @@
     <h2>postgraphile-db-inspector</h2>
     <v-toolbar>
       <project-reset-dialog></project-reset-dialog>
-      <v-btn @click="$router.push('project-export')">Export Project</v-btn>      
     </v-toolbar>
     <roles></roles>
   </v-container>
