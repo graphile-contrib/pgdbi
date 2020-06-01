@@ -30,7 +30,7 @@ async function writeToDisk({state}) {
   const masterTablePolicy = computeMasterTablePolicy(state)
   const masterFunctionPolicy = computeMasterFunctionPolicy(state)
 
-  await apolloClient.mutate({
+  const result = await apolloClient.mutate({
     mutation: writeArtifacts,
     variables: {
       projectState: state,
@@ -41,10 +41,9 @@ async function writeToDisk({state}) {
       masterFunctionPolicy: masterFunctionPolicy.policy
     }
   })
-
   state.isDirty = false
-
-  return `write to disk complete`
+  console.log(result)
+  return result.data.WriteArtifacts.result
 }
 
 export default writeToDisk;

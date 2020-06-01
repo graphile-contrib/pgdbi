@@ -51,7 +51,7 @@ const WriteArtifactsPlugin = makeExtendSchemaPlugin(build => {
             fs.writeFileSync(`${artifactsPath}/masterFunctionPolicy.sql`, args.input.masterFunctionPolicy)
 
             return {
-              result: 'pizza'
+              result: `artifacts written to ${artifactsPath}`
             };
           } catch (e) {
             // Oh noes! If at first you don't succeed,

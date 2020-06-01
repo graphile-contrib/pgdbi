@@ -26,25 +26,6 @@
           </v-layout>
         </v-card>
       </v-tab-item>
-      <v-tab
-        key="customize-role-set"
-        ripple
-      >
-        Customize Available Role Sets
-      </v-tab>
-      <v-tab-item
-        key="customize-role-set"
-      >
-        <v-card>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card key="customize-role-set">
-                <customize-available-role-sets></customize-available-role-sets>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
@@ -53,15 +34,13 @@
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
   import ChooseRoleSet from './ChooseRoleSet'
-  import CustomizeAvailableRoleSets from './CustomizeAvailableRoleSets'
   import dbIntrospection from '@/gql/query/dbIntrospection.graphql'
 
   export default {
     name: 'Roles',
     mixins: [],
     components: {
-      ChooseRoleSet,
-      CustomizeAvailableRoleSets
+      ChooseRoleSet
     },
     watch: {
     },
