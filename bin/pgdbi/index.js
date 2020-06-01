@@ -5,6 +5,7 @@ const transformBuild = require('./transformBuild')
 
 const plugins = [
   require('./graphile-extensions/pgdbirc'),
+  require('./graphile-extensions/pglint'),
   require('./graphile-extensions/project'),
   require('./graphile-extensions/dbSchema'),
   require('./graphile-extensions/execSql'),

@@ -53,6 +53,3 @@ module.exports = {
     }
   ]
 }
-
-// the above was built from the below
-// https://www.graphile.org/postgraphile/make-extend-schema-plugin/

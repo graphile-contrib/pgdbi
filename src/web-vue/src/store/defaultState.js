@@ -1,5 +1,6 @@
 export default {
   allRoleSets: [],
+  pgLintResults: [],
   pgdbiOptions: {},
   initializing: true,
   schemaFilterOn: true,

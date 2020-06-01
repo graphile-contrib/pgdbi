@@ -22,6 +22,7 @@
 <script>
   const NOT_ROLE = '---'
   const INHERITS_ROLE = '+++'
+  import pgdbirc from '@/gql/query/pgdbirc.graphql'
 
   export default {
     name: 'Roles',
@@ -31,9 +32,9 @@
     watch: {
     },
     computed: {
-      allRoleSets () {
-        return this.$store.state.allRoleSets
-      },
+      // allRoleSets () {
+      //   return this.$store.state.allRoleSets
+      // },
       roleSetId () {
         return this.$store.state.roleSet.name
       },
@@ -100,7 +101,7 @@
     },
     data () {
       return {
-        // roleSetId: null,
+        allRoleSets: []
       }
     },
     methods: {
@@ -116,8 +117,17 @@
         })
       }
     },
-    mounted () {
+    apollo: {
+      init: {
+        query: pgdbirc,
+        networkPolicy: 'fetchOnly',
+        update (data) {
+          this.allRoleSets = data.PGDBIRC.pgdbirc.allRoleSets
+        }
+      }
     }
+    // mounted () {
+    // }
   }
 </script>
 

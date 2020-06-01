@@ -1,0 +1,11 @@
+mutation PgLint(
+  $project: String!
+  $token: String!
+) {
+  PgLint(input: {
+    project: $project
+    token: $token
+  }) {
+    result
+  }
+}
