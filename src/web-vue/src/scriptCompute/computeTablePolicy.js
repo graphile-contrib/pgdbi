@@ -144,10 +144,10 @@ function computePolicy (policyDefinition, policyReadability, variables, table) {
 export default computePolicy
 
 const tablePolicyTemplate = `
-----------
-----------  BEGIN TABLE POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
-----------  POLICY NAME:  {{policyName}}
-----------
+----******
+----******  BEGIN TABLE POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+----******  POLICY NAME:  {{policyName}}
+----******
 
 ----------  REMOVE EXISTING TABLE GRANTS
 
@@ -241,5 +241,5 @@ const tablePolicyTemplate = `
   {{/deniedRoleGrants}}
 {{/verbose}}
 
-----------  END TABLE POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
+----======  END TABLE POLICY: {{schemaName}}{{^schemaName}}{{=<% %>=}}{{schemaName}}<%={{ }}=%>{{/schemaName}}.{{tableName}}{{^tableName}}{{=<% %>=}}{{tableName}}<%={{ }}=%>{{/tableName}}
 --==`
