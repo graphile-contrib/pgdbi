@@ -1,6 +1,6 @@
 {
   "name": "@graphile-contrib/pgdbi",
-  "version": "1.0.9-alpha.102",
+  "version": "1.0.9-alpha.103",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -28,7 +28,8 @@
     "graphile-worker": "^0.1.0-alpha.0",
     "handlebars": "^4.3.0",
     "postgraphile": "^4.4.0",
-    "postgraphile-plugin-connection-filter": "^1.0.1"
+    "postgraphile-plugin-connection-filter": "^1.0.1",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
