@@ -17,7 +17,6 @@ async function transformBuild(build, pgPool) {
     const querySql = await queryBuilderMap[version](schemas)
     const schemaTree = camelCaseKeys((await pgPool.query(querySql)).rows[0], {deep:true})
     return schemaTree
-
   } catch (e) {
     console.log('CAUGHT ERROR', e.toString())
     throw e;

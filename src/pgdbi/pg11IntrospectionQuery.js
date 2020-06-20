@@ -1,3 +1,4 @@
+
 async function buildQuery(schemas) {
   try {
     const querySql = `
@@ -19,6 +20,14 @@ async function buildQuery(schemas) {
           from information_schema.enabled_roles er
         ) er
       ) enabled_roles
+      ,(
+        select coalesce((array_to_json(array_agg(row_to_json(rls))))::jsonb, '[]')
+        from (
+          select
+          *
+        from pg_catalog.pg_policies p
+        ) rls
+      ) rls_policies
       ,(
         select coalesce((array_to_json(array_agg(row_to_json(s))))::jsonb, '[]'::jsonb)
         FROM (
@@ -178,7 +187,7 @@ async function buildQuery(schemas) {
                       select
                         *
                       from pg_catalog.pg_policies p
-                      where p.schemaname = s.schema_name
+                      where p.schemaname = t.table_schema
                       and p.tablename = t.table_name
                     ) p
                   ) policies

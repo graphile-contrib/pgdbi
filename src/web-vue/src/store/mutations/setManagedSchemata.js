@@ -225,6 +225,7 @@ function assignMissingDefaultFunctionPolicies(state, schemata) {
 } 
 
 function setManagedSchemata(state, payload) {
+  console.log('sms', payload)
   ensureDefaultTablePolicy(state)
   ensureDefaultTablePolicyPermissive(state)
   ensureDefaultDbUserTablePolicies(state)

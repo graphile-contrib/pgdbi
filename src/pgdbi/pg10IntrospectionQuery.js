@@ -178,7 +178,7 @@ async function buildQuery(schemas) {
                       select
                         *
                       from pg_catalog.pg_policies p
-                      where p.schemaname = s.schema_name
+                      where p.schemaname = t.table_schema
                       and p.tablename = t.table_name
                     ) p
                   ) policies

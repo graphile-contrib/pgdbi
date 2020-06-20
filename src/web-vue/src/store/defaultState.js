@@ -5,6 +5,7 @@ export default {
   initializing: true,
   schemaFilterOn: true,
   policies: [],
+  rlsPolicies: [],
   tablePolicyAssignments: {},
   functionPolicies: [],
   functionPolicyAssignments: {},

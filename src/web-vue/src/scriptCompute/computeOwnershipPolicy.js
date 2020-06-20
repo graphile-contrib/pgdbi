@@ -4,6 +4,7 @@ const ownershipPolicyTemplate = `
 ----------
 ----------  BEGIN OWNERSHIP SQL
 ----------
+  
 
 {{#schemata}}
 ----------  SCHEMA: {{schemaName}}

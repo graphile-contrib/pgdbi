@@ -107,9 +107,11 @@ export default {
         fetchPolicy: 'network-only'
       })
       .then(result => {
+        console.log(result.data)
         this.$store.dispatch('setManagedSchemata', {
           schemaTree: result.data.dbIntrospection.schemaTree,
-          pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
+          pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions},
+          rlsPolicies: result.data.dbIntrospection.rlsPolicies
         })
         this.$store.commit('setIsDirty', false)
         this.$loading(false)
