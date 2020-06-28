@@ -42,6 +42,7 @@ async function buildQuery(schemas) {
                   t.*
                   ,'table' __typename
                   ,s.schema_name || '.' || t.table_name id
+                  ,(select relrowsecurity from pg_catalog.pg_class where relnamespace = (select oid from pg_catalog.pg_namespace where nspname = s.schema_name) and relname = t.table_name) rls_enabled
                   ,(
                     select (array_to_json(array_agg(row_to_json(c))))::jsonb
                     from (

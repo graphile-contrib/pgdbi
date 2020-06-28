@@ -66,6 +66,7 @@
         if (this.bulkAssign) {
           return 'Bulk Assign'
         } else {
+          return 'Assign New Profile'
           return this.currentPolicyDefinition ? this.currentPolicyDefinition.name : 'n/a'
         }
       },

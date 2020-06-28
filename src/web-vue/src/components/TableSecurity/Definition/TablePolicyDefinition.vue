@@ -28,6 +28,24 @@
         dark
       >
         <v-tab
+          key="profile"
+          ripple
+        >
+          Security Profile
+        </v-tab>
+        <v-tab-item
+          key="profile"
+        >
+          <v-card flat>
+            <table-security-profile
+              :policyDefinition="policyDefinition"
+              :table="table"
+              :disabled="disabled"
+            ></table-security-profile>
+            </v-card>
+        </v-tab-item>
+
+        <!-- <v-tab
           key="grants"
           ripple
         >
@@ -60,7 +78,7 @@
             :disabled="disabled"
           ></policy-rls-qualifier-grid>
           </v-card>
-        </v-tab-item>
+        </v-tab-item> -->
 
         <v-tab
           key="policy-template"
@@ -80,7 +98,7 @@
           </v-card>
         </v-tab-item>
 
-        <v-tab
+        <!-- <v-tab
           v-if="table"
           key="policy-evaluation"
           ripple
@@ -97,33 +115,35 @@
               :table="table"
             ></table-policy-evaluator-detail>
           </v-card>
-        </v-tab-item>
+        </v-tab-item> -->
       </v-tabs>
 
   </v-container>
 </template>
 
 <script>
-  import TablePolicyDefinitionGrants from '@/components/TableSecurity/Definition/Grants/TablePolicyDefinitionGrants.vue'
+  // import TablePolicyDefinitionGrants from '@/components/TableSecurity/Definition/Grants/TablePolicyDefinitionGrants.vue'
 
-  import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
+  // import PolicyRlsQualifierGrid from './TablePolicyRlsQualifierGrid.vue'
   import PolicyRealization from '@/components/TableSecurity/Realization/TablePolicyRealization.vue'
   import TablePolicyCustomizeDialog from '@/components/TableSecurity/Dialogs/TablePolicyCustomizeDialog.vue'
   import TablePolicyMakeGlobalDialog from '@/components/TableSecurity/Dialogs/TablePolicyMakeGlobalDialog.vue'
   import TablePolicyDeleteDialog from '@/components/TableSecurity/Dialogs/TablePolicyDeleteDialog.vue'
   import TablePolicyRenameDialog from '@/components/TableSecurity/Dialogs/TablePolicyRenameDialog.vue'
   import TablePolicyEvaluatorDetail from '@/components/TableSecurity/Evaluation/TablePolicyEvaluatorDetail.vue'
+  import TableSecurityProfile from './TableSecurityProfile.vue'
 
   export default {
     name: 'PolicyDefinition',
     components: {
-      PolicyRlsQualifierGrid,
+      TableSecurityProfile,
+      // PolicyRlsQualifierGrid,
       PolicyRealization,
       TablePolicyCustomizeDialog,
       TablePolicyMakeGlobalDialog,
       TablePolicyDeleteDialog,
       TablePolicyEvaluatorDetail,
-      TablePolicyDefinitionGrants,
+      // TablePolicyDefinitionGrants,
       TablePolicyRenameDialog
     },
     props: {

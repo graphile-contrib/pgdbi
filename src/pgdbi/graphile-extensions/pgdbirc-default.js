@@ -1,29 +1,44 @@
 module.exports = {
-  defaultRlsUsing: '( owner_id = viewer_id() )',
   allRoleSets: [
     {
       name: 'graphile-visitor',
+      defaultRlsUsing: '( user_id = app_public.current_user_id() )',
       dbOwnerRole: {
-        roleName: 'app_owner',
+        roleName: 'graphile_starter',
         applicableRoles: []
       },
       dbAuthenticatorRole: {
-        roleName: 'app_authenticator',
-        applicableRoles: [ {roleName: 'app_visitor'}, {roleName: 'app_anonymous'} ]
+        roleName: 'graphile_starter_authenticator',
+        applicableRoles: [ {roleName: 'graphile_starter_visitor'} ]
       },
       dbUserRoles: [
         {
-          roleName: 'app_visitor',
-          applicableRoles: [ {roleName: 'app_anonymous'} ]
-        },
-        {
-          roleName: 'app_anonymous',
-          applicableRoles: []
-        }    
+          roleName: 'graphile_starter_visitor',
+          applicableRoles: [ ]
+        }
       ],    
   },
-    {
-      name: 'multi-user',
+  {
+    name: 'app-visitor',
+    defaultRlsUsing: '( user_id = app_public.current_user_id() )',
+    dbOwnerRole: {
+      roleName: 'app_owner',
+      applicableRoles: []
+    },
+    dbAuthenticatorRole: {
+      roleName: 'app_authenticator',
+      applicableRoles: [ {roleName: 'app_visitor'} ]
+    },
+    dbUserRoles: [
+      {
+        roleName: 'app_visitor',
+        applicableRoles: [ ]
+      }
+    ],    
+  },
+  {
+      name: 'postgraphql-classic',
+      defaultRlsUsing: '( user_id = app_public.current_user_id() )',
       dbOwnerRole: {
         roleName: 'app_owner',
         applicableRoles: []

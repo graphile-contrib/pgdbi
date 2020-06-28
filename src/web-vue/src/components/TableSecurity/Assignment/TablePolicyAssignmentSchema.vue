@@ -18,28 +18,40 @@
         disable-sort
         hide-default-footer
         show-select
-        show-expand
         :expanded.sync="expanded"
       >
           <template v-slot:item.name="{ item }">
-            {{ item.tableName }}
+            <router-link :to="{ name: 'table-security-profile', params: { tableId: item.id }}" target="_blank">{{item.id}}</router-link>
           </template>
+
+          <!-- <template v-slot:item.link="{ item }">
+            <router-link :to="{ name: 'table-security-profile', params: { tableId: item.id }}" target="_blank"><v-icon>launch</v-icon></router-link>
+          </template> -->
 
           <template v-slot:item.assignedPolicy="{ item }">
-            <policy-assignment-dialog 
-              :currentPolicyDefinition="item.policyDefinition" 
-              :tables="[item]"
-              @policyAssigned="expandItems"
-            ></policy-assignment-dialog>
-            <table-policy-customize-dialog
-              v-if="showCustomizeButton(item)"
-              :currentPolicyDefinition="item.policyDefinition"
-              :tables="[item]"
-              @policyAssigned="expandItems"
-            ></table-policy-customize-dialog>
+            <v-row>
+              <v-col>
+                {{item.policyDefinition.name}}
+              </v-col>
+              <v-col>
+                <policy-assignment-dialog 
+                  :currentPolicyDefinition="item.policyDefinition" 
+                  :tables="[item]"
+                  @policyAssigned="expandItems"
+                ></policy-assignment-dialog>
+              </v-col>
+              <v-col>
+                <table-policy-customize-dialog
+                  v-if="showCustomizeButton(item)"
+                  :currentPolicyDefinition="item.policyDefinition"
+                  :tables="[item]"
+                  @policyAssigned="expandItems"
+                ></table-policy-customize-dialog>
+              </v-col>
+            </v-row>
           </template>
 
-        <template slot="expanded-item" slot-scope="props">
+        <!-- <template slot="expanded-item" slot-scope="props">
           <td :colspan="headers.length + 2">
             <policy-definition
               :key="props.item.id"
@@ -47,7 +59,7 @@
               :table="props.item"
             ></policy-definition>
           </td>
-        </template>
+        </template> -->
       </v-data-table>
 
       <!-- <mugen-scroll :handler="fetchData" :should-handle="!loa    ding">
@@ -108,6 +120,7 @@
               ...table
               ,policyDefinition: policyDefinition
               ,policyDefinitionId: policyDefinition.id
+              ,link: true
             }
           }
         )
@@ -128,6 +141,10 @@
           text: '',
           sortable: false,
         },
+        // {
+        //   sortable: false,
+        //   value: 'link'
+        // },
         {
           text: 'Table Name',
           sortable: false,

@@ -74,8 +74,8 @@
         })
         .then(result => {
           this.$store.dispatch('setManagedSchemata', {
-            schemaTree: result.data.dbIntrospection.schemaTree,
-            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions}
+            ...result.data.dbIntrospection,
+            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions},
           })
           this.$loading(false)
         })

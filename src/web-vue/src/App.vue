@@ -40,8 +40,6 @@
     <v-content>
       <v-container
         justify-start
-         ma-0 
-         pa-0
       >
         <router-view></router-view>
       </v-container>
@@ -109,10 +107,9 @@ export default {
       .then(result => {
         console.log(result.data)
         this.$store.dispatch('setManagedSchemata', {
-          schemaTree: result.data.dbIntrospection.schemaTree,
-          pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions},
-          rlsPolicies: result.data.dbIntrospection.rlsPolicies
-        })
+           ...result.data.dbIntrospection,
+            pgdbiOptions: {pgdbiOptions: result.data.pgdbiOptions},            
+         })
         this.$store.commit('setIsDirty', false)
         this.$loading(false)
       })

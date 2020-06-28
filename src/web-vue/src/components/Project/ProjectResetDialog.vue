@@ -47,8 +47,10 @@
     methods: {
       resetPgdbi () {
         this.$store.dispatch('resetDefaultState')
-        this.$router.push('initialize').catch(err => {})
-        this.dialog = false
+        .then(()=>{
+          this.$router.push('initialize').catch(err => {})
+          this.dialog = false
+        })
       },
       saveFirst () {
         this.$store.dispatch('writeToDisk')

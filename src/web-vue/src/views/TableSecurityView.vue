@@ -43,16 +43,16 @@
       </v-tab-item>
       
       <v-tab
-        key="policy-manager"
+        key="profile-definitions"
         ripple
       >
-        Policy Templates
+        Security Profile Definitions
       </v-tab>
       <v-tab-item
-        key="policy-manager"
+        key="profile-definitions"
       >
         <v-card>
-          <policy-manager></policy-manager>
+          <table-security-profile-definitions></table-security-profile-definitions>
         </v-card>
       </v-tab-item>
 
@@ -64,7 +64,7 @@
   import PolicyAssignment from '@/components/TableSecurity/Assignment/TablePolicyAssignment'
   // import SecurityPolicySettings from '@/components/Settings/SecurityPolicySettings'
   import SchemaSecurityScripts from '@/components/TableSecurity/Realization/SchemaSecurityScripts'
-  import PolicyManager from '@/components/TableSecurity/TablePolicyManager'
+  import TableSecurityProfileDefinitions from '@/components/TableSecurity/Definition/TableSecurityProfileDefinitions'
 
 
   export default {
@@ -72,7 +72,7 @@
     components: {
       // SecurityPolicySettings,
       SchemaSecurityScripts,
-      PolicyManager,
+      TableSecurityProfileDefinitions,
       PolicyAssignment
     },
     props: {

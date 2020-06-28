@@ -1,6 +1,6 @@
 function defaultRlsUsing(state, payload) {
   state.isDirty = true
-  state.defaultRlsUsing = payload.defaultRlsUsing;
+  state.defaultRlsUsing = payload;
 }
 
 export default defaultRlsUsing;

@@ -8,6 +8,8 @@ import Function from './components/Function/Function.vue';
 import RoleManagerView from './views/RoleManagerView.vue';
 import SecurityView from './views/SecurityView.vue';
 import PgLintView from './views/PgLintView.vue';
+import TableSecurityProfileView from './views/TableSecurityProfileView.vue';
+import TableSecurityProfileDefinitionView from './views/TableSecurityProfileDefinitionView.vue';
 // import TableSecurityView from './views/TableSecurityView.vue';
 // import FunctionSecurityView from './views/FunctionSecurityView.vue';
 import SearchView from './views/SearchView.vue';
@@ -53,6 +55,18 @@ const router = new Router({
       path: '/security-manager',
       name: 'security-manager',
       component: SecurityView,
+    },
+    {
+      path: '/table-security-profile-definition/:policyDefinitionId',
+      name: 'table-security-profile-definition',
+      component: TableSecurityProfileDefinitionView,
+      props: true,
+    },
+    {
+      path: '/table-security-profile/:tableId',
+      name: 'table-security-profile',
+      component: TableSecurityProfileView,
+      props: true,
     },
     {
       path: '/pg-lint',

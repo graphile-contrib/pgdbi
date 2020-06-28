@@ -13,10 +13,10 @@ function ensureDefaultTablePolicy(state) {
   if (!state.defaultPolicy) {
     const defaultPolicy = {
       id: makeId(),
-      name: 'Default Table Policy - NO ACCESS',
+      name: 'Default Profile - NO ACCESS',
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
-      enableRls: false,
+      enableRls: true,
       columnExclusionOverrides: {
         insert: [],
         update: [],
@@ -48,7 +48,7 @@ function ensureDefaultTablePolicyPermissive(state) {
   if (!state.defaultPolicyPermissive) {
     const defaultPolicyPermissive = {
       id: makeId(),
-      name: 'Default Table Policy - TOTAL EXPLICIT USER ACCESS',
+      name: 'Default Profile - TOTAL EXPLICIT USER ACCESS',
       policyHeaderTemplate: state.policyHeaderTemplate,
       policyFooterTemplate: state.policyFooterTemplate,
       enableRls: false,
@@ -93,7 +93,7 @@ function ensureDefaultDbUserTablePolicies(state) {
       dbUserRole => {
         return {
           id: makeId(),
-          name: `Default Table Policy - ${dbUserRole.roleName}`,
+          name: `Default Profile - ${dbUserRole.roleName}`,
           policyHeaderTemplate: state.policyHeaderTemplate,
           policyFooterTemplate: state.policyFooterTemplate,
           enableRls: false,
@@ -225,7 +225,7 @@ function assignMissingDefaultFunctionPolicies(state, schemata) {
 } 
 
 function setManagedSchemata(state, payload) {
-  console.log('sms', payload)
+  // console.log('sms', payload)
   ensureDefaultTablePolicy(state)
   ensureDefaultTablePolicyPermissive(state)
   ensureDefaultDbUserTablePolicies(state)

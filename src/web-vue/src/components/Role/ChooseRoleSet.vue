@@ -1,13 +1,31 @@
 <template>
   <v-container>
-    <v-radio-group :value='roleSetId' @change="changeRoleSet" row :disabled="!initializing">
-      <v-radio
-        v-for="rs in allRoleSets"
-        :key="rs.name"
-        :label="rs.name"
-        :value="rs.name"
-      ></v-radio>
-    </v-radio-group>
+    <v-toolbar>
+      <v-row>
+        <v-col cols="1">
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                v-bind="attrs"
+                v-on="on"
+                color="blue"
+              >mdi-help-circle</v-icon>
+            </template>
+            <span>role sets can be edited in the following file relative to where pgbi was executed<hr>./.pgdbi/.pgdbirc</span>
+          </v-tooltip>
+        </v-col>
+        <v-col cols="8">
+          <v-radio-group :value="roleSetId" @change="changeRoleSet" row :disabled="!initializing">
+            <v-radio
+              v-for="rs in allRoleSets"
+              :key="rs.name"
+              :label="rs.name"
+              :value="rs.name"
+            ></v-radio>
+          </v-radio-group>
+        </v-col>
+      </v-row>
+    </v-toolbar>
 
     <v-data-table
       :items="mappedDbUsers"
@@ -32,9 +50,6 @@
     watch: {
     },
     computed: {
-      // allRoleSets () {
-      //   return this.$store.state.allRoleSets
-      // },
       roleSetId () {
         return this.$store.state.roleSet.name
       },
@@ -120,6 +135,9 @@
         networkPolicy: 'fetchOnly',
         update (data) {
           this.allRoleSets = data.PGDBIRC.pgdbirc.allRoleSets
+          if (this.initializing) {
+            this.changeRoleSet(this.allRoleSets[0].name)
+          }
         }
       }
     }
