@@ -21,7 +21,7 @@
     "camelcase-keys": "^6.0.1",
     "compressed-json": "^1.0.15",
     "dotenv": "^8.1.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "fbkt-clog": "^1.0.5",
     "flatted": "^2.0.1",
     "graphile-utils": "^4.2.1",
